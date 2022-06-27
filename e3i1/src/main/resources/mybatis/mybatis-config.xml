@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- DTD 설정: 문서의 형식을 정의 -->
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 최상위 태그 -->
+<configuration>
+	<!-- properties: 문서 내에서 사용할 데이터(변수) -->
+	<!-- settings: 실행 mybatis의 동작과 관련된 설정 -->
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<!-- 자동 매핑시 언더스코어 형태의 데이터를 카멜케이스 변수로 복사해주는 설정 -->
+		<setting name="mapUnderscoreToCamelCase" value="true"></setting>
+	</settings>
+	
+	<!-- - typeAliases 설정을 통해 특정 클래스 또는 패키지에 원하는 명칭을 부여 
+ 			- [1] 특정 타입에 대한 별칭을 설정
+ 			- type =“실제 경로” alias =“별칭”
+ 			- ex:<typeAlias type="com.kh.spring08.entity.Exam" alias="ExamDto"/> 
+ 			- [2] 특정 패키지의 경로를 생략
+ 			- <package name ="등록할 패키지"> 
+ 			- <package name ="com.kh.spring19.entity"/> 
+ 			-->
+	<typeAliases>
+		
+	</typeAliases>
+</configuration>

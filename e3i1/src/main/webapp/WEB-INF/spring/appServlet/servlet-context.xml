@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	servlet-context.xml은 DispatcherServlet의 작업을 위한 설정이다!
+ -->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 
+		View 페이지 탐지 도구 등록 (View Resolver)
+		- 접두사(prefix)와 접미사(suffix)를 설정하여 효율적인 경로 설정이 가능하도록 처리 
+		- org.springframework.web.servlet.view.InternalResourceView
+	-->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<!-- 
+		자동 스캔 설정
+		- 내가 정한 패키지를 기준으로 하여 등록 가능한 요소들을 탐지하여 등록하도록 설정
+		- 탐지하는 패키지는 top-level package로 설정하는 것이 일반적이다
+		- 스프링에서는 경로 관련된 처리는 spring-context 모듈이 수행
+		
+		- mvc:annotation-driven 설정을 하면 특정 annotation들이 활성화됨
+	 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	
+	<!-- 복사한 뒤 반드시 고쳐야 하는 부분 -->
+	<context:component-scan base-package="com.kh.e3i1" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	<!-- 복사한 뒤 반드시 고쳐야 하는 부분 -->
+	
+	<!-- 
+		정적 자원(static resource) 위치 지정
+		- DispatcherServlet을 거치면 안되는 요소들에 대한 설정을 수행
+		- css, js, 이미지, font, ...
+		- 프로그래밍 처리가 필요하지 않은 요소들
+		- mvc 모듈 설정으로 처리
+		- 일반적으로 webapp 안의 resources 에 모든 요소를 저장
+	 -->
+	<mvc:resources location="/resources/css/" mapping="/css/**"></mvc:resources>
+	<mvc:resources location="/resources/js/" mapping="/js/**"></mvc:resources>
+	<mvc:resources location="/resources/font/" mapping="/font/**"></mvc:resources>
+	<mvc:resources location="/resources/image/" mapping="/image/**"></mvc:resources>
+	
+	<!--  파일 업로드를 위한 도구 등록 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<property name="maxUploadSize" value="10485760"></property>
+		<property name="maxUploadSizePerFile" value="1048576"></property>
+	</bean>
+	
+<!-- 	<mvc:interceptors> -->
+<!-- 		<mvc:interceptor> -->
+<!-- 			<mvc:mapping path="/exam/**"/> -->
+<!-- 			<mvc:mapping path="/score/**"/> -->
+<!-- 			<mvc:mapping path="/product/**"/> -->
+<!-- 			<mvc:mapping path="/member/*"/> -->
+<!-- 			<mvc:mapping path="/board/**"/> -->
+<!-- 			<mvc:exclude-mapping path="/member/login"/> -->
+<!-- 			<mvc:exclude-mapping path="/member/join*"/> -->
+<!-- 			<mvc:exclude-mapping path="/member/findId*"/> -->
+<!-- 			<mvc:exclude-mapping path="/member/findPw*"/> -->
+<!-- 			<mvc:exclude-mapping path="/member/reset*"/> -->
+<!-- 			<mvc:exclude-mapping path="/member/exitResult"/> -->
+<!-- 			<mvc:exclude-mapping path="/member/email_is_null"/> -->
+<!-- 			<mvc:exclude-mapping path="/board/list"/> -->
+<!-- 			<mvc:exclude-mapping path="/board/detail/**"/> -->
+			
+			
+<!-- 			<bean class="com.kh.home.interceptor.MemberLoginInterceptor"></bean> -->
+<!-- 		</mvc:interceptor> -->
+		
+<!-- 		<mvc:interceptor> -->
+<!-- 			<mvc:mapping path="/member/join*"/> -->
+<!-- 			<mvc:mapping path="/member/login"/> -->
+<!-- 			<mvc:mapping path="/member/findId*"/> -->
+<!-- 			<mvc:mapping path="/member/findPw*"/> -->
+<!-- 			<mvc:mapping path="/member/exitResult"/> -->
+<!-- 			<bean class="com.kh.home.interceptor.NonMemberInterceptor"></bean> -->
+<!-- 		</mvc:interceptor> -->
+		
+
+<!-- 	</mvc:interceptors> -->
+	
+		<!-- 
+		Swagger 분석 설정 추가
+		1. swagger에서 제공하는 기본 설정을 사용
+		2. 직접 만든 커스텀 설정을 사용
+		(주의)id가 반드시 swagger2Config여야 한다.
+		설정이 잘 되었다면 /v2/api-docs 주소가 활성화
+	 -->
+<!-- 	<bean id="swagger2Config" class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration"></bean> -->
+<!-- 		<bean id="swagger2Config" class="com.kh.e3i1.configuration.SwaggerCustomConfiguration"></bean> -->
+	<!-- 
+		Swagger에서 제공하는 화면에 대한 정적 자원 위치 지정
+		- spring-boot에서는 할 필요가 없음
+	 -->
+	 <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"></mvc:resources>
+	 <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"></mvc:resources>
+		<!-- 
+	모든 properties 파일의 정보를 불러오도록 설정 -->
+	<context:property-placeholder location="classpath:/properties/**/*.properties"/>
+</beans>

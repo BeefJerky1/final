@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+
+	Log4J 설정파일
+	- Logging을 수행하는 대표적인 프레임워크 중 하나.
+	
+	로깅 메시지 수준(Level)
+	- 메시지에 중요도를 부여해서 중요한 메시지부터 볼 수 있도록 필터링 할 수 있다.
+	- Log4J에서는 총 6단계로 구분한다.
+		-FATAL: 지금 당장 서버가 중단될 정도로 치명적인 문제에 대한 메시지(개발자가 작성불가)
+		-ERROR: 현 시점에 특정 예외가 발생한 경우에 대한 메세지
+		-WARN: 현 시점에서는 실행 가능하지만 향후 문제가 발생할 수 있는 사항에 대한 메세지
+		-INFO: 사용자에게 실행 결과 혹은 과정에 대해 알려줄 내용에 대한 메세지
+		-DEBUG: 개발자가 오류 등을 해결하기 위해 남기는 메세지
+		-TRACE: 정말 사소한 것까지 남기는 메세지
+	-설정을 통해 특정 대상에 대한 표시 수준을 설정할 수 있다.
+	<logger name="com.kh.spring13">
+		<level value="debug"/>
+	</logger>
+	-root logger 설정을 통해 설정되지 않은 모든 대상에 대한 표시 수준을 설정할 수 있다.
+	-appender는 여러개 설정할 수 있다.
+	<root>
+		<priority value="debug" />
+		<appender-ref ref="console" />
+	</root>
+	
+		Appender
+		- 로깅의 대상을 지정하기 위한 도구 (파일, 콘솔 등)
+		- consoleAppender: 콘솔에 로그를 출력하는 도구
+			- param은 옵션 설정, layout은 출력 형식 지정
+		- DailyRollingFileAppender : 일자별로 파일에 출력하는 도구
+			- file에는 출력할 파일을 지정(상대경로 가능. 없는 경로명 생성)
+			- append에는 이어쓰기 여부를 true/false로 설정
+		출력형식
+		- %p: 메시지 우선순위 (priority) 출력 영역
+			- 사이에 숫자를 넣어 정렬 방향과 크기를 지정할 수 있다.
+			- 마이너스는 좌측정렬, 플러스는 우측정렬
+			- 크기보다 글자수가 작다면 남는 공간은 공백으로 배치
+		- %c: 카테고리 정보 출력 영역
+			- 로깅에 가장 중요한 점이 출력 위치를 나타내는 것
+			- 뒤에 {숫자}를 추가하여 카테고리 출력 수를 제한할 수 있다.
+			- C%{4} 면 a,b,c,d 까지만 보겠다는 의미
+		- %m: 메시지 정보 출력 영역
+		- %n: 개행(new line) 출력
+			-simpledateFormat 형식으로 설정이 가능하다.
+			-%d{yyyy-MM-dd HH:mm:ss} 
+ -->
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Appenders -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p] %m - %c (%d)%n" />
+		</layout>
+	</appender>
+	
+	<!-- Appenders DailyRollingFileAppender-->
+	<appender name="daily" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="logs/daily" /> <!--  파일로 생성/ 경로 -->
+		<param name="append" value="true"/> <!-- 덮어쓰기 가능하면 true -->
+		<param name="DatePattern" value="'-'yyyy-mm-dd'.log'"/> <!--  -->
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p] %m - %c (%d)%n" />
+		</layout>
+	</appender>
+	
+	<!-- Root Logger -->
+	<root>
+		<priority value="debug" />
+<!-- 		<appender-ref ref="daily" /> -->
+		<appender-ref ref="console" />
+	</root>
+	
+</log4j:configuration>

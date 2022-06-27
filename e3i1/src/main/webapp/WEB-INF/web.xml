@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	web.xml은 프로젝트가 서버에서 어떻게 구동되어야 하는지에 대한 내용을 설정하는 파일
+	
+	- 스프링에서는 가장 핵심이 되는 도구가 반드시 존재해야 함(DispatcherServlet)
+	- DispatcherServlet이 알아야 할 내용들에 대한 설정파일을 연결(servlet-context.xml)
+	- 스프링에서 전반적인 설정을 담당하는 global 설정파일을 설정(root-context.xml)
+ -->
+
+<web-app version="4.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_4_0.xsd">
+
+	<!-- 
+		Spring에서 제공하는 Encoding Filter를 등록하여 UTF-8 로 변환 처리를 수행
+	 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		
+		<!-- 옵션1 : 인코딩 방식이 UTF-8 임을 명시 -->
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		
+		<!-- 옵션2 : 요청 뿐 아니라 응답까지도 강제 처리하도록 설정 -->
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- 스프링 전역 설정파일을 등록 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+	</context-param>
+	
+	<!-- 두 개의 설정파일을 연결하는 도구를 등록 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- 
+		스프링 핵심 도구인 DispatcherServlet에 대한 설정
+		- <servlet>과 <servlet-mapping>은 세트
+		- <servlet-name>이 같으면 세트로 판정 
+		- <servlet-class>에는 등록할 클래스명을 작성
+		- <init-param>은 최초에 정보를 전달하기 위하여 작성
+			- <param-name> 은 설정할 변수 이름. 설정파일일 경우 반드시 contextConfigLocation로 작성
+			- <param-value> 는 설정할 값
+		- <load-on-startup>은 실행 우선순위를 지정할 수 있다
+		- <url-pattern> 을 통해 사용자의 접속을 처리할 수 있도록 주소를 지정
+			- /* 는 전체를 의미 (어떠한 경우에도 변경이 불가능)
+			- / 도 전체를 의미 (원하는 부분을 제거할 수 있음). 나머지로 보면 쉽다
+	-->
+	<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	<!--  404번 처리 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/error/404.jsp</location>
+	</error-page>
+
+</web-app>
