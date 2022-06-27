@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class Address2Dto {
-	private int address2_no;
+	private int address2No;
 	private String city;
-	private int address1_no;
+	private int address1No;
 }
