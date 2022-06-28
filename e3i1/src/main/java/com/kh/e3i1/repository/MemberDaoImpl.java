@@ -22,7 +22,6 @@ public class MemberDaoImpl implements MemberDao{
 	//회원가입
 	@Override
 	public void join(MemberDto memberDto) {
-		//회원 비밀번호 암호화 등록
 		String rawPassword = memberDto.getMemberPw();
 		String encryptPassword = passwordEncoder.encode(rawPassword);
 		memberDto.setMemberPw(encryptPassword);
@@ -40,6 +39,7 @@ public class MemberDaoImpl implements MemberDao{
 		boolean isPasswordMatch = passwordEncoder.matches(memberPw, memberDto.getMemberPw());
 		
 		if(isPasswordMatch) {
+			sqlSession.update("member.updateLastLogin", memberEmail);
 			return memberDto;
 		}
 		else {
@@ -53,12 +53,7 @@ public class MemberDaoImpl implements MemberDao{
 		List<MemberDto> list = sqlSession.selectList("member.complexSearch", vo);
 		return list;
 	}
-	
-	//회원 정보
-	@Override
-	public MemberDto info(String memberEmail) {
-		return sqlSession.selectOne("member.one", memberEmail);
-	}
+
 	
 	//비밀번호 변경
 	@Override
@@ -75,19 +70,6 @@ public class MemberDaoImpl implements MemberDao{
 				MemberDto.builder().memberEmail(memberEmail).memberPw(encodePassword).build());
 		
 		return count > 0;
-	}
-	
-	//회원정보 변경
-	@Override
-	public boolean changeInformation(MemberDto memberDto) {
-		MemberDto findDto = this.login(memberDto.getMemberEmail(), memberDto.getMemberPw());
-		if(findDto == null) {
-			return false;
-		}
-		else {
-			int count = sqlSession.update("member.changeInformation", memberDto);
-			return count > 0;
-		}
 	}
 	
 	//회원 탈퇴
