@@ -22,7 +22,7 @@
 <mapper namespace="clubboard">
 	<!-- 전체 목록 -->
 	<select id="list" parameterType="int" resultType="clubBoardDto">
-		select * from club_board where club_no = #{clubNo}
+		select * from club_board where club_no = #{clubNo} order by club_board_no desc
 	</select>
 	<!-- 시퀀스 생성 -->
 	<select id="sequence" resultType="int">
@@ -33,8 +33,12 @@
 		insert into club_board (club_board_no, club_no, club_board_writer, club_board_content)
 		values(#{clubBoardNo}, #{clubNo}, #{clubBoardWriter}, #{clubBoardContent})
 	</insert>
-	
+	<!-- 단일 조회 -->
 	<select id="one" resultType="clubBoardDto" parameterType="int">
-		select * from club_board where club_no = #{clubNo}
+		select * from club_board where club_board_no = #{clubBoardNo}
 	</select>
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete club_board where club_board_no = #{clubBoardNo}
+	</delete>
 </mapper>

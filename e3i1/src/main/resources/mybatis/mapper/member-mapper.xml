@@ -9,17 +9,38 @@
 		insert into member(
 			member_email, member_pw, member_nick,
 			member_name, member_gender, member_birth,
-			member_mbti, member_animal, 
+			member_phone, member_mbti, member_animal, 
 			member_interest1, member_interest2, member_interest3,
-			member_place1, member_place2, member_place3,
+			member_place1, member_place2, member_place3
 		)
 		values(
+			#{memberEmail}, #{memberPw}, #{memberNick}, 
+			#{memberName}, #{memberGender}, #{memberBirth}, 
+			#{memberPhone}, #{memberMbti}, #{memberAnimal}, 
+			#{memberInterest1}, #{memberInterest2}, #{memberInterest3}, 
+			#{memberPlace1}, #{memberPlace2}, #{memberPlace3}, 
 		)
 	</insert>
 	
 	<!-- 단일조회 -->
 	<select id="one" resultType="MemberDto" parameterType="String">
 		select * from member where member_email = #{memberEmail}
+	</select>
+	
+	<!-- 로그인 시간 갱신 -->
+	<update id="updateLastLogin" parameterType="String">
+		update member 
+		set member_logindate = sysdate 
+		where member_email = #{memberEmail}
+	</update>
+	
+	<!-- 이메일 찾기 -->
+	<select id="findEmail" resultType="String" parameterType="MemberDto">
+		select member_email from member 
+		where 
+			member_name = #{memberName}
+			and
+			member_Phone = #{memberPhone}
 	</select>
 	
 	<!-- 비밀번호 변경 -->
@@ -35,7 +56,6 @@
 	</delete>
 	
 	<!--  회원 전체 조회 -->
-	
 	 <select id="list" resultType="MemberDto">
  		select * from member order by member_no
  	</select>

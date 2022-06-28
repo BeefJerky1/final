@@ -15,7 +15,7 @@
         </div>
         <div class="row">
             <label>이메일</label>
-    		<input type="text" name="memberEmail" required class="form-input fill input-round" autocomplete="off" value="${cookie.saveId.value}">
+    		<input type="text" name="memberEmail" required class="form-input fill input-round" value="${cookie.saveId.value}">
         </div>
         <div class="row">
             <label>비밀번호</label>
