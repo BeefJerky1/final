@@ -23,6 +23,9 @@
  			- <package name ="com.kh.spring19.entity"/> 
  			-->
 	<typeAliases>
+	
+		<package name="com.kh.e3i1.entity"/>
+		<package name="com.kh.e3i1.vo"/>
 		
 	</typeAliases>
 </configuration>
