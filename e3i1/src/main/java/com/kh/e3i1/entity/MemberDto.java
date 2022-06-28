@@ -13,7 +13,6 @@ public class MemberDto {
 	private String memberEmail;
 	private String memberPw;
 	private String memberNick;
-	private int memberAge;
 	private String memberGender;
 	private String memberMbti;
 	private String memberAnimal;
@@ -28,5 +27,7 @@ public class MemberDto {
 	private int memberClubCount;
 	private String memberSnsId;
 	private Date memberLogindate;
+	private Date memberBirth;
+	private String memberName;
 }
 
