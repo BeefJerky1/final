@@ -98,7 +98,7 @@
 		설정이 잘 되었다면 /v2/api-docs 주소가 활성화
 	 -->
 <!-- 	<bean id="swagger2Config" class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration"></bean> -->
-<!-- 		<bean id="swagger2Config" class="com.kh.e3i1.configuration.SwaggerCustomConfiguration"></bean> -->
+		<bean id="swagger2Config" class="com.kh.e3i1.configuration.SwaggerCustomConfiguration"></bean>
 	<!-- 
 		Swagger에서 제공하는 화면에 대한 정적 자원 위치 지정
 		- spring-boot에서는 할 필요가 없음
