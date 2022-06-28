@@ -20,4 +20,7 @@ public interface MemberDao {
 	boolean changePassword(MemberDto memberDto);
 	boolean exit(String memberEmail, String memberPw);
 	
+	// 회원 조회용 list 구문 추가
+	List<MemberDto> list();
+	
 }
