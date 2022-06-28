@@ -16,6 +16,6 @@ public class ClubBoardDto {
 	private int clubNo;
 	private int clubBoardWriter;
 	private String clubBoardContent;
-	private Date clubBoardDate;
+	private Date clubBoardTime;
 	private int clubBoardCount;
 }
