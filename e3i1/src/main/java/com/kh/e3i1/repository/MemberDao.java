@@ -16,7 +16,7 @@ public interface MemberDao {
 	List<MemberDto> complexSearch(MemberComplexSearchVO vo);
 	
 	boolean changeInformation(MemberDto memberDto);
-	boolean changePassword(String memberId, String currentPw, String changePw);
+	boolean changePassword(String memberEmail, String currentPw, String changePw);
 	boolean changePassword(MemberDto memberDto);
 	boolean exit(String memberEmail, String memberPw);
 	
