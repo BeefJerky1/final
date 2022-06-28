@@ -29,4 +29,10 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 		return sqlSession.selectOne("clubboard.one", clubBoardNo);
 	}
 
+
+	@Override
+	public void delete(int clubBoardNo) {
+		int count = sqlSession.delete("clubboard.delete", clubBoardNo);
+	}
+
 }

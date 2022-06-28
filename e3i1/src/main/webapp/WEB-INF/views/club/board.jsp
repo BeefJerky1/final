@@ -10,17 +10,15 @@
 <div id="app" class="container-fluid">
     	<div class="row">
     		<div class="border border-secondary text-dark p-4 mt-2 col-lg-6 offset-lg-3 col-md-6  offset-md-3 col-sm-6 offset-sm-3 rounded">
-   				<div>
- 		  			<textarea class="form-control" rows="5"  style="width:100%" v-model="boardContent"></textarea>
+   				<div class="text-end">
+ 		  			<textarea class="form-control" v-model="boardContent"></textarea>
+					<button class="btn btn-primary" v-on:click="addBoard">등록</button>
    				</div>
-			<div class="text-end">
-			<button class="btn btn-primary" @:click="addClubBoard">등록</button>
-			</div>
 			</div>
 		</div>
              <!-- 게시글 목록 출력 -->      
-            <div class="row" v-for="(clubboard, index) in clubBoardList" v-bind:key="index">
-                <div class="border border-secondary text-dark p-4 mt-2 col-lg-6 offset-lg-3 col-md-6  offset-md-3 col-sm-6 offset-sm-3 rounded">
+            <div class="row" v-for="(clubboard, index ) in clubBoardList" v-bind:key="index">
+                <div class="border border-secondary text-dark p-2 mt-2 col-lg-6 offset-lg-3 col-md-6  offset-md-3 col-sm-6 offset-sm-3 rounded">
                     <div class="row">
                         <div class="col-lg-2 col-md-2 col-sm-2">
                             <a><img src="https://placeimg.com/50/50/animals" style="width:50px; height:50px" class="img-thumbnail"></a>
@@ -50,6 +48,8 @@
                               </svg>
                         </a>
                     </div>
+                    <button class="btn btn-danger" v-on:click="deleteBoard(index)">삭제</button>
+          
                 </div>
             </div>
 
@@ -65,13 +65,12 @@
             //data : 화면을 구현하는데 필요한 데이터를 작성한다.
             data(){
                 return {
-		            memberNo:"4",
 		            
 		            //댓글 입력 정보
 		            boardContent:"",
 		      
                     //목록
-                    clubNo:'1',
+                    clubNo:"1",
                     clubBoardList:[],
                 };
             },
@@ -93,25 +92,34 @@
 		        		this.clubBoardList = resp.data;
 		        	});
                 },
-                addClubBoard(){
-//     		        	if(this.clubBoardContentIsEmpty) return;
-    		        	
-    		        	axios({
-    		        		url:"${pageContext.request.contextPath}/rest/clubboard/",
-    		        		method:"post",
-    		        		data:{
-    		        			clubBoardWriter:this.memberNo,
-    		        			clubBoardContent:this.boardContent,
-    		        			clubNo:this.clubNo,
-    		        		},
-    		        	})
-    		        	.then(resp=>{
-    		        		//완성 시 코드
-    		        		//window.alert("댓글 등록 완료!");
-    		        		this.addClubBoard = "";
-    		        		this.loadClubBoardList();
-    		        	});
+                addBoard(){
+                	axios({
+		        		url:"${pageContext.request.contextPath}/rest/clubboard/",
+		        		method:"post",
+		        		data:{
+		        			clubNo:this.clubNo,
+		        			clubBoardContent:this.boardContent
+		        		},
+		        	})
+		        	.then(resp=>{
+		        		//완성 시 코드
+		        		//window.alert("댓글 등록 완료!");
+		        		this.boardContent = "";
+		        		this.loadClubBoardList();
+		        	});
+                },
+                deleteBoard(index){
+                	const clubBoard = this.clubBoardList[index];
+                	axios({
+                		url:"${pageContext.request.contextPath}/rest/clubboard/"+clubBoard.clubBoardNo,
+                		method:"delete",
+                	})
+                	.then(resp=>{
+                		this.loadClubBoardList();
+                	});
                 }
+             
+
             },
             created(){
             	this.loadClubBoardList();

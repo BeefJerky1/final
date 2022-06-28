@@ -10,4 +10,6 @@ public interface ClubBoardDao {
 
 	ClubBoardDto insert(ClubBoardDto clubBoardDto);
 
+	void delete(int clubBoardNo);
+
 }
