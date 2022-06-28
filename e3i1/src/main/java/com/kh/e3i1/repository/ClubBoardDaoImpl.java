@@ -20,4 +20,13 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 		return sqlSession.selectList("clubboard.list", clubNo);
 	}
 
+
+	@Override
+	public ClubBoardDto insert(ClubBoardDto clubBoardDto) {
+		int clubBoardNo = sqlSession.selectOne("clubboard.sequence");
+		clubBoardDto.setClubBoardNo(clubBoardNo);
+		sqlSession.insert("clubboard.insert", clubBoardDto);
+		return sqlSession.selectOne("clubboard.one", clubBoardNo);
+	}
+
 }

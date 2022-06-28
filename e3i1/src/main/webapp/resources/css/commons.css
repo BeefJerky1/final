@@ -55,10 +55,25 @@
 
 footer {
     background-color: #F6F6F6;
-    position: absolute;
+    position: sticky;
     bottom: 0px;
     width:100%;
 }
+
+header {
+	  position: fixed;
+	  top: 0;
+	  /* width: 100% */
+	  left: 0;
+	  right: 0;
+	  z-index:1;
+}
+
+body {
+	padding-top: 75px;
+}
+
+
 
 .first-line {
     color: #686666;
@@ -85,3 +100,4 @@ footer {
         padding-right: 2rem;
     }
 }
+

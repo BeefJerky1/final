@@ -8,4 +8,6 @@ public interface ClubBoardDao {
 
 	List<ClubBoardDto> list(int clubNo);
 
+	ClubBoardDto insert(ClubBoardDto clubBoardDto);
+
 }
