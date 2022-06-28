@@ -46,7 +46,9 @@ public class MemberController {
 	//로그인
 	@GetMapping("/login")
 	public String login(
-			@RequestHeader(value="Referer", defaultValue = "/") String referer, Model model) {
+			@RequestHeader(value="Referer", defaultValue = "/") String referer,
+			Model model
+	) {
 		model.addAttribute("referer", referer);
 		return "member/login";
 	}
@@ -80,6 +82,27 @@ public class MemberController {
 		}
 		else {
 			return "redirect:login?error";
+		}
+	}
+	
+	//이메일 찾기
+	@GetMapping("/find_email")
+	public String findEmail() {
+		return "member/find_email";
+	}
+	
+	@PostMapping("/find_email")
+	public String findEmail(
+			@ModelAttribute MemberDto memberDto,
+			HttpSession session,
+			Model model) {
+		String memberEmail = memberDao.findEmail(memberDto);
+		if(memberEmail == null) {
+			return "redirect:find_email?error";
+		}
+		else {
+			model.addAttribute("findUserEmail", memberEmail);
+			return "member/find_email_result";
 		}
 	}
 }

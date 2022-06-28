@@ -7,17 +7,26 @@ import com.kh.e3i1.vo.MemberComplexSearchVO;
 
 public interface MemberDao {
 	
+	// 회원가입
 	void join(MemberDto memberDto);
+	
+	// 로그인
 	MemberDto login(String memberEmail, String memberPw);
-	MemberDto info(String MemberEmail);
+	
+	// 이메일 찾기
 	String findEmail(MemberDto memberDto);
+	
+	// 비밀번호 찾기
 	MemberDto findPw(MemberDto memberDto);
 	
+	// 회원 검색
 	List<MemberDto> complexSearch(MemberComplexSearchVO vo);
 	
-	boolean changeInformation(MemberDto memberDto);
+	//비밀번호 변경
 	boolean changePassword(String memberEmail, String currentPw, String changePw);
 	boolean changePassword(MemberDto memberDto);
+	
+	// 회원 탈퇴
 	boolean exit(String memberEmail, String memberPw);
 	
 	// 회원 조회용 list 구문 추가
