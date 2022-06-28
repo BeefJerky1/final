@@ -1,5 +1,7 @@
 package com.kh.e3i1.controller;
 
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.repository.MbtiSurveyDao;
 import com.kh.e3i1.repository.MemberDao;
 
 @Controller
@@ -25,9 +29,15 @@ public class MemberController {
 	@Autowired
 	private MemberDao memberDao;
 	
+	@Autowired
+	private MbtiSurveyDao mbtiSurveyDao;
+	
 	//회원가입
 	@GetMapping("/join")
-	public String join() {
+	public String join(Model model) {
+		
+		List<MbtiSurveyDto> list = mbtiSurveyDao.select();
+		model.addAttribute("list", list);
 		return "member/join";
 	}
 	

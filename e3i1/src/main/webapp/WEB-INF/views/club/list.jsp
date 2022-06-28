@@ -39,12 +39,43 @@
 .hidden {
 	display: none;
 }
+
 textarea {
     width: 100%;
     height: 10em;
     border: none;
     resize: none;
  }
+ 
+ .btn-create {
+    background-color: #3E4684;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+    border: none;
+    color: white;
+}
+
+.btn-create:hover {
+    transform: scale(1.05);
+    background-color: #3E4684;
+    border: none;
+    color: white;
+}
+.btn-cancel {
+	border: 1px solid #3E4684;
+	background-color: white;
+	color:#3E4684;
+	padding: 10px;
+	width: 100%;
+	border-radius: 10px;
+}
+.btn-cancel:hover {
+    transform: scale(1.05);
+    background-color: white;
+    border: 1px solid #3E4684;
+    color: #3E4684;
+}
 </style>
 
 <div id="app" class="container-fluid">
@@ -57,7 +88,7 @@ textarea {
 
 	<div class="row mt-4">
 		<div class="col-md-8 offset-md-2">
-			<button class="btn btn-primary" v-on:click="removeHidden">소모임 생성</button>
+			<button class="btn-create" v-on:click="removeHidden">소모임 생성</button>
 		</div>
 	</div>
 
@@ -91,16 +122,16 @@ textarea {
 							<h4>기본 정보</h4>
 							<p style="font-size: 10px">*나와 같은 관심사를 가진 멤버를 모집하고 열심히 운영하여 소모임을 성장시켜보세요.</p>
 						</div>
-						<div class="col mt-2 text-start">
+						<div class="mt-2 text-start">
 							<label>대표 이미지 설정</label> <input class="form-control" type="file"
 								name="attach" accept="img/*" />
 						</div>
-						<div class="col mt-2 text-start">
+						<div class="mt-2 text-start">
 							<label>소모임 이름</label> <input class="form-control rounded"
 								type="text" name="clubName" />
 						</div>
 
-						<div class="col mt-2 text-start">
+						<div class="mt-2 text-start">
 							<label>관심사</label>
 							<div class="row">
 								<div class="col">
@@ -117,9 +148,9 @@ textarea {
 								</div>
 							</div>
 						</div>
-						<div class="col mt-2 text-start">
+						
+						<div class="mt-2 text-start">
 							<label>지역</label>
-
 							<div class="row">
 								<div class="col">
 									<select class="form-control rounded">
@@ -133,33 +164,38 @@ textarea {
 								</div>
 							</div>
 						</div>
-						<div class="col text-start">
+						
+						<div class="text-start mt-2">
 							<label>소모임 소개</label>
 							<textarea name="clubSummary" class="form-control rounded"></textarea>
 						</div>
 						<hr />
-						<div class="col text-start">
+						<div class="text-start mt-2">
 							<h4>가입 질문</h4>
 							<p style="font-size: 10px">
 								*질문 1개는 필수로 등록해야 합니다. <br> *질문은 최대 3개까지 설정가능합니다.
 							</p>
 						</div>
-						<div class="col text-start">
+						<div class="text-start">
 							<label>질문1</label> <input class="form-control rounded"
 								type="text" name="clubJoinQuestion1" />
 						</div>
-						<div class="col text-start">
+						<div class="text-start">
 							<label>질문2</label> <input class="form-control rounded"
 								type="text" name="clubJoinQuestion2" />
 						</div>
-						<div class="col text-start">
+						<div class="text-start">
 							<label>질문3</label> <input class="form-control rounded"
 								type="text" name="clubJoinQuestion3" />
 						</div>
 
-						<div class="modal-footer">
-							<button type="button" id="close" class="btn-outline-success" v-on:click="addHidden">돌아가기</button>
-							<button type="submit" class="btn-outline-success">생성하기</button>
+						<div class="row mt-4">
+						<div class="col">
+							<button type="button" id="close" class="btn-cancel" v-on:click="addHidden">돌아가기</button>
+						</div>
+						<div class="col">
+							<button type="submit" class="btn-create">생성하기</button>
+						</div>
 						</div>
 					</div>
 				</div>
@@ -179,6 +215,7 @@ const app = Vue.createApp({
 data() {
 	return {
 		clubList: [],
+		categoryList: [],
 		
 		isHidden:{
 			"hidden" : true,
