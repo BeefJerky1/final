@@ -29,100 +29,138 @@
 	position: relative;
 	border-radius: 10px;
 	width: 50%;
+	height: 90%;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px
 		rgba(0, 0, 0, 0.23);
+	max-height: 100%;
+	overflow-y: auto;
 }
 
 .hidden {
 	display: none;
 }
+textarea {
+    width: 100%;
+    height: 10em;
+    border: none;
+    resize: none;
+ }
 </style>
 
 <div id="app" class="container-fluid">
 
-	<div class="row mt-4">
-		<div class="col-md-8 offset-md-2">
-			<div class="p-4 text-dark bg-light">
-				<h1>소모임</h1>
-			</div>
+	<div class="row mt-2">
+		<div class="col">
+			<h1 class="text-center">소모임</h1>
 		</div>
 	</div>
 
 	<div class="row mt-4">
 		<div class="col-md-8 offset-md-2">
-			<div class="p-4 text-dark bg-light">
-				<button class="btn btn-primary" v-on:click="removeHidden">소모임 생성</button>
-			</div>
+			<button class="btn btn-primary" v-on:click="removeHidden">소모임 생성</button>
 		</div>
 	</div>
 
-	<div class="row">
-		<table class="table table-border">
-			<thead>
-				<tr>
-					<th>번호</th>
-					<th>이름</th>
-					<th>카테고리</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="(club,index) in clubList" v-bind:key="index">
-					<td>{{club.clubNo}}</td>
-					<td>{{club.clubName}}</td>
-					<td>{{club.clubMainCategory}}</td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="row border" v-for="(club,index) in clubList"
+		v-bind:key="index">
+		<div>
+			<img src="#">
+		</div>
+		<div>
+			<span>{{club.clubName}}</span>
+		</div>
+		<div>
+			<span>{{club.clubMainCategory}} / {{club.clubSubCategory}}</span>
+		</div>
 	</div>
 
 	<!-- 소모임 생성 모달 -->
-	<div class="modal" v-bind:class="isHidden">
+	<div class="modal" v-bind:class="isHidden" class="rounded">
 		<div class="modal-overlay" v-on:click="addHidden"></div>
-		<div class="modal-content">
-			<form action="create" method="post">
-				<input type="hidden" name="clubLeader" value="${login}">
-				<div class="row center">
-					<div class="row center">
-						<h1>소모임 생성</h1>
+
+		<div class="modal-content mt-4">
+			<form action="create" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="clubLeader" value="${login}" />
+				<div class="container-fluid">
+					<div class="modal-header text-start">
+						<h1>소모임 만들기</h1>
 					</div>
-					<div class="row">
-						<label>소모임 이름</label> <input type="text" name="clubName">
-					</div>
-					<div class="row">
-						<label>소모임 설명</label>
-						<textarea rows="10" cols="10" name="clubSummary"></textarea>
-					</div>
-					<div class="row">
-						<label>소모임 대분류</label> <select name="clubMainCategory">
-							<option>아웃도어/여행</option>
-							<option>문화/공연/축제</option>
-							<option>사교/인맥</option>
-							<option>야구관람</option>
-							<option>게임/오락</option>
-							<option>자유주제</option>
-							<option>운동/스포츠</option>
-						</select>
-					</div>
-					<div class="row">
-						<label>소모임 소분류</label> <input type="text" name="clubSubCategory">
-						<!-- 대분류에서 선택한 하위항목에 맞는 목록이 보여지게 js사용하면 될듯 -->
-					</div>
-					<div class="row">
-						<label>소모임 지역</label> <input type="text" name="clubPlace">
-					</div>
-					<div class="row">
-						<label>소모임 질문1</label> <input type="text" name="clubJoinQuestion1">
-					</div>
-					<div class="row">
-						<label>소모임 질문2</label> <input type="text" name="clubJoinQuestion2">
-					</div>
-					<div class="row">
-						<label>소모임 질문3</label> <input type="text" name="clubJoinQuestion3">
-					</div>
-					<div class="row center">
-						<button type="button" id="close" class="btn"
-							v-on:click="addHidden">돌아가기</button>
-						<button type="submit" class="btn btn-primary">생성하기</button>
+
+					<div class="modal-body">
+						<div class="mt-2 text-start">
+							<h4>기본 정보</h4>
+							<p style="font-size: 10px">*나와 같은 관심사를 가진 멤버를 모집하고 열심히 운영하여 소모임을 성장시켜보세요.</p>
+						</div>
+						<div class="col mt-2 text-start">
+							<label>대표 이미지 설정</label> <input class="form-control" type="file"
+								name="attach" accept="img/*" />
+						</div>
+						<div class="col mt-2 text-start">
+							<label>소모임 이름</label> <input class="form-control rounded"
+								type="text" name="clubName" />
+						</div>
+
+						<div class="col mt-2 text-start">
+							<label>관심사</label>
+							<div class="row">
+								<div class="col">
+									<select name="clubMainCategory" class="form-control rounded">
+										<option>#킹스맨</option>
+										<option>#자연인</option>
+									</select>
+								</div>
+								<div class="col">
+									<select name="clubSubCategory" class="form-control rounded">
+										<option>여행</option>
+										<option>등산</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col mt-2 text-start">
+							<label>지역</label>
+
+							<div class="row">
+								<div class="col">
+									<select class="form-control rounded">
+										<option>시/도</option>
+									</select>
+								</div>
+								<div class="col">
+									<select name="clubPlace" class="form-control rounded">
+										<option>시/군/구</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col text-start">
+							<label>소모임 소개</label>
+							<textarea name="clubSummary" class="form-control rounded"></textarea>
+						</div>
+						<hr />
+						<div class="col text-start">
+							<h4>가입 질문</h4>
+							<p style="font-size: 10px">
+								*질문 1개는 필수로 등록해야 합니다. <br> *질문은 최대 3개까지 설정가능합니다.
+							</p>
+						</div>
+						<div class="col text-start">
+							<label>질문1</label> <input class="form-control rounded"
+								type="text" name="clubJoinQuestion1" />
+						</div>
+						<div class="col text-start">
+							<label>질문2</label> <input class="form-control rounded"
+								type="text" name="clubJoinQuestion2" />
+						</div>
+						<div class="col text-start">
+							<label>질문3</label> <input class="form-control rounded"
+								type="text" name="clubJoinQuestion3" />
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" id="close" class="btn-outline-success" v-on:click="addHidden">돌아가기</button>
+							<button type="submit" class="btn-outline-success">생성하기</button>
+						</div>
 					</div>
 				</div>
 			</form>
