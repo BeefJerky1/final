@@ -124,4 +124,12 @@ public class MemberDaoImpl implements MemberDao{
 		int count = sqlSession.update("member.changePassword", memberDto);
 		return count > 0;
 	}
+
+	
+	// 회원 조회용 구문
+	@Override
+	public List<MemberDto> list() {
+		
+		return sqlSession.selectList("member.list");
+	}
 }
