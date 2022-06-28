@@ -1,5 +1,3 @@
-
-   
 package com.kh.e3i1.configuration;
 
 import org.springframework.context.annotation.Bean;
@@ -20,18 +18,21 @@ public class SwaggerCustomConfiguration {
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)//문서화 유형 설정
 							.select()//추임새 역할
+								//.apis(RequestHandlerSelectors.any())//분석할 클래스 유형
+								//.apis(RequestHandlerSelectors.basePackage("com.kh.home.rest"))
 								.apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
 								.paths(PathSelectors.any())//분석할 주소 유형
 							.build()
 								.apiInfo(//문서의 대표정보
 									new ApiInfoBuilder()
-													.title("문서의 제목")
-													.description("문서의 설명")
+													.title("Home REST API")
+													.description("제작한 홈페이지 내부 REST API")
 													.version("0.0.1")
 													.license("MIT License")
 												.build()
 									)
-								.useDefaultResponseMessages(false);//기본메세지 OFF
+								.useDefaultResponseMessages(false)//기본메세지 OFF
+								;
 	}
 	
 }

@@ -22,4 +22,10 @@ public class ClubController {
 	public String clubList() {
 		return "club/list";
 	}
+	
+	// 소모임 게시판 목록
+	@GetMapping("/board")
+	public String clubBoard() {
+		return "club/board";
+	}
 }
