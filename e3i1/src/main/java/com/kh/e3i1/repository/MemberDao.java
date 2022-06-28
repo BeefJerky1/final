@@ -10,7 +10,7 @@ public interface MemberDao {
 	void join(MemberDto memberDto);
 	MemberDto login(String memberEmail, String memberPw);
 	MemberDto info(String MemberEmail);
-	String findId(MemberDto memberDto);
+	String findEmail(MemberDto memberDto);
 	MemberDto findPw(MemberDto memberDto);
 	
 	List<MemberDto> complexSearch(MemberComplexSearchVO vo);
