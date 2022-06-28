@@ -6,18 +6,17 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.kh.e3i1.entity.ClubBoardDto;
+import com.kh.e3i1.entity.ClubDto;
 
 @Repository
-public class ClubBoardDaoImpl implements ClubBoardDao{
-
+public class ClubDaoImpl implements ClubDao {
+	
 	@Autowired
 	private SqlSession sqlSession;
-	
-	
+
 	@Override
-	public List<ClubBoardDto> list(int clubNo) {
-		return sqlSession.selectList("clubboard.list", clubNo);
+	public List<ClubDto> list() {
+		return sqlSession.selectList("club.list");
 	}
 
 }

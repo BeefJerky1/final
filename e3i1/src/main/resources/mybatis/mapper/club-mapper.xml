@@ -19,8 +19,47 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="clubboard">
-	<select id="list" parameterType="int" resultType="clubBoardDto">
-		select * from club_board where club_no = #{clubNo}
+<mapper namespace="club">
+	
+	<select id="list" resultType="ClubDto">
+		select * from club order by club_no asc
 	</select>
+	
+<!-- 	<select id="sequence" resultType="int">
+		select club_seq.nextval from dual
+	</select>
+	
+	<insert id="create" parameterType="ClubDto">
+		insert into club(
+			club_no, club_leader, club_name, club_summary, 
+			club_main_category, club_sub_category, club_place
+			<if test="clubJoinQuestion1 != null">
+				, club_join_question1
+			</if>
+			<if test="clubJoinQuestion2 != null">
+				, club_join_question2
+			</if>
+			<if test="clubJoinQuestion3 != null">
+				, club_join_question3
+			</if>
+		)
+		values(
+			#{clubNo}, #{clubLeader}, #{clubName}, #{clubSummary}, 
+			#{clubMainCategory}, #{clubSubCategory}, #{clubPlace}
+			<if test="clubJoinQuestion1 != null">
+				, #{clubJoinQuestion1}
+			</if>
+			<if test="clubJoinQuestion2 != null">
+				, #{clubJoinQuestion2}
+			</if>
+			<if test="clubJoinQuestion3 != null">
+				, #{clubJoinQuestion3}
+			</if>
+		)
+	</insert>
+	
+	<select id="one" resultType="ClubDto" parameterType="int">
+		select * from club where club_no = #{clubNo}
+	</select> -->
+	
 </mapper>
