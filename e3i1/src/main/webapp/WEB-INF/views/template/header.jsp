@@ -33,7 +33,7 @@
 </head>
 
 <!-- nav bar -->
-<body>
+<header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a href="#" class="logo-item"><img src="${root }/image/LOGO.png" width="100px"></a>
@@ -64,7 +64,7 @@
             </div>
         </div>
     </nav>
-    
+    </header>
     
     <section>
          <article>
