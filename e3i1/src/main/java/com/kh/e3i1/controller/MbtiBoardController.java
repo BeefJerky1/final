@@ -2,6 +2,8 @@ package com.kh.e3i1.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,48 +49,87 @@ public class MbtiBoardController {
 
 	}
 
-	
 	// 상세 보기
 	@GetMapping("/detail")
 	public String detail(@RequestParam int mbtiBoardNo, Model model) {
 		MbtiMemberListVO mbtiMemberListVO = mbtiBoardDao.read(mbtiBoardNo);
 		model.addAttribute("mbtiMemberListVO", mbtiMemberListVO);
-		
+
 		return "mbtiBoard/detail";
 	}
-	
+
 	@PostMapping("/detail/{mbtiBoardNo}")
 	public String detail2(@PathVariable int mbtiBoardNo, Model model) {
 		MbtiMemberListVO mbtiMemberListVO = mbtiBoardDao.read(mbtiBoardNo);
 		model.addAttribute("mbtiMemberListVO", mbtiMemberListVO);
-		
+
 		return "mbtiBoard/detail";
 	}
-	
-	
-	
+
 	// 게시글 작성하기 *modal
 
 	@GetMapping("/write")
 	public String write() {
-		
+
 		return "mbtiBoard/write";
 	}
-	
+
 	@PostMapping("/write")
-	public String write(@ModelAttribute MbtiBoardDto mbtiBoardDto,
+	public String write(@ModelAttribute MbtiBoardDto mbtiBoardDto, RedirectAttributes attr) {
+
+		// 임시 작성자 추가
+		int memberNo = 3;
+		mbtiBoardDto.setMemberNo(memberNo);
+
+		int mbtiBoardNo = mbtiBoardDao.write(mbtiBoardDto);
+
+		attr.addAttribute("mbtiBoardNo", mbtiBoardNo);
+		return "redirect:detail";
+
+	}
+
+	// 게시글 삭제하기
+
+	@GetMapping("/delete")
+	public String delete(@RequestParam int mbtiBoardNo) {
+		mbtiBoardDao.delete(mbtiBoardNo);
+
+		return "redirect:list";
+	}
+
+	@PostMapping("/delete/{mbtiBoardNo}")
+	public String delete2(@RequestParam int mbtiBoardNo, Model model) {
+
+		mbtiBoardDao.delete(mbtiBoardNo);
+
+		return "redirect:/mbtiBoard/list";
+
+	}
+
+	// 게시글 수정하기
+
+	@GetMapping("/edit")
+	public String edit(@RequestParam int mbtiBoardNo, Model model) {
+
+		MbtiBoardDto mbtiBoardDto = mbtiBoardDao.info(mbtiBoardNo);
+		model.addAttribute("mbtiBoardDto", mbtiBoardDto);
+
+		return "mbtiBoard/edit";
+
+	}
+
+	@PostMapping("/edit")
+	public String edit(@ModelAttribute MbtiBoardDto mbtiBoardDto, HttpServletResponse response,
 			RedirectAttributes attr) {
-	
-	// 임시 작성자 추가
-	int memberNo = 3;
-	mbtiBoardDto.setMemberNo(memberNo);
 		
-	int mbtiBoardNo = mbtiBoardDao.write(mbtiBoardDto);
-	
-	attr.addAttribute("mbtiBoardNo", mbtiBoardNo);
-	return "redirect:detail";
-	
-		
+
+		boolean success = mbtiBoardDao.edit(mbtiBoardDto);
+		if (success) {
+			attr.addAttribute("mbtiBoardNo", mbtiBoardDto.getMbtiBoardNo());
+			return "redirect:detail";
 		}
+		return "redirect:detail"; // else 예외처리 구문 추가해야 함
+
+	}
 
 }

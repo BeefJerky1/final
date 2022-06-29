@@ -109,4 +109,25 @@
 		
 	</insert>
 
+	<!--  삭제 -->
+	
+	 	<delete id="delete" parameterType="int">
+		delete mbti_board where mbti_board_no = #{mbtiBoardNo}
+		</delete>
+		
+	<!-- mbtiboard만 단일조회 -->
+	
+		<select id="info" parameterType="int" resultType="MbtiBoardDto">
+			select * from mbti_board where mbti_board_no = #{mbtiBoardNo}
+		</select>
+		
+	<!--  수정 -->
+	
+		<update id="edit" parameterType="MbtiBoardDto">
+			update mbti_board set mbti_board_title = #{mbtiBoardTitle},
+				mbti_board_content = #{mbtiBoardContent}
+			where mbti_board_no = #{mbtiBoardNo}
+		</update>
+		
+		
 </mapper>
