@@ -13,4 +13,12 @@ public interface MbtiBoardDao {
 
 	int write(MbtiBoardDto mbtiBoardDto);
 
+	boolean delete(int mbtiBoardNo);
+
+
+
+	MbtiBoardDto info(int mbtiBoardNo);
+
+	boolean edit(MbtiBoardDto mbtiBoardDto);
+
 }

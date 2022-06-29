@@ -81,7 +81,7 @@ a {
 
 	<div class="row mt-3">
 		<div class="col">
-			<a href="write" class="btn btn-outline-success button-write" data-bs-toggle="modal" data-bs-target="#exampleModal">write</a>
+			<a href="write" class="btn btn-outline-success button-write" data-bs-toggle="modal" data-bs-target="#exampleModal">글 작성하기</a>
 		</div>
 	</div>
 
@@ -104,7 +104,7 @@ a {
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+          <button type="button" class="btn btn-edit" data-bs-dismiss="modal">취소</button>
           <button type="submit" class="btn btn-outline-success">작성하기</button>
         </div>
       </div>

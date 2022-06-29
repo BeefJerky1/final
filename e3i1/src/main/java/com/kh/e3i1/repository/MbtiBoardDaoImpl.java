@@ -48,4 +48,29 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 		return mbtiBoardNo;
 	}
 
+	// 게시판 글 삭제하기
+	
+	@Override
+	public boolean delete(int mbtiBoardNo) {
+		
+		int count = sqlSession.delete("mbtiBoard.delete", mbtiBoardNo);
+		return count > 0;
+		
+	}
+
+	// 게시판 글 수정하기
+	
+	@Override
+	public MbtiBoardDto info(int mbtiBoardNo) {
+		return sqlSession.selectOne("mbtiBoard.info", mbtiBoardNo);
+		
+	}
+	
+
+	@Override
+	public boolean edit(MbtiBoardDto mbtiBoardDto) {
+		int count = sqlSession.update("mbtiBoard.update", mbtiBoardDto);
+		return count > 0;
+	}
+
 }
