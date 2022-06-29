@@ -1,9 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<style>
-	.border{
-	color:E9E9E9 !important;
-	}
+	<style>
+		.border{
+		color:E9E9E9 !important;
+		}
+        .asdf:hover{
+            background-color: #F7F7F7;
+            cursor: pointer;
+        }
+        .text-over-cut pre {
+		  display: block;
+		  width: 350px;
+		  white-space: nowrap;
+		  overflow: hidden;
+		  text-overflow: ellipsis;
+		  margin: 0;
+		}
 	</style>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
   <!-- 특정 영역을 생성하여 이 부분만 vue로 제어한다 -->
@@ -18,7 +31,7 @@
 		</div>
              <!-- 게시글 목록 출력 -->      
             <div class="row" v-for="(clubboard, index ) in clubBoardList" v-bind:key="index">
-                <div class="border border-secondary text-dark p-2 mt-2 col-lg-6 offset-lg-3 col-md-6  offset-md-3 col-sm-6 offset-sm-3 rounded">
+                <div class="border border-secondary text-dark p-2 mt-2 col-lg-6 offset-lg-3 col-md-6  offset-md-3 col-sm-6 offset-sm-3 rounded asdf" id="foo" v-on:click="select(index)">
                     <div class="row">
                         <div class="col-lg-2 col-md-2 col-sm-2">
                             <a><img src="https://placeimg.com/50/50/animals" style="width:50px; height:50px" class="img-thumbnail"></a>
@@ -35,7 +48,9 @@
                               </svg>
                         </div>
                     </div>
-                    <p>{{clubboard.clubBoardContent}}</p>
+                    <div class="row p-3 text-over-cut">
+                    <pre >{{clubboard.clubBoardContent}}</pre>
+                    </div>
                     <div class="mt-5">
                         <h6>{{clubboard.clubBoardTime}}</h6>
                         <a href="#" title="댓글">
@@ -48,7 +63,6 @@
                               </svg>
                         </a>
                     </div>
-                    <button class="btn btn-danger" v-on:click="deleteBoard(index)">삭제</button>
           
                 </div>
             </div>
@@ -117,7 +131,11 @@
                 	.then(resp=>{
                 		this.loadClubBoardList();
                 	});
-                }
+                },
+                select: function(index) {
+                	const clubBoard = this.clubBoardList[index];
+                	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+clubBoard.clubBoardNo;
+                },
              
 
             },
