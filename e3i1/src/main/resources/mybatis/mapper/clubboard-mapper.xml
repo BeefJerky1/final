@@ -41,4 +41,8 @@
 	<delete id="delete" parameterType="int">
 		delete club_board where club_board_no = #{clubBoardNo}
 	</delete>
+	<!-- 수정 -->
+	<update id="edit" parameterType="clubBoardDto">
+		update club_board set club_board_content = #{clubBoardContent} where club_board_no = #{clubBoardNo}
+	</update>
 </mapper>
