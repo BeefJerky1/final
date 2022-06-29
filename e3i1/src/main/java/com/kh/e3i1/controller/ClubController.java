@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kh.e3i1.entity.ClubDto;
+import com.kh.e3i1.entity.CategoryDto;
+import com.kh.e3i1.repository.CategoryDao;
 import com.kh.e3i1.repository.ClubDao;
 
 @Controller
@@ -16,10 +18,14 @@ public class ClubController {
 	
 	@Autowired
 	private ClubDao clubDao;
+	
+	@Autowired
+	private CategoryDao categoryDao;
+	
 
 	// 소모임 목록 
 	@GetMapping("/")
-	public String clubList() {
+	public String clubList(Model model) {
 		return "club/list";
 	}
 	
