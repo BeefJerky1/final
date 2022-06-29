@@ -45,4 +45,9 @@
 	<update id="edit" parameterType="clubBoardDto">
 		update club_board set club_board_content = #{clubBoardContent} where club_board_no = #{clubBoardNo}
 	</update>
+	<!--  댓글 카운트 -->
+	<select id="calculateReplyCount" parameterType="int">
+		select club_board_count from club_board
+	</select>
+	
 </mapper>

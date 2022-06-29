@@ -16,4 +16,6 @@ public interface ClubBoardDao {
 
 	ClubBoardDto edit(ClubBoardDto clubBoardDto);
 
+	void calculateReplyCount(int clubNo);
+
 }

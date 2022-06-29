@@ -20,5 +20,32 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="clubboardreply">
-
+	<select id="sequence" resultType="int">
+		select club_board_reply_seq.nextval from dual
+	</select>
+	<insert id="insert" parameterType="clubboardreplyDto">
+		insert into club_board_reply(reply_no, club_reply_content, club_reply_time, club_board_no, club_reply_writer, club_no)
+		values(#{replyNo}, #{clubReplyContent}, sysdate, #{clubBoardNo}, #{clubReplyWriter}, #{clubNo})
+	</insert>
+	<select id="one" resultType="clubboardreplyDto" parameterType="int">
+		select * from club_board_reply where reply_no = #{replyNo}
+	</select>
+	
+	<select id="list" resultType="clubboardreplyDto" parameterType="int">
+		select * from club_board_reply where club_board_no = #{clubBoardNo} 
+		order by reply_no desc
+	</select>
+	<delete id="delete" parameterType="int">
+		delete club_board_reply where reply_no = #{replyNo}
+	</delete>
+	<update id="edit" parameterType="clubboardreplyDto">
+		update club_board_reply set club_reply_content = #{clubReplyContent} where reply_no = #{replyNo}
+	</update>
+	<update id="calculateReplyCount" parameterType="int">
+		update club_board
+		set club_board_count = (
+		select count(*) from club_board_reply where club_board_no =#{clubBoardNo}
+		)
+		where club_board_no = #{clubBoardNo}
+	</update>
 </mapper>

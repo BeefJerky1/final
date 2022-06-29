@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<style>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<c:set var="path" value="${pageContext.request.contextPath}"/>
 	<style>
 		.border{
 		color:E9E9E9 !important;
@@ -41,27 +42,15 @@
                                     {{clubboard.clubBoardWriter}}
                                     </a>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                <path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-                              </svg>
-                        </div>
                     </div>
                     <div class="row p-3 text-over-cut">
                     <pre >{{clubboard.clubBoardContent}}</pre>
                     </div>
                     <div class="mt-5">
-                        <h6>{{clubboard.clubBoardTime}}</h6>
-                        <a href="#" title="댓글">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                <path d="M3 20l1.3 -3.9a9 8 0 1 1 3.4 2.9l-4.7 1" />
-                                <line x1="12" y1="12" x2="12" y2="12.01" />
-                                <line x1="8" y1="12" x2="8" y2="12.01" />
-                                <line x1="16" y1="12" x2="16" y2="12.01" />
-                              </svg>
-                        </a>
+                        <h6>
+                        {{elapsedText(clubboard.clubBoardTime)}}</h6>
+                        <a><i class="fa-solid fa-comment-dots"></i> {{clubboard.clubBoardCount}}</a>&nbsp;&nbsp;
+						<a><i class="fa-solid fa-heart"></i>좋아요</a>
                     </div>
           
                 </div>
@@ -72,6 +61,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue@next"></script>
+    <script src="${path}/js/time.js"></script>
 <!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script> -->
     <script>
         //div[id=app]을 제어할 수 있는 Vue instance를 생성
@@ -135,6 +125,9 @@
                 select: function(index) {
                 	const clubBoard = this.clubBoardList[index];
                 	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+clubBoard.clubBoardNo;
+                },
+                elapsedText(date) {
+                	return dateformat.elapsedText(new Date(date));
                 },
              
 
