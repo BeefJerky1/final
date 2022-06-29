@@ -4,7 +4,6 @@
 
 <!-- 절대경로 변수 생성 -->
 <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
-
 <!DOCTYPE html>
 <html lang="kor">
 

@@ -17,6 +17,7 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	
 	@Override
 	public List<ClubBoardDto> list(int clubNo) {
+		this.calculateReplyCount(clubNo);
 		return sqlSession.selectList("clubboard.list", clubNo);
 	}
 
@@ -51,6 +52,9 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 		}
 		return sqlSession.selectOne("clubboard.one", clubBoardDto.getClubBoardNo());
 	}
-	
+	@Override
+	public void calculateReplyCount(int clubNo) {
+		sqlSession.update("clubboard.calculateReplyCount",clubNo);	
+	}
 
 }
