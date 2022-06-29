@@ -25,14 +25,20 @@ import com.kh.e3i1.repository.MemberDao;
 @RequestMapping("/member")
 public class MemberController {
 
-	//의존성 주입
+	// 의존성 주입
 	@Autowired
 	private MemberDao memberDao;
 	
 	@Autowired
 	private MbtiSurveyDao mbtiSurveyDao;
 	
-	//회원가입
+//	@Autowired
+//	private EmailService emailService;
+//	
+//	@Autowired
+//	private CertDao certDao;
+	
+	// 회원가입
 	@GetMapping("/join")
 	public String join(Model model) {
 		
@@ -43,7 +49,7 @@ public class MemberController {
 	
 	@PostMapping("/join")
 	public String join(@ModelAttribute MemberDto memberDto) throws Exception {
-		memberDao.join(memberDto);
+//		memberDao.join(memberDto);
 		
 		return "redirect:/member/join_success";
 	}
@@ -53,7 +59,7 @@ public class MemberController {
 		return "member/join_success";
 	}
 	
-	//로그인
+	// 로그인
 	@GetMapping("/login")
 	public String login(
 			@RequestHeader(value="Referer", defaultValue = "/") String referer,
@@ -76,7 +82,10 @@ public class MemberController {
 		
 		if(memberDto != null) {
 			session.setAttribute("login", memberDto.getMemberEmail());
-//			session.setAttribute("auth", memberDto.getMemberGrade());
+			if(memberDto.getMemberAdmin()==1) {
+				session.setAttribute("auth", "관리자");
+				
+			}
 			
 			if(remember != null) {
 				Cookie ck = new Cookie("saveEmail", memberDto.getMemberEmail());
@@ -95,7 +104,7 @@ public class MemberController {
 		}
 	}
 	
-	//이메일 찾기
+	// 이메일 찾기
 	@GetMapping("/find_email")
 	public String findEmail() {
 		return "member/find_email";
@@ -115,4 +124,49 @@ public class MemberController {
 			return "member/find_email_result";
 		}
 	}
+	
+	//비밀번호 찾기
+	@GetMapping("/find_pw")
+	public String findPw() {
+		return "member/find_pw";
+	}
+	
+//	@PostMapping("/find_pw")
+//	public String findPw(@ModelAttribute MemberDto memberDto) throws MessagingException {
+//		MemberDto findDto = memberDao.findPw(memberDto);
+//		if(findDto == null) {
+//			return "redirect:find_pw?error";
+//		}
+//		if(findDto.getMemberEmail() == null) {
+//			return "redirect:email_is_null";
+//		}
+//		
+//		emailService.sendPasswordResetMail(findDto);
+//		return "redirect:find_pw_send_mail";
+//	}
+	
+	// 회원 탈퇴
+	@GetMapping("/exit")
+	public String exit() {
+		return "member/exit";
+	}
+	
+	@PostMapping("/exit")
+	public String exit(@RequestParam String memberPw, HttpSession session) {
+		String memberEmail = (String) session.getAttribute("login");
+		boolean success = memberDao.exit(memberEmail, memberPw);
+		if(success) {			
+			session.removeAttribute("login");
+			return "redirect:/";
+		} else {
+			return "redirect:exit?error";
+		}
+	}
+	
+	@GetMapping("/exit_finish")
+	public String exitFinish() {
+		return "member/exit_finish";
+	}
+	
+	
 }
