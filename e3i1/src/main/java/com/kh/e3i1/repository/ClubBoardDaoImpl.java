@@ -31,8 +31,26 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 
 
 	@Override
-	public void delete(int clubBoardNo) {
+	public boolean delete(int clubBoardNo) {
 		int count = sqlSession.delete("clubboard.delete", clubBoardNo);
+		return count>0;
 	}
+
+
+	@Override
+	public ClubBoardDto selectOne(int clubBoardNo) {
+		return sqlSession.selectOne("clubboard.one", clubBoardNo);
+	}
+
+
+	@Override
+	public ClubBoardDto edit(ClubBoardDto clubBoardDto) {
+		int count = sqlSession.update("clubboard.edit", clubBoardDto);
+		if(count==0) {
+			return sqlSession.selectOne("clubboard.one", clubBoardDto.getClubBoardNo());
+		}
+		return sqlSession.selectOne("clubboard.one", clubBoardDto.getClubBoardNo());
+	}
+	
 
 }
