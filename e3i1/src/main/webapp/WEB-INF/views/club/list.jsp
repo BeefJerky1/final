@@ -88,12 +88,11 @@ textarea {
 
 	<div class="row mt-4">
 		<div class="col-md-8 offset-md-2">
-			<button class="btn-create" v-on:click="removeHidden">소모임 생성</button>
+			<button class="btn-create" v-on:click="removeHidden" @click.once="callList">소모임 생성</button>
 		</div>
 	</div>
 
-	<div class="row border" v-for="(club,index) in clubList"
-		v-bind:key="index">
+	<div class="row border" v-for="(club,index) in clubList" v-bind:key="index">
 		<div>
 			<img src="#">
 		</div>
@@ -127,23 +126,23 @@ textarea {
 								name="attach" accept="img/*" />
 						</div>
 						<div class="mt-2 text-start">
-							<label>소모임 이름</label> <input class="form-control rounded"
-								type="text" name="clubName" />
+							<label>소모임 이름</label> 
+							<input class="form-control rounded" type="text" name="clubName" />
 						</div>
 
 						<div class="mt-2 text-start">
 							<label>관심사</label>
 							<div class="row">
 								<div class="col">
-									<select name="clubMainCategory" class="form-control rounded">
-										<option>#킹스맨</option>
-										<option>#자연인</option>
+									<select name="clubMainCategory" class="form-control rounded" @change="addSubCategoryList" v-model="superNo">
+										<option value="">대분류를 선택해주세요</option>
+										<option v-for="(category1,index) in mainCategoryList" v-bind:key="index" :value="category1.categoryNo">{{category1.categoryContent}}</option>
 									</select>
 								</div>
 								<div class="col">
-									<select name="clubSubCategory" class="form-control rounded">
-										<option>여행</option>
-										<option>등산</option>
+									<select name="clubSubCategory" class="form-control rounded" v-model="subCategory">
+										<option value="">소분류를 선택해주세요</option>
+										<option v-for="(category2,index) in subCategoryList" v-bind:key="index" :value="category2.categoryContent">{{category2.categoryContent}}</option>
 									</select>
 								</div>
 							</div>
@@ -153,13 +152,15 @@ textarea {
 							<label>지역</label>
 							<div class="row">
 								<div class="col">
-									<select class="form-control rounded">
-										<option>시/도</option>
+									<select class="form-control rounded" @change="addCityList" v-model="address1No">
+										<option value="">시/도를 선택해주세요</option>
+										<option v-for="(address1, index) in address1List" v-bind:key="index" :value="address1.address1No" >{{address1.province}}</option>
 									</select>
 								</div>
 								<div class="col">
-									<select name="clubPlace" class="form-control rounded">
-										<option>시/군/구</option>
+									<select name="clubPlace" class="form-control rounded" v-model="city">
+										<option value="">시/군/구를 선택해주세요</option>
+										<option v-for="(address2, index) in address2List" v-bind:key="index" :value="address2.city">{{address2.city}}</option>
 									</select>
 								</div>
 							</div>
@@ -206,26 +207,37 @@ textarea {
 
 
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
 <script>
   
-//div[id=app]을 제어할 수 있는 Vue instance를 생성
 const app = Vue.createApp({
-//data : 화면을 구현하는데 필요한 데이터를 작성한다.
 data() {
 	return {
+		// 소모임 목록용
 		clubList: [],
-		categoryList: [],
+		
+		// 카테고리 대분류 번호
+		superNo:"",
+		// 카테고리 소분류
+		subCategory:"",
+		
+		// 시/도 번호
+		address1No : "",
+		// 시/군/구 값
+		city: "",
+		
+		
+		// 카테고리, 지역 목록용
+		mainCategoryList: [],
+		subCategoryList: [],
+		address1List: [],
+		address2List: [],
 		
 		isHidden:{
 			"hidden" : true,
 		},
 	};
 },
-//computed : data를 기반으로 하여 실시간 계산이 필요한 경우 작성한다.
-// - 3줄보다 많다면 사용하지 않는 것을 권장한다(복잡한 계산 시 성능 저하가 발생)
 computed: {},
-//methods : 애플리케이션 내에서 언제든 호출 가능한 코드 집합이 필요한 경우 작성한다.
 methods: {
 	removeHidden(){
 		this.isHidden["hidden"] = false;
@@ -234,17 +246,68 @@ methods: {
 	addHidden(){
 		this.isHidden["hidden"] = true; 
 	},
+	
+	// 가입시 필요한 카테고리, 지역 목록
+	callList(){
+		// 카테고리 - 대분류
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/category1",
+			method:"get",
+		}).then((resp) => {
+			this.mainCategoryList.push(...resp.data);
+		})	
+		
+		// 시/도 
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/address1",
+			method:"get",
+		}).then((resp) => {
+			this.address1List.push(...resp.data);
+		})	
+	},
+	
+	// 시/군/구 추가
+	addCityList(){
+		if(this.address1No == ""){
+			this.address2List = [];
+			return;
+		}
+		// 시/군/구
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/address2/"+this.address1No,
+			method:"get",
+		}).then((resp) => {
+			this.city = "";
+			this.address2List = [];
+			this.address2List.push(...resp.data);
+		})		
+	},
+	// 카테고리 소분류 추가
+	addSubCategoryList(){
+		if(this.superNo == ""){
+			this.subCategoryList = [];
+			return;
+		}
+		// 카테고리 - 분류
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/category2/"+this.superNo,
+			method:"get",
+		}).then((resp) => {
+			this.subCategory = "";
+			this.subCategoryList = [];
+			this.subCategoryList.push(...resp.data);
+		})	
+	},
 },
-//watch : 특정 data를 감시하여 연계 코드를 실행하기 위해 작성한다
 created() {
 	axios({
 			url: "${pageContext.request.contextPath}/rest/club/",
 			method: "get",
 		}).then((resp) => {
-		//완성 시 코드
-		this.clubList.push(...resp.data);
+			this.clubList.push(...resp.data);
 		})
 	},
 });
 app.mount("#app");
 </script>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

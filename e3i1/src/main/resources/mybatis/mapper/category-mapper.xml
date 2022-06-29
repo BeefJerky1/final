@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- - mapper 파일은 특정 테이블에 대한 SQL 구문을 보관하는 파일이다. 
+	- mybatis를 이용하는 개발자는 이곳에 저장된 SQL구문을 아이디를 이용해서 호출한다. 
+	- 파일마다 동일한 아이디로 인해 발생하는 충돌을 방지하기 위한 고유한 namespace를 사용한다. 
+	- 만약 namespace가 olympic이고 구문 아이디가 list라면 외부에서는 olympic.list로 호출한다. 
+	- 일반적으로 namespace는 테이블명으로 한다. - mapper 내부에는 다음 종류 태그로 구문을 저장할 수 있다. 
+		- <insert> 
+		- <select> 
+		- <update> 
+		- <delete> 
+	- 각 구문은 반드시 아이디를 가져야 한다. 
+	- 각 구문에는 다음과 같은 속성을 작성할 수 있다. 
+		- parameterType: 해당 구문이 실행되기 위해 필요한 데이터의 자료형을 적는다.(1개만 작성 가능) 
+		- resultType: 해당 구문의 실행 결과를 변경하기 위한 자료형(1개만 작성 가능, 필수) 
+	- 각 구문에는 데이터를 다음과 같이 바인딩 할 수 있다. 
+		- 정적 바인딩 : ${이름} 형태로 작성하면 어떠한 추가 작업도 없이 해당 위치에 데이터가 그대로 작성된다
+		- 동적 바인딩: #{이름} 형태로 작성하면 자동으로 자료형에 맞게 해당 데이터를 추출하여 작성해준다.(DTO변수명) -->
+		
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="category">
+
+	<select id="list1" resultType="CategoryDto">
+		SELECT * FROM CATEGORY where super_no is null ORDER BY CATEGORY_NO ASC
+	</select>
+	
+	<select id="list2" resultType="CategoryDto" parameterType="int">
+		select * from category where super_no = ${superNo} order by category_no asc
+	</select>
+	
+</mapper>

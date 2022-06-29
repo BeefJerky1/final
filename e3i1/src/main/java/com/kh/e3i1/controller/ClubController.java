@@ -23,9 +23,10 @@ public class ClubController {
 	private ClubDao clubDao;
 	@Autowired
 	private ClubBoardDao clubBoardDao;
+	
 	// 소모임 목록 
 	@GetMapping("/")
-	public String clubList() {
+	public String clubList(Model model) {
 		return "club/list";
 	}
 	
