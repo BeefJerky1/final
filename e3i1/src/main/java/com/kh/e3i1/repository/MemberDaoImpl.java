@@ -22,9 +22,9 @@ public class MemberDaoImpl implements MemberDao{
 	//회원가입
 	@Override
 	public void join(MemberDto memberDto) {
-		String rawPassword = memberDto.getMemberPw();
-		String encryptPassword = passwordEncoder.encode(rawPassword);
-		memberDto.setMemberPw(encryptPassword);
+//		String rawPassword = memberDto.getMemberPw();
+//		String encryptPassword = passwordEncoder.encode(rawPassword);
+//		memberDto.setMemberPw(encryptPassword);
 		sqlSession.insert("member.join", memberDto);
 	}
 	
@@ -35,8 +35,8 @@ public class MemberDaoImpl implements MemberDao{
 		if(memberDto == null) {
 			return null;
 		}
-		
-		boolean isPasswordMatch = passwordEncoder.matches(memberPw, memberDto.getMemberPw());
+		boolean isPasswordMatch = memberDto.getMemberPw().equals(memberPw);
+		//boolean isPasswordMatch = passwordEncoder.matches(memberPw, memberDto.getMemberPw());
 		
 		if(isPasswordMatch) {
 			sqlSession.update("member.updateLastLogin", memberEmail);
@@ -64,14 +64,24 @@ public class MemberDaoImpl implements MemberDao{
 			return false;
 		}
 		//비밀번호 암호화 코드 추가
-		String encodePassword = passwordEncoder.encode(changePw);
+//		String encodePassword = passwordEncoder.encode(changePw);
 		
 		int count = sqlSession.update("member.changePassword", 
-				MemberDto.builder().memberEmail(memberEmail).memberPw(encodePassword).build());
+				MemberDto.builder().memberEmail(memberEmail).memberPw(changePw).build());
 		
 		return count > 0;
 	}
 	
+	@Override
+	public boolean changePassword(MemberDto memberDto) {
+		//암호화를 거친 뒤 등록될 수 있도록 처리
+		String rawPassword = memberDto.getMemberPw();
+		String encryptPassword = passwordEncoder.encode(rawPassword);
+		memberDto.setMemberPw(encryptPassword);
+		int count = sqlSession.update("member.changePassword", memberDto);
+		return count > 0;
+	}
+
 	//회원 탈퇴
 	@Override
 	public boolean exit(String memberEmail, String memberPw) {
@@ -85,6 +95,7 @@ public class MemberDaoImpl implements MemberDao{
 		}
 	}
 
+	
 	//이메일 찾기
 	@Override
 	public String findEmail(MemberDto memberDto) {
@@ -93,25 +104,20 @@ public class MemberDaoImpl implements MemberDao{
 	
 	//비밀번호 찾기
 	@Override
-	public MemberDto findPw(MemberDto memberDto) {
-		return sqlSession.selectOne("member.findPw", memberDto);
+	public MemberDto find(MemberDto memberDto) {
+		return sqlSession.selectOne("member.find", memberDto);
 	}
-	
-	@Override
-	public boolean changePassword(MemberDto memberDto) {
-		//암호화를 거친 뒤 등록될 수 있도록 처리
-		String rawPassword = memberDto.getMemberPw();
-		String encryptPassword = passwordEncoder.encode(rawPassword);
-		memberDto.setMemberPw(encryptPassword);
-		int count = sqlSession.update("member.changePassword", memberDto);
-		return count > 0;
-	}
-
 	
 	// 회원 조회용 구문
 	@Override
 	public List<MemberDto> list() {
 		
 		return sqlSession.selectList("member.list");
+	}
+	
+	// 마이페이지
+	@Override
+	public MemberDto info(String memberEmail) {
+		return sqlSession.selectOne("member.one", memberEmail);
 	}
 }

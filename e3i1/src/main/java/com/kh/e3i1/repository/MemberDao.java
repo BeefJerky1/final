@@ -17,7 +17,7 @@ public interface MemberDao {
 	String findEmail(MemberDto memberDto);
 	
 	// 비밀번호 찾기
-	MemberDto findPw(MemberDto memberDto);
+	MemberDto find(MemberDto memberDto);
 	
 	// 회원 검색
 	List<MemberDto> complexSearch(MemberComplexSearchVO vo);
@@ -25,6 +25,9 @@ public interface MemberDao {
 	//비밀번호 변경
 	boolean changePassword(String memberEmail, String currentPw, String changePw);
 	boolean changePassword(MemberDto memberDto);
+	
+	// 마이페이지
+	MemberDto info(String memberEmail);
 	
 	// 회원 탈퇴
 	boolean exit(String memberEmail, String memberPw);

@@ -44,14 +44,12 @@
 	</select>
 	
 	<!-- 비밀번호 찾기 -->
-	<select id="findPw" resultType="MemberDto" parameterType="MemberDto">
+	<select id="find" resultType="MemberDto" parameterType="MemberDto">
 		select * from member
 		where
 			member_name = #{memberName}
 			and
 			member_phone = #{memberPhone}
-			and
-			member_birth = #{memberBirth}
 	</select>
 	
 	<!-- 비밀번호 변경 -->
