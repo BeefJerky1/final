@@ -29,7 +29,7 @@
                             <label for="floatingInput">Password</label>
                         </div>
 
-                        <button type="submit" class="btn btn-primary my-2">탈퇴하기</button>
+                        <button type="submit" class="btn btn-outline-success my-2">탈퇴하기</button>
                     </div>
 				</div>
 			</form>

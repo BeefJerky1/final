@@ -29,6 +29,9 @@ public interface MemberDao {
 	// 마이페이지
 	MemberDto info(String memberEmail);
 	
+	//회원정보수정
+	boolean changeInformation(MemberDto memberDto);
+	
 	// 회원 탈퇴
 	boolean exit(String memberEmail, String memberPw);
 	

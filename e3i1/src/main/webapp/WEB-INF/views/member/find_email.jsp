@@ -31,7 +31,7 @@
 
 
 				<div class="row my-2 mx-1">
-					<button type="submit" class="btn btn-primary">이메일 찾기</button>
+					<button type="submit" class="btn btn-outline-success">이메일 찾기</button>
 				</div>
 				<c:if test="${param.error != null}">
 					<div class="row text-center mt-4">

@@ -253,7 +253,7 @@ public class MemberController {
 		return "member/exit_finish";
 	}
 	
-	// 마이페이지
+	// 회원정보
 	@GetMapping("/mypage")
 	public String mypage(HttpSession session, Model model) {
 		String memberEmail = (String) session.getAttribute("login");
@@ -264,7 +264,7 @@ public class MemberController {
 		//프로필 이미지의 다운로드 주소를 추가
 		// - member_profile 에서 아이디를 이용하여 단일조회를 수행
 		// - http://localhost:8080/home/attachment/download?attachmentNo=OOO
-//		int attachmentNo = memberProfileDao.info(memberId);
+//		int attachmentNo = memberProfileDao.info(memberEmail);
 //		if(attachmentNo == 0) {
 //			model.addAttribute("profileUrl", "/image/user.png");
 //		}
@@ -275,7 +275,7 @@ public class MemberController {
 		return "member/mypage";
 	}
 	
-	//	비밀번호 변경
+	// 비밀번호 변경
 	@GetMapping("/password")
 	public String password() {
 		return "member/password";
@@ -294,6 +294,29 @@ public class MemberController {
 		}
 		else {
 			return "redirect:password?error";
+		}
+	}
+	
+	// 개인정보 수정
+	@GetMapping("/information")
+	public String information(HttpSession session, Model model) {
+		String memberEmail = (String) session.getAttribute("login");
+		MemberDto memberDto = memberDao.info(memberEmail);
+		model.addAttribute("memberDto", memberDto);
+		return "member/information";
+	}
+	
+	@PostMapping("/information")
+	public String information(HttpSession session, @ModelAttribute MemberDto memberDto) {
+		String memberEmail = (String) session.getAttribute("login");
+		memberDto.setMemberEmail(memberEmail);
+		
+		boolean success = memberDao.changeInformation(memberDto);
+		if(success) {
+			return "redirect:mypage";
+		}
+		else {
+			return "redirect:information?error";
 		}
 	}
 }

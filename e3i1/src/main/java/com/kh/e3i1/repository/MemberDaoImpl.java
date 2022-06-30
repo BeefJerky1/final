@@ -115,9 +115,22 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.selectList("member.list");
 	}
 	
-	// 마이페이지
+	// 회원정보
 	@Override
 	public MemberDto info(String memberEmail) {
 		return sqlSession.selectOne("member.one", memberEmail);
+	}
+	
+	//회원정보 수정
+	@Override
+	public boolean changeInformation(MemberDto memberDto) {
+		MemberDto findDto = this.login(memberDto.getMemberEmail(), memberDto.getMemberPw());
+		if(findDto == null) {
+			return false;
+		}
+		else {
+			int count = sqlSession.update("member.changeInformation", memberDto);
+			return count > 0;
+		}
 	}
 }
