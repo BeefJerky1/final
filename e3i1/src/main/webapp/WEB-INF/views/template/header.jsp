@@ -4,7 +4,6 @@
 
 <!-- 절대경로 변수 생성 -->
 <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
-
 <!DOCTYPE html>
 <html lang="kor">
 
@@ -55,7 +54,7 @@
                         <a class="nav-link" href="${root}/club/">소모임</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">MBTI</a>
+                        <a class="nav-link" href="${root}/mbtiBoard/list">MBTI</a>
                     </li>
 
                     <li class="nav-item">
@@ -67,7 +66,9 @@
                     <input type="text" name="keyword" class="form-control me-2 input-box" type="search"
                         placeholder="소모임 검색하기" aria-label="Search">
                 </form>
+                <a href="${root}/member/login">
                 <button class="btn btn-outline-success" type="submit">로그인</button>
+                </a>
             </div>
         </div>
     </nav>
