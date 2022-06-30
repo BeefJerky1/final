@@ -21,12 +21,16 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="category">
 
+	<select id="one" resultType="CategoryDto" parameterType="String">
+		select * from category where instr(category_content, #{clubMainCategory}) > 0
+	</select>
+
 	<select id="list1" resultType="CategoryDto">
 		SELECT * FROM CATEGORY where super_no is null ORDER BY CATEGORY_NO ASC
 	</select>
 	
 	<select id="list2" resultType="CategoryDto" parameterType="int">
-		select * from category where super_no = ${superNo} order by category_no asc
+		select * from category where super_no = #{superNo} order by category_no asc
 	</select>
 	
 </mapper>

@@ -8,4 +8,6 @@ public interface ClubDao {
 
 	List<ClubDto> list();
 
+	int create(ClubDto clubDto);
+
 }

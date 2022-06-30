@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AttachmentDto {
 	private int attachNo;
-	private String attachUploadName;
+	private String attachUploadname;
 	private String type;
 	private long attachSize;
 		

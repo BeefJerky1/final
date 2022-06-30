@@ -14,8 +14,8 @@ public class ClubDto {
 	private String clubMainCategory;
 	private String clubSubCategory;
 	private String clubPlace;
-	private String clubJoinQuestioin1;
-	private String clubJoinQuestioin2;
-	private String clubJoinQuestioin3;
+	private String clubJoinQuestion1;
+	private String clubJoinQuestion2;
+	private String clubJoinQuestion3;
 	private int clubMemberLimit;
 }	
