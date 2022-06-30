@@ -4,7 +4,6 @@
 
 <!-- 절대경로 변수 생성 -->
 <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
-
 <!DOCTYPE html>
 <html lang="kor">
 
@@ -55,7 +54,7 @@
                         <a class="nav-link" href="${root}/club/">소모임</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">MBTI</a>
+                        <a class="nav-link" href="${root}/mbtiBoard/list">MBTI</a>
                     </li>
 
                     <li class="nav-item">

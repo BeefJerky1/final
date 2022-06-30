@@ -2,22 +2,55 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-
+<style>
+.point{
+    font-size: 2.3em;
+    font-weight: bold;
+}
+</style>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<div class="container w500 m30">
-	<div class="row center m30">
-		<h1>이메일 검색 결과</h1>
-	</div>
-	<div class="row center">
-		찾으시는 아이디는 ${findUserEmail} 입니다
-	</div>
-	<div class="row center m30">
-		<h2><a href="login">로그인 하러가기</a></h2>
-	</div>
-	<div class="row center m30">
-		<h2><a href="${pageContext.request.contextPath}">메인 페이지로 이동</a></h2>
+<div id="app" class="container-fluid">
+	<div class="row mt-4 p-2">
+		<div class="col-md-8 offset-md-2 mb-5 p-5 text-dark bg-light rounded">
+                    <div class="row text-center mb-5">
+                        <span class="point">이메일 찾기</span>
+                    </div>
+                    <div class="row text-center mb-5">
+                        <h6>회원님의 이메일은 &nbsp;&nbsp; <b style="font-size:3vw;"> ${findUserEmail} </b> &nbsp;&nbsp; 입니다.</h6>
+                    </div>
+
+                    <div class="col-md-6 offset-md-3">
+                        <div class="row text-center mb-2 mt-1">
+                            <a href="findPw" class="btn btn-primary" role="button">비밀번호 찾기</a>
+                        </div> 
+                        
+                        <div class="row text-center mb-5">
+                            <a href="login" class="btn btn-primary" role="button">로그인 하러가기</a>
+                        </div> 
+                    </div>
+        </div>
 	</div>
 </div>
+
+<script>
+        const app = Vue.createApp({
+            data(){
+                return {
+
+                };
+            },
+            computed:{
+                
+            },
+            methods:{
+                
+            },
+            watch:{
+                
+            },
+        });
+        app.mount("#app");
+ </script>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

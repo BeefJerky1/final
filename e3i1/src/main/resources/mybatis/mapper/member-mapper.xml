@@ -43,6 +43,15 @@
 			member_Phone = #{memberPhone}
 	</select>
 	
+	<!-- 비밀번호 찾기 -->
+	<select id="find" resultType="MemberDto" parameterType="MemberDto">
+		select * from member
+		where
+			member_name = #{memberName}
+			and
+			member_phone = #{memberPhone}
+	</select>
+	
 	<!-- 비밀번호 변경 -->
 	<update id="changePassword" parameterType="MemberDto">
 		update member
@@ -60,7 +69,21 @@
  		select * from member order by member_no
  	</select>
  	
- 	<!-- 소모임 생성 여부 확인용 -->
+ 	<!-- 정보 변경 -->
+	<update id="changeInformation" parameterType="MemberDto">
+		update member 
+			set
+				member_name = #{memberName}, member_email = #{memberEmail},
+				member_pw = #{memberPw}, member_Nick = #{memberNick},
+				member_gender = #{memberGender}, member_phone = #{memberPhone},
+				member_sns_id = #{memberSnsId}, member_interest1 = #{memberInterest1},
+				member_interest2 = #{memberInterest2}, member_interest3 = #{memberInterest3},
+				member_place1 = #{memberPlace1}, member_place2 = #{memberPlace2}, member_place3 = #{memberPlace3}
+			where
+				member_email = #{memberEmail}
+	</update>
+	
+	<!-- 소모임 생성 여부 확인용 -->
  	<select id="existClub" resultType="MemberDto" parameterType="int">
  		select * from member where member_no = #{memberNo}
  	</select>
@@ -68,5 +91,5 @@
  	<update id="minusClubCount" parameterType="int">
  		update member set member_club_count = member_club_count - 1 where member_no  = #{memberNo}
  	</update>
- 	
+	
 </mapper> 

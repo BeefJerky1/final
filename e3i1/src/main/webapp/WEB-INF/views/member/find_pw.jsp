@@ -13,25 +13,25 @@
 <div id="app" class="container-fluid">
 	<div class="row mt-4 p-2">
 		<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
-			<form action="find_email" method="post">
+			<form action="find_pw" method="post">
 			<div class="col-md-6 offset-md-3">
 				<div class="row text-center mb-5">
-					<span class="point">이메일 찾기</span>
+					<span class="point">비밀번호 찾기</span>
 				</div>
 				<div class="form-floating mb-3 mt-4 mx-1">
 					<input type="text" class="form-control" name="memberName"
 						placeholder="이름"> <label for="floatingInput">이름</label>
 				</div>
-
+				
 				<div class="form-floating mb-4 mx-1">
 					<input type="text" class="form-control" name="memberPhone"
-						placeholder="핸드폰번호"> <label for="floatingInput">전화번호
+						placeholder="핸드폰번호"> <label for="floatingInput">
+						전화번호
 						( ' - ' 제외)</label>
 				</div>
 
-
 				<div class="row my-2 mx-1">
-					<button type="submit" class="btn btn-outline-success">이메일 찾기</button>
+					<button type="submit" class="btn btn-outline-success">비밀번호 찾기</button>
 				</div>
 				<c:if test="${param.error != null}">
 					<div class="row text-center mt-4">
