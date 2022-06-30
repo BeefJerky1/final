@@ -68,7 +68,7 @@
 					</div>
 					<div class="row">
 						<div class="row my-2 mx-1">
-							<input type="submit" value="로그인" class="btn btn-primary">
+							<input type="submit" value="로그인" class="btn btn-outline-success">
 						</div>
 					</div>
 

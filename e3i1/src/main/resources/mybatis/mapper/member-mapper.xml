@@ -44,14 +44,12 @@
 	</select>
 	
 	<!-- 비밀번호 찾기 -->
-	<select id="findPw" resultType="MemberDto" parameterType="MemberDto">
+	<select id="find" resultType="MemberDto" parameterType="MemberDto">
 		select * from member
 		where
 			member_name = #{memberName}
 			and
 			member_phone = #{memberPhone}
-			and
-			member_birth = #{memberBirth}
 	</select>
 	
 	<!-- 비밀번호 변경 -->
@@ -71,4 +69,18 @@
  		select * from member order by member_no
  	</select>
  	
+ 	<!-- 정보 변경 -->
+	<update id="changeInformation" parameterType="MemberDto">
+		update member 
+			set
+				member_name = #{memberName}, member_email = #{memberEmail},
+				member_pw = #{memberPw}, member_Nick = #{memberNick},
+				member_gender = #{memberGender}, member_phone = #{memberPhone},
+				member_sns_id = #{memberSnsId}, member_interest1 = #{memberInterest1},
+				member_interest2 = #{memberInterest2}, member_interest3 = #{memberInterest3},
+				member_place1 = #{memberPlace1}, member_place2 = #{memberPlace2}, member_place3 = #{memberPlace3}
+			where
+				member_email = #{memberEmail}
+	</update>
+	
 </mapper> 

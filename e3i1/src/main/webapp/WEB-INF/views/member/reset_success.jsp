@@ -21,17 +21,15 @@
 			<form action="find_pw" method="post">
 			<div class="col-md-6 offset-md-3">
 				<div class="row text-center mt-3 mb-5">
-					<span class="point">비밀번호 찾기</span>
+					<span class="point">비밀번호 재설정 완료</span>
 					
 				<div class="row text-center mt-5">
-					가입하신 이메일로
-					비밀번호 재설정 메일이 발송되었습니다!
-					비밀번호 변경 후 이용해주세요!
+					비밀번호가 재설정 되었습니다!
 				</div>		
 				
 					<div class="row mb-2 mt-5">
-						<a href="${pageContext.request.contextPath}" class="btn btn-textone" role=button>
-						메인페이지로 돌아가기 </a>
+						<a href="${pageContext.request.contextPath}/member/login" class="btn btn-textone" role=button>
+						로그인 하러가기 </a>
 					</div>
 							
 				</div>
