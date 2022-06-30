@@ -60,4 +60,13 @@
  		select * from member order by member_no
  	</select>
  	
+ 	<!-- 소모임 생성 여부 확인용 -->
+ 	<select id="existClub" resultType="MemberDto" parameterType="int">
+ 		select * from member where member_no = #{memberNo}
+ 	</select>
+ 	<!-- 소모임 생성시 횟수 차감 -->
+ 	<update id="minusClubCount" parameterType="int">
+ 		update member set member_club_count = member_club_count - 1 where member_no  = #{memberNo}
+ 	</update>
+ 	
 </mapper> 

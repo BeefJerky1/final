@@ -25,16 +25,16 @@ public class CategoryAndAddressRestController {
 	@Autowired
 	private CategoryNAddressDao categoryNAddressDao;
 	
-	// 카테고리 목록
+	// 카테고리 대분류 목록
 	@GetMapping("/category1")
 	public List<CategoryDto> mainCategoryList(){
 		return categoryNAddressDao.mainCategoryList();
 	}
 	
-	// 카테고리 목록
-	@GetMapping("/category2/{superNo}")
-	public List<CategoryDto> subCategoryList(@PathVariable int superNo){
-		return categoryNAddressDao.subCategoryList(superNo);
+	// 카테고리 소분류 목록
+	@GetMapping("/category2/{clubMainCategory}")
+	public List<CategoryDto> subCategoryList(@PathVariable String clubMainCategory){
+		return categoryNAddressDao.subCategoryList(clubMainCategory);
 	}
 	
 	// 시/도 목록

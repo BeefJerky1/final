@@ -67,7 +67,9 @@
                     <input type="text" name="keyword" class="form-control me-2 input-box" type="search"
                         placeholder="소모임 검색하기" aria-label="Search">
                 </form>
+                <a href="${root}/member/login">
                 <button class="btn btn-outline-success" type="submit">로그인</button>
+                </a>
             </div>
         </div>
     </nav>

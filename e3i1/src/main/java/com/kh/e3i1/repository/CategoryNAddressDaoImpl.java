@@ -22,8 +22,9 @@ public class CategoryNAddressDaoImpl implements CategoryNAddressDao {
 	}
 	
 	@Override
-	public List<CategoryDto> subCategoryList(int superNo) {
-		return sqlSession.selectList("category.list2", superNo);
+	public List<CategoryDto> subCategoryList(String clubMainCategory) {
+		CategoryDto categoryDto = sqlSession.selectOne("category.one",clubMainCategory);
+		return sqlSession.selectList("category.list2", categoryDto.getCategoryNo());
 	}
 
 	@Override
@@ -35,7 +36,5 @@ public class CategoryNAddressDaoImpl implements CategoryNAddressDao {
 	public List<Address2Dto> addressList2(int address1No) {
 		return sqlSession.selectList("address.list2", address1No);
 	}
-
-	
 	
 }

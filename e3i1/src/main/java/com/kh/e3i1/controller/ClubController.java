@@ -1,12 +1,14 @@
 package com.kh.e3i1.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -26,9 +28,16 @@ public class ClubController {
 	
 	// 소모임 목록 
 	@GetMapping("/")
-	public String clubList(Model model) {
+	public String clubList() {
 		return "club/list";
 	}
+	// 소모임 상세페이지
+	@GetMapping("/detail")
+	public String clubDetail(@RequestParam int clubNo, Model model) {
+		
+		return "club/detail_main";
+	}
+	
 	
 	// 소모임 게시판 목록
 	@GetMapping("/board/{clubNo}")

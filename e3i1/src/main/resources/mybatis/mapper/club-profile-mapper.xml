@@ -19,14 +19,19 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="address">
+<mapper namespace="clubProfile">
 
-	<select id="list1" resultType="Address1Dto">
-		select * from address1 order by address1_no asc
+	<insert id="insert" parameterType="Map">
+		insert into club_profile(
+			club_no, attach_no
+		)
+		values(
+			#{clubNo}, #{attachNo}
+		)
+	</insert>
+	
+	<select id="one" parameterType="Integer" resultType="Integer">
+		select attach_no from club_profile where club_no = #{clubNo}
 	</select>
 	
-	<select id="list2" resultType="Address2Dto" parameterType="int">
-		select * from address2 where address1_no = #{address1No} order by address2_no asc
-	</select>
-
 </mapper>

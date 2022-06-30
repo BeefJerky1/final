@@ -91,17 +91,14 @@ textarea {
 			<button class="btn-create" v-on:click="removeHidden" @click.once="callList">소모임 생성</button>
 		</div>
 	</div>
-
-	<div class="row border" v-for="(club,index) in clubList" v-bind:key="index">
-		<div>
-			<img src="#">
-		</div>
-		<div>
-			<span>{{club.clubName}}</span>
-		</div>
-		<div>
-			<span>{{club.clubMainCategory}} / {{club.clubSubCategory}}</span>
-		</div>
+	<div class="row mt-4">
+	<div class="card col-md-3" v-for="(club,index) in clubList" v-bind:key="index" @click="toDetailPage(index)">
+			<img src="#" class="card-img-top">
+			<div class="card-body">
+				<h5 class="card-title">{{club.clubName}}</h5>
+				<h6 class="card-subtitle">\#{{club.clubMainCategory}} / {{club.clubSubCategory}}</h6>
+			</div>
+	</div>
 	</div>
 
 	<!-- 소모임 생성 모달 -->
@@ -109,8 +106,10 @@ textarea {
 		<div class="modal-overlay" v-on:click="addHidden"></div>
 
 		<div class="modal-content mt-4">
-			<form action="create" method="post" enctype="multipart/form-data">
-				<input type="hidden" name="clubLeader" value="${login}" />
+		
+				<!-- 세션 넣을 곳 -->
+				<input type="hidden" v-model="clubLeader"/>
+				
 				<div class="container-fluid">
 					<div class="modal-header text-start">
 						<h1>소모임 만들기</h1>
@@ -121,26 +120,26 @@ textarea {
 							<h4>기본 정보</h4>
 							<p style="font-size: 10px">*나와 같은 관심사를 가진 멤버를 모집하고 열심히 운영하여 소모임을 성장시켜보세요.</p>
 						</div>
-						<div class="mt-2 text-start">
-							<label>대표 이미지 설정</label> <input class="form-control" type="file"
-								name="attach" accept="img/*" />
-						</div>
+						 <!-- <div class="mt-2 text-start">
+							<label>대표 이미지 설정</label> 
+							<input class="form-control" type="file" name="attach" accept="img/*" />
+						</div>  -->
 						<div class="mt-2 text-start">
 							<label>소모임 이름</label> 
-							<input class="form-control rounded" type="text" name="clubName" />
+							<input class="form-control rounded" type="text" name="clubName" v-model="clubName" v-on:input="clubName = $event.target.value" />
 						</div>
 
 						<div class="mt-2 text-start">
 							<label>관심사</label>
 							<div class="row">
 								<div class="col">
-									<select name="clubMainCategory" class="form-control rounded" @change="addSubCategoryList" v-model="superNo">
+									<select name="clubMainCategory" class="form-control rounded" @change="addSubCategoryList" v-model="clubMainCategory">
 										<option value="">대분류를 선택해주세요</option>
-										<option v-for="(category1,index) in mainCategoryList" v-bind:key="index" :value="category1.categoryNo">{{category1.categoryContent}}</option>
+										<option v-for="(category1,index) in mainCategoryList" v-bind:key="index" :value="category1.categoryContent">{{category1.categoryContent}}</option>
 									</select>
 								</div>
 								<div class="col">
-									<select name="clubSubCategory" class="form-control rounded" v-model="subCategory">
+									<select name="clubSubCategory" class="form-control rounded" v-model="clubSubCategory">
 										<option value="">소분류를 선택해주세요</option>
 										<option v-for="(category2,index) in subCategoryList" v-bind:key="index" :value="category2.categoryContent">{{category2.categoryContent}}</option>
 									</select>
@@ -168,7 +167,7 @@ textarea {
 						
 						<div class="text-start mt-2">
 							<label>소모임 소개</label>
-							<textarea name="clubSummary" class="form-control rounded"></textarea>
+							<textarea name="clubSummary" class="form-control rounded" v-model="clubSummary"></textarea>
 						</div>
 						<hr />
 						<div class="text-start mt-2">
@@ -178,29 +177,28 @@ textarea {
 							</p>
 						</div>
 						<div class="text-start">
-							<label>질문1</label> <input class="form-control rounded"
-								type="text" name="clubJoinQuestion1" />
+							<label>질문1</label>
+							<input class="form-control rounded"	type="text" name="clubJoinQuestion1" v-model="clubJoinQuestion1" />
 						</div>
 						<div class="text-start">
-							<label>질문2</label> <input class="form-control rounded"
-								type="text" name="clubJoinQuestion2" />
+							<label>질문2</label>
+							<input class="form-control rounded" type="text" name="clubJoinQuestion2" v-model="clubJoinQuestion2"/>
 						</div>
 						<div class="text-start">
-							<label>질문3</label> <input class="form-control rounded"
-								type="text" name="clubJoinQuestion3" />
+							<label>질문3</label> 
+							<input class="form-control rounded" type="text" name="clubJoinQuestion3" v-model="clubJoinQuestion3"/>
 						</div>
 
 						<div class="row mt-4">
 						<div class="col">
-							<button type="button" id="close" class="btn-cancel" v-on:click="addHidden">돌아가기</button>
+							<button type="button" class="btn-cancel" name="addHidden">돌아가기</button>
 						</div>
 						<div class="col">
-							<button type="submit" class="btn-create">생성하기</button>
+							<button type="submit" class="btn-create" @click="createClub">생성하기</button>
 						</div>
 						</div>
 					</div>
 				</div>
-			</form>
 		</div>
 	</div>
 </div>
@@ -215,26 +213,36 @@ data() {
 		// 소모임 목록용
 		clubList: [],
 		
-		// 카테고리 대분류 번호
-		superNo:"",
-		// 카테고리 소분류
-		subCategory:"",
+		isHidden:{
+			"hidden" : true,
+		},
 		
-		// 시/도 번호
-		address1No : "",
-		// 시/군/구 값
-		city: "",
-		
-		
+	
 		// 카테고리, 지역 목록용
 		mainCategoryList: [],
 		subCategoryList: [],
 		address1List: [],
 		address2List: [],
 		
-		isHidden:{
-			"hidden" : true,
-		},
+		// 소모임 생성 데이터
+		clubLeader:3, // 세션으로 바꿔줘야 하는 부분
+		clubName:"",
+		clubSummary:"",
+		clubJoinQuestion1:"",
+		clubJoinQuestion2:"",
+		clubJoinQuestion3:"",
+		
+		// 카테고리 대분류 번호
+		clubMainCategory:"",
+		// 카테고리 소분류
+		clubSubCategory:"",
+		
+		// 시/도 번호
+		address1No : "",
+		// 시/군/구 값
+		city: "",
+		
+	
 	};
 },
 computed: {},
@@ -245,6 +253,16 @@ methods: {
 	
 	addHidden(){
 		this.isHidden["hidden"] = true; 
+		
+		this.clubName = "";
+		this.clubSummary = "";
+		this.clubMainCategory = "";
+		this.clubSubCategory = "";
+		this.address1No = "";
+		this.city = "";
+		this.clubJoinQuestion1 = "";
+		this.clubJoinQuestion2 = "";
+		this.clubJoinQuestion3 = "";
 	},
 	
 	// 가입시 필요한 카테고리, 지역 목록
@@ -284,20 +302,51 @@ methods: {
 	},
 	// 카테고리 소분류 추가
 	addSubCategoryList(){
-		if(this.superNo == ""){
+		if(this.clubMainCategory == ""){
 			this.subCategoryList = [];
 			return;
 		}
 		// 카테고리 - 분류
 		axios({
-			url:"${pageContext.request.contextPath}/rest/category_n_address/category2/"+this.superNo,
+			url:"${pageContext.request.contextPath}/rest/category_n_address/category2/"+this.clubMainCategory,
 			method:"get",
 		}).then((resp) => {
-			this.subCategory = "";
+			this.clubSubCategory = "";
 			this.subCategoryList = [];
 			this.subCategoryList.push(...resp.data);
 		})	
 	},
+	
+	// 소모임 생성 without file - file처리하면 삭제 예정
+	createClub(){
+		
+		axios.post("${pageContext.request.contextPath}/rest/club/c", {
+			
+				clubLeader: this.clubLeader,
+				clubName: this.clubName,
+				clubSummary: this.clubSummary,
+				clubMainCategory: this.clubMainCategory,
+				clubSubCategory: this.clubSubCategory,
+				clubPlace: this.city,
+				clubJoinQuestion1: this.clubJoinQuestion1,
+				clubJoinQuestion2: this.clubJoinQuestion2,
+				clubJoinQuestion3: this.clubJoinQuestion3,
+			
+		}).then((resp) => {
+			if(resp.data == 0){
+				window.alert("이미 소모임을 가지고 있습니다.");
+				return;
+			}
+			window.alert("소모임 생성 완료!");
+			window.location.href="${pageContext.request.contextPath}/club/detail?clubNo="+resp.data;
+		});
+	},
+	
+	// 디테일 페이지 이동
+	toDetailPage(index){
+		window.location.href="${pageContext.request.contextPath}/club/detail?clubNo="+this.clubList[index].clubNo;
+	},
+
 },
 created() {
 	axios({
