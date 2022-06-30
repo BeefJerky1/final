@@ -29,13 +29,6 @@
 						전화번호
 						( ' - ' 제외)</label>
 				</div>
-				
-				<div class="form-floating mb-4 mx-1">
-					<input type="date" class="form-control" name="memberBirth"
-						placeholder="생년월일"> <label for="floatingInput">생년월일
-						( ' - ' 제외)</label>
-				</div>
-
 
 				<div class="row my-2 mx-1">
 					<button type="submit" class="btn btn-primary">비밀번호 찾기</button>

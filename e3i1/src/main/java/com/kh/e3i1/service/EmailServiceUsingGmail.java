@@ -4,12 +4,18 @@ import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.Random;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kh.e3i1.entity.CertDto;
+import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.repository.CertDao;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +54,37 @@ public class EmailServiceUsingGmail implements EmailService {
 												.certTarget(email)
 												.certNumber(certString)
 												.build());
+	}
+
+	@Override
+	public void sendPasswordResetMail(MemberDto findDto) throws MessagingException {
+		MimeMessage message = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
+		
+		helper.setTo(findDto.getMemberEmail());
+		helper.setSubject("[SISO] 비밀번호 재설정 메일입니다");
+		
+		int certNumber = r.nextInt(1000000);
+		String certString = f.format(certNumber);
+		
+		String returnUri = ServletUriComponentsBuilder
+												.fromCurrentContextPath()
+												.path("/member/reset")
+												.queryParam("memberEmail", findDto.getMemberEmail())
+												.queryParam("cert", certString)
+												.toUriString();
+		String content = 
+				"<a href='"+returnUri+"'>"
+					+ "비밀번호를 재설정하시려면 여기를 누르세요"
+			+ "</a>";
+		helper.setText(content, true);
+		
+		mailSender.send(message);
+		
+		certDao.insert(CertDto.builder()
+									.certTarget(findDto.getMemberEmail())
+									.certNumber(certString)
+									.build());
 	}
 	
 }
