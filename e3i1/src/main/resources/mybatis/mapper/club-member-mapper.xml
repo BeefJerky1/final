@@ -19,23 +19,49 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="attachment">
+<mapper namespace="clubMember">
+
 	<select id="sequence" resultType="int">
-		select attachment_seq.nextval from dual
+		select club_member_seq.nextval from dual
 	</select>
-	
-	<insert id="insert" parameterType="AttachmentDto">
-		insert into attachment(
-			attach_no, attach_uploadname,
-			attach_type, attach_size
-		)
+
+	<insert id="insert" parameterType="ClubMemberDto">
+		INSERT INTO club_member(
+			club_member_no, club_no, member_no
+			<if test="clubMemberGrade != null">
+				, club_member_grade
+			</if>
+			<if test="clubMemberPermission != null">
+				, club_member_permission
+			</if>
+			<if test="clubMemberAnswer1 != null">
+				, club_member_answer1
+			</if>
+			<if test="clubMemberAnswer2 != null">
+				, club_member_answer2
+			</if>
+			<if test="clubMemberAnswer3 != null">
+				, club_member_answer3
+			</if>
+		)	
 		values(
-			#{attachNo}, #{attachUploadname},
-			#{type}, #{attachSize}
-		)
+			#{clubMemberNo}, #{clubNo}, #{memberNo}
+			<if test="clubMemberGrade != null">
+				, #{clubMemberGrade}
+			</if>
+			<if test="clubMemberPermission != null">
+				, #{clubMemberPermission}
+			</if>
+			<if test="clubMemberAnswer1 != null">
+				, #{clubMemberAnswer1}
+			</if>
+			<if test="clubMemberAnswer2 != null">
+				, #{clubMemberAnswer2}
+			</if>
+			<if test="clubMemberAnswer2 != null">
+				, #{clubMemberAnswer2}
+			</if>
+		)	
 	</insert>
 	
-	<select id="one" resultType="AttachmentDto" parameterType="int">
-		select * from attachment where attach_no = #{attachNo}
-	</select>
 </mapper>

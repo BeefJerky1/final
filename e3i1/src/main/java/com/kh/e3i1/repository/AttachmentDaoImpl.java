@@ -15,7 +15,6 @@ public class AttachmentDaoImpl implements AttachmentDao {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	// 저장 위치 
 	private File directory = new File(System.getProperty("user.home")+"/upload");
 	public AttachmentDaoImpl() {
 		directory.mkdirs();

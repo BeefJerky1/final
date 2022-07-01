@@ -102,7 +102,7 @@ public class MemberController {
 		MemberDto memberDto = memberDao.login(memberEmail, memberPw);
 		
 		if(memberDto != null) {
-			session.setAttribute("login", memberDto.getMemberEmail());
+			session.setAttribute("login", memberDto.getMemberNo());
 			if(memberDto.getMemberAdmin()==1) {
 				session.setAttribute("auth", "관리자");
 				
