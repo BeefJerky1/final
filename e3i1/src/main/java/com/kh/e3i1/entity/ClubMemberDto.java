@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class ClubMemberDto {
 	private int clubMemberNo;
 	private int clubNo;
+	private int memberNo;
 	private Date clubMemberDate;
 	private String clubMemberGrade;
 	private String clubMemberAnswer1;

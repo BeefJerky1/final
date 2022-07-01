@@ -35,6 +35,7 @@ public class ClubDaoImpl implements ClubDao {
 		sqlSession.insert("club.create",clubDto);
 		// 소모임 생성 횟수 차감
 		sqlSession.update("member.minusClubCount",clubDto.getClubLeader());
+		
 		return clubNo;
 	}
 
