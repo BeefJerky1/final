@@ -16,6 +16,6 @@ public class MbtiBoardReplyDto {
 	private int memberNo;
 	private String mbtiReplyContent;
 	private Date mbtiReplyTime;
-	private int superNo;
+
 
 }

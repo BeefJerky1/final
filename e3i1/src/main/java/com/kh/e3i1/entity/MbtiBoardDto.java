@@ -18,5 +18,6 @@ public class MbtiBoardDto {
 	private Date mbtiBoardTime;
 	private int mbtiBoardVote1;
 	private int mbtiBoardVote2;
+	private int mbtiBoardReplyCount;
 
 }
