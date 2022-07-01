@@ -78,7 +78,7 @@ public class MbtiBoardController {
 	public String write(@ModelAttribute MbtiBoardDto mbtiBoardDto, RedirectAttributes attr) {
 
 		// 임시 작성자 추가
-		int memberNo = 3;
+		int memberNo = 7;
 		mbtiBoardDto.setMemberNo(memberNo);
 
 		int mbtiBoardNo = mbtiBoardDao.write(mbtiBoardDto);

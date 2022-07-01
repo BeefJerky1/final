@@ -19,47 +19,46 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="clubboardreply">
-	<select id="sequence" resultType="int">
-		select club_board_reply_seq.nextval from dual
-	</select>
-	<insert id="insert" parameterType="clubboardreplyDto">
-		insert into club_board_reply(reply_no, club_reply_content, club_reply_time, club_board_no, club_reply_writer, club_no)
-		values(#{replyNo}, #{clubReplyContent}, sysdate, #{clubBoardNo}, #{clubReplyWriter}, #{clubNo})
-	</insert>
-	<select id="one" resultType="clubboardreplyDto" parameterType="int">
-		select * from club_board_reply where reply_no = #{replyNo}
-	</select>
+<mapper namespace="mbtiBoardReply">
+
+		<!-- 댓글 시퀀스 생성 -->
 	
-	<select id="list" resultType="clubboardreplyDto" parameterType="int">
-		select * from club_board_reply where club_board_no = #{clubBoardNo} 
-		order by reply_no desc
-	</select>
-	<delete id="delete" parameterType="int">
-		delete club_board_reply where reply_no = #{replyNo}
-	</delete>
-	<update id="edit" parameterType="clubboardreplyDto">
-		update club_board_reply set club_reply_content = #{clubReplyContent} where reply_no = #{replyNo}
-	</update>
-	<update id="calculateReplyCount" parameterType="int">
-		update club_board
-		set club_board_count = (
-		select count(*) from club_board_reply where club_board_no =#{clubBoardNo}
-		)
-		where club_board_no = #{clubBoardNo}
-	</update>
+	 	<select id="sequence" resultType="int">
+ 		select MBTI_BOARD_REPLY_SEQ.nextval from dual
+ 		</select>
+ 		
+ 		
+ 		<!-- 댓글 작성 구문 -->
+ 		
+ 		<insert id="insert" parameterType="MbtiBoardReplyDto">
+ 			insert into mbti_board_reply 
+ 				(
+ 				reply_no, mbti_board_no, member_no, mbti_reply_content, 
+ 				mbti_reply_time
+ 				)
+ 			values (
+ 				#{replyNo}, #{mbtiBoardNo}, #{memberNo}, #{mbtiReplyContent},
+ 				sysdate
+ 			)
+ 		
+ 		</insert>
+ 		
+ 		<!--  댓글 조회 구문 -->
+ 		
+ 		<!-- ResultMap 조회 -->
 	
-	<resultMap type="ClubBoardListItemVO" id="clubBoardListItem">
-		<association property="clubBoardDto">
-			<result column="club_board_no" property="clubBoardNo"/>
-			<result column="club_no" property="clubNo"/>
-			<result column="club_board_writer" property="clubBoardWriter"/>
-			<result column="club_board_content" property="clubBoardContent"/>
-			<result column="club_board_time" property="clubBoardTime"/>
- 			<result column="club_board_count" property="clubBoardCount"/> 
+	<resultMap type="MbtiReplyVO" id="mbtiReplyMap">
+		<association property="mbtiBoardDto" javaType="MbtiBoardDto">
+			<result column="mbti_board_no" property="mbtiBoardNo"/>
+			<result column="member_no" property="memberNo"/>
+			<result column="mbti_board_title" property="mbtiBoardTitle"/>
+			<result column="mbti_board_content" property="mbtiBoardContent"/>
+			<result column="mbti_board_time" property="mbtiBoardTime"/>
+			<result column="mbti_board_vote1" property="mbtiBoardVote1"/>
+			<result column="mbti_board_vote2" property="mbtiBoardVote2"/>
 		</association>
 		
-		<association property="memberDto">
+		<association property="memberDto" javaType="MemberDto">
 			<result column="member_no" property="memberNo"/>
 			<result column="member_email" property="memberEmail"/>
 			<result column="member_pw" property="memberPw"/>
@@ -81,21 +80,46 @@
 			<result column="member_birth" property="memberBirth"/>
 			<result column="member_name" property="memberName"/>
 		</association>
-		<association property="clubBoardLikeDto">
-			<result column="club_board_like_no" property="heartNo"/>
+		
+		<association property="mbtiBoardReplyDto" javaType="MbtiBoardReplyDto">
+			<result column="reply_no" property="replyNo"/>
+			<result column="mbti_board_no" property="mbtiBoardNo"/>
 			<result column="member_no" property="memberNo"/>
-			<result column="club_board_no" property="clubBoardNo"/>
-			<result column="like_check" property="likeCheck"/>
-		</association>
-		<association property="memberProfileDto">
-			<result column="member_no" property="memberNo"/>
-			<result column="attach_no" property="attachNo"/>
+			<result column="mbti_reply_content" property="mbtiReplyContent"/>
+			<result column="mbti_reply_time" property="mbtiReplyTime"/>
 		</association>
 		
-		<collection javaType="java.util.List" ofType="ClubboardAttachDto" property="ClubboardAttachDto" select="subListQuery" column="clubNo">
-			<result column="club_board_no" property="clubBoardNo"/>
-			<result column="club_no" property="clubNo"/>
-			<result column="게시글사진번호" property="attachNo"/>
-		</collection>
 	</resultMap>
+	
+		<select id="list" resultMap="mbtiReplyMap">
+				select * from mbti_board_reply R
+           			 join member M on R.member_no = M.member_no
+            		 join mbti_board B on R.mbti_board_no = B.mbti_board_no
+           		where R.mbti_board_no = #{mbtiBoardNo}
+		</select>
+		
+		 	<select id="one" resultType="MbtiBoardReplyDto" parameterType="int">
+ 		select * from mbti_board_reply where reply_no = #{replyNo}
+ 		</select>
+ 		
+ 		
+ 	<delete id="delete" parameterType="int">
+ 		delete mbti_board_reply where reply_no = #{replyNo}
+ 	</delete>
+ 	
+ 	<update id="edit" parameterType="MbtiBoardReplyDto">
+ 		update mbti_board_reply set 
+ 			mbti_reply_content = #{mbtiReplyContent}, mbti_reply_time = sysdate
+ 		where reply_no = #{replyNo}
+ 	</update>
+ 		
+ 	<update id="calculateReplyCount" parameterType="int">
+		update mbti_board
+			set mbti_board_reply_count = (
+				select count(*) from mbti_board_reply where mbti_board_no =#{mbtiBoardNo}
+			)
+		where mbti_board_no = #{mbtiBoardNo}
+	</update>
+	
+
 </mapper>
