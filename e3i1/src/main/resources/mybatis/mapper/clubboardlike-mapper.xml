@@ -19,23 +19,29 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="attachment">
-	<select id="sequence" resultType="int">
-		select attachment_seq.nextval from dual
+<mapper namespace="clubboardlike">
+<select id="checkLike" resultType="clubBoardLikeDto" parameterType="clubBoardLikeDto">
+		select * from club_board_like where member_no=#{memberNo} and club_board_no = #{clubBoardNo}
 	</select>
-	
-	<insert id="insert" parameterType="AttachmentDto">
-		insert into attachment(
-			attach_no, attach_uploadname,
-			attach_type, attach_size
-		)
-		values(
-			#{attachNo}, #{attachUploadname},
-			#{type}, #{attachSize}
-		)
+	<!-- 시퀀스 생성 -->
+	<select id="sequence" resultType="int">
+		select club_board_like_seq.nextval from dual
+	</select>
+	<!-- 게시글 등록 -->
+	<insert id="insert" parameterType="clubBoardLikeDto">
+		insert into club_board_like (club_board_like_no, club_board_no, member_no, like_check)
+		values(#{clubBoardLikeNo}, #{clubBoardNo}, #{memberNo}, 1)
 	</insert>
-	
-	<select id="one" resultType="AttachmentDto" parameterType="int">
-		select * from attachment where attach_no = #{attachNo}
+	<!-- 조회 -->
+	<select id="one" resultType="clubBoardLikeDto" parameterType="int">
+		select * from club_board_like where club_board_like_no = #{clubBoardLikeNo}
+	</select>
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="clubBoardLikeDto">
+		delete club_board_like where club_board_like_no = #{clubBoardLikeNo}
+	</delete>
+	<!-- pk 조회 -->
+	<select id="pk" resultType="int" parameterType="clubBoardLikeDto">
+		select club_board_like_no from club_board_like where member_no=#{memberNo} and club_board_no = #{clubBoardNo}
 	</select>
 </mapper>

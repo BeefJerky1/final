@@ -16,6 +16,7 @@ import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.repository.ClubBoardDao;
 import com.kh.e3i1.repository.ClubDao;
+import com.kh.e3i1.vo.ClubBoardListItemVO;
 
 @Controller
 @RequestMapping("/club")
@@ -33,8 +34,7 @@ public class ClubController {
 	}
 	// 소모임 상세페이지
 	@GetMapping("/detail")
-	public String clubDetail(@RequestParam int clubNo, Model model) {
-		
+	public String clubDetail(@RequestParam int clubNo) {
 		return "club/detail_main";
 	}
 	

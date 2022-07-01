@@ -3,78 +3,10 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/modal.css">
 <style>
-.modal {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.modal-overlay {
-	background-color: rgba(0, 0, 0, 0.6);
-	width: 100%;
-	height: 100%;
-	position: absolute;
-}
-
-.modal-content {
-	background-color: white;
-	padding: 50px 100px;
-	text-align: center;
-	position: relative;
-	border-radius: 10px;
-	width: 50%;
-	height: 90%;
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px
-		rgba(0, 0, 0, 0.23);
-	max-height: 100%;
-	overflow-y: auto;
-}
-
-.hidden {
-	display: none;
-}
-
-textarea {
-    width: 100%;
-    height: 10em;
-    border: none;
-    resize: none;
- }
- 
- .btn-create {
-    background-color: #3E4684;
-    padding: 10px;
-    border-radius: 10px;
-    width: 100%;
-    border: none;
-    color: white;
-}
-
-.btn-create:hover {
-    transform: scale(1.05);
-    background-color: #3E4684;
-    border: none;
-    color: white;
-}
-.btn-cancel {
-	border: 1px solid #3E4684;
-	background-color: white;
-	color:#3E4684;
-	padding: 10px;
-	width: 100%;
-	border-radius: 10px;
-}
-.btn-cancel:hover {
-    transform: scale(1.05);
-    background-color: white;
-    border: 1px solid #3E4684;
-    color: #3E4684;
+.clubList{
+	cursor: pointer;
 }
 </style>
 
@@ -85,21 +17,36 @@ textarea {
 			<h1 class="text-center">소모임</h1>
 		</div>
 	</div>
-
+	
+	<!-- 검색창 -->
 	<div class="row mt-4">
 		<div class="col-md-8 offset-md-2">
+			<div class="card">
+				<div class="card-text">
+					<p>검색부분</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row mt-4">
+		<div class="col-md-2 offset-md-10" style="padding-right:50px">
 			<button class="btn-create" v-on:click="removeHidden" @click.once="callList">소모임 생성</button>
 		</div>
 	</div>
+	
 	<div class="row mt-4">
-	<div class="card col-md-3" v-for="(club,index) in clubList" v-bind:key="index" @click="toDetailPage(index)">
-			<img src="#" class="card-img-top">
-			<div class="card-body">
-				<h5 class="card-title">{{club.clubName}}</h5>
-				<h6 class="card-subtitle">\#{{club.clubMainCategory}} / {{club.clubSubCategory}}</h6>
+		<div style="padding:50px"class="col-md-4" v-for="(club,index) in clubList" v-bind:key="index" @click="toDetailPage(index)">
+			<div class="card">
+				<img src="${pageContext.request.contextPath}/image/mbti/돌고래(ENFJ).png" class="card-img-top">
+				<div class="card-body clubList">
+					<h5 class="card-title">{{club.clubName}}</h5>
+					<h6 style="color:gray" class="card-subtitle">\#{{club.clubMainCategory}} / {{club.clubSubCategory}}</h6>
+				</div>
 			</div>
+		</div>
 	</div>
-	</div>
+
 
 	<!-- 소모임 생성 모달 -->
 	<div class="modal" v-bind:class="isHidden" class="rounded">
@@ -108,6 +55,7 @@ textarea {
 		<div class="modal-content mt-4">
 		
 				<!-- 세션 넣을 곳 -->
+				<!-- <input type="hidden" v-model="clubLeader" value="${login}"/> -->
 				<input type="hidden" v-model="clubLeader"/>
 				
 				<div class="container-fluid">
@@ -120,10 +68,10 @@ textarea {
 							<h4>기본 정보</h4>
 							<p style="font-size: 10px">*나와 같은 관심사를 가진 멤버를 모집하고 열심히 운영하여 소모임을 성장시켜보세요.</p>
 						</div>
-						 <!-- <div class="mt-2 text-start">
+						  <div class="mt-2 text-start">
 							<label>대표 이미지 설정</label> 
-							<input class="form-control" type="file" name="attach" accept="img/*" />
-						</div>  -->
+							<input class="form-control" type="file" name="attach" accept="image/*" ref="clubProfile" name="clubProfile"/>
+						</div>  
 						<div class="mt-2 text-start">
 							<label>소모임 이름</label> 
 							<input class="form-control rounded" type="text" name="clubName" v-model="clubName" v-on:input="clubName = $event.target.value" />
@@ -191,7 +139,7 @@ textarea {
 
 						<div class="row mt-4">
 						<div class="col">
-							<button type="button" class="btn-cancel" name="addHidden">돌아가기</button>
+							<button type="button" class="btn-cancel" @click="addHidden">돌아가기</button>
 						</div>
 						<div class="col">
 							<button type="submit" class="btn-create" @click="createClub">생성하기</button>
@@ -205,8 +153,8 @@ textarea {
 
 
 
+<!-- 로다쉬 적용해야함 -->
 <script>
-  
 const app = Vue.createApp({
 data() {
 	return {
@@ -225,7 +173,7 @@ data() {
 		address2List: [],
 		
 		// 소모임 생성 데이터
-		clubLeader:3, // 세션으로 바꿔줘야 하는 부분
+		clubLeader:9, // 세션으로 바꿔줘야 하는 부분
 		clubName:"",
 		clubSummary:"",
 		clubJoinQuestion1:"",
@@ -240,8 +188,7 @@ data() {
 		// 시/도 번호
 		address1No : "",
 		// 시/군/구 값
-		city: "",
-		
+		city: "",		
 	
 	};
 },
@@ -317,21 +264,34 @@ methods: {
 		})	
 	},
 	
-	// 소모임 생성 without file - file처리하면 삭제 예정
+	// 소모임 생성 with file
 	createClub(){
 		
-		axios.post("${pageContext.request.contextPath}/rest/club/c", {
-			
-				clubLeader: this.clubLeader,
-				clubName: this.clubName,
-				clubSummary: this.clubSummary,
-				clubMainCategory: this.clubMainCategory,
-				clubSubCategory: this.clubSubCategory,
-				clubPlace: this.city,
-				clubJoinQuestion1: this.clubJoinQuestion1,
-				clubJoinQuestion2: this.clubJoinQuestion2,
-				clubJoinQuestion3: this.clubJoinQuestion3,
-			
+		let formData = new FormData();
+		
+		//const fileInput = document.querySelector("input[name=clubProfile]");
+		const fileInput = this.$refs.clubProfile;
+		if(fileInput.files.length == 0) return;
+		const fileData = fileInput.files[0];
+		
+		formData.append('clubProfile', fileData);
+		formData.append('clubLeader', this.clubLeader);
+		formData.append('clubName', this.clubName);
+		formData.append('clubSummary', this.clubSummary);
+		formData.append('clubMainCategory', this.clubMainCategory);
+		formData.append('clubSubCategory', this.clubSubCategory);
+		formData.append('clubPlace', this.clubPlace);
+		formData.append('clubJoinQuestion1', this.clubJoinQuestion1);
+		formData.append('clubJoinQuestion2', this.clubJoinQuestion2);
+		formData.append('clubJoinQuestion3', this.clubJoinQuestion3);
+		
+		axios({
+			url:"${pageContext.request.contextPath}/rest/club/",
+			method:"post",
+			headers:{
+				"Content-Type" : "multipart/form-data",
+			},
+			data: formData,
 		}).then((resp) => {
 			if(resp.data == 0){
 				window.alert("이미 소모임을 가지고 있습니다.");

@@ -253,7 +253,7 @@
 					<div class="form-floating mb-3">
 						<select name="memberInterest1" class="form-select" id="floatingSelect">
 							<option value=""></option>
-							<option>#액티비티매니아</option>
+							<option value="액티비티매니아">#액티비티매니아</option>
 							<option>#인스타그래머</option>
 							<option>#금손모임</option>
 							<option>#친구해요</option>
@@ -298,7 +298,7 @@
 						</select> <label for="floatingSelect">Interest3</label>
 					</div>
 
-					<div class="form-floating mb-3">
+					<!-- <div class="form-floating mb-3">
 						<select name="memberPlace1" class="form-select" id="floatingSelect">
 							<option value=""></option>
 							<option>서울시 강남구</option>
@@ -324,7 +324,25 @@
 							<option>서울시 강동구</option>
 						</select> <label for="floatingSelect">Place3</label>
 					</div>
-
+ -->
+ 						<div id="app" class="mt-2 text-start">
+							<label>지역</label>
+							<div class="row">
+								<div class="col">
+									<select class="form-control rounded" @change="addCityList" v-model="address1No">
+										<option value="">시/도를 선택해주세요</option>
+										<option v-for="(address1, index) in address1List" v-bind:key="index" :value="address1.address1No" >{{address1.province}}</option>
+									</select>
+								</div>
+								<div class="col">
+									<select name="clubPlace" class="form-control rounded" v-model="city">
+										<option value="">시/군/구를 선택해주세요</option>
+										<option v-for="(address2, index) in address2List" v-bind:key="index" :value="address2.city">{{address2.city}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						
 					<div class="row center">
 						<button type="button" class="btn btn-prev" style="display:none;">이전</button>
 						<button type="button" class="btn btn-next mt-1">다음</button>
