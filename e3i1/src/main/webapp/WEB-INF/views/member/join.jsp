@@ -122,7 +122,8 @@
 					mbti4 = 'J';
 				}
 				// mbti결과값 input에 저장
-				$("input[name=memberMbti]").val(mbti1 + mbti2 + mbti3 + mbti4);
+				var forAnimal = $("input[name=memberMbti]").val(mbti1 + mbti2 + mbti3 + mbti4);
+				
 				// 확인용
 				console.log($("input[name=memberMbti]").val());
 			}
@@ -223,6 +224,11 @@
 					<div class="form-floating mb-3">
 						<input type="text" class="form-control" name="memberNick"
 							autocomplete="off" required> <label for="floatingInput">Nickname</label>
+					</div>
+					
+					<div class="form-floating mb-3">
+						<input type="text" class="form-control" name="memberAnimal"
+							autocomplete="off" required> <label for="floatingInput">Animal</label>
 					</div>
 
 					<div class="form-floating mb-3">
@@ -341,6 +347,7 @@
 						<button type="button" class="btn btn-prev" style="display:none;">이전</button>
 						<button type="button" class="btn btn-next mt-1">다음</button>
 					</div>
+					
 					</div>
 				</div>
 			</div>
