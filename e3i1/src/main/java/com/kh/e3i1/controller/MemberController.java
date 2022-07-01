@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.e3i1.entity.CertDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
@@ -69,7 +70,7 @@ public class MemberController {
 	
 	@PostMapping("/join")
 	public String join(@ModelAttribute MemberDto memberDto) throws Exception {
-//		memberDao.join(memberDto);
+		memberDao.join(memberDto);
 		
 		return "redirect:/member/join_success";
 	}
@@ -307,7 +308,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("/information")
-	public String information(HttpSession session, @ModelAttribute MemberDto memberDto) {
+	public String information(HttpSession session, @ModelAttribute MemberDto memberDto, @RequestParam MultipartFile memberProfile) {
 		String memberEmail = (String) session.getAttribute("login");
 		memberDto.setMemberEmail(memberEmail);
 		
