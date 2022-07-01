@@ -48,4 +48,54 @@
 		)
 		where club_board_no = #{clubBoardNo}
 	</update>
+	
+	<resultMap type="ClubBoardListItemVO" id="clubBoardListItem">
+		<association property="clubBoardDto">
+			<result column="club_board_no" property="clubBoardNo"/>
+			<result column="club_no" property="clubNo"/>
+			<result column="club_board_writer" property="clubBoardWriter"/>
+			<result column="club_board_content" property="clubBoardContent"/>
+			<result column="club_board_time" property="clubBoardTime"/>
+ 			<result column="club_board_count" property="clubBoardCount"/> 
+		</association>
+		
+		<association property="memberDto">
+			<result column="member_no" property="memberNo"/>
+			<result column="member_email" property="memberEmail"/>
+			<result column="member_pw" property="memberPw"/>
+			<result column="member_nick" property="memberNick"/>
+			<result column="member_gender" property="memberGender"/>
+			<result column="member_mbti" property="memberMbti"/>
+			<result column="member_animal" property="memberAnimal"/>
+			<result column="member_interest1" property="memberInterest1"/>
+			<result column="member_interest2" property="memberInterest2"/>
+			<result column="member_interest3" property="memberInterest3"/>
+			<result column="member_place1" property="memberPlace1"/>
+			<result column="member_place2" property="memberPlace2"/>
+			<result column="member_place3" property="memberPlace3"/>
+			<result column="member_admin" property="memberAdmin"/>
+			<result column="member_report_count" property="memberReportCount"/>
+			<result column="member_club_count" property="memberClubCount"/>
+			<result column="member_sns_id" property="memberSnsId"/>
+			<result column="member_logindate" property="memberLogindate"/>
+			<result column="member_birth" property="memberBirth"/>
+			<result column="member_name" property="memberName"/>
+		</association>
+		<association property="clubBoardLikeDto">
+			<result column="club_board_like_no" property="heartNo"/>
+			<result column="member_no" property="memberNo"/>
+			<result column="club_board_no" property="clubBoardNo"/>
+			<result column="like_check" property="likeCheck"/>
+		</association>
+		<association property="memberProfileDto">
+			<result column="member_no" property="memberNo"/>
+			<result column="attach_no" property="attachNo"/>
+		</association>
+		
+		<collection javaType="java.util.List" ofType="ClubboardAttachDto" property="ClubboardAttachDto" select="subListQuery" column="clubNo">
+			<result column="club_board_no" property="clubBoardNo"/>
+			<result column="club_no" property="clubNo"/>
+			<result column="게시글사진번호" property="attachNo"/>
+		</collection>
+	</resultMap>
 </mapper>

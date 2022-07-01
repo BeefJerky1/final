@@ -33,10 +33,7 @@
 		insert into club_board (club_board_no, club_no, club_board_writer, club_board_content)
 		values(#{clubBoardNo}, #{clubNo}, #{clubBoardWriter}, #{clubBoardContent})
 	</insert>
-	<!-- 단일 조회 -->
-	<select id="one" resultType="clubBoardDto" parameterType="int">
-		select * from club_board where club_board_no = #{clubBoardNo}
-	</select>
+
 	<!-- 삭제 -->
 	<delete id="delete" parameterType="int">
 		delete club_board where club_board_no = #{clubBoardNo}
@@ -49,5 +46,134 @@
 	<select id="calculateReplyCount" parameterType="int">
 		select club_board_count from club_board
 	</select>
+	<select id="one" resultType="clubBoardDto" parameterType="int">
+		select * from club_board where club_board_no = #{clubBoardNo}
+	</select>
 	
+	<resultMap type="ClubBoardListItemVO" id="clubBoardListItem">
+		<association property="clubBoardDto">
+			<result column="club_board_no" property="clubBoardNo"/>
+			<result column="club_no" property="clubNo"/>
+			<result column="club_board_writer" property="clubBoardWriter"/>
+			<result column="club_board_content" property="clubBoardContent"/>
+			<result column="club_board_time" property="clubBoardTime"/>
+ 			<result column="club_board_count" property="clubBoardCount"/> 
+		</association>
+		
+		<association property="memberDto">
+			<result column="member_no" property="memberNo"/>
+			<result column="member_email" property="memberEmail"/>
+			<result column="member_pw" property="memberPw"/>
+			<result column="member_nick" property="memberNick"/>
+			<result column="member_gender" property="memberGender"/>
+			<result column="member_mbti" property="memberMbti"/>
+			<result column="member_animal" property="memberAnimal"/>
+			<result column="member_interest1" property="memberInterest1"/>
+			<result column="member_interest2" property="memberInterest2"/>
+			<result column="member_interest3" property="memberInterest3"/>
+			<result column="member_place1" property="memberPlace1"/>
+			<result column="member_place2" property="memberPlace2"/>
+			<result column="member_place3" property="memberPlace3"/>
+			<result column="member_admin" property="memberAdmin"/>
+			<result column="member_report_count" property="memberReportCount"/>
+			<result column="member_club_count" property="memberClubCount"/>
+			<result column="member_sns_id" property="memberSnsId"/>
+			<result column="member_logindate" property="memberLogindate"/>
+			<result column="member_birth" property="memberBirth"/>
+			<result column="member_name" property="memberName"/>
+		</association>
+		<association property="clubBoardLikeDto">
+			<result column="club_board_like_no" property="clubBoardLikeNo"/>
+			<result column="member_no" property="memberNo"/>
+			<result column="club_board_no" property="clubBoardNo"/>
+			<result column="like_check" property="likeCheck"/>
+		</association>
+		<association property="memberProfileDto">
+			<result column="member_no" property="memberNo"/>
+			<result column="attach_no" property="attachNo"/>
+		</association>
+		
+		<collection javaType="java.util.List" ofType="ClubboardAttachDto" property="ClubboardAttachDto" select="subListQuery" column="clubNo">
+			<result column="club_board_no" property="clubBoardNo"/>
+			<result column="club_no" property="clubNo"/>
+			<result column="게시글사진번호" property="attachNo"/>
+		</collection>
+	</resultMap>
+	
+	<select id="clubBoardTotalList" resultMap="clubBoardListItem">
+<!-- 	join된 구문 작성  -->
+		select
+	   C.club_board_no,
+	   C.club_board_count,
+       C.club_board_time, 
+       C.club_board_content,
+       C.club_no as,
+       C.club_board_writer,
+       M.member_no as,
+       M.member_animal as,
+       M.member_nick as,
+       M.member_interest1,
+       M.member_interest2,
+       M.member_interest3,
+       M.member_gender,
+       M.member_place1,
+       M.member_place2,
+       M.member_place3,
+       M.member_sns_id,
+       M.member_logindate,
+       P.attach_no  as 프로필사진번호,
+       A.attach_no as 게시글사진번호,
+       L.club_board_like_no,
+       L.like_check
+from club_board C 
+left outer join member M 
+   on C.club_board_writer = M.member_no 
+left outer join member_profile P 
+   on C.club_board_writer = P.member_no
+left outer join club_board_like L
+   on C.club_board_writer = L.member_no
+ left outer join club_board_attach A 
+   on C.club_board_No = A.club_board_no 
+where C.club_no = #{clubNo}
+	</select>
+	<!-- 단일 조회 -->
+<!-- 	<select id="one" resultMap="clubBoardListItem"> -->
+<!-- 				select -->
+<!-- 	   C.club_board_no, -->
+<!-- 	   C.club_board_count, -->
+<!--        C.club_board_time,  -->
+<!--        C.club_board_content, -->
+<!--        C.club_no as, -->
+<!--        C.club_board_writer, -->
+<!--        M.member_no as, -->
+<!--        M.member_animal as, -->
+<!--        M.member_nick as, -->
+<!--        M.member_interest1, -->
+<!--        M.member_interest2, -->
+<!--        M.member_interest3, -->
+<!--        M.member_gender, -->
+<!--        M.member_place1, -->
+<!--        M.member_place2, -->
+<!--        M.member_place3, -->
+<!--        M.member_sns_id, -->
+<!--        M.member_logindate, -->
+<!--        P.attach_no  as 프로필사진번호, -->
+<!--        A.attach_no as 게시글사진번호, -->
+<!--        H.heart_no, -->
+<!--        H.like_check -->
+<!-- from club_board C  -->
+<!-- left outer join member M  -->
+<!--    on C.club_board_writer = M.member_no  -->
+<!-- left outer join member_profile P  -->
+<!--    on C.club_board_writer = P.member_no -->
+<!-- left outer join heart H  -->
+<!--    on C.club_board_writer = H.member_no -->
+<!--  left outer join club_board_attach A  -->
+<!--    on C.club_board_No = A.club_board_no  -->
+<!-- where C.club_board_No = #{clubBoardNo} -->
+<!-- 	</select> -->
+	<select id="subListQuery" resultType="ClubboardAttachDto" parameterType="int">
+		select * from club_board_attach where club_no = #{clubNo}
+	</select>
+
 </mapper>
