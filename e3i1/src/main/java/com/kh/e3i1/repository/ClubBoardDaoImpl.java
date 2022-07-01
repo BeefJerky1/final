@@ -1,12 +1,15 @@
 package com.kh.e3i1.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.e3i1.entity.ClubBoardDto;
+import com.kh.e3i1.entity.ClubBoardLikeDto;
+import com.kh.e3i1.vo.ClubBoardListItemVO;
 
 @Repository
 public class ClubBoardDaoImpl implements ClubBoardDao{
@@ -15,6 +18,11 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	private SqlSession sqlSession;
 	
 	
+//	@Override
+//	public List<ClubBoardDto> list(int clubNo) {
+//		this.calculateReplyCount(clubNo);
+//		return sqlSession.selectList("clubboard.list", clubNo);
+//	}
 	@Override
 	public List<ClubBoardDto> list(int clubNo) {
 		this.calculateReplyCount(clubNo);
@@ -56,5 +64,16 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	public void calculateReplyCount(int clubNo) {
 		sqlSession.update("clubboard.calculateReplyCount",clubNo);	
 	}
+	@Override
+	public List<ClubBoardListItemVO> listAll(int clubNo) {
+//		this.calculateReplyCount(clubNo);
+		return sqlSession.selectList("clubboard.clubBoardTotalList", clubNo);
+	}
+	@Override
+	public List<ClubBoardListItemVO> clubBoardListItem(int clubNo) {
+		return sqlSession.selectList("clubboard.subListQuery",clubNo);
+	}
+
+	
 
 }
