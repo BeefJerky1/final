@@ -8,10 +8,13 @@
 }
 .red:hover{
 cursor: pointer !important;
+
 }
 .redBig{
-	width:100px !important;
 	color:red;
+}
+.redBig:hover{
+cursor: pointer !important;
 }
 i{font-family:fontAwesome;}
 img{border-radius:100% !important}
@@ -192,38 +195,43 @@ img{border-radius:100% !important}
                   <div class="body">
                 <div class="border border-opacity-10 text-dark p-2 col-lg-12 col-md-12 col-sm-12" >
                     <div class="row">
+                       <div v-if="board != null">
+                       <div class="row">
                         <div class="col-lg-2 col-md-2 col-sm-2">
                             <a><img src="https://placeimg.com/50/50/animals" class=" mx-auto d-block"></a>
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-8 align-start">
-                             {{board.memberNo}}<br>
-<!--                                <span>{{board.memberDto.memberInterest1}}</span>, -->
-<!--                                 <span>{{board.memberDto.memberInterest2}}</span>, -->
-<!--                                 <span>{{board.memberDtomemberInterest3.}}</span> -->
+                             		  {{board.memberDto.memberNick}}<br>
+                                <span>{{board.memberDto.memberInterest1}}</span>,
+                                <span>{{board.memberDto.memberInterest2}}</span>,
+                                <span>{{board.memberDto.memberInterest3}}</span>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2">
-                            <div v-if="like==0">
-                                    <i class="fa-regular fa-heart redBig"></i>
+                        <div class="col-lg-2 col-md-2 col-sm-2 p-3">
+                            <div v-if="board.clubBoardLikeDto.likeCheck==0">
+                                    <i class="fa-regular fa-heart redBig fa-3x" v-on:click="likey()"></i>
                                 </div>
-                                <div v-else>
-                                	<i class="fa-solid fa-heart redBig"></i>
-                                </div>
+                            <div v-else>
+                                	<i class="fa-solid fa-heart redBig fa-3x" v-on:click="likey()"></i>
+                            </div>
+                        </div>
                         </div>
                     </div>
+                   
+                     <div v-if="board != null">
                     <div v-if="!board.edit">
                     <div class="row px-5">
-                        <pre> {{board.clubBoardContent}}</pre>	
+                        <pre> {{board.clubBoardDto.clubBoardContent}}</pre>	
                     </div>		
                     <div class="container row mt-5">
                                 <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-                                       <i class="fa-regular fa-comment"></i> {{board.clubBoardCount}}
+                                       <i class="fa-regular fa-comment"></i> {{board.clubBoardDto.clubBoardCount}}
                                    </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-                                <div v-if="like==0">
-                                    <i class="fa-regular fa-heart red"  v-on:click="likey()"></i>
+                                <div v-if="board.clubBoardLikeDto.likeCheck==0">
+                                    <span><i class="fa-regular fa-heart red"  v-on:click="likey()"></i>{{board.clubBoardDto.clubBoardLike}}</span>
                                 </div>
                                 <div v-else>
-                                	<i class="fa-solid fa-heart red" v-on:click="likey()"></i>
+                                	<span><i class="fa-solid fa-heart red" v-on:click="likey()"></i>{{board.clubBoardDto.clubBoardLike}}</span>
                                 </div>
                                    </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 text-center">
@@ -235,13 +243,16 @@ img{border-radius:100% !important}
                             </div>
                     </div>
                     <div v-else class="align-end">
-                    <textarea class="form-control update" v-model="board.clubBoardContent"></textarea>
+                    <textarea class="form-control update" v-model="board.clubBoardDto.clubBoardContent"></textarea>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <button class="btn btn-secondary"  v-on:click="changeDisplayMode()">취소</button>
                     <button class="btn btn-edit"  v-on:click="editBoard()">수정</button>
                     </div>
                     </div>
+                    </div>
                 </div>
+                    		
+    	</div>
 </div>
             <!-- 댓글 등록 -->
                 <div class="border border-opacity-10 text-dark p-2 col-lg-12 col-md-12 col-sm-12 ">
@@ -258,22 +269,27 @@ img{border-radius:100% !important}
                             <a><img src="https://placeimg.com/50/50/animals" class=" mx-auto d-block"></a>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 align-start">
-                        {{reply.clubReplyWriter}}
+                        {{reply.memberDto.memberNick}}
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-2">
-                        <h6 class="time">{{elapsedText(reply.clubReplyTime)}}</h6>
+                        <h6 class="time">{{elapsedText(reply.clubBoardReplyDto.clubReplyTime)}}</h6>
                     </div>
                 </div>
                 <div class="row" v-if="!reply.edit">
                     <div class="col-lg-12 col-md-12 col-sm-12 px-5 align-start">
-                        <pre> {{reply.clubReplyContent}}</pre>		
+                        <pre> {{reply.clubBoardReplyDto.clubReplyContent}}</pre>		
                     </div>	
                     <div class="container row ">
                                 <div class="col-lg-3 col-md-3 col-sm-3 text-center">
         <!--            					<i class="fa-regular fa-comment"></i> {{board.clubBoardCount}} -->
                                    </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-        <!-- 							<i class="fa-regular fa-heart"></i> -->
+        							<div v-if="reply.clubReplyLikeDto.likeCheck ==1">
+                                	<span><i class="fa-solid fa-heart red" v-on:click="replyLikey(index)"></i>{{reply.clubBoardReplyDto.clubReplyLike}}</span>
+                                </div>
+                                	<div v-else>
+                                    <span><i class="fa-regular fa-heart red"  v-on:click="replyLikey(index)"></i>{{reply.clubBoardReplyDto.clubReplyLike}}</span>
+                                </div>
                                    </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 text-center">
                                     <a><i class="fa-solid fa-trash" v-on:click="deleteReply(index);"></i></a>	
@@ -284,7 +300,7 @@ img{border-radius:100% !important}
                     </div>
                 </div>
                 <div v-else>
-                    <textarea class="form-control update-reply" v-model="reply.clubReplyContent"></textarea>
+                    <textarea class="form-control update-reply" v-model="reply.clubBoardReplyDto.clubReplyContent"></textarea>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <button class="btn btn-secondary "  v-on:click="replyDisplayMode(index);">취소</button>
                     <button class="btn btn-primary "  v-on:click="editReply(index)">수정</button>
@@ -333,18 +349,18 @@ img{border-radius:100% !important}
 
             data(){
                 return {
-		           board:{},
+		           board:null,
 		           clubNo:"1",
 		           BoardReplyList:[],
 		           replyContent:"",
 		           like:"",
 		           memberNo:"3",
+		           replylike:"",
+		          replyNo:"",
                 };
             },
             computed:{
-	               	likeCheck(){
-	            		return this.like;
-	            	}
+	               	
             },
             methods:{
             	//게시글 로드
@@ -358,7 +374,8 @@ img{border-radius:100% !important}
  		        		
  		        	})
  		        	.then(resp=>{
- 		        		this.board = resp.data;
+ 		        		this.board= resp.data;
+ 		        		
  		        	});
  		        
  		    	},
@@ -378,13 +395,13 @@ img{border-radius:100% !important}
                 },
               	//게시글 수정
                 editBoard(){
-		        	if(this.board.clubBoardContent.length==0)return;
+		        	if(this.board.clubBoardDto.clubBoardContent.length==0)return;
 		        	axios({
 		        		url:"${pageContext.request.contextPath}/rest/clubboard/",
 		        		method:"put",
 		        		data:{
-		        			clubBoardNo: this.board.clubBoardNo,
-		        			clubBoardContent: this.board.clubBoardContent,
+		        			clubBoardNo: this.board.clubBoardDto.clubBoardNo,
+		        			clubBoardContent: this.board.clubBoardDto.clubBoardContent,
 		        		},
 		        	}).then(resp=>{
 		        		this.loadContent();
@@ -396,6 +413,39 @@ img{border-radius:100% !important}
 		        changeDisplayMode(){
 		        	this.board.edit=false;
 		        },
+		      //게시글 좋아요 체크
+             	boardLikeCheck(){
+               		if(this.like.likeCheck>0 && this.board.clubBoardDto.clubBoardNo==like.clubBoardNo) return true;
+            	},
+                //게시글 좋아요/취소
+                likey(){
+                	if(this.board.clubBoardLikeDto.likeCheck==0){
+                		axios({
+                			url:"${pageContext.request.contextPath}/rest/clubboard/like/",
+                			method:"post",
+                			data:{  
+    		        			clubBoardNo:this.board.clubBoardLikeDto.clubBoardNo,
+    		        			memberNo:this.memberNo,
+                			}
+                		}).then(resp=>{
+                			
+							this.loadContent();
+                		
+                		})
+                	}else if(this.board.clubBoardLikeDto.likeCheck==1){
+                		axios({
+                			url:"${pageContext.request.contextPath}/rest/clubboard/like/",
+                			method:"delete",
+                			data:{
+    		        			clubBoardNo:this.board.clubBoardLikeDto.clubBoardNo,
+    		        			memberNo:this.memberNo,
+                			}
+                		}).then(resp=>{
+                			this.loadContent();
+                		})
+                	}
+                },
+                
 		        //댓글 등록
 		        addReply(){
 // 		        	if(this.boardContentIsEmpty) return;
@@ -407,13 +457,14 @@ img{border-radius:100% !important}
 		        		url:"${pageContext.request.contextPath}/rest/clubboardreply/",
 		        		method:"post",
 		        		data:{
-		        			clubNo:this.board.clubNo,
-		        			clubBoardNo:this.board.clubBoardNo,
+		        			clubNo:this.board.clubBoardDto.clubNo,
+		        			clubBoardNo:this.board.clubBoardDto.clubBoardNo,
 		        			clubReplyContent:this.replyContent
 		        		},
 		        	})
 		        	.then(resp=>{
 		        		this.replyContent = "";
+		        		this.loadContent();
 		        		this.loadReply();
 		        	});
 		        },
@@ -437,10 +488,11 @@ img{border-radius:100% !important}
 		        	
 		        	const reply = this.BoardReplyList[index];
 		        	axios({
-		        		url:"${pageContext.request.contextPath}/rest/clubboardreply/"+reply.replyNo,
+		        		url:"${pageContext.request.contextPath}/rest/clubboardreply/"+reply.clubBoardReplyDto.replyNo,
 		        		method:"delete",
 		        	})
 		        	.then(resp=>{
+		        		this.loadContent();
 		        		this.loadReply();
 		        	});
 		        },
@@ -452,13 +504,13 @@ img{border-radius:100% !important}
 		        },
 		        editReply(index){
 		        	const reply = this.BoardReplyList[index];
-		        	if(reply.clubReplyContent.length==0)return;
+		        	if(reply.clubBoardReplyDto.clubReplyContent.length==0)return;
 		        	axios({
 		        		url:"${pageContext.request.contextPath}/rest/clubboardreply/",
 		        		method:"put",
 		        		data:{
-		        			replyNo: reply.replyNo,
-		        			clubReplyContent: reply.clubReplyContent,
+		        			replyNo: reply.clubBoardReplyDto.replyNo,
+		        			clubReplyContent: reply.clubBoardReplyDto.clubReplyContent,
 		        		},
 		        	}).then(resp=>{
 		        		this.loadReply();
@@ -468,41 +520,37 @@ img{border-radius:100% !important}
 	            elapsedText(date) {
                 	return dateformat.elapsedText(new Date(date));
                 },
-                //좋아요 조회
-                likeSearch(){
-                 	let uri = window.location.search.substring(1); 
-                    let params = new URLSearchParams(uri);
-                    const clubBoardNo = params.get("clubBoardNo");
-                	axios({
-                		url:"${pageContext.request.contextPath}/rest/clubboard/like/"+clubBoardNo,
-                		method:"get",
-                	}).then(resp=>{
-                		this.like=resp.data
-                	});
-                },
-                likey(){
-                	if(this.like==0){
+                //댓글 좋아요 조건
+               	likeCheck(index){
+               		const reply = this.BoardReplyList[index];
+               		if(this.replylike.likeCheck==1 && this.replylike.replyNo==reply.clubBoardReplyDto.replyNo) return true;
+            	},
+                //댓글 좋아요/취소
+                replyLikey(index){
+                	const reply = this.BoardReplyList[index];
+                	if(reply.clubReplyLikeDto.likeCheck==0){
                 		axios({
-                			url:"${pageContext.request.contextPath}/rest/clubboard/like/",
+                			url:"${pageContext.request.contextPath}/rest/clubboardreply/like/",
                 			method:"post",
                 			data:{  
-    		        			clubBoardNo:this.board.clubBoardNo,
+                				replyNo:reply.clubBoardReplyDto.replyNo,
     		        			memberNo:this.memberNo,
                 			}
                 		}).then(resp=>{
-                			this.likeSearch();
-                		
+                			this.replylike = resp.data;
+                			this.loadReply();
+                			
                 		})
-                	}else if(this.like==1){
+                	}else if(reply.clubReplyLikeDto.likeCheck==1){
                 		axios({
-                			url:"${pageContext.request.contextPath}/rest/clubboard/like/",
+                			url:"${pageContext.request.contextPath}/rest/clubboardreply/like/",
                 			method:"delete",
                 			data:{
-    		        			clubBoardNo:this.board.clubBoardNo,
+                				replyNo:reply.clubBoardReplyDto.replyNo,
     		        			memberNo:this.memberNo,
                 			}
                 		}).then(resp=>{
-                			this.likeSearch();
+                			this.loadReply();
                 		})
                 	}
                 }
@@ -510,7 +558,7 @@ img{border-radius:100% !important}
             created(){
             	this.loadContent();
             	this.loadReply();
-            	this.likeSearch();
+//             	this.replyLikeSearch();
             },
         });
         app.mount("#app");

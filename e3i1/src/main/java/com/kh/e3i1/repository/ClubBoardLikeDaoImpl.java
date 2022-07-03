@@ -29,6 +29,7 @@ public class ClubBoardLikeDaoImpl implements ClubBoardLikeDao {
 		int clubBoardLikeNo = sqlSession.selectOne("clubboardlike.sequence");
 		clubBoardLikeDto.setClubBoardLikeNo(clubBoardLikeNo);
 		sqlSession.insert("clubboardlike.insert", clubBoardLikeDto);
+		this.calculateLikeCount(clubBoardLikeDto.getClubBoardNo());
 		return sqlSession.selectOne("clubboardlike.one", clubBoardLikeNo);
 	}
 
@@ -36,5 +37,10 @@ public class ClubBoardLikeDaoImpl implements ClubBoardLikeDao {
 	public void delete(ClubBoardLikeDto clubBoardLikeDto) {
 		int clubBoardLikeNo = sqlSession.selectOne("clubboardlike.pk", clubBoardLikeDto);
 		sqlSession.delete("clubboardlike.delete", clubBoardLikeNo);
+		this.calculateLikeCount(clubBoardLikeDto.getClubBoardNo());
+	}
+	@Override
+	public void calculateLikeCount(int clubBoardNo) {
+		sqlSession.update("clubboardlike.calculateLikeCount",clubBoardNo);	
 	}
 }
