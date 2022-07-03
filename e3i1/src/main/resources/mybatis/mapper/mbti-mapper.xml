@@ -30,4 +30,9 @@
 		select * from mbti_survey order by survey_no asc
 	</select>
 	
+	<!-- mbti에 맞는 동물 출력 -->
+	<select id="animal" resultType="String" parameterType="String">
+		select animal from mbti_animal where mbti = #{mbti}
+	</select>
+	
 </mapper>

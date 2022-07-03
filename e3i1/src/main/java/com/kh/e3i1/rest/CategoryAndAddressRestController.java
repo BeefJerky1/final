@@ -48,4 +48,10 @@ public class CategoryAndAddressRestController {
 	public List<Address2Dto> addressList2(@PathVariable int address1No){
 		return categoryNAddressDao.addressList2(address1No);
 	}
+	
+	// mbti별 동물 
+	@GetMapping("/animal/{mbti}")
+	public String animal(@PathVariable String mbti) {
+		return categoryNAddressDao.animal(mbti);
+	}
 }
