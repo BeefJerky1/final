@@ -25,6 +25,7 @@ public class MemberDaoImpl implements MemberDao{
 //		String rawPassword = memberDto.getMemberPw();
 //		String encryptPassword = passwordEncoder.encode(rawPassword);
 //		memberDto.setMemberPw(encryptPassword);
+		memberDto.setMemberNo(sqlSession.selectOne("member.sequence"));
 		sqlSession.insert("member.join", memberDto);
 	}
 	

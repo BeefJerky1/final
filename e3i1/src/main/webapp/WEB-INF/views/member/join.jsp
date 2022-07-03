@@ -415,7 +415,8 @@
 					mbti4 = 'J';
 				}
 				// mbti결과값 input에 저장
-				$("input[name=memberMbti]").val(mbti1 + mbti2 + mbti3 + mbti4);
+				var forAnimal = $("input[name=memberMbti]").val(mbti1 + mbti2 + mbti3 + mbti4);
+				
 				// 확인용
 				console.log($("input[name=memberMbti]").val());
 			}

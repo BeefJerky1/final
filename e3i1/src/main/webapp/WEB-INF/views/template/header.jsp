@@ -59,7 +59,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">NOTICE</a>
+                        <a class="nav-link" href="${root}/notice/list">NOTICE</a>
                     </li>
                 </ul>
                 <form class="d-flex">

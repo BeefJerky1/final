@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-//@ControllerAdvice(annotations = Controller.class) // 잠시 막아뒀습니다
+//@ControllerAdvice(annotations = Controller.class)
 public class ExceptionController {
 	
 	@ExceptionHandler(CannotFindException.class)
