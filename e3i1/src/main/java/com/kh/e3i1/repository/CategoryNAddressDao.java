@@ -12,5 +12,5 @@ public interface CategoryNAddressDao {
 	List<CategoryDto> subCategoryList(String clubMainCategory);
 	List<Address1Dto> addressList1();
 	List<Address2Dto> addressList2(int address1No);
-
+	String animal(String mbti);
 }

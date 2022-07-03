@@ -36,5 +36,11 @@ public class CategoryNAddressDaoImpl implements CategoryNAddressDao {
 	public List<Address2Dto> addressList2(int address1No) {
 		return sqlSession.selectList("address.list2", address1No);
 	}
+
+	// mbti별 동물
+	@Override
+	public String animal(String mbti) {
+		return sqlSession.selectOne("mbti.animal",mbti);
+	}
 	
 }

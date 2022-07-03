@@ -58,6 +58,7 @@ public class ClubRestController {
 	public int insertClubMember(@ModelAttribute ClubMemberDto clubMemberDto) {
 		return clubMemberDao.insert(clubMemberDto);
 	}
+	
 }
 
 
