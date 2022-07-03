@@ -2,7 +2,12 @@
 	pageEncoding="UTF-8"%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<c:set var="path" value="${pageContext.request.contextPath}"/>
+	<c:set var="memberId" value="${login}"></c:set>
+	<c:set var="isLogin" value="${memberId != null}"></c:set>
+	<c:set var="isAdmin" value="${auth == '관리자'}"></c:set>
 	<style>
+	.red{
+	color:red;}
    .hover:hover{background-color: #F7F7F7;cursor: pointer;}
     .text-over-cut pre {
 		  display: block;
@@ -193,7 +198,7 @@
                 </div>
                 <!-- 게시글 목록 출력 -->
                 <div  class="text-dark col-lg-12 col-md-12 col-sm-12">
-                <div v-for="(clubboard, index ) in clubBoardList" v-bind:key="index" >
+                <div v-for="(clubboard, index ) in board" v-bind:key="index" >
                     <div v-on:click="select(index)" class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 hover">
                         <div class="row">
                             <div class="col-lg-2 col-md-2 col-sm-2 align-end top">
@@ -217,11 +222,16 @@
                         </div>
                         <div class="container row mt-5">
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-                                <i class="fa-regular fa-comment"></i> {{clubboard.clubBoardDto.clubBoardCount}}
+                                <i class="fa-regular fa-comment"></i>{{clubboard.clubBoardDto.clubBoardCount}}
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-                                <i class="fa-regular fa-heart"></i>
-                            </div>
+                                <div v-if="clubboard.clubBoardLikeDto.likeCheck==0">
+                                    <span><i class="fa-regular fa-heart red" ></i>{{clubboard.clubBoardDto.clubBoardLike}}</span>
+                                </div>
+                                <div v-else>
+                                	<span><i class="fa-solid fa-heart red" ></i>{{clubboard.clubBoardDto.clubBoardLike}}</span>
+                                </div>
+                                </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
@@ -259,6 +269,9 @@
         </div>
       </div>
                 </div>
+               <button type="button" v-on:click="appendBoard()" :disabled="this.dataFull == true" class="form-control">
+        더보기 ({{showBoard}}/{{totalBoard}})
+    </button>
             </div>
         </div>
             <div class="col-lg-3 col-md-3 col-sm-3 right-side">
@@ -305,10 +318,14 @@
 		            
 		            //댓글 입력 정보
 		            boardContent:"",
-		      
+// 		      		asdf:${memberId},
                     //목록
                     clubNo:"1",
-                    clubBoardList:[],
+                    boardAll:[], //전체 게시글
+                    board:[], //보여지는 게시글
+                    totalBoard:0, //전체 게시글
+                    showBoard:5, //보여주는 게시글 수
+                    dataFull:false,
                 };
             },
             //computed : data를 기반으로 하여 실시간 계산이 필요한 경우 작성한다.
@@ -325,9 +342,33 @@
 		        		url:"${pageContext.request.contextPath}/rest/clubboard/"+this.clubNo,
 		        		method:"get",
 		        	})
-		        	.then(resp=>{
-		        		this.clubBoardList = resp.data;
+		        	.then(res=>{
+		        	
+						let data = []
+						for(var i = 0; i<this.showBoard;i++){
+// 							console.log(i)
+							data.push(res.data[i])
+						}
+						this.boardAll = res.data,
+						this.board = data,
+						this.totalBoard = this.boardAll.length
 		        	});
+                },
+                appendBoard(){
+                	if(this.showBoard<this.totalBoard){
+                		this.showBoard +=5
+                	let data =[]
+                	for(var i=0; i<this.showBoard; i++){
+                		data.push(this.boardAll[i])
+                	}
+                	this.board = data
+                	if(this.totalBoard-this.showBoard <=5){
+                		this.showBoard = this.boardAll.length
+                	}
+                	}else{
+                		this.dataFull=true;
+                	}
+                	
                 },
                 addBoard(){
                 	axios({
@@ -367,6 +408,9 @@
 
             },
             created(){
+            	this.loadClubBoardList();
+            },
+            mounted(){
             	this.loadClubBoardList();
             },
         });

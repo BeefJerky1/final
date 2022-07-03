@@ -15,15 +15,18 @@ public interface ClubBoardDao {
 
 	boolean delete(int clubBoardNo);
 
-	ClubBoardDto selectOne(int clubBoardNo);
+	ClubBoardListItemVO selectOne(int clubBoardNo);
 
 	ClubBoardDto edit(ClubBoardDto clubBoardDto);
 
 	void calculateReplyCount(int clubNo);
 
-	List<ClubBoardListItemVO> listAll(int clubNo);
+	void calculateLikeCount(int clubNo);
 
 	List<ClubBoardListItemVO> clubBoardListItem(int clubNo);
+
+	List<ClubBoardListItemVO> listAll(int clubNo);
+
 
 
 }

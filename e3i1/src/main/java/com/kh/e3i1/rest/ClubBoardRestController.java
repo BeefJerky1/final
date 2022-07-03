@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardLikeDto;
+import com.kh.e3i1.entity.ClubReplyLikeDto;
 import com.kh.e3i1.repository.ClubBoardDao;
 import com.kh.e3i1.repository.ClubBoardLikeDao;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
@@ -37,11 +38,11 @@ public class ClubBoardRestController {
 //	@Autowired
 //	private MemberDao memberDao;
 	
-//	//목록
-//	@GetMapping("/{clubNo}")
-//	public List<ClubBoardDto> list(@PathVariable int clubNo) {
-//		return clubBoardDao.list(clubNo);
-//	}
+	//오른쪽 사이드바 목록
+	@GetMapping("/side/{clubNo}")
+	public List<ClubBoardDto> Sidelist(@PathVariable int clubNo) {
+		return clubBoardDao.list(clubNo);
+	}
 	//목록
 	@GetMapping("/{clubNo}")
 	public List<ClubBoardListItemVO> list(@PathVariable int clubNo) {
@@ -61,7 +62,7 @@ public class ClubBoardRestController {
 	}
 	//상세 보기
 	@GetMapping("/detail/{clubBoardNo}")
-	public ClubBoardDto one(@PathVariable int clubBoardNo) {
+	public ClubBoardListItemVO one(@PathVariable int clubBoardNo) {	
 		return clubBoardDao.selectOne(clubBoardNo);
 	}
 	//수정
@@ -76,7 +77,7 @@ public class ClubBoardRestController {
 		return clubBoardLikeDao.selectList(clubBoardNo, clubBoardWriter);
 	}
 	@PostMapping("/like")
-	public ClubBoardLikeDto insert(@ApiIgnore HttpSession session, @RequestBody ClubBoardLikeDto clubBoardLikeDto) {
+	public ClubBoardLikeDto insert(@ApiIgnore HttpSession session, @RequestBody ClubBoardLikeDto clubBoardLikeDto ) {
 		int clubBoardWriter = 3;
 		clubBoardLikeDto.setMemberNo(clubBoardWriter);
 		return clubBoardLikeDao.insert(clubBoardLikeDto);
@@ -87,4 +88,10 @@ public class ClubBoardRestController {
 		clubBoardLikeDto.setMemberNo(clubBoardWriter);
 		clubBoardLikeDao.delete(clubBoardLikeDto);
 	}
+//	@PostMapping("/replylike")
+//	public ClubReplyLikeDto insert(@ApiIgnore HttpSession session, @RequestBody ClubReplyLikeDto clubReplyLikeDto) {
+//		int memberNo = 3;
+//		clubReplyLikeDto.setMemberNo(memberNo);
+//		return clubReplyLikeDao.insert(clubReplyLikeDto);
+//	}
 }

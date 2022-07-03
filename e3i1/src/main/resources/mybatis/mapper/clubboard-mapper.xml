@@ -22,7 +22,7 @@
 <mapper namespace="clubboard">
 	<!-- 전체 목록 -->
 	<select id="list" parameterType="int" resultType="clubBoardDto">
-		select * from club_board where club_no = #{clubNo} order by club_board_no desc
+		select * from club_board where club_no = #{clubNo} order by club_board_like desc
 	</select>
 	<!-- 시퀀스 생성 -->
 	<select id="sequence" resultType="int">
@@ -46,9 +46,13 @@
 	<select id="calculateReplyCount" parameterType="int">
 		select club_board_count from club_board
 	</select>
-	<select id="one" resultType="clubBoardDto" parameterType="int">
-		select * from club_board where club_board_no = #{clubBoardNo}
+	<!-- 좋아요 카운트 -->
+	<select id="calculateLikeCount" parameterType="int">
+		select club_board_like from club_board
 	</select>
+<!-- 	<select id="one" resultType="clubBoardDto" parameterType="int"> -->
+<!-- 		select * from club_board where club_board_no = #{clubBoardNo} -->
+<!-- 	</select> -->
 	
 	<resultMap type="ClubBoardListItemVO" id="clubBoardListItem">
 		<association property="clubBoardDto">
@@ -58,6 +62,7 @@
 			<result column="club_board_content" property="clubBoardContent"/>
 			<result column="club_board_time" property="clubBoardTime"/>
  			<result column="club_board_count" property="clubBoardCount"/> 
+ 			<result column="club_board_like" property="clubBoardLike"/> 
 		</association>
 		
 		<association property="memberDto">
@@ -100,18 +105,19 @@
 		</collection>
 	</resultMap>
 	
-	<select id="clubBoardTotalList" resultMap="clubBoardListItem">
+	<select id="clubBoardTotalList" resultMap="clubBoardListItem" parameterType="Map">
 <!-- 	join된 구문 작성  -->
-		select
+select
 	   C.club_board_no,
 	   C.club_board_count,
+	   C.club_board_like,
        C.club_board_time, 
        C.club_board_content,
-       C.club_no as,
+       C.club_no ,
        C.club_board_writer,
-       M.member_no as,
-       M.member_animal as,
-       M.member_nick as,
+       M.member_no ,
+       M.member_animal ,
+       M.member_nick ,
        M.member_interest1,
        M.member_interest2,
        M.member_interest3,
@@ -131,49 +137,55 @@ left outer join member M
 left outer join member_profile P 
    on C.club_board_writer = P.member_no
 left outer join club_board_like L
-   on C.club_board_writer = L.member_no
+   on C.club_board_No = L.club_board_no 
  left outer join club_board_attach A 
    on C.club_board_No = A.club_board_no 
-where C.club_no = #{clubNo}
+where C.club_no = #{clubNo} order by club_board_time desc
 	</select>
-	<!-- 단일 조회 -->
-<!-- 	<select id="one" resultMap="clubBoardListItem"> -->
-<!-- 				select -->
-<!-- 	   C.club_board_no, -->
-<!-- 	   C.club_board_count, -->
-<!--        C.club_board_time,  -->
-<!--        C.club_board_content, -->
-<!--        C.club_no as, -->
-<!--        C.club_board_writer, -->
-<!--        M.member_no as, -->
-<!--        M.member_animal as, -->
-<!--        M.member_nick as, -->
-<!--        M.member_interest1, -->
-<!--        M.member_interest2, -->
-<!--        M.member_interest3, -->
-<!--        M.member_gender, -->
-<!--        M.member_place1, -->
-<!--        M.member_place2, -->
-<!--        M.member_place3, -->
-<!--        M.member_sns_id, -->
-<!--        M.member_logindate, -->
-<!--        P.attach_no  as 프로필사진번호, -->
-<!--        A.attach_no as 게시글사진번호, -->
-<!--        H.heart_no, -->
-<!--        H.like_check -->
-<!-- from club_board C  -->
-<!-- left outer join member M  -->
-<!--    on C.club_board_writer = M.member_no  -->
-<!-- left outer join member_profile P  -->
-<!--    on C.club_board_writer = P.member_no -->
-<!-- left outer join heart H  -->
-<!--    on C.club_board_writer = H.member_no -->
-<!--  left outer join club_board_attach A  -->
-<!--    on C.club_board_No = A.club_board_no  -->
-<!-- where C.club_board_No = #{clubBoardNo} -->
-<!-- 	</select> -->
+	<!-- 단일조회 -->
+	<select id="one" resultMap="clubBoardListItem">
+				select
+	   C.club_board_no,
+	   C.club_board_count,
+	   C.club_board_like,
+       C.club_board_time, 
+       C.club_board_content,
+       C.club_no,
+       C.club_board_writer,
+       M.member_no,
+       M.member_animal,
+       M.member_nick,
+       M.member_interest1,
+       M.member_interest2,
+       M.member_interest3,
+       M.member_gender,
+       M.member_place1,
+       M.member_place2,
+       M.member_place3,
+       M.member_sns_id,
+       M.member_logindate,
+       P.attach_no  as 프로필사진번호,
+       A.attach_no as 게시글사진번호,
+       L.club_board_like_no,
+       L.like_check
+from club_board C 
+left outer join member M 
+   on C.club_board_writer = M.member_no 
+left outer join member_profile P 
+   on C.club_board_writer = P.member_no
+left outer join club_board_like L
+   on C.club_board_No = L.club_board_no 
+ left outer join club_board_attach A 
+   on C.club_board_No = A.club_board_no 
+where C.club_board_No = #{clubBoardNo} 
+	</select>
 	<select id="subListQuery" resultType="ClubboardAttachDto" parameterType="int">
 		select * from club_board_attach where club_no = #{clubNo}
 	</select>
-
+	<select id="oneMember" parameterType="int" resultType="memberDto">
+		select * from member where member_no=#{memberNo}
+	</select>
+	<select id="info" parameterType="int" resultType="clubBoardDto">
+		select * from club_board where club_board_no = #{clubBoardNo}
+	</select>
 </mapper>

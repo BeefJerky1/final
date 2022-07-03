@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.e3i1.entity.ClubBoardReplyDto;
+import com.kh.e3i1.vo.ClubBoardListItemVO;
+import com.kh.e3i1.vo.ClubBoardReplyListVO;
 @Repository
 public class ClubBoardReplyDaoImpl implements ClubBoardReplyDao{
 	@Autowired
@@ -47,5 +49,9 @@ public class ClubBoardReplyDaoImpl implements ClubBoardReplyDao{
 	public void calculateReplyCount(int clubBoardNo) {
 		sqlSession.update("clubboardreply.calculateReplyCount",clubBoardNo);	
 	}
-
+	@Override
+	public List<ClubBoardReplyListVO> listAll(int clubBoardNo) {
+//		this.calculateReplyCount(clubNo);
+		return sqlSession.selectList("clubboardreply.clubReplyTotalList", clubBoardNo);
+	}
 }

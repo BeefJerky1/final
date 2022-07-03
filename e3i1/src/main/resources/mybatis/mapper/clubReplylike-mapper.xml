@@ -19,36 +19,36 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="clubboardlike">
-<select id="checkLike" resultType="clubBoardLikeDto" parameterType="clubBoardLikeDto">
-		select * from club_board_like where member_no=#{memberNo} and club_board_no = #{clubBoardNo}
+<mapper namespace="clubreplylike">
+<select id="checkLike" resultType="clubReplyLikeDto" parameterType="clubReplyLikeDto">
+		select * from club_reply_like where member_no=#{memberNo} and reply_no = #{replyNo}
 	</select>
 	<!-- 시퀀스 생성 -->
 	<select id="sequence" resultType="int">
-		select club_board_like_seq.nextval from dual
+		select club_reply_like_seq.nextval from dual
 	</select>
-	<!-- 게시글 등록 -->
-	<insert id="insert" parameterType="clubBoardLikeDto">
-		insert into club_board_like (club_board_like_no, club_board_no, member_no, like_check)
-		values(#{clubBoardLikeNo}, #{clubBoardNo}, #{memberNo}, 1)
+	<!-- 등록 -->
+	<insert id="insert" parameterType="clubReplyLikeDto">
+		insert into club_reply_like (club_reply_like_no, reply_no, member_no, like_check)
+		values(#{clubReplyLikeNo}, #{replyNo}, #{memberNo}, 1)
 	</insert>
 	<!-- 조회 -->
-	<select id="one" resultType="clubBoardLikeDto" parameterType="int">
-		select * from club_board_like where club_board_like_no = #{clubBoardLikeNo}
+	<select id="one" resultType="clubReplyLikeDto" parameterType="int">
+		select * from club_reply_like where club_reply_like_no = #{clubReplyLikeNo}
 	</select>
 	<!-- 삭제 -->
-	<delete id="delete" parameterType="clubBoardLikeDto">
-		delete club_board_like where club_board_like_no = #{clubBoardLikeNo}
+	<delete id="delete" parameterType="clubReplyLikeDto">
+		delete club_reply_like where club_reply_like_no = #{clubReplyLikeNo}
 	</delete>
 	<!-- pk 조회 -->
-	<select id="pk" resultType="int" parameterType="clubBoardLikeDto">
-		select club_board_like_no from club_board_like where member_no=#{memberNo} and club_board_no = #{clubBoardNo}
+	<select id="pk" resultType="int" parameterType="clubReplyLikeDto">
+		select club_reply_like_no from club_reply_like where member_no=#{memberNo} and reply_no = #{replyNo}
 	</select>
 		<update id="calculateLikeCount" parameterType="int">
-		update club_board 
-		set club_board_like = (
-		select count(*) from club_board_like where club_board_no = #{clubBoardNo}
+		update club_board_reply 
+		set club_reply_like = (
+		select count(*) from club_reply_like where reply_no = #{replyNo}
 		)
-		where club_board_no = #{clubBoardNo}
+		where reply_no = #{replyNo}
 	</update>
 </mapper>

@@ -8,4 +8,6 @@ public interface ClubBoardLikeDao {
 	ClubBoardLikeDto insert(ClubBoardLikeDto clubBoardLikeDto);
 
 	void delete(ClubBoardLikeDto clubBoardLikeDto);
+
+	void calculateLikeCount(int clubBoardNo);
 }

@@ -18,7 +18,7 @@ public class ClubBoardReplyDto {
 	private int clubReplyWriter;
 	private String clubReplyContent;
 	private Date clubReplyTime;
-	
+	private int clubReplyLike;
 	
 	
 }
