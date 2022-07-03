@@ -117,21 +117,58 @@
 								autocomplete="off" required> <label for="floatingInput">Bitrh</label>
 						</div>
 
-						<div id="app" class="mt-2 text-start">
-							<label>지역</label>
+						<div class="mt-2 text-start">
+							<label>관심 지역1</label>
 							<div class="row">
 								<div class="col">
-									<select class="form-control rounded" @change="addCityList"
-										v-model="address1No">
+									<select class="form-control rounded" @change="addCityList1" v-model="address1No"> 
 										<option value="">시/도를 선택해주세요</option>
-										<option v-for="(address1, index) in address1List"
+										<option v-for="(address1, index) in address1List1"
 											v-bind:key="index" :value="address1.address1No">{{address1.province}}</option>
 									</select>
 								</div>
 								<div class="col">
-									<select name="memberplace" class="form-control rounded" v-model="city">
+									<select name="memberPlace1" class="form-control rounded" v-model="city1">
 										<option value="">시/군/구를 선택해주세요</option>
-										<option v-for="(address2, index) in address2List"
+										<option v-for="(address2, index) in address2List1"
+											v-bind:key="index" :value="address2.city">{{address2.city}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="mt-2 text-start">
+							<label>관심 지역2</label>
+							<div class="row">
+								<div class="col">
+									<select class="form-control rounded" @change="addCityList2" v-model="address2No">
+										<option value="">시/도를 선택해주세요</option>
+										<option v-for="(address1, index) in address1List2"
+											v-bind:key="index" :value="address1.address1No">{{address1.province}}</option>
+									</select>
+								</div>
+								<div class="col">
+									<select name="memberPlace2" class="form-control rounded" v-model="city2">
+										<option value="">시/군/구를 선택해주세요</option>
+										<option v-for="(address2, index) in address2List2"
+											v-bind:key="index" :value="address2.city">{{address2.city}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="mt-2 text-start">
+							<label>관심 지역3</label>
+							<div class="row">
+								<div class="col">
+									<select class="form-control rounded" @change="addCityList3" v-model="address3No">
+										<option value="">시/도를 선택해주세요</option>
+										<option v-for="(address1, index) in address1List3"
+											v-bind:key="index" :value="address1.address1No">{{address1.province}}</option>
+									</select>
+								</div>
+								<div class="col">
+									<select name="memberPlace3" class="form-control rounded" v-model="city3">
+										<option value="">시/군/구를 선택해주세요</option>
+										<option v-for="(address2, index) in address2List3"
 											v-bind:key="index" :value="address2.city">{{address2.city}}</option>
 									</select>
 								</div>
@@ -492,13 +529,23 @@ const app = Vue.createApp({
 data() {
 	return {
 		// 지역 목록용
-		address1List: [],
-		address2List: [],
+		address1List1: [],
+		address2List1: [],
+		
+		address1List2: [],
+		address2List2: [],
+		
+		address1List3: [],
+		address2List3: [],
 				
 		// 시/도 번호
 		address1No : "",
+		address2No : "",
+		address3No : "",
 		// 시/군/구 값
-		city: "",		
+		city1: "",		
+		city2: "",		
+		city3: "",		
 		
 		// mbti별 동물 
 		memberAnimal: "",
@@ -507,9 +554,9 @@ data() {
 computed: {},
 methods: {
 	// 시/군/구 추가
-	addCityList(){
+	addCityList1(){
 		if(this.address1No == ""){
-			this.address2List = [];
+			this.address2List1 = [];
 			return;
 		}
 		// 시/군/구
@@ -518,8 +565,40 @@ methods: {
 			method:"get",
 		}).then((resp) => {
 			this.city = "";
-			this.address2List = [];
-			this.address2List.push(...resp.data);
+			this.address2List1 = [];
+			this.address2List1.push(...resp.data);
+		})		
+	},
+	
+	addCityList2(){
+		if(this.address2No == ""){
+			this.address2List2 = [];
+			return;
+		}
+		// 시/군/구
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/address2/"+this.address2No,
+			method:"get",
+		}).then((resp) => {
+			this.city = "";
+			this.address2List2 = [];
+			this.address2List2.push(...resp.data);
+		})		
+	},
+	
+	addCityList3(){
+		if(this.address3No == ""){
+			this.address2List3 = [];
+			return;
+		}
+		// 시/군/구
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/address2/"+this.address3No,
+			method:"get",
+		}).then((resp) => {
+			this.city = "";
+			this.address2List3 = [];
+			this.address2List3.push(...resp.data);
 		})		
 	},
 	callAnimal(){
@@ -540,7 +619,9 @@ created() {
 			url:"${pageContext.request.contextPath}/rest/category_n_address/address1",
 			method:"get",
 		}).then((resp) => {
-			this.address1List.push(...resp.data);
+			this.address1List1.push(...resp.data);
+			this.address1List2.push(...resp.data);
+			this.address1List3.push(...resp.data);
 		})	
 	},
 });
