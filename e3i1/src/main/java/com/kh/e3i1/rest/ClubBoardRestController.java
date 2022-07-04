@@ -39,9 +39,9 @@ public class ClubBoardRestController {
 //	private MemberDao memberDao;
 	
 	//오른쪽 사이드바 목록
-	@GetMapping("/side/{clubNo}")
-	public List<ClubBoardDto> Sidelist(@PathVariable int clubNo) {
-		return clubBoardDao.list(clubNo);
+	@GetMapping("/side/{clubNo}/order/{orderType}")
+	public List<ClubBoardDto> Sidelist(@PathVariable int clubNo , @PathVariable String orderType) {
+		return clubBoardDao.list(clubNo,orderType);
 	}
 	//목록
 	@GetMapping("/{clubNo}")
