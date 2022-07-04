@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Repository
 public class ClubBoardDaoImpl implements ClubBoardDao{
 
@@ -25,10 +27,14 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 //	}
 	
 	@Override
-	public List<ClubBoardDto> list(int clubNo) {
+	public List<ClubBoardDto> list(int clubNo , String orderType) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("clubNo",clubNo);
+		param.put("orderType", orderType);
+		log.debug("orderType = {}", orderType);
 		this.calculateReplyCount(clubNo);
 		this.calculateLikeCount(clubNo);
-		return sqlSession.selectList("clubboard.list", clubNo);
+		return sqlSession.selectList("clubboard.board-side", param);
 	}
 
 	//등록
@@ -84,6 +90,12 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	@Override
 	public List<ClubBoardListItemVO> clubBoardListItem(int clubNo) {
 		return sqlSession.selectList("clubboard.subListQuery",clubNo);
+	}
+
+	@Override
+	public ClubBoardDto readcount(int clubBoardNo) {
+		sqlSession.update("clubboard.readcount", clubBoardNo);
+		return sqlSession.selectOne("clubboard.info", clubBoardNo);
 	}
 
 	

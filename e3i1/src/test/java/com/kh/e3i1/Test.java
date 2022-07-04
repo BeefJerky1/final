@@ -2,6 +2,7 @@ package com.kh.e3i1;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.junit.runner.RunWith;
@@ -10,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
 import com.kh.e3i1.vo.ClubBoardReplyListVO;
@@ -37,18 +39,14 @@ public class Test {
 	}
 	@org.junit.Test
 	public void test2() {
-		int page = 1;
-		int size = 5;
 		int clubNo = 1;
-		int end = page * size;
-		int begin = end -(size-1);
-		HashMap<String, Object> param = new HashMap<String, Object>();
-		param.put("clubNo", clubNo);
-		param.put("end", end);
-		param.put("begin", begin);
-		List<ClubBoardListItemVO> list = sqlSession.selectList("clubboard.clubBoardTotalList", param);
-		for(ClubBoardListItemVO vo:list) {
-			log.debug("vo = {}",vo);
+		String orderType = "clubBoardReadcountDesc";
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("clubNo",clubNo);
+		param.put("orderType", orderType);
+		List<ClubBoardDto> list = sqlSession.selectList("clubboard.board-side", param);
+		for(ClubBoardDto dto: list) {
+			log.debug("clubBoardDto ={}", dto);
 		}
 	}
 }
