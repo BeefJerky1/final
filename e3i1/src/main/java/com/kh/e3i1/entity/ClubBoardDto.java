@@ -19,4 +19,5 @@ public class ClubBoardDto {
 	private Date clubBoardTime;
 	private int clubBoardCount;
 	private int clubBoardLike;
+	private int clubBoardReadcount;
 }

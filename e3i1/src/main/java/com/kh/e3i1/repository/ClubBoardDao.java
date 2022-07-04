@@ -9,7 +9,7 @@ import com.kh.e3i1.vo.ClubBoardListItemVO;
 
 public interface ClubBoardDao {
 
-	List<ClubBoardDto> list(int clubNo);
+	List<ClubBoardDto> list(int clubNo,String orderType);
 
 	ClubBoardDto insert(ClubBoardDto clubBoardDto);
 
@@ -26,6 +26,8 @@ public interface ClubBoardDao {
 	List<ClubBoardListItemVO> clubBoardListItem(int clubNo);
 
 	List<ClubBoardListItemVO> listAll(int clubNo);
+
+	ClubBoardDto readcount(int clubBoardNo);
 
 
 

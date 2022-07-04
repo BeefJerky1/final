@@ -63,6 +63,7 @@
 			<result column="club_board_time" property="clubBoardTime"/>
  			<result column="club_board_count" property="clubBoardCount"/> 
  			<result column="club_board_like" property="clubBoardLike"/> 
+ 			<result column="club_board_readcount" property="clubBoardReadcount"/> 
 		</association>
 		
 		<association property="memberDto">
@@ -115,6 +116,7 @@ select
        C.club_board_content,
        C.club_no ,
        C.club_board_writer,
+       C.club_board_readcount,
        M.member_no ,
        M.member_animal ,
        M.member_nick ,
@@ -182,10 +184,33 @@ where C.club_board_No = #{clubBoardNo}
 	<select id="subListQuery" resultType="ClubboardAttachDto" parameterType="int">
 		select * from club_board_attach where club_no = #{clubNo}
 	</select>
-	<select id="oneMember" parameterType="int" resultType="memberDto">
-		select * from member where member_no=#{memberNo}
-	</select>
+	<!-- 상세 조회 -->
 	<select id="info" parameterType="int" resultType="clubBoardDto">
 		select * from club_board where club_board_no = #{clubBoardNo}
 	</select>
+	<!-- 게시글 정렬 -->
+	<select id="board-side" resultType="clubBoardDto" parameterType="Map"> 
+	select * from (
+    select rownum rn, TMP.* from (
+    select * from club_board where club_no = #{clubNo} order by 
+	<choose>
+		<when test="orderType == 'clubBoardLikeAsc'">club_board_like asc</when>
+		<when test="orderType == 'clubBoardLikeDesc'">club_board_like desc</when>
+		<when test="orderType == 'clubBoardCountAsc'">club_board_count asc</when>
+		<when test="orderType == 'clubBoardCountDesc'">club_board_count desc</when>
+		<when test="orderType == 'clubBoardNoAsc'">club_board_no asc</when>
+		<when test="orderType == 'clubBoardNoDesc'">club_board_no desc</when>
+		<when test="orderType == 'clubBoardReadcountAsc'">club_board_readcount asc</when>
+		<when test="orderType == 'clubBoardReadcountDesc'">club_board_readcount desc</when>
+	</choose>
+	)
+    TMP ) 
+    where rn between  1 and 10
+	</select>
+		<!-- 조회수 증가 -->
+	<update id="readcount" parameterType="int">
+		update club_board
+		set club_board_readcount = club_board_readcount+1
+		where club_board_no = #{clubBoardNo}
+	</update>
 </mapper>

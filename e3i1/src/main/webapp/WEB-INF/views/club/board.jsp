@@ -6,8 +6,8 @@
 	<c:set var="isLogin" value="${memberId != null}"></c:set>
 	<c:set var="isAdmin" value="${auth == '관리자'}"></c:set>
 	<style>
-	.red{
-	color:red;}
+	.red{color:red;}
+	.time{opacity:0.5; font-size:0.8em}
    .hover:hover{background-color: #F7F7F7;cursor: pointer;}
     .text-over-cut pre {
 		  display: block;
@@ -191,9 +191,9 @@
                     </a>
                 </div>
                 <div class="body">
-                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end">
+                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end" >
                         <textarea class="form-control" v-model="boardContent" placeholder="무슨 일이 일어나고 있나요?"></textarea>
-                        <button class="btn btn-primary" v-on:click="addBoard">등록</button>
+                        <button class="btn btn-primary" v-on:click="addBoard" :disabled="clubBoardContentIsEmpty()== true">등록</button>
                     </div>
                 </div>
                 <!-- 게시글 목록 출력 -->
@@ -233,6 +233,7 @@
                                 </div>
                                 </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
+                             <i class="fa-regular fa-eye"></i>{{clubboard.clubBoardDto.clubBoardReadcount}}
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
                             </div>
@@ -277,27 +278,49 @@
             <div class="col-lg-3 col-md-3 col-sm-3 right-side">
                 <div class="border-start border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 right-side">
                     <div class="row">   
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round" class="self-center ml-2 icon icon-tabler icon-tabler-search"><path stroke="none" d="M0 0h24v24H0z"></path><circle cx="10" cy="10" r="7"></circle><line x1="21" y1="21" x2="15" y2="15"></line></svg></span>
-                            <input type="text" class="form-control" placeholder="검색" aria-label="Username" aria-describedby="basic-addon1">
-                          </div>
+                        <hr>
+                        <select class="form-control" v-model="orderType"  v-on:change="changeList($event)">
+                        	<option value="clubBoardNoDesc">최신</option>
+                        	<option value="clubBoardLikeDesc">좋아요</option>
+                        	<option value="clubBoardReadcountDesc">조회</option>
+                        	<option value="clubBoardCountDesc">댓글</option>
+                        </select>
+                        <br><br>
+                        <div v-for="(side, index ) in side" v-bind:key="index" >
+                        	<div v-if="this.orderType=='clubBoardNoDesc'" class="row">
+                        		<div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
+                        			<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span> 
+                        		</div>
+                        		<div  class="col-lg-5 col-md-5 col-sm-5 text-end">
+                    				<span class="time">{{elapsedText(side.clubBoardTime)}}</span>
+	                        	</div>
+							</div>     
+								<div v-if="this.orderType=='clubBoardLikeDesc'" class="row">
+							      <div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
+	                    				<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span>
+							      </div>
+							      <div  class="col-lg-5 col-md-5 col-sm-5 text-end">
+                    					<i class="fa-solid fa-heart red" ></i><span >{{side.clubBoardLike}}</span>
+							      </div>
+								</div>         
+							<div v-if="this.orderType=='clubBoardReadcountDesc'" class="row">
+							      <div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
+                    				<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span>
+							      </div>
+							      <div  class="col-lg-5 col-md-5 col-sm-5 text-end">
+                    				<i class="fa-regular fa-eye"></i><span>{{side.clubBoardReadcount}}</span>
+							      </div>
+							</div>         
+							<div v-if="this.orderType=='clubBoardCountDesc'" class="row">
+							      <div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
+                    				<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span>
+							      </div>
+							      <div  class="col-lg-5 col-md-5 col-sm-5 text-end">
+                    				<i class="fa-regular fa-comment"></i><span>{{side.clubBoardCount}}</span>
+							      </div>
+							</div>                  	
+                    	</div>
                     </div>
-                        <hr>
-                        <h3>인기 게시글</h3>
-                        <h4>- 인기 1</h4>
-                        <h4>- 인기 1</h4>
-                        <h4>- 인기 1</h4>
-                        <hr>
-                        <h3>모임 일정</h3> 
-                        <h4>- 일정 1</h4>
-                        <h4>- 일정 2</h4>
-                        <h4>- 일정 3</h4>
-                        <h4>- 일정 4</h4>
-                        <hr> 
-                        <h3>추천 소모임</h3>
-                        <h4>- 소모임 1</h4>
-                        <h4>- 소모임 2</h4>
-                        <hr>
                 </div>
 
             </div>
@@ -325,17 +348,21 @@
                     board:[], //보여지는 게시글
                     totalBoard:0, //전체 게시글
                     showBoard:5, //보여주는 게시글 수
+                    boardLeft:0,//남은 게시글 수
                     dataFull:false,
+                    side:{},
+                    orderType:"clubBoardNoDesc",
                 };
             },
             //computed : data를 기반으로 하여 실시간 계산이 필요한 경우 작성한다.
             // - 3줄보다 많다면 사용하지 않는 것을 권장한다(복잡한 계산 시 성능 저하가 발생)
             computed:{
-            	clubBoardContentIsEmpty(){
-            		return this.boardContent.length==0;
-            	}
             },
             methods:{
+            	//게시글을 입력하지 않으면 게시글 등록버튼 비활성화
+            	clubBoardContentIsEmpty(){
+            		return this.boardContent.length==0;
+            	},
             	//게시글 목록 출력
                 loadClubBoardList(){
                     axios({
@@ -352,24 +379,45 @@
 						this.boardAll = res.data,
 						this.board = data,
 						this.totalBoard = this.boardAll.length
+						
+						if(this.totalBoard < this.showBoard){
+							this.showBoard = this.totalBoard;
+							this.board = this.boardAll;
+	                		this.dataFull=true;
+						}else if(this.totalBoard==this.showBoard){
+	                		this.dataFull=true;
+						}
 		        	});
                 },
+                //더보기 버튼으로 게시글 추가
                 appendBoard(){
-                	if(this.showBoard<this.totalBoard){
+                	//남은 게시글 수 확인
+                	this.boardLeft = this.totalBoard- this.showBoard;
+                	//게시글 수가 5개 이하라면 전체 게시글 수를 showboard에 넣는다.
+                	if(this.boardLeft < 5){
+						this.showBoard = this.totalBoard;
+						this.board = this.boardAll;
+						this.boardLeft = this.totalBoard- this.showBoard;
+	                	this.loadClubBoardList();
+                	}else 
+                	//게시글 수가 5개 이상이면 showBoard +5에 데이터 추가
+                	if(this.boardLeft >= 5){
                 		this.showBoard +=5
+                		this.boardLeft = this.totalBoard- this.showBoard;
                 	let data =[]
                 	for(var i=0; i<this.showBoard; i++){
                 		data.push(this.boardAll[i])
                 	}
                 	this.board = data
-                	if(this.totalBoard-this.showBoard <=5){
-                		this.showBoard = this.boardAll.length
-                	}
-                	}else{
+                	this.loadClubBoardList();
+                	//남은 게시글 수가 0개라면 버튼 클릭 X
+                	}else if(this.boardLeft==0){
                 		this.dataFull=true;
+                		
                 	}
                 	
                 },
+                //게시글 등록
                 addBoard(){
                 	axios({
 		        		url:"${pageContext.request.contextPath}/rest/clubboard/",
@@ -386,29 +434,43 @@
 		        		this.loadClubBoardList();
 		        	});
                 },
-                deleteBoard(index){
-                	const clubBoard = this.clubBoardList[index];
-                	axios({
-                		url:"${pageContext.request.contextPath}/rest/clubboard/"+clubBoard.clubBoardNo,
-                		method:"delete",
-                	})
-                	.then(resp=>{
-                		this.loadClubBoardList();
-                	});
-                },
+                //상세 페이지로 이동
                 select: function(index) {
-                	const clubBoard = this.clubBoardList[index];
+                	const clubBoard = this.board[index];
                 	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+clubBoard.clubBoardDto.clubBoardNo;
+                },
+                //인기 게시글로 이동
+                TopTen: function(index) {
+                	const list = this.side[index];
+                	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+list.clubBoardNo;
                 },
                 //시간 바꾸기
                 elapsedText(date) {
                 	return dateformat.elapsedText(new Date(date));
                 },
-             
+                //인기게시글
+                TopTenList(){
+                	axios({
+                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+this.orderType,
+		        		method:"get",
+                	}).then(resp=>{
+                		this.side = resp.data
+                	})
+                },
+                changeList(event) {
+                	axios({
+                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+event.target.value,
+		        		method:"get",
+                	}).then(resp=>{
+                		this.side = resp.data
+                	})
+                    console.log(event.target.value)
+                }
 
             },
             created(){
             	this.loadClubBoardList();
+            	this.TopTenList();
             },
             mounted(){
             	this.loadClubBoardList();
