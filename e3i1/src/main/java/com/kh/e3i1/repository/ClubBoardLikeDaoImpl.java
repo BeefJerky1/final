@@ -12,16 +12,13 @@ public class ClubBoardLikeDaoImpl implements ClubBoardLikeDao {
 	private SqlSession sqlSession;
 
 	@Override
-	public int selectList(int clubBoardNo, int clubBoardWriter) {
+	public int findLike(int clubBoardNo, int likeMemberNo) {
 		ClubBoardLikeDto clubBoardLikeDto = new ClubBoardLikeDto();
-		clubBoardLikeDto.setMemberNo(clubBoardWriter);
+		clubBoardLikeDto.setLikeMemberNo(likeMemberNo);
 		clubBoardLikeDto.setClubBoardNo(clubBoardNo);
-		ClubBoardLikeDto isExist = sqlSession.selectOne("clubboardlike.checkLike", clubBoardLikeDto);
-		if (isExist == null) {
-			return 0;
-		} else {
-			return 1;
-		}
+		this.calculateLikeCount(clubBoardNo);
+		int checkLike = sqlSession.selectOne("clubboardlike.checkLike", clubBoardLikeDto);
+		return checkLike;
 	}
 
 	@Override

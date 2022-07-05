@@ -2,6 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="path" value="${pageContext.request.contextPath}"/>
+<c:set var="memberNo" value="${login}"></c:set>
+<c:set var="memberAdmin" value="${auth == '관리자'}"></c:set>
+<c:set var="isLogin" value="${memberNo != null}"></c:set>
 <style>
 .red{
 	color:red;
@@ -13,6 +16,16 @@ cursor: pointer !important;
 .redBig{
 	color:red;
 }
+	.click{
+	 display: block; 
+  	width: 200px;        
+  	white-space: nowrap; 
+	overflow: hidden;
+	text-overflow: ellipsis;
+	}
+	.click:hover{
+	cursor:pointer;
+	}
 .redBig:hover{
 cursor: pointer !important;
 }
@@ -171,14 +184,13 @@ img{border-radius:100% !important}
             <div class="col-lg-5 col-md-5 col-sm-5 main">
                   <div class="border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 rounded">
                     </div>
-                  <div class="">
-                <div class="border border-opacity-10 text-dark p-2 col-lg-12 col-md-12 col-sm-12 rounded shadow"  >
+                <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 rounded shadow"  >
                     <div class="row">
-                       <div v-if="board != null">
-                       <div class="row">
-                        <div class="col-lg-2 col-md-2 col-sm-2">
-                            <a><img src="https://placeimg.com/50/50/animals" class=" mx-auto d-block"></a>
-                        </div>
+                       <div>
+                       <div class="row" v-if="board!=null">
+                            <div class="col-lg-2 col-md-2 col-sm-2 align-end top">
+                                <a><img src="https://placeimg.com/50/50/animals" class="profile mx-auto d-block"></a>
+                            </div>
                         <div class="col-lg-8 col-md-8 col-sm-8 align-start ">
                              		  {{board.memberDto.memberNick}}<br>
                                 <span>{{board.memberDto.memberInterest1}}</span>,
@@ -186,11 +198,11 @@ img{border-radius:100% !important}
                                 <span>{{board.memberDto.memberInterest3}}</span>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 p-3">
-                            <div v-if="board.clubBoardLikeDto.likeCheck==0">
-                                    <i class="fa-regular fa-heart redBig fa-3x" v-on:click="likey()"></i>
+                             <div v-if="this.boardLike==1">
+                                	<i class="fa-solid fa-heart redBig fa-3x" v-on:click="notLikey()"></i>
                                 </div>
                             <div v-else>
-                                	<i class="fa-solid fa-heart redBig fa-3x" v-on:click="likey()"></i>
+                                    <i class="fa-regular fa-heart redBig fa-3x" v-on:click="likey()"></i>
                             </div>
                         </div>
                         </div>
@@ -205,18 +217,22 @@ img{border-radius:100% !important}
                                 <div class="col-lg-3 col-md-3 col-sm-3 text-center">
                                        <i class="fa-regular fa-comment"></i> {{board.clubBoardDto.clubBoardCount}}
                                    </div>
-                                <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-                                <div v-if="board.clubBoardLikeDto.likeCheck==0">
-                                    <span><i class="fa-regular fa-heart red"  v-on:click="likey()"></i>{{board.clubBoardDto.clubBoardLike}}</span>
-                                </div>
-                                <div v-else>
-                                	<span><i class="fa-solid fa-heart red" v-on:click="likey()"></i>{{board.clubBoardDto.clubBoardLike}}</span>
-                                </div>
-                                   </div>
-                                <div class="col-lg-3 col-md-3 col-sm-3 text-center">
+                                <div class="col-lg-3 col-md-3 col-sm-3 text-center">	
+                   				 <div v-if="this.boardLike==1">
+	                                	<i class="fa-solid fa-heart red" v-on:click="notLikey()"></i>
+                                     	{{board.clubBoardDto.clubBoardLike}}
+                                     </div>
+                                     <div v-else>
+                                    <i class="fa-regular fa-heart red" v-on:click="likey()"></i>
+	                                	{{board.clubBoardDto.clubBoardLike}}
+                                     </div>
+
+                            	</div>	
+                                
+                                <div v-if="isBoardEditAndDeleteAvailable(board)" class="col-lg-3 col-md-3 col-sm-3 text-center">
                                     <i class="fa-solid fa-trash" v-on:click="deleteBoard()"></i>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-3 text-center">
+                                <div v-if="isBoardEditAndDeleteAvailable(board)" class="col-lg-3 col-md-3 col-sm-3 text-center">
                                     <i class="fa-solid fa-pen-to-square" v-on:click="changeEditMode()"></i>
                                 </div>
                             </div>
@@ -231,7 +247,6 @@ img{border-radius:100% !important}
                     </div>
                 </div>
                     		
-    	</div>
 </div>
             <!-- 댓글 등록 -->
                 <div class="border border-opacity-10 text-dark p-2 col-lg-12 col-md-12 col-sm-12 rounded mt-2 shadow">
@@ -243,8 +258,8 @@ img{border-radius:100% !important}
             <!-- 댓글 목록 -->
             <div class="text-dark col-lg-12 col-md-12 col-sm-12 ">
             <div class="border border-opacity-10 col-lg-12 col-md-12 col-sm-12 p-2 rounded mt-2 shadow" v-for="(reply, index) in reply" v-bind:key="index">
-                <div class="row ">
-                    <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="row p-4">
+                    <div class="col-lg-2 col-md-2 col-sm-2 ">
                             <a><img src="https://placeimg.com/50/50/animals" class=" mx-auto d-block"></a>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 align-start">
@@ -260,9 +275,6 @@ img{border-radius:100% !important}
                     </div>	
                     <div class="container row ">
                                 <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-        <!--            					<i class="fa-regular fa-comment"></i> {{board.clubBoardCount}} -->
-                                   </div>
-                                <div class="col-lg-3 col-md-3 col-sm-3 text-center">
         							<div v-if="reply.clubReplyLikeDto.likeCheck ==1">
                                 	<span><i class="fa-solid fa-heart red" v-on:click="replyLikey(index)"></i>{{reply.clubBoardReplyDto.clubReplyLike}}</span>
                                 </div>
@@ -270,11 +282,14 @@ img{border-radius:100% !important}
                                     <span><i class="fa-regular fa-heart red"  v-on:click="replyLikey(index)"></i>{{reply.clubBoardReplyDto.clubReplyLike}}</span>
                                 </div>
                                    </div>
-                                <div class="col-lg-3 col-md-3 col-sm-3 text-center">
+                                <div v-if="isReplyEditAndDeleteAvailable(index)" class="col-lg-3 col-md-3 col-sm-3 text-center">
                                     <a><i class="fa-solid fa-trash" v-on:click="deleteReply(index);"></i></a>	
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-3 text-center">
+                                <div v-if="isReplyEditAndDeleteAvailable(index)" class="col-lg-3 col-md-3 col-sm-3 text-center">
                                     <a><i class="fa-solid fa-pen-to-square" v-on:click="replyEditMode(index);"></i></a>		
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 text-center">
+     								<i class="fa-regular fa-flag"></i>
                                 </div>
                     </div>
                 </div>
@@ -301,11 +316,11 @@ img{border-radius:100% !important}
                         	<option value="clubBoardReadcountDesc">조회</option>
                         	<option value="clubBoardCountDesc">댓글</option>
                         </select>
-                        <br><br>
+                        <div class=" border-buttom border-opacity-10 col-lg-12 col-md-12 col-sm-12 mt-5">
                         <div v-for="(side, index ) in side" v-bind:key="index" >
                         	<div v-if="this.orderType=='clubBoardNoDesc'" class="row">
                         		<div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
-                        			<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span> 
+                        			<span v-on:click="TopTen(index)" class="click">{{1+index}}. {{side.clubBoardContent}}</span> 
                         		</div>
                         		<div  class="col-lg-5 col-md-5 col-sm-5 text-end">
                     				<span class="time">
@@ -315,7 +330,7 @@ img{border-radius:100% !important}
 							</div>     
 								<div v-if="this.orderType=='clubBoardLikeDesc'" class="row">
 							      <div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
-	                    				<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span>
+	                    				<span v-on:click="TopTen(index)" class="click">{{1+index}}. {{side.clubBoardContent}}</span>
 							      </div>
 							      <div  class="col-lg-5 col-md-5 col-sm-5 text-end">
                     					<i class="fa-solid fa-heart red" ></i><span >{{side.clubBoardLike}}</span>
@@ -323,7 +338,7 @@ img{border-radius:100% !important}
 								</div>         
 							<div v-if="this.orderType=='clubBoardReadcountDesc'" class="row">
 							      <div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
-                    				<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span>
+                    				<span v-on:click="TopTen(index)" class="click">{{1+index}}. {{side.clubBoardContent}}</span>
 							      </div>
 							      <div  class="col-lg-5 col-md-5 col-sm-5 text-end">
                     				<i class="fa-regular fa-eye"></i><span>{{side.clubBoardReadcount}}</span>
@@ -331,12 +346,13 @@ img{border-radius:100% !important}
 							</div>         
 							<div v-if="this.orderType=='clubBoardCountDesc'" class="row">
 							      <div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
-                    				<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span>
+                    				<span v-on:click="TopTen(index)" class="click">{{1+index}}. {{side.clubBoardContent}}</span>
 							      </div>
 							      <div  class="col-lg-5 col-md-5 col-sm-5 text-end">
                     				<i class="fa-regular fa-comment"></i><span>{{side.clubBoardCount}}</span>
 							      </div>
 							</div>                  	
+                    	</div>
                     	</div>
                     </div>
                 </div>
@@ -358,7 +374,9 @@ img{border-radius:100% !important}
                 return {
                    //소모임
 		           clubNo:"1",//소모임 번호                	
-		           memberNo:"3",//사용자 번호
+				   //세션
+				   memberNo:"${login}",
+		           memberAdmin:"${auth}",
                    //게시글
 		           board:null,//상세
 		           like:"",//게시글 좋아요
@@ -379,11 +397,23 @@ img{border-radius:100% !important}
                    side:{},
                    orderType:"clubBoardNoDesc",
                    
-                   //dayjs
+                   //상세 좋아요
+                   boardLike:"",
+//                    boardLike:false,
+//                    boardNotLike:true,
+                 
                 };
             },
             computed:{
-	               	
+            	isNotMember(){
+ 		        	return this.memberNo == "" && this.memberAdmin == "";
+ 		        },
+ 		        isMember(){
+ 		        	return this.memberNo != "";
+ 		        },
+ 		        isAdmin(){
+ 		        	return this.isMember && this.memberAdmin == "관리자";
+ 		        },
             },
             methods:{
             	//게시글 로드
@@ -398,10 +428,39 @@ img{border-radius:100% !important}
  		        	})
  		        	.then(resp=>{
  		        		this.board= resp.data;
- 		        		
  		        	});
  		        
  		    	},
+//  		    	red(index){
+// 		    		const board = this.board[index];
+// 		    		const likeMemberNo = board.clubBoardLikeDto.likeMemberNo
+// 		    		console.log("red.memberNo=",this.memberNo)
+// 		    		console.log("red.likeMemberNo=",likeMemberNo)
+// 					if(this.memberNo==likeMemberNo)return true;
+//  		    	},
+// 				white(index){
+// 					//1. 좋아요를 누른적이 없는 경우\
+// 					console.log()
+// 					const board = this.board[index];
+// 		    		const likeMemberNo = board.clubBoardLikeDto.likeMemberNo
+// 		    		console.log("white.memberNo=",this.memberNo)
+// 		    		console.log("white.likeMemberNo=",likeMemberNo)
+// 					if(this.memberNo!=likeMemberNo)return true;
+//  		    	},
+ 		    	//작성자 == 현재사용자라면 삭제 가능
+		    	isBoardEditAndDeleteAvailable(board){
+		    		//1.관리자라면 통과
+// 		    		console.log(board)
+		    		const boardWriter = board.clubBoardDto.clubBoardWriter
+		    		console.log("게시글:boardWriter=",boardWriter)
+		    		console.log("게시글:memberNo=",this.memberNo)
+		    		if(this.isAdmin) return true;
+		    		//2.현재 사용자가 작성자라면 통과
+		    		if(this.memberNo==boardWriter)return true;
+		    		
+		    		//나머지 차단
+		    		return false;
+		    	},
  		    	//게시글 삭제
  		    	deleteBoard(){
  		    		let uri = window.location.search.substring(1); 
@@ -438,38 +497,61 @@ img{border-radius:100% !important}
 		        changeDisplayMode(){
 		        	this.board.edit=false;
 		        },
-		      //게시글 좋아요 체크
+		      	//게시글 좋아요 체크
              	boardLikeCheck(){
-               		if(this.like.likeCheck>0 && this.board.clubBoardDto.clubBoardNo==like.clubBoardNo) return true;
+	               	let uri = window.location.search.substring(1); 
+                    let params = new URLSearchParams(uri);
+                    const clubBoardNo = params.get("clubBoardNo");
+                    const memberNo = this.memberNo
+               		axios({
+               			url:"${pageContext.request.contextPath}/rest/clubboard/like/"+clubBoardNo+"/"+memberNo,
+               			method:"get",
+               		}).then(resp=>{
+               			this.boardLike=resp.data
+               		})
             	},
                 //게시글 좋아요/취소
+               
                 likey(){
-                	if(this.board.clubBoardLikeDto.likeCheck==0){
+ 		    		let uri = window.location.search.substring(1); 
+                    let params = new URLSearchParams(uri);
+                    console.log(params.get("clubBoardNo"));
+                    const clubBoardNo = params.get("clubBoardNo");
                 		axios({
                 			url:"${pageContext.request.contextPath}/rest/clubboard/like/",
                 			method:"post",
                 			data:{  
-    		        			clubBoardNo:this.board.clubBoardLikeDto.clubBoardNo,
+    		        			clubBoardNo:clubBoardNo,
     		        			memberNo:this.memberNo,
                 			}
                 		}).then(resp=>{
                 			
 							this.loadContent();
-                		
+                			this.boardLike=true;
+                			this.boardNotLike=false;
                 		})
-                	}else if(this.board.clubBoardLikeDto.likeCheck==1){
+                		
+                	
+                },
+                notLikey(){
+ 		    		let uri = window.location.search.substring(1); 
+                    let params = new URLSearchParams(uri);
+                    console.log(params.get("clubBoardNo"));
+                    const clubBoardNo = params.get("clubBoardNo");
                 		axios({
                 			url:"${pageContext.request.contextPath}/rest/clubboard/like/",
                 			method:"delete",
                 			data:{
-    		        			clubBoardNo:this.board.clubBoardLikeDto.clubBoardNo,
+    		        			clubBoardNo:clubBoardNo,
     		        			memberNo:this.memberNo,
                 			}
                 		}).then(resp=>{
                 			this.loadContent();
+                			this.boardNotLike=true;
+                			this.boardLike=false;
                 		})
-                	}
-                },                
+                	
+                },
 		        //댓글 등록
 		        addReply(){
 // 		        	if(this.boardContentIsEmpty) return;
@@ -548,6 +630,20 @@ img{border-radius:100% !important}
                 		
                 	} 	
                 },
+		    	isReplyEditAndDeleteAvailable(index){
+                	const reply = this.reply[index];
+		    		//1.관리자라면 통과
+// 		    		console.log(board)
+		    		const replyWriter = reply.clubBoardReplyDto.clubReplyWriter
+		    		console.log("댓글:replyWriter=",replyWriter)
+		    		console.log("댓글:memberNo=",this.memberNo)
+		    		if(this.isAdmin) return true;
+		    		//2.현재 사용자가 작성자라면 통과
+		    		if(this.memberNo==replyWriter)return true;
+		    		
+		    		//나머지 차단
+		    		return false;
+		    	},
 		    	//댓글 삭제
 		        deleteReply(index){
 		        	const choice = window.confirm("정말 삭제하시겠습니까?\n삭제한 데이터는 복구되지 않습니다");
@@ -625,11 +721,13 @@ img{border-radius:100% !important}
                 		})
                 	}
                 },
-                //댓글 더보기 구현
-                
+                //인기 게시글로 이동
+                TopTen: function(index) {
+                	const list = this.side[index];
+                	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+list.clubBoardNo;
+                },  
                 //인기게시글
-                TopTenList(){
-                	
+                TopTenList(){           	
                 	axios({
                 		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+this.orderType,
 		        		method:"get",
@@ -652,6 +750,8 @@ img{border-radius:100% !important}
             	this.loadContent();
             	this.loadReply();
             	this.TopTenList();
+            	this.boardLikeCheck()
+//             	this.isEditAndDeleteAvailable();
             },
         });
         app.mount("#app");

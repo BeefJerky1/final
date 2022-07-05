@@ -20,6 +20,5 @@ public class ClubBoardListItemVO {
 	private MemberDto memberDto;
 	private MemberProfileDto memberProfileDto;
 	private ClubBoardLikeDto clubBoardLikeDto;
-	private int page;
-	private int size;
+
 }

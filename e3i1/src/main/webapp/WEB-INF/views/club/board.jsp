@@ -2,11 +2,17 @@
 	pageEncoding="UTF-8"%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<c:set var="path" value="${pageContext.request.contextPath}"/>
-	<c:set var="memberId" value="${login}"></c:set>
-	<c:set var="isLogin" value="${memberId != null}"></c:set>
-	<c:set var="isAdmin" value="${auth == '관리자'}"></c:set>
 	<style>
-	.click:hover{cursor:pointer;}
+	.click{
+	 display: block; 
+  	width: 200px;        
+  	white-space: nowrap; 
+	overflow: hidden;
+	text-overflow: ellipsis;
+	}
+	.click:hover{
+	cursor:pointer;
+	}
 	.red{color:red;}
 	.time{opacity:0.5; font-size:0.8em}
    .hover:hover{background-color: #F7F7F7;cursor: pointer;}
@@ -184,7 +190,7 @@
                 </div>
                 <div v-if="show">
 
-                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end rounded mt-2 shadow"  >
+                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end rounded mt-2  shadow"  >
                         <textarea class="form-control " v-model="boardContent" placeholder="무슨 일이 일어나고 있나요?"></textarea>
                         <button class="btn btn-primary mt-3 shadow" v-on:click="addBoard" :disabled="clubBoardContentIsEmpty()== true">등록하기</button>
                     </div>
@@ -196,7 +202,7 @@
                     <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 hover rounded mt-2 shadow ">
                         <div class="row">
                             <div class="col-lg-2 col-md-2 col-sm-2 align-end top">
-                                <a><img src="https://placeimg.com/50/50/animals" class="profile mx-auto d-block"></a>
+                                <a><img src="https://placeimg.com/70/70/animals" class="profile mx-auto d-block"></a>
                             </div>
                             <div class="col-lg-8 col-md-8 col-sm-8 align-start top">
                                 <span data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -211,21 +217,28 @@
                                 {{elapsedText(clubboard.clubBoardDto.clubBoardTime)}}
                             </div>
                         </div>
-                        <div class="row px-5 text-over-cut" v-on:click="select(index)" >
-                            <pre>{{clubboard.clubBoardDto.clubBoardContent}}</pre>
+                        <div class="row text-over-cut" v-on:click="select(index)" >
+                        	<div class="row">
+                       		<div class="row px-5 p-4">
+                            <pre class="text-start">{{clubboard.clubBoardDto.clubBoardContent}}</pre>
+                        	</div>
+                            </div>
                         </div>
                         <div class="container row mt-5">
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
                                 <i class="fa-regular fa-comment"></i>{{clubboard.clubBoardDto.clubBoardCount}}
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-                                <div v-if="clubboard.clubBoardLikeDto.likeCheck==0">
+                            	<div v-if="clubboard.clubBoardLikeDto.likeMemberNo != this.memberNo">
+                            		<span><i class="fa-regular fa-heart red" ></i>{{clubboard.clubBoardDto.clubBoardLike}}</span>
+                                </div>
+                                <div v-else-if="clubboard.clubBoardLikeDto.likeCheck==0">
                                     <span><i class="fa-regular fa-heart red" ></i>{{clubboard.clubBoardDto.clubBoardLike}}</span>
                                 </div>
                                 <div v-else>
                                 	<span><i class="fa-solid fa-heart red" ></i>{{clubboard.clubBoardDto.clubBoardLike}}</span>
                                 </div>
-                                </div>
+                            </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
                              <i class="fa-regular fa-eye"></i>{{clubboard.clubBoardDto.clubBoardReadcount}}
                             </div>
@@ -291,8 +304,10 @@
         </div>
         </div>
        <div class="col-lg-3 col-md-3 col-sm-3 position-sticky right-side mt-5 ">
-        			<button class="btn btn-secondary form-control shadow" v-on:click="notAllowed()" v-if="show">cancel</button>
+       			<div v-if="isMember">
+        			<button class="btn btn-secondary form-control shadow" v-on:click="notAllowed()" v-if="show ">cancel</button>
                    	<button class="btn btn-primary form-control shadow" v-on:click="allowed()" v-if="asdf">write</button>
+       			</div>
                 <div class="border border-opacity-10 text-dark mt-2 p-4 col-lg-12 col-md-12 col-sm-12 right-side rounded shadow">
                     <div class="row">   
                     	<div class="col-lg-12 col-md-12 col-sm-12">
@@ -315,7 +330,7 @@
 							</div>     
 								<div v-if="this.orderType=='clubBoardLikeDesc'" class="row">
 							      <div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
-	                    				<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span>
+	                    				<span v-on:click="TopTen(index)" class="click">{{1+index}}. {{side.clubBoardContent}}</span>
 							      </div>
 							      <div  class="col-lg-5 col-md-5 col-sm-5 text-end">
                     					<i class="fa-solid fa-heart red" ></i><span >{{side.clubBoardLike}}</span>
@@ -323,7 +338,7 @@
 								</div>         
 							<div v-if="this.orderType=='clubBoardReadcountDesc'" class="row">
 							      <div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
-                    				<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span>
+                    				<span v-on:click="TopTen(index)" class="click">{{1+index}}. {{side.clubBoardContent}}</span>
 							      </div>
 							      <div  class="col-lg-5 col-md-5 col-sm-5 text-end">
                     				<i class="fa-regular fa-eye"></i><span>{{side.clubBoardReadcount}}</span>
@@ -331,7 +346,7 @@
 							</div>         
 							<div v-if="this.orderType=='clubBoardCountDesc'" class="row">
 							      <div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
-                    				<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span>
+                    				<span v-on:click="TopTen(index)" class="click">{{1+index}}. {{side.clubBoardContent}}</span>
 							      </div>
 							      <div  class="col-lg-5 col-md-5 col-sm-5 text-end">
                     				<i class="fa-regular fa-comment"></i><span>{{side.clubBoardCount}}</span>
@@ -359,11 +374,13 @@
             //data : 화면을 구현하는데 필요한 데이터를 작성한다.
             data(){
                 return {
-		            
+		            //세션
+		            memberNo:"${login}",
+		            memberAdmin:"${auth}",
 		            //댓글 입력 정보
 		            boardContent:"",
 		            boardContent2:"",
-// 		      		asdf:${memberId},
+					//게시글 등록/취소 버튼
 					show:false,
 					asdf:true,
                     clubNo:"1",
@@ -382,6 +399,15 @@
             //computed : data를 기반으로 하여 실시간 계산이 필요한 경우 작성한다.
             // - 3줄보다 많다면 사용하지 않는 것을 권장한다(복잡한 계산 시 성능 저하가 발생)
             computed:{
+            	isNotMember(){
+ 		        	return this.memberNo == "" && this.memberAdmin == "";
+ 		        },
+ 		        isMember(){
+ 		        	return this.memberNo != "";
+ 		        },
+ 		        isAdmin(){
+ 		        	return this.isMember && this.memberAdmin == "관리자";
+ 		        },
             },
             methods:{
             	//게시글을 입력하지 않으면 게시글 등록버튼 비활성화
