@@ -6,6 +6,7 @@
 	<c:set var="isLogin" value="${memberId != null}"></c:set>
 	<c:set var="isAdmin" value="${auth == '관리자'}"></c:set>
 	<style>
+	.click:hover{cursor:pointer;}
 	.red{color:red;}
 	.time{opacity:0.5; font-size:0.8em}
    .hover:hover{background-color: #F7F7F7;cursor: pointer;}
@@ -21,18 +22,9 @@
         padding-left: 0 !important; 
         padding-right: 0 !important;
     }
-    .left-side {
-        padding-right: 0 !important;
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
-    }
-    .right-side{
-        padding-left:0 !important;
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
-    }
+	div{
+	border-radius:"20% !important";
+	}
     .position {
         width: 41.4% !important;
         position: fixed;
@@ -41,7 +33,7 @@
     .body {
         padding-top: 85px;
     }
-    img{
+    .profile{
 		border-radius:50%;    
     }
 
@@ -51,8 +43,8 @@
   <!-- 특정 영역을 생성하여 이 부분만 vue로 제어한다 -->
     <div id="app" class="container-fluid">
         <div class="row all">
-            <div class="col-lg-3 col-md-3 col-sm-3 left-side">
-                <div class="border-end text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side">
+            <div class="col-lg-3 col-md-3 col-sm-3 position-sticky left-side rounded mt-5">
+                <div class="border border-o text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side rounded shadow">
                     <h4><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="44"
                             height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -185,24 +177,26 @@
                 </div>
             </div>
             <div class="col-lg-5 col-md-5 col-sm-5 main">
-                <div class="border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 position">
-                    <a href="http://localhost:8080/e3i1/club/board/1">
-                        <h4><b>홈</b></h4>
-                    </a>
+                <div class="border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end">
+<!--                     <a href="http://localhost:8080/e3i1/club/board/1"> -->
+<!--                         <h4><b>홈</b></h4> -->
+<!--                     </a> -->
                 </div>
-                <div class="body">
-                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end" >
-                        <textarea class="form-control" v-model="boardContent" placeholder="무슨 일이 일어나고 있나요?"></textarea>
-                        <button class="btn btn-primary" v-on:click="addBoard" :disabled="clubBoardContentIsEmpty()== true">등록</button>
+                <div v-if="show">
+
+                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end rounded mt-2 shadow"  >
+                        <textarea class="form-control " v-model="boardContent" placeholder="무슨 일이 일어나고 있나요?"></textarea>
+                        <button class="btn btn-primary mt-3 shadow" v-on:click="addBoard" :disabled="clubBoardContentIsEmpty()== true">등록하기</button>
                     </div>
+ 
                 </div>
                 <!-- 게시글 목록 출력 -->
                 <div  class="text-dark col-lg-12 col-md-12 col-sm-12">
                 <div v-for="(clubboard, index ) in board" v-bind:key="index" >
-                    <div v-on:click="select(index)" class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 hover">
+                    <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 hover rounded mt-2 shadow ">
                         <div class="row">
                             <div class="col-lg-2 col-md-2 col-sm-2 align-end top">
-                                <a><img src="https://placeimg.com/50/50/animals" class=" mx-auto d-block"></a>
+                                <a><img src="https://placeimg.com/50/50/animals" class="profile mx-auto d-block"></a>
                             </div>
                             <div class="col-lg-8 col-md-8 col-sm-8 align-start top">
                                 <span data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -217,7 +211,7 @@
                                 {{elapsedText(clubboard.clubBoardDto.clubBoardTime)}}
                             </div>
                         </div>
-                        <div class="row px-5 text-over-cut">
+                        <div class="row px-5 text-over-cut" v-on:click="select(index)" >
                             <pre>{{clubboard.clubBoardDto.clubBoardContent}}</pre>
                         </div>
                         <div class="container row mt-5">
@@ -244,52 +238,76 @@
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">프로필</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
             <div class="modal-body">
-                <div class="card" style="width: 18rem;">
-                    <a><img src="https://placeimg.com/200/200/animals" class="rounded mx-auto d-block"></a>
+                <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <a><img src="https://placeimg.com/120/120/animals" class="circle profile"></a>
                 </div>
-            </div>
-            <div class="col p-4">
-            <h4>닉네임:{{clubboard.memberDto.memberNick}}</h4><br>
-            <h4>성별:{{clubboard.memberDto.memberGender}}</h4>
-            <h4>관심지역:{{clubboard.memberDto.memberPlace1}}</h4><br>
-            <h4>관심지역:{{clubboard.memberDto.memberPlace2}}</h4><br>
-            <h4>관심지역:{{clubboard.memberDto.memberPlace3}}</h4><br>
-            <h4>마지막 로그인:{{elapsedText(clubboard.memberDto.memberLogindate)}}</h4><br>
+                <div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
+		            <h4><b>{{clubboard.memberDto.memberNick}}</b></h4>
+		            <span>{{clubboard.memberDto.memberGender}}/</span><span>{{elapsedText(clubboard.memberDto.memberBirth)}}/</span> <span>{{clubboard.memberDto.memberPlace1}}</span>           
+                </div>
+                <div class="row mt-5">
+                <div class="col-lg-6col-md-6 col-sm-6">
+                	<button class="btn btn-outline-danger form-control">신고하기</button>
+                </div>
+                <div class="col-lg-6col-md-6 col-sm-6">
+                	<button class="btn btn-outline-warning form-control">차단하기</button>
+                </div>
+                </div>
+                <div class="row mt-5">
+                	<h5><b>SNS계정</b><img style="width:25px "src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"></h5>
+                	<h5>{{clubboard.memberDto.memberSnsId}}</h5>
+                </div>
+                <div class="row mt-5">
+                	<h5><b>나의 관심분야</b></h5>
+                	<div class="col-lg-12 col-md-12 col-sm-12">
+		            <button class="btn btn-outline-secondary btn-sm">{{clubboard.memberDto.memberInterest1}}</button>
+		            <button class="btn btn-outline-secondary btn-sm">{{clubboard.memberDto.memberInterest2}}</button>
+		            <button class="btn btn-outline-secondary btn-sm">{{clubboard.memberDto.memberInterest3}}</button>
+		            </div>
+                </div>
+				<div class="row mt-5">
+					<h5><b>마지막 로그인</b></h5>
+					<h5>{{convertTime(clubboard.memberDto.memberLogindate)}}({{elapsedText(clubboard.memberDto.memberLogindate)}})</h5>
+            	</div>
+
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">차단하기</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">신고하기</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
           </div>
         </div>
       </div>
-                </div>
-               <button type="button" v-on:click="appendBoard()" :disabled="this.dataFull == true" class="form-control">
+    </div>
+            </div>
+            <div class=" mt-3">
+                 <button type="button" v-on:click="appendBoard()" :disabled="this.dataFull == true" class="form-control btn-outline-primary shadow">
         더보기 ({{showBoard}}/{{totalBoard}})
     </button>
             </div>
+            
         </div>
-            <div class="col-lg-3 col-md-3 col-sm-3 right-side">
-                <div class="border-start border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 right-side">
+        </div>
+       <div class="col-lg-3 col-md-3 col-sm-3 position-sticky right-side mt-5 ">
+        			<button class="btn btn-secondary form-control shadow" v-on:click="notAllowed()" v-if="show">cancel</button>
+                   	<button class="btn btn-primary form-control shadow" v-on:click="allowed()" v-if="asdf">write</button>
+                <div class="border border-opacity-10 text-dark mt-2 p-4 col-lg-12 col-md-12 col-sm-12 right-side rounded shadow">
                     <div class="row">   
-                        <hr>
-                        <select class="form-control" v-model="orderType"  v-on:change="changeList($event)">
-                        	<option value="clubBoardNoDesc">최신</option>
-                        	<option value="clubBoardLikeDesc">좋아요</option>
-                        	<option value="clubBoardReadcountDesc">조회</option>
-                        	<option value="clubBoardCountDesc">댓글</option>
+                    	<div class="col-lg-12 col-md-12 col-sm-12">
+                    	
+                        <select class="form-select" v-model="orderType"  v-on:change="changeList($event)">
+                        	<option value="clubBoardNoDesc">최신순 </option>
+                        	<option value="clubBoardLikeDesc">좋아요순</option>
+                        	<option value="clubBoardReadcountDesc">조회순</option>
+                        	<option value="clubBoardCountDesc">댓글순</option>
                         </select>
-                        <br><br>
-                        <div v-for="(side, index ) in side" v-bind:key="index" >
+                        <div class=" border-buttom border-opacity-10 col-lg-12 col-md-12 col-sm-12 mt-5">
+                        <div v-for="(side, index ) in side" v-bind:key="index" class=" border-buttom border-opacity-10 col-lg-12 col-md-12 col-sm-12">
                         	<div v-if="this.orderType=='clubBoardNoDesc'" class="row">
                         		<div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
-                        			<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span> 
+                        			<span v-on:click="TopTen(index)" class="click">{{1+index}}. {{side.clubBoardContent}}</span> 
                         		</div>
                         		<div  class="col-lg-5 col-md-5 col-sm-5 text-end">
                     				<span class="time">{{elapsedText(side.clubBoardTime)}}</span>
@@ -320,12 +338,15 @@
 							      </div>
 							</div>                  	
                     	</div>
+                    	</div>
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
+    </div>
+
      <!-- vue js도 lazy loading을 사용한다 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -341,15 +362,19 @@
 		            
 		            //댓글 입력 정보
 		            boardContent:"",
+		            boardContent2:"",
 // 		      		asdf:${memberId},
-                    //목록
+					show:false,
+					asdf:true,
                     clubNo:"1",
+                    //더보기
                     boardAll:[], //전체 게시글
                     board:[], //보여지는 게시글
                     totalBoard:0, //전체 게시글
                     showBoard:5, //보여주는 게시글 수
                     boardLeft:0,//남은 게시글 수
                     dataFull:false,
+                    //사이드 인기 게시판
                     side:{},
                     orderType:"clubBoardNoDesc",
                 };
@@ -369,14 +394,14 @@
 		        		url:"${pageContext.request.contextPath}/rest/clubboard/"+this.clubNo,
 		        		method:"get",
 		        	})
-		        	.then(res=>{
+		        	.then(resp=>{
 		        	
 						let data = []
 						for(var i = 0; i<this.showBoard;i++){
 // 							console.log(i)
-							data.push(res.data[i])
+							data.push(resp.data[i])
 						}
-						this.boardAll = res.data,
+						this.boardAll = resp.data,
 						this.board = data,
 						this.totalBoard = this.boardAll.length
 						
@@ -417,6 +442,15 @@
                 	}
                 	
                 },
+                allowed(){
+                	this.show = true;
+                	this.asdf = false;
+                },
+                notAllowed(){
+                   	this.show= false;
+					this.asdf = true;
+					this.boardContent = "";
+                },
                 //게시글 등록
                 addBoard(){
                 	axios({
@@ -448,6 +482,11 @@
                 elapsedText(date) {
                 	return dateformat.elapsedText(new Date(date));
                 },
+                //moment js
+		        convertTime(time){
+		        	return moment(time).format('llll'); // 2022년 7월 4일 월요일 오후 9:46
+ 
+		        },
                 //인기게시글
                 TopTenList(){
                 	axios({
@@ -457,6 +496,7 @@
                 		this.side = resp.data
                 	})
                 },
+                //select로 인기게시글 변경
                 changeList(event) {
                 	axios({
                 		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+event.target.value,
@@ -465,7 +505,7 @@
                 		this.side = resp.data
                 	})
                     console.log(event.target.value)
-                }
+                },
 
             },
             created(){
