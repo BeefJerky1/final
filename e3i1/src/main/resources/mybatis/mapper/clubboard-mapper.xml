@@ -48,7 +48,11 @@
 	</select>
 	<!-- 좋아요 카운트 -->
 	<select id="calculateLikeCount" parameterType="int">
-		select club_board_like from club_board
+		update club_board
+		set club_board_like = (
+		select count(*) from club_board_like where club_board_no =#{clubBoardNo}
+		)
+		where club_board_no = #{clubBoardNo}
 	</select>
 <!-- 	<select id="one" resultType="clubBoardDto" parameterType="int"> -->
 <!-- 		select * from club_board where club_board_no = #{clubBoardNo} -->
@@ -88,22 +92,24 @@
 			<result column="member_birth" property="memberBirth"/>
 			<result column="member_name" property="memberName"/>
 		</association>
-		<association property="clubBoardLikeDto">
-			<result column="club_board_like_no" property="clubBoardLikeNo"/>
-			<result column="member_no" property="memberNo"/>
-			<result column="club_board_no" property="clubBoardNo"/>
-			<result column="like_check" property="likeCheck"/>
-		</association>
+
 		<association property="memberProfileDto">
 			<result column="member_no" property="memberNo"/>
 			<result column="attach_no" property="attachNo"/>
 		</association>
 		
-		<collection javaType="java.util.List" ofType="ClubboardAttachDto" property="ClubboardAttachDto" select="subListQuery" column="clubNo">
+		<association property="clubBoardLikeDto">
+			<result column="club_board_like_no" property="clubBoardLikeNo"/>
+			<result column="like_member_no" property="likeMemberNo"/>
+			<result column="club_board_no" property="clubBoardNo"/>
+			<result column="like_check" property="likeCheck"/>
+		</association>
+		<collection javaType="java.util.List" ofType="ClubBoardAttachDto" property="attach" select="subListQuery" column="club_no">
 			<result column="club_board_no" property="clubBoardNo"/>
 			<result column="club_no" property="clubNo"/>
 			<result column="게시글사진번호" property="attachNo"/>
 		</collection>
+
 	</resultMap>
 	
 	<select id="clubBoardTotalList" resultMap="clubBoardListItem" parameterType="Map">
@@ -134,7 +140,9 @@ select
        P.attach_no  as 프로필사진번호,
        A.attach_no as 게시글사진번호,
        L.club_board_like_no,
-       L.like_check
+       L.like_check,
+	 L.like_member_no
+       
 from club_board C 
 left outer join member M 
    on C.club_board_writer = M.member_no 
@@ -156,8 +164,8 @@ where C.club_no = #{clubNo} order by club_board_time desc
        C.club_board_content,
        C.club_no,
        C.club_board_writer,
-       M.member_no,
        M.member_animal,
+       M.member_no ,
        M.member_nick,
        M.member_interest1,
        M.member_interest2,
@@ -169,23 +177,20 @@ where C.club_no = #{clubNo} order by club_board_time desc
        M.member_sns_id,
        M.member_logindate,
        P.attach_no  as 프로필사진번호,
-       A.attach_no as 게시글사진번호,
-       L.club_board_like_no,
-       L.like_check
+       A.attach_no as 게시글사진번호
 from club_board C 
 left outer join member M 
    on C.club_board_writer = M.member_no 
 left outer join member_profile P 
    on C.club_board_writer = P.member_no
-left outer join club_board_like L
-   on C.club_board_No = L.club_board_no 
- left outer join club_board_attach A 
+left outer join club_board_attach A 
    on C.club_board_No = A.club_board_no 
 where C.club_board_No = #{clubBoardNo} 
 	</select>
 	<select id="subListQuery" resultType="ClubboardAttachDto" parameterType="int">
 		select * from club_board_attach where club_no = #{clubNo}
 	</select>
+
 	<!-- 상세 조회 -->
 	<select id="info" parameterType="int" resultType="clubBoardDto">
 		select * from club_board where club_board_no = #{clubBoardNo}

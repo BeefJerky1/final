@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 public class ClubBoardLikeDto {
 	private int clubBoardLikeNo;
 	private int clubBoardNo;
-	private int memberNo;
+	private int likeMemberNo;
 	private int likeCheck;
 }

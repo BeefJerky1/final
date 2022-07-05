@@ -4,6 +4,9 @@
 
 <!-- 절대경로 변수 생성 -->
 <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
+<c:set var="memberNo" value="${login}"></c:set>
+<c:set var="memberAdmin" value="${auth == '관리자'}"></c:set>
+<c:set var="isLogin" value="${memberNo != null}"></c:set>
 <!DOCTYPE html>
 <html lang="kor">
 

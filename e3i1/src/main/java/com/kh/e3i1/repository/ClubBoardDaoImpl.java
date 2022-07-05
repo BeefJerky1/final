@@ -32,8 +32,6 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 		param.put("clubNo",clubNo);
 		param.put("orderType", orderType);
 		log.debug("orderType = {}", orderType);
-		this.calculateReplyCount(clubNo);
-		this.calculateLikeCount(clubNo);
 		return sqlSession.selectList("clubboard.board-side", param);
 	}
 
@@ -56,7 +54,7 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 
 	//상세조회
 	@Override
-	public ClubBoardListItemVO selectOne(int clubBoardNo) {
+	public ClubBoardListItemVO detail(int clubBoardNo) {
 		this.calculateReplyCount(clubBoardNo);
 		this.calculateLikeCount(clubBoardNo);
 		return sqlSession.selectOne("clubboard.one", clubBoardNo);
@@ -73,13 +71,13 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	}
 	//댓글 수 조회
 	@Override
-	public void calculateReplyCount(int clubNo) {
-		sqlSession.update("clubboard.calculateReplyCount",clubNo);	
+	public void calculateReplyCount(int clubBoardNo) {
+		sqlSession.update("clubboard.calculateReplyCount",clubBoardNo);	
 	}
 	//좋아요 수 조회
 	@Override
-	public void calculateLikeCount(int clubNo) {
-		sqlSession.update("clubboard.calculateLikeCount",clubNo);	
+	public void calculateLikeCount(int clubBoardNo) {
+		sqlSession.update("clubboard.calculateLikeCount",clubBoardNo);	
 	}
 	//리스트 조회
 	@Override

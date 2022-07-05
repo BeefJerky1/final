@@ -50,7 +50,7 @@ public class ClubController {
 	// 소모임 게시판 상세
 	@GetMapping("/board_detail")
 	public String clubBoardDetail(@RequestParam int clubBoardNo, Model model) {
-		ClubBoardListItemVO clubBoardListItemVO = clubBoardDao.selectOne(clubBoardNo);
+		ClubBoardListItemVO clubBoardListItemVO= clubBoardDao.detail(clubBoardNo);
 		ClubBoardDto clubBoardDto = clubBoardDao.readcount(clubBoardNo);
 		model.addAttribute(clubBoardListItemVO);
 		return "club/board_detail";
