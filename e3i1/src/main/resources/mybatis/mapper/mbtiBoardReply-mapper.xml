@@ -56,6 +56,7 @@
 			<result column="mbti_board_time" property="mbtiBoardTime"/>
 			<result column="mbti_board_vote1" property="mbtiBoardVote1"/>
 			<result column="mbti_board_vote2" property="mbtiBoardVote2"/>
+			<result column="mbti_board_reply_count" property="mbtiBoardReplyCount"/>
 		</association>
 		
 		<association property="memberDto" javaType="MemberDto">

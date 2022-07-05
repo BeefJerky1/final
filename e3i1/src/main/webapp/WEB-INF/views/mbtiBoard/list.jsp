@@ -56,6 +56,12 @@ a {
 	background-color: #E9E9E9;
 }
 
+.like-btn {
+	float : right !important;
+	margin-right: 0.4rem;
+}
+
+
 /* .card {
   position: relative;
   top: 50%;
@@ -156,53 +162,54 @@ a {
 		</div>
 	</form>
 
+	<div class="container mainPage">
+			<c:forEach var="mbtiMemberListVO" items="${list }">
 
+				<a
+					href="detail?mbtiBoardNo=${mbtiMemberListVO.mbtiBoardDto.mbtiBoardNo}">
 
+					<div class="mbti-board" id="mbti-board">
+						<div class="row mt-2 main " style="float: none; margin: 0 auto;">
+							<div class="card" style="width: 50rem;">
+								<div class="card-body">
+									<span><h5 class="card-title ">
+											<i class="fa-solid fa-q me-2"></i>${mbtiMemberListVO.mbtiBoardDto.mbtiBoardTitle }</h5></span>
+									<span class="like-btn"><i class="fa-solid fa-heart fa-2x"  style="color:#f96666;"></i></span>
+									<p class="card-text">${mbtiMemberListVO.mbtiBoardDto.mbtiBoardContent }</p>
 
-	<c:forEach var="mbtiMemberListVO" items="${list }">
+									<div class="col">
+										<span><img src="${root }/image/mbti/강아지(ENFP).png"
+											class="d-block" style="width: 3rem;" alt="profile"></span> <span
+											class="interest me-1 ">${mbtiMemberListVO.memberDto.memberInterest1 }
+										</span> <span class="interest me-1">${mbtiMemberListVO.memberDto.memberInterest2}</span>
+										<span class="interest me-1 ">${mbtiMemberListVO.memberDto.memberInterest3 }</span>
+									</div>
 
-		<a
-			href="detail?mbtiBoardNo=${mbtiMemberListVO.mbtiBoardDto.mbtiBoardNo}">
+									<div class="col">
 
-			<div class="container mbti-board">
-				<div class="row mt-2">
-					<div class="col-sm-6 md-6">
-						<div class="card" style="width: 30rem;">
-							<div class="card-body">
-								<span><h5 class="card-title">
-										<i class="fa-solid fa-q me-2"></i>${mbtiMemberListVO.mbtiBoardDto.mbtiBoardTitle }</h5></span>
-
-								<p class="card-text">${mbtiMemberListVO.mbtiBoardDto.mbtiBoardContent }</p>
-
-								<div class="col">
-									<span><img src="${root }/image/mbti/강아지(ENFP).png"
-										class="d-block" style="width: 3rem;" alt="profile"></span> <span
-										class="interest me-1 ">${mbtiMemberListVO.memberDto.memberInterest1 }
-									</span> <span class="interest me-1">${mbtiMemberListVO.memberDto.memberInterest2}</span>
-									<span class="interest me-1 ">${mbtiMemberListVO.memberDto.memberInterest3 }</span>
-								</div>
-
-								<div class="col">
-
-									<span> ${mbtiMemberListVO.memberDto.memberAnimal } </span> <span><i
-										class="fa-solid fa-message"></i></span> <span>${mbtiMemberListVO.mbtiBoardDto.mbtiBoardReplyCount}</span>
-								</div>
-								<div class="col">
-									<span class="me-2 time"><fmt:formatDate
-											value="${mbtiMemberListVO.mbtiBoardDto.mbtiBoardTime}"
-											pattern="yyyy-MM-dd hh-mm" /></span>
+										<span> ${mbtiMemberListVO.memberDto.memberAnimal } </span> <span><i
+											class="fa-solid fa-message"></i></span> <span>${mbtiMemberListVO.mbtiBoardDto.mbtiBoardReplyCount}</span>
+									</div>
+									<div class="col">
+										<span class="me-2 time"><fmt:formatDate
+												value="${mbtiMemberListVO.mbtiBoardDto.mbtiBoardTime}"
+												pattern="yyyy-MM-dd hh-mm" /></span>
+									</div>
 								</div>
 							</div>
+
 						</div>
 					</div>
 
-				</div>
-			</div>
 
 
-		</a>
-	</c:forEach>
+				</a>
+			</c:forEach>
+
+	</div>
 </div>
+
+
 
 
 <!-- 
@@ -212,44 +219,118 @@ a {
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/vue@next"></script>
 <script src="${root}/js/time.js"></script>
-<script>
-	const app = Vue.createApp({
-		
-		data(){
-			return {
 
-			};
-		},
-		computed:{
-			
-		
-		},
-		methods:{
-			
-			},
-		
-		created(){
-		
-			// 2. axios를 이용하는 방법
-			// axios({옵션}).then(성공).catch(에러);
-			// .then(function(resp){ 에서 this를 사용하기 위해 애로우 펑션 사용 
-			// .then((resp)=>{})
-			// method : get, post, put, delete 등 Mapping의 종류
-		
-		},
-	});
-	app.mount("#app");
+<script type="text/Javascript">
+	var loading = false;
+	var scrollPage = 1;
+
+	$(document).ready(
+			function() {
+				surveyList(scrollPage);
+
+				// Scroll
+				$(window).scroll(
+						function() {
+							var scrollNow = $(window).scrollTop();
+
+							if (scrollNow + $(window).height() + 100 >= $(
+									'.mainPage').height()) {
+								surveyList(scrollPage);
+							}
+							
+						})
+
+			})
+
+	function surveyList(page) {
+
+		if (!loading) {
+			loading = true;
+			$.ajax({
+				url : "${pageContext.request.contextPath}/rest/mbtiBoard/",
+				type : "get",
+				data : {
+					"page" : page,
+				},
+				dataType : "html",
+				success : function(resp) {
+					//resp는 목록이 담긴 JSON
+					//JSON에는 디자인이 없고 데이터만 있다
+					//게시판 마지막에 불러온 데이터를 모양 갖춰서 출력
+					//템플릿에 저장된 구문을 불러와서 게시판 마지막에 추가
+					var json = JSON.parse(resp);
+
+					for (var i = 0; i < json.length; i++) {
+						var template = $("#card-template").html();
+						template = template.replace("{{mbtiBoardNo}}",
+								json[i].mbtiBoardDto.mbtiBoardNo);
+						template = template.replace("{{mbtiBoardTitle}}",
+								json[i].mbtiBoardDto.mbtiBoardTitle);
+						template = template.replace("{{mbtiBoardContent}}",
+								json[i].mbtiBoardDto.mbtiBoardContent);
+						template = template.replace("{{memberInterest1}}",
+								json[i].memberDto.memberInterest1);
+						template = template.replace("{{memberInterest2}}",
+								json[i].memberDto.memberInterest2);
+						template = template.replace("{{memberInterest3}}",
+								json[i].memberDto.memberInterest3);
+						template = template.replace("{{memberAnimal}}",
+								json[i].memberDto.memberAnimal);
+						template = template.replace("{{mbtiBoardReplyCount}}",
+								json[i].mbtiBoardDto.mbtiBoardReplyCount);
+						template = template.replace("{{mbtiBoardTime}}",
+								json[i].mbtiBoardDto.mbtiBoardTime);
+
+						$(".mainPage").append(template);
+					}
+					loading = false;
+					scrollPage += 1;
+
+
+
+				}
+			})
+		}
+	}
 </script>
 
 
 
 
+<template id="card-template">
+	<a href="detail?mbtiBoardNo={{mbtiBoardNo}}">
+			<div class="container mbti-board" id="mbti-board">
+				<div class="row mt-2 main " style="float: none; margin: 0 auto;">
+					<div class="card" style="width: 50rem;">
+					<div class="card-body">
+						<span><h5 class="card-title ">
+								<i class="fa-solid fa-q me-2"></i>{{mbtiBoardTitle}}
+							</h5></span>
 
+						<p class="card-text">{{mbtiBoardContent}}</p>
 
+						<div class="col">
+							<span><img src="${root}/image/mbti/강아지(ENFP).png"
+								class="d-block" style="width: 3rem;" alt="profile"></span> <span
+								class="interest me-1 ">{{memberInterest1}} </span> <span
+								class="interest me-1">{{memberInterest2}}</span> <span
+								class="interest me-1 ">{{memberInterest3}}</span>
+						</div>
 
+						<div class="col">
 
-
-
+							<span> {{memberAnimal}} </span> <span><i
+								class="fa-solid fa-message"></i></span> <span>{{mbtiBoardReplyCount}}</span>
+						</div>
+						<div class="col">
+							<span class="me-2 time">{{mbtiBoardTime}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</a>
+</template>
 
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
