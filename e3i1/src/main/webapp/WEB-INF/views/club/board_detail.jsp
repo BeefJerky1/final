@@ -23,26 +23,8 @@ img{border-radius:100% !important}
         padding-left: 0 !important; 
         padding-right: 0 !important;
     }
-    .left-side {
-        padding-right: 0 !important;
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
-    }
-    .right-side{
-        padding-left:0 !important;
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 0 !important;
-    }
-        .position {
-        width: 41.4% !important;
-        position: fixed;
-        background-color: rgba(255, 255, 255, 0.9);
-    }
-    .body {
-        padding-top: 85px;
-    }
+    
+
     textarea{
     	resize:none;
     }
@@ -53,8 +35,8 @@ img{border-radius:100% !important}
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
     <div id="app" class="container-fluid">
         <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3 left-side">
-                <div class="border-end text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side">
+            <div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5">
+                <div class="border text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side rounded shadow">
                     <h4><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="44"
                             height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -187,20 +169,17 @@ img{border-radius:100% !important}
                 </div>
             </div>
             <div class="col-lg-5 col-md-5 col-sm-5 main">
-                  <div class="border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 position">
-                    <a href="http://localhost:8080/e3i1/club/board/1">
-                        <h4><b>홈</b></h4>
-                    </a>
+                  <div class="border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 rounded">
                     </div>
-                  <div class="body">
-                <div class="border border-opacity-10 text-dark p-2 col-lg-12 col-md-12 col-sm-12" >
+                  <div class="">
+                <div class="border border-opacity-10 text-dark p-2 col-lg-12 col-md-12 col-sm-12 rounded shadow"  >
                     <div class="row">
                        <div v-if="board != null">
                        <div class="row">
                         <div class="col-lg-2 col-md-2 col-sm-2">
                             <a><img src="https://placeimg.com/50/50/animals" class=" mx-auto d-block"></a>
                         </div>
-                        <div class="col-lg-8 col-md-8 col-sm-8 align-start">
+                        <div class="col-lg-8 col-md-8 col-sm-8 align-start ">
                              		  {{board.memberDto.memberNick}}<br>
                                 <span>{{board.memberDto.memberInterest1}}</span>,
                                 <span>{{board.memberDto.memberInterest2}}</span>,
@@ -222,7 +201,7 @@ img{border-radius:100% !important}
                     <div class="row px-5">
                         <pre> {{board.clubBoardDto.clubBoardContent}}</pre>	
                     </div>		
-                    <div class="container row mt-5">
+                    <div class="container row mt-5 rounded">
                                 <div class="col-lg-3 col-md-3 col-sm-3 text-center">
                                        <i class="fa-regular fa-comment"></i> {{board.clubBoardDto.clubBoardCount}}
                                    </div>
@@ -255,7 +234,7 @@ img{border-radius:100% !important}
     	</div>
 </div>
             <!-- 댓글 등록 -->
-                <div class="border border-opacity-10 text-dark p-2 col-lg-12 col-md-12 col-sm-12 ">
+                <div class="border border-opacity-10 text-dark p-2 col-lg-12 col-md-12 col-sm-12 rounded mt-2 shadow">
                        <div class="text-end">
                            <textarea class="form-control reply" v-model="replyContent" placeholder="내 댓글을 등록합니다"></textarea>
                         <button class="btn btn-primary" v-on:click="addReply">댓글 등록</button>
@@ -263,7 +242,7 @@ img{border-radius:100% !important}
                 </div>
             <!-- 댓글 목록 -->
             <div class="text-dark col-lg-12 col-md-12 col-sm-12 ">
-            <div class="border border-opacity-10 col-lg-12 col-md-12 col-sm-12 p-2" v-for="(reply, index) in BoardReplyList" v-bind:key="index">
+            <div class="border border-opacity-10 col-lg-12 col-md-12 col-sm-12 p-2 rounded mt-2 shadow" v-for="(reply, index) in reply" v-bind:key="index">
                 <div class="row ">
                     <div class="col-lg-2 col-md-2 col-sm-2">
                             <a><img src="https://placeimg.com/50/50/animals" class=" mx-auto d-block"></a>
@@ -307,32 +286,59 @@ img{border-radius:100% !important}
                     </div>
                 </div>	
                 </div>
+                <div class="mt-2 rounded shadow">
+                                <button type="button" v-on:click="appendReply()" :disabled="this.dataFull == true" class="btn btn-outline-primary form-control">
+        더보기 ({{showReply}}/{{totalReply}})</button>
+                </div>
             </div>
             </div>
-            <div class="col-lg-3 col-md-3 col-sm-3 right-side">
-                <div class="border-start border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 right-side">
+            <div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5">
+                <div class="border-start border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 right-side shadow rounded">
                     <div class="row">   
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round" class="self-center ml-2 icon icon-tabler icon-tabler-search"><path stroke="none" d="M0 0h24v24H0z"></path><circle cx="10" cy="10" r="7"></circle><line x1="21" y1="21" x2="15" y2="15"></line></svg></span>
-                            <input type="text" class="form-control" placeholder="검색" aria-label="Username" aria-describedby="basic-addon1">
-                          </div>
+                        <select class="form-control" v-model="orderType"  v-on:change="changeList($event)">
+                        	<option value="clubBoardNoDesc">최신</option>
+                        	<option value="clubBoardLikeDesc">좋아요</option>
+                        	<option value="clubBoardReadcountDesc">조회</option>
+                        	<option value="clubBoardCountDesc">댓글</option>
+                        </select>
+                        <br><br>
+                        <div v-for="(side, index ) in side" v-bind:key="index" >
+                        	<div v-if="this.orderType=='clubBoardNoDesc'" class="row">
+                        		<div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
+                        			<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span> 
+                        		</div>
+                        		<div  class="col-lg-5 col-md-5 col-sm-5 text-end">
+                    				<span class="time">
+                    				{{elapsedText(side.clubBoardTime)}}
+                    				</span>
+	                        	</div>
+							</div>     
+								<div v-if="this.orderType=='clubBoardLikeDesc'" class="row">
+							      <div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
+	                    				<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span>
+							      </div>
+							      <div  class="col-lg-5 col-md-5 col-sm-5 text-end">
+                    					<i class="fa-solid fa-heart red" ></i><span >{{side.clubBoardLike}}</span>
+							      </div>
+								</div>         
+							<div v-if="this.orderType=='clubBoardReadcountDesc'" class="row">
+							      <div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
+                    				<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span>
+							      </div>
+							      <div  class="col-lg-5 col-md-5 col-sm-5 text-end">
+                    				<i class="fa-regular fa-eye"></i><span>{{side.clubBoardReadcount}}</span>
+							      </div>
+							</div>         
+							<div v-if="this.orderType=='clubBoardCountDesc'" class="row">
+							      <div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
+                    				<span v-on:click="TopTen(index)">{{1+index}}. {{side.clubBoardContent}}</span>
+							      </div>
+							      <div  class="col-lg-5 col-md-5 col-sm-5 text-end">
+                    				<i class="fa-regular fa-comment"></i><span>{{side.clubBoardCount}}</span>
+							      </div>
+							</div>                  	
+                    	</div>
                     </div>
-                        <hr>
-                        <h3>인기 게시글</h3>
-                        <h4>- 인기 1</h4>
-                        <h4>- 인기 1</h4>
-                        <h4>- 인기 1</h4>
-                        <hr>
-                        <h3>모임 일정</h3> 
-                        <h4>- 일정 1</h4>
-                        <h4>- 일정 2</h4>
-                        <h4>- 일정 3</h4>
-                        <h4>- 일정 4</h4>
-                        <hr> 
-                        <h3>추천 소모임</h3>
-                        <h4>- 소모임 1</h4>
-                        <h4>- 소모임 2</h4>
-                        <hr>
                 </div>
 
             </div>
@@ -342,21 +348,38 @@ img{border-radius:100% !important}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue@next"></script>
-<script src="${path}/js/time.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.3/dayjs.min.js" integrity="sha512-Ot7ArUEhJDU0cwoBNNnWe487kjL5wAOsIYig8llY/l0P2TUFwgsAHVmrZMHsT8NGo+HwkjTJsNErS6QqIkBxDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="${path}/js/time.js"></script>
 <!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script> -->
     <script>
         const app = Vue.createApp({
-
+			
             data(){
                 return {
-		           board:null,
-		           clubNo:"1",
-		           BoardReplyList:[],
-		           replyContent:"",
-		           like:"",
-		           memberNo:"3",
-		           replylike:"",
-		          replyNo:"",
+                   //소모임
+		           clubNo:"1",//소모임 번호                	
+		           memberNo:"3",//사용자 번호
+                   //게시글
+		           board:null,//상세
+		           like:"",//게시글 좋아요
+				   //댓글		           
+		           BoardReplyList:[],//댓글 목록
+		           replyContent:"",//댓글 내용
+		           replylike:"",//댓글 좋아요
+		           replyNo:"", //댓글 번호
+		           
+		           //더보기
+		           replyAll:[], //전체 댓글
+                   reply:[], //보여지는 댓글
+                   totalReply:0, //전체 댓글
+                   showReply:5, //보여주는 댓글 수
+                   replyLeft:0,//남은 댓글 수
+                   dataFull:false,
+                   //사이드 인기게시글
+                   side:{},
+                   orderType:"clubBoardNoDesc",
+                   
+                   //dayjs
                 };
             },
             computed:{
@@ -407,9 +430,11 @@ img{border-radius:100% !important}
 		        		this.loadContent();
 		        	});
 		        },
+		        //수정모드
 		        changeEditMode(){
 		        	this.board.edit=true;
 		        },
+		        //수정모드 해제
 		        changeDisplayMode(){
 		        	this.board.edit=false;
 		        },
@@ -444,8 +469,7 @@ img{border-radius:100% !important}
                 			this.loadContent();
                 		})
                 	}
-                },
-                
+                },                
 		        //댓글 등록
 		        addReply(){
 // 		        	if(this.boardContentIsEmpty) return;
@@ -463,9 +487,9 @@ img{border-radius:100% !important}
 		        		},
 		        	})
 		        	.then(resp=>{
+		        		this.loadReply();
 		        		this.replyContent = "";
 		        		this.loadContent();
-		        		this.loadReply();
 		        	});
 		        },
 		        //댓글 목록
@@ -478,15 +502,58 @@ img{border-radius:100% !important}
 		        		method:"get",
 		        	})
 		        	.then(resp=>{
-		        		this.BoardReplyList = resp.data;
+		        		let data = []
+						for(var i = 0; i<this.showReply;i++){
+// 							console.log(i)
+							data.push(resp.data[i])
+						}
+						this.replyAll = resp.data, //데이터 전부를 전체 댓글에 넣는다.
+						this.reply = data, //보여지는 댓글 수만큼만 reply에 넣는다.
+						this.totalReply = this.replyAll.length
+						
+						//총 게시글 수가 보이는 게시글 수(5)보다 작으면
+						if(this.totalReply < this.showReply){
+							this.showReply = this.totalReply; //보이는 수를 전체 게시글수로 변경
+							this.reply = this.replyAll;	//게시글에 게시글 전체를 넣는다.
+	                		this.dataFull=true;	//버튼은 disable
+						}else if(this.totalReply==this.showReply){ //전체 게시글 수와 보이는 게시글 수가 동일하면
+	                		this.dataFull=true; //버튼은 disable
+						}
 		        	});
 		    	},
+		    	//댓글 더보기 버튼으로 게시글 추가
+                appendReply(){
+                	//남은 게시글 수 확인
+                	this.replyLeft = this.totalReply- this.showReply;
+                	//게시글 수가 5개 이하라면 전체 게시글 수를 showboard에 넣는다.
+                	if(this.replyLeft < 5){
+						this.showReply = this.totalReply;
+						this.reply = this.replyAll;
+						this.replyLeft = this.totalReply- this.showReply;
+	                	this.loadReply();
+                	}else 
+                	//게시글 수가 5개 이상이면 showBoard +5에 데이터 추가
+                	if(this.replyLeft >= 5){
+                		this.showReply +=5
+                		this.replyLeft = this.totalReply- this.showReply;
+                	let data =[]
+                	for(var i=0; i<this.showReply; i++){
+                		data.push(this.replyAll[i])
+                	}
+                	this.reply = data
+                	this.loadReply();
+                	//남은 게시글 수가 0개라면 버튼 클릭 X
+                	}else if(this.replyLeft==0){
+                		this.dataFull=true;
+                		
+                	} 	
+                },
 		    	//댓글 삭제
 		        deleteReply(index){
 		        	const choice = window.confirm("정말 삭제하시겠습니까?\n삭제한 데이터는 복구되지 않습니다");
 		        	if(!choice) return;
 		        	
-		        	const reply = this.BoardReplyList[index];
+		        	const reply = this.reply[index];
 		        	axios({
 		        		url:"${pageContext.request.contextPath}/rest/clubboardreply/"+reply.clubBoardReplyDto.replyNo,
 		        		method:"delete",
@@ -496,14 +563,17 @@ img{border-radius:100% !important}
 		        		this.loadReply();
 		        	});
 		        },
+		        //댓글 수정모드
 		        replyEditMode(index){
-		        	this.BoardReplyList[index].edit=true;
+		        	this.reply[index].edit=true;
 		        },
-		       replyDisplayMode(index){
-		        	this.BoardReplyList[index].edit=false;
+		        //댓글 수정모드 해제
+		        replyDisplayMode(index){
+		        	this.reply[index].edit=false;
 		        },
+		        //댓글 수정
 		        editReply(index){
-		        	const reply = this.BoardReplyList[index];
+		        	const reply = this.reply[index];
 		        	if(reply.clubBoardReplyDto.clubReplyContent.length==0)return;
 		        	axios({
 		        		url:"${pageContext.request.contextPath}/rest/clubboardreply/",
@@ -520,14 +590,15 @@ img{border-radius:100% !important}
 	            elapsedText(date) {
                 	return dateformat.elapsedText(new Date(date));
                 },
+
                 //댓글 좋아요 조건
                	likeCheck(index){
-               		const reply = this.BoardReplyList[index];
+               		const reply = this.reply[index];
                		if(this.replylike.likeCheck==1 && this.replylike.replyNo==reply.clubBoardReplyDto.replyNo) return true;
             	},
                 //댓글 좋아요/취소
                 replyLikey(index){
-                	const reply = this.BoardReplyList[index];
+                	const reply = this.reply[index];
                 	if(reply.clubReplyLikeDto.likeCheck==0){
                 		axios({
                 			url:"${pageContext.request.contextPath}/rest/clubboardreply/like/",
@@ -553,12 +624,34 @@ img{border-radius:100% !important}
                 			this.loadReply();
                 		})
                 	}
-                }
+                },
+                //댓글 더보기 구현
+                
+                //인기게시글
+                TopTenList(){
+                	
+                	axios({
+                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+this.orderType,
+		        		method:"get",
+                	}).then(resp=>{
+                		this.side = resp.data
+                	})
+                },
+                //select로 인기게시글 변경
+                changeList(event) {
+                	axios({
+                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+event.target.value,
+		        		method:"get",
+                	}).then(resp=>{
+                		this.side = resp.data
+                	})
+                    console.log(event.target.value)
+                },
             },
             created(){
             	this.loadContent();
             	this.loadReply();
-//             	this.replyLikeSearch();
+            	this.TopTenList();
             },
         });
         app.mount("#app");

@@ -119,7 +119,9 @@ select
        C.club_board_readcount,
        M.member_no ,
        M.member_animal ,
+       M.member_birth,
        M.member_nick ,
+       M.member_animal,
        M.member_interest1,
        M.member_interest2,
        M.member_interest3,
@@ -192,7 +194,7 @@ where C.club_board_No = #{clubBoardNo}
 	<select id="board-side" resultType="clubBoardDto" parameterType="Map"> 
 	select * from (
     select rownum rn, TMP.* from (
-    select * from club_board where club_no = #{clubNo} order by 
+     select * FROM (select * from club_board where club_board_time >= TO_CHAR(SYSDATE-7,'YYYYMMDD' )) where club_no = #{clubNo} order by 
 	<choose>
 		<when test="orderType == 'clubBoardLikeAsc'">club_board_like asc</when>
 		<when test="orderType == 'clubBoardLikeDesc'">club_board_like desc</when>
