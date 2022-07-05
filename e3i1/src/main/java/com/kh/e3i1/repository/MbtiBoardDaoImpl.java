@@ -65,12 +65,34 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 		return sqlSession.selectOne("mbtiBoard.info", mbtiBoardNo);
 		
 	}
-	
 
 	@Override
 	public boolean edit(MbtiBoardDto mbtiBoardDto) {
 		int count = sqlSession.update("mbtiBoard.update", mbtiBoardDto);
 		return count > 0;
+	}
+
+	@Override
+	public int count(String type, String keyword) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("type", type);
+		param.put("keyword", keyword);
+		
+		return sqlSession.selectOne("mbtiBoard.count", param);
+	}
+
+	@Override
+	public List<MbtiMemberListVO> list(String type, String keyword, int page, int size) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("type", type);
+		param.put("keyword", keyword);
+		
+		int end = page * size;
+		int begin = end - (size - 1);
+		param.put("begin", begin);
+		param.put("end", end);
+		
+		return sqlSession.selectList("mbtiBoard.mbtiboardList2", param);
 	}
 
 }
