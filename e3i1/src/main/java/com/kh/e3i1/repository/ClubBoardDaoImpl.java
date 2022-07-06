@@ -1,12 +1,19 @@
 package com.kh.e3i1.repository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
@@ -81,9 +88,13 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	}
 	//리스트 조회
 	@Override
-	public List<ClubBoardListItemVO> listAll(int clubNo){
-//			this.calculateReplyCount(clubNo);
-			return sqlSession.selectList("clubboard.clubBoardTotalList", clubNo);
+	public List<ClubBoardListItemVO> listAll(int clubNo, int likeMemberNo){
+			this.calculateReplyCount(clubNo);
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("clubNo", clubNo);
+			param.put("likeMemberNo", likeMemberNo);
+			List<ClubBoardListItemVO> list1=  sqlSession.selectList("clubboard.clubBoardTotalList", param);
+			return list1;		
 	}
 	@Override
 	public List<ClubBoardListItemVO> clubBoardListItem(int clubNo) {

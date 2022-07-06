@@ -44,9 +44,9 @@ public class ClubBoardRestController {
 		return clubBoardDao.list(clubNo,orderType);
 	}
 	//목록
-	@GetMapping("/{clubNo}")
-	public List<ClubBoardListItemVO> list(@PathVariable int clubNo) {
-		return clubBoardDao.listAll(clubNo);
+	@GetMapping("/{clubNo}/likeMemberNo/{likeMemberNo}")
+	public List<ClubBoardListItemVO> list(@PathVariable int clubNo, @PathVariable int likeMemberNo) {
+		return clubBoardDao.listAll(clubNo,likeMemberNo);
 	}
 	//등록
 	@PostMapping("/")
@@ -71,7 +71,7 @@ public class ClubBoardRestController {
 		return clubBoardDao.edit(clubBoardDto);
 	}
 	//좋아요 확인
-	@GetMapping("/like/{clubBoardNo}/{likeMemberNo}")
+	@GetMapping("/likecheck/{clubBoardNo}/{likeMemberNo}")
 	public int select(@ApiIgnore HttpSession session,@PathVariable int clubBoardNo,@PathVariable int likeMemberNo) {
 //		int likeMemberNo = (Integer)session.getAttribute("login");
 		return clubBoardLikeDao.findLike(clubBoardNo, likeMemberNo);
@@ -87,6 +87,10 @@ public class ClubBoardRestController {
 		int MemberNo = (Integer)session.getAttribute("login");
 		clubBoardLikeDto.setLikeMemberNo(MemberNo);
 		clubBoardLikeDao.delete(clubBoardLikeDto);
+	}
+	@GetMapping("/likeList/{clubBoardNo}/{likeMemberNo}")
+	public int select2(@PathVariable int clubBoardNo ,@PathVariable int likeMemberNo) {
+		return clubBoardLikeDao.findLikeList(clubBoardNo,likeMemberNo);
 	}
 //	@PostMapping("/replylike")
 //	public ClubReplyLikeDto insert(@ApiIgnore HttpSession session, @RequestBody ClubReplyLikeDto clubReplyLikeDto) {

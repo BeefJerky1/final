@@ -51,4 +51,5 @@
 		)
 		where club_board_no = #{clubBoardNo}
 	</update>
+
 </mapper>

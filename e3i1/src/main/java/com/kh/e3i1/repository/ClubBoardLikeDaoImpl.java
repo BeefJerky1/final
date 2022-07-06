@@ -1,5 +1,9 @@
 package com.kh.e3i1.repository;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,8 +21,12 @@ public class ClubBoardLikeDaoImpl implements ClubBoardLikeDao {
 		clubBoardLikeDto.setLikeMemberNo(likeMemberNo);
 		clubBoardLikeDto.setClubBoardNo(clubBoardNo);
 		this.calculateLikeCount(clubBoardNo);
-		int checkLike = sqlSession.selectOne("clubboardlike.checkLike", clubBoardLikeDto);
-		return checkLike;
+		Integer checkLike = sqlSession.selectOne("clubboardlike.checkLike", clubBoardLikeDto);
+		if(checkLike==null) {
+			return 0;
+		}else {
+			return 1;
+		}
 	}
 
 	@Override
@@ -39,5 +47,18 @@ public class ClubBoardLikeDaoImpl implements ClubBoardLikeDao {
 	@Override
 	public void calculateLikeCount(int clubBoardNo) {
 		sqlSession.update("clubboardlike.calculateLikeCount",clubBoardNo);	
+	}
+
+	@Override
+	public int findLikeList(int clubBoardNo, int likeMemberNo) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("clubBoardNo", clubBoardNo);
+		param.put("likeMemberNo", likeMemberNo);
+		Integer cluBboardNo = sqlSession.selectOne("clubboardlike.findlikelist", param);
+		if(cluBboardNo==1) {
+			return 1;
+		}else {
+			return 0;
+	}
 	}
 }

@@ -43,9 +43,9 @@ public class ClubBoardReplyRestController {
 		return clubBoardReplyDao.insert(clubBoardReplyDto);
 	}
 	
-	@GetMapping("/{clubBoardNo}")
-	public List<ClubBoardReplyListVO> list(@PathVariable int clubBoardNo) {
-		return clubBoardReplyDao.listAll(clubBoardNo);
+	@GetMapping("/{clubBoardNo}/{likeMemberNo}")
+	public List<ClubBoardReplyListVO> list(@PathVariable int clubBoardNo,@PathVariable int likeMemberNo) {
+		return clubBoardReplyDao.listAll(clubBoardNo,likeMemberNo);
 	}
 	@DeleteMapping("/{replyNo}")
 	public void delete(@PathVariable int replyNo) {
@@ -57,14 +57,11 @@ public class ClubBoardReplyRestController {
 	}
 	@PostMapping("/like")
 	public ClubReplyLikeDto insert(@ApiIgnore HttpSession session, @RequestBody ClubReplyLikeDto clubReplyLikeDto) {
-		int memberNo = 3;
-		clubReplyLikeDto.setMemberNo(memberNo);
+
 		return clubReplyLikeDao.insert(clubReplyLikeDto);
 	}
 	@DeleteMapping("/like")
 	public void delete(@ApiIgnore HttpSession session, @RequestBody ClubReplyLikeDto clubReplyLikeDto) {
-		int clubBoardWriter = 3;
-		clubReplyLikeDto.setMemberNo(clubBoardWriter);
 		clubReplyLikeDao.delete(clubReplyLikeDto);
 	}
 }

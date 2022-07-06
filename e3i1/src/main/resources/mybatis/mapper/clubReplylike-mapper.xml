@@ -21,7 +21,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="clubreplylike">
 <select id="checkLike" resultType="clubReplyLikeDto" parameterType="clubReplyLikeDto">
-		select * from club_reply_like where member_no=#{memberNo} and reply_no = #{replyNo}
+		select * from club_reply_like where like_member_no=#{likeMemberNo} and reply_no = #{replyNo}
 	</select>
 	<!-- 시퀀스 생성 -->
 	<select id="sequence" resultType="int">
@@ -29,8 +29,8 @@
 	</select>
 	<!-- 등록 -->
 	<insert id="insert" parameterType="clubReplyLikeDto">
-		insert into club_reply_like (club_reply_like_no, reply_no, member_no, like_check)
-		values(#{clubReplyLikeNo}, #{replyNo}, #{memberNo}, 1)
+		insert into club_reply_like (club_reply_like_no, reply_no, like_member_no, like_check)
+		values(#{clubReplyLikeNo}, #{replyNo}, #{likeMemberNo}, 1)
 	</insert>
 	<!-- 조회 -->
 	<select id="one" resultType="clubReplyLikeDto" parameterType="int">
@@ -42,7 +42,7 @@
 	</delete>
 	<!-- pk 조회 -->
 	<select id="pk" resultType="int" parameterType="clubReplyLikeDto">
-		select club_reply_like_no from club_reply_like where member_no=#{memberNo} and reply_no = #{replyNo}
+		select club_reply_like_no from club_reply_like where like_member_no=#{likeMemberNo} and reply_no = #{replyNo}
 	</select>
 		<update id="calculateLikeCount" parameterType="int">
 		update club_board_reply 

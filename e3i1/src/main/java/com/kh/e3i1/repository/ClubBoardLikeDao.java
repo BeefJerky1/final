@@ -11,4 +11,6 @@ public interface ClubBoardLikeDao {
 	void calculateLikeCount(int clubBoardNo);
 
 	int findLike(int clubBoardNo, int memberNo);
+
+	int findLikeList(int clubBoardNo, int likeMemberNo);
 }

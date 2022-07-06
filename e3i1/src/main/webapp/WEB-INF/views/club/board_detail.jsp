@@ -502,9 +502,9 @@ img{border-radius:100% !important}
 	               	let uri = window.location.search.substring(1); 
                     let params = new URLSearchParams(uri);
                     const clubBoardNo = params.get("clubBoardNo");
-                    const memberNo = this.memberNo
+                    const likeMemberNo = this.memberNo
                		axios({
-               			url:"${pageContext.request.contextPath}/rest/clubboard/like/"+clubBoardNo+"/"+memberNo,
+               			url:"${pageContext.request.contextPath}/rest/clubboard/likecheck/"+clubBoardNo+"/"+likeMemberNo,
                			method:"get",
                		}).then(resp=>{
                			this.boardLike=resp.data
@@ -579,8 +579,9 @@ img{border-radius:100% !important}
                  	let uri = window.location.search.substring(1); 
                     let params = new URLSearchParams(uri);
                     const clubBoardNo = params.get("clubBoardNo");
+                    const likeMemberNo = this.memberNo;
 		        	axios({
-		        		url:"${pageContext.request.contextPath}/rest/clubboardreply/"+clubBoardNo,
+		        		url:"${pageContext.request.contextPath}/rest/clubboardreply/"+clubBoardNo+"/"+likeMemberNo,
 		        		method:"get",
 		        	})
 		        	.then(resp=>{
@@ -701,7 +702,7 @@ img{border-radius:100% !important}
                 			method:"post",
                 			data:{  
                 				replyNo:reply.clubBoardReplyDto.replyNo,
-    		        			memberNo:this.memberNo,
+                				likeMemberNo:this.memberNo,
                 			}
                 		}).then(resp=>{
                 			this.replylike = resp.data;
@@ -714,7 +715,7 @@ img{border-radius:100% !important}
                 			method:"delete",
                 			data:{
                 				replyNo:reply.clubBoardReplyDto.replyNo,
-    		        			memberNo:this.memberNo,
+                				likeMemberNo:this.memberNo,
                 			}
                 		}).then(resp=>{
                 			this.loadReply();

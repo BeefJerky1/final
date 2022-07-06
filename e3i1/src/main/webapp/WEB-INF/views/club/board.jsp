@@ -198,6 +198,7 @@
                 </div>
                 <!-- 게시글 목록 출력 -->
                 <div  class="text-dark col-lg-12 col-md-12 col-sm-12">
+
                 <div v-for="(clubboard, index ) in board" v-bind:key="index" >
                     <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 hover rounded mt-2 shadow ">
                         <div class="row">
@@ -229,14 +230,14 @@
                                 <i class="fa-regular fa-comment"></i>{{clubboard.clubBoardDto.clubBoardCount}}
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-                            	<div v-if="clubboard.clubBoardLikeDto.likeMemberNo != this.memberNo">
-                            		<span><i class="fa-regular fa-heart red" ></i>{{clubboard.clubBoardDto.clubBoardLike}}</span>
-                                </div>
-                                <div v-else-if="clubboard.clubBoardLikeDto.likeCheck==0">
-                                    <span><i class="fa-regular fa-heart red" ></i>{{clubboard.clubBoardDto.clubBoardLike}}</span>
+                            	<div v-if="this.memberNo==''">
+  									<span><i class="fa-regular fa-heart red" ></i>{{clubboard.clubBoardDto.clubBoardLike}}</span>
+                            	</div>
+                            	<div v-else-if="clubboard.clubBoardLikeDto.likeMemberNo==this.memberNo">
+                                	<span><i class="fa-solid fa-heart red" ></i>{{clubboard.clubBoardDto.clubBoardLike}}</span>
                                 </div>
                                 <div v-else>
-                                	<span><i class="fa-solid fa-heart red" ></i>{{clubboard.clubBoardDto.clubBoardLike}}</span>
+                            		<span><i class="fa-regular fa-heart red" ></i>{{clubboard.clubBoardDto.clubBoardLike}}</span>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
@@ -295,11 +296,12 @@
       </div>
     </div>
             </div>
+            </div>
             <div class=" mt-3">
                  <button type="button" v-on:click="appendBoard()" :disabled="this.dataFull == true" class="form-control btn-outline-primary shadow">
         더보기 ({{showBoard}}/{{totalBoard}})
     </button>
-            </div>
+
             
         </div>
         </div>
@@ -374,6 +376,8 @@
             //data : 화면을 구현하는데 필요한 데이터를 작성한다.
             data(){
                 return {
+                	//내 좋아요 확인
+                	boardLike:"",
 		            //세션
 		            memberNo:"${login}",
 		            memberAdmin:"${auth}",
@@ -416,17 +420,21 @@
             	},
             	//게시글 목록 출력
                 loadClubBoardList(){
+            		if(this.memberNo==""){
+            			const memberNo=0
                     axios({
-		        		url:"${pageContext.request.contextPath}/rest/clubboard/"+this.clubNo,
+		        		url:"${pageContext.request.contextPath}/rest/clubboard/"+this.clubNo+"/likeMemberNo/"+memberNo,
 		        		method:"get",
 		        	})
 		        	.then(resp=>{
-		        	
+		        		
 						let data = []
 						for(var i = 0; i<this.showBoard;i++){
 // 							console.log(i)
 							data.push(resp.data[i])
 						}
+
+
 						this.boardAll = resp.data,
 						this.board = data,
 						this.totalBoard = this.boardAll.length
@@ -439,6 +447,33 @@
 	                		this.dataFull=true;
 						}
 		        	});
+            		}else{
+                        axios({
+    		        		url:"${pageContext.request.contextPath}/rest/clubboard/"+this.clubNo+"/likeMemberNo/"+this.memberNo,
+    		        		method:"get",
+    		        	})
+    		        	.then(resp=>{
+    		        		
+    						let data = []
+    						for(var i = 0; i<this.showBoard;i++){
+//     							console.log(i)
+    							data.push(resp.data[i])
+    						}
+
+
+    						this.boardAll = resp.data,
+    						this.board = data,
+    						this.totalBoard = this.boardAll.length
+    						
+    						if(this.totalBoard < this.showBoard){
+    							this.showBoard = this.totalBoard;
+    							this.board = this.boardAll;
+    	                		this.dataFull=true;
+    						}else if(this.totalBoard==this.showBoard){
+    	                		this.dataFull=true;
+    						}
+    		        	});
+            		}
                 },
                 //더보기 버튼으로 게시글 추가
                 appendBoard(){
@@ -477,6 +512,9 @@
 					this.asdf = true;
 					this.boardContent = "";
                 },
+              	iDidit(clubboard){
+	  				if(clubboard.clubBoardLikeDto.likeMemberNo==this.memberNo)return true
+             	}, 
                 //게시글 등록
                 addBoard(){
                 	axios({
@@ -494,6 +532,21 @@
 		        		this.loadClubBoardList();
 		        	});
                 },
+//             	boardLikeCheck(index){
+//                 	const board = this.board[index];
+//                 	const clubBoardNo = board.clubBoardDto.clubBoardNo;
+//                     const likeMemberNo = this.memberNo
+//                		axios({
+//                			url:"${pageContext.request.contextPath}/rest/clubboard/like/"+clubBoardNo+"/"+likeMemberNo,
+//                			method:"get",
+//                		}).then(resp=>{
+// 						let data = []
+// 						for(var i = 0; i<this.resp.length ;i++){
+// // 							console.log(i)
+// 							data.push(resp.data[i])
+// 						}
+//                		})
+//             	},
                 //상세 페이지로 이동
                 select: function(index) {
                 	const clubBoard = this.board[index];
@@ -537,6 +590,7 @@
             created(){
             	this.loadClubBoardList();
             	this.TopTenList();
+//             	this.boardLikeCheck();
             },
             mounted(){
             	this.loadClubBoardList();
