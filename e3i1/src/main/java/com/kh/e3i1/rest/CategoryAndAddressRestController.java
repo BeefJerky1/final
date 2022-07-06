@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +13,7 @@ import com.kh.e3i1.entity.Address1Dto;
 import com.kh.e3i1.entity.Address2Dto;
 import com.kh.e3i1.entity.CategoryDto;
 import com.kh.e3i1.repository.CategoryNAddressDao;
+import com.kh.e3i1.vo.MbtiRankVO;
 
 @CrossOrigin(
 		origins = {"http://127.0.0.1:5500"}
@@ -53,5 +53,11 @@ public class CategoryAndAddressRestController {
 	@GetMapping("/animal/{mbti}")
 	public String animal(@PathVariable String mbti) {
 		return categoryNAddressDao.animal(mbti);
+	}
+	
+	// mbti 랭킹
+	@GetMapping("/mbti/{clubNo}")
+	public List<MbtiRankVO> mbtiRank(@PathVariable int clubNo) {
+		return categoryNAddressDao.mbtiRank(clubNo);
 	}
 }

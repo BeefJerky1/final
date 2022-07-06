@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.e3i1.entity.Address1Dto;
 import com.kh.e3i1.entity.Address2Dto;
 import com.kh.e3i1.entity.CategoryDto;
+import com.kh.e3i1.vo.MbtiRankVO;
 
 @Repository
 public class CategoryNAddressDaoImpl implements CategoryNAddressDao {
@@ -41,6 +42,11 @@ public class CategoryNAddressDaoImpl implements CategoryNAddressDao {
 	@Override
 	public String animal(String mbti) {
 		return sqlSession.selectOne("mbti.animal",mbti);
+	}
+
+	@Override
+	public List<MbtiRankVO> mbtiRank(int clubNo) {
+		return sqlSession.selectList("mbti.mbtiRank",clubNo);
 	}
 	
 }

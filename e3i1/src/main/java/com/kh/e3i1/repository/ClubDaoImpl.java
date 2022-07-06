@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.e3i1.entity.ClubDto;
+import com.kh.e3i1.entity.ClubLikeDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.vo.ClubDetailVO;
 
 @Repository
 public class ClubDaoImpl implements ClubDao {
@@ -39,4 +41,38 @@ public class ClubDaoImpl implements ClubDao {
 		return clubNo;
 	}
 
+	// 소모임 상세페이지
+	@Override
+	public ClubDetailVO detail(int clubNo) {
+		return sqlSession.selectOne("club.clubDetail",clubNo);
+	}
+	
+	// 소모임 좋아요 여부 
+	@Override
+	public boolean isLike(ClubLikeDto clubLikeDto) {
+		ClubLikeDto existDto = sqlSession.selectOne("club.exist_like", clubLikeDto);
+		if(existDto == null) {
+			return false;
+		}
+		return true;
+	}
+	
+	// 소모임 좋아요
+	@Override
+	public int likeClub(ClubLikeDto clubLikeDto) {
+		
+		if(!this.isLike(clubLikeDto)) {
+			// 시퀀스 생성
+			clubLikeDto.setClubLikeNo(sqlSession.selectOne("club.like_sequence"));
+			// 좋아요 테이블 생성 - 좋아요
+			sqlSession.insert("club.like_club",clubLikeDto);
+			return clubLikeDto.getClubLikeNo();
+		}
+		else {
+			// 좋아요 테이블 삭제 - 취소
+			sqlSession.delete("club.like_cancel",clubLikeDto);
+			return 0;
+		}
+	}
+	
 }

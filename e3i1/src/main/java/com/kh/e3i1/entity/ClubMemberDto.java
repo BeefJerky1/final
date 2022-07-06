@@ -13,7 +13,7 @@ public class ClubMemberDto {
 	private int clubNo;
 	private int memberNo;
 	private Date clubMemberDate;
-	private String clubMemberGrade;
+	private int clubMemberGrade;
 	private String clubMemberAnswer1;
 	private String clubMemberAnswer2;
 	private String clubMemberAnswer3;

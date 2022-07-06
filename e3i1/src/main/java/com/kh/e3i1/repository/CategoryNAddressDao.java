@@ -5,6 +5,7 @@ import java.util.List;
 import com.kh.e3i1.entity.Address1Dto;
 import com.kh.e3i1.entity.Address2Dto;
 import com.kh.e3i1.entity.CategoryDto;
+import com.kh.e3i1.vo.MbtiRankVO;
 
 public interface CategoryNAddressDao {
 
@@ -13,4 +14,5 @@ public interface CategoryNAddressDao {
 	List<Address1Dto> addressList1();
 	List<Address2Dto> addressList2(int address1No);
 	String animal(String mbti);
+	List<MbtiRankVO> mbtiRank(int clubNo);
 }

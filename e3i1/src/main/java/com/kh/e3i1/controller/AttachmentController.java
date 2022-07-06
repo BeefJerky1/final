@@ -24,35 +24,35 @@ public class AttachmentController {
 	@Autowired
 	private AttachmentDao attachmentDao;
 	
-//	@GetMapping("/download")
-//	public ResponseEntity<ByteArrayResource> download(
-//			@RequestParam int attachmentNo) throws IOException{
-//		// attachmentNo를 이용하여 DTO 정보를 조회(없으면 404)
-//		AttachmentDto attachmentDto = attachmentDao.info(attachmentNo);
-//		
-//		
-//		
-//		// if(attachmentDto == null) 
-//		//  	throw new CannotFindException(); // 404 처리를 위임 
-//		
-//		
-//		
-//		// DTO를 이용하여 파일정보 로드 
-//		ByteArrayResource resource = attachmentDao.load(attachmentDto.getAttachUploadname());
-//		
-//		// 반환 
-//		return ResponseEntity.ok()
-//					.contentType(MediaType.APPLICATION_OCTET_STREAM)
-//					.contentLength(attachmentDto.getAttachSize())
-//					.header(HttpHeaders.CONTENT_ENCODING, StandardCharsets.UTF_8.name())
-//					.header(HttpHeaders.CONTENT_DISPOSITION, 
-//							ContentDisposition.attachment()
-//												.filename(attachmentDto.getAttachUploadname(),StandardCharsets.UTF_8)
-//												.build()
-//												.toString()
-//					)
-//				.body(resource);
-//	}
+	@GetMapping("/download")
+	public ResponseEntity<ByteArrayResource> download(
+			@RequestParam int attachmentNo) throws IOException{
+		// attachmentNo를 이용하여 DTO 정보를 조회(없으면 404)
+		AttachmentDto attachmentDto = attachmentDao.info(attachmentNo);
+		
+		
+		
+		// if(attachmentDto == null) 
+		//  	throw new CannotFindException(); // 404 처리를 위임 
+		
+		
+		
+		// DTO를 이용하여 파일정보 로드 
+		ByteArrayResource resource = attachmentDao.load(attachmentDto.getAttachUploadname());
+		
+		// 반환 
+		return ResponseEntity.ok()
+					.contentType(MediaType.APPLICATION_OCTET_STREAM)
+					.contentLength(attachmentDto.getAttachSize())
+					.header(HttpHeaders.CONTENT_ENCODING, StandardCharsets.UTF_8.name())
+					.header(HttpHeaders.CONTENT_DISPOSITION, 
+							ContentDisposition.attachment()
+												.filename(attachmentDto.getAttachUploadname(),StandardCharsets.UTF_8)
+												.build()
+												.toString()
+					)
+				.body(resource);
+	}
 }
 
 

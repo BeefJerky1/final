@@ -1,12 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/modal.css">
 <style>
 .clubList{
 	cursor: pointer;
+}
+.btn-plus{
+	background-color:#3E4684;
+	color: white;
+}
+.btn-minus{
+	background-color:white;
+	border: 1px solid #3E4684;
+	color: #3E4684;
 }
 </style>
 
@@ -29,6 +39,10 @@
 		</div>
 	</div>
 	
+	<!-- 비회원이면 로그인 페이지로 보내기 -->
+	
+	
+	
 	<div class="row mt-4">
 		<div class="col-md-2 offset-md-10" style="padding-right:50px">
 			<button class="btn-create" v-on:click="removeHidden" @click.once="callList">소모임 생성</button>
@@ -38,7 +52,7 @@
 	<div class="row mt-4">
 		<div style="padding:50px"class="col-md-4" v-for="(club,index) in clubList" v-bind:key="index" @click="toDetailPage(index)">
 			<div class="card">
-				<img src="${pageContext.request.contextPath}/image/mbti/돌고래(ENFJ).png" class="card-img-top">
+				<img src="https://via.placeholder.com/250/69f/fff.png" class="card-img-top">
 				<div class="card-body clubList">
 					<h5 class="card-title">{{club.clubName}}</h5>
 					<h6 style="color:gray" class="card-subtitle">\#{{club.clubMainCategory}} / {{club.clubSubCategory}}</h6>
@@ -52,11 +66,10 @@
 	<div class="modal" v-bind:class="isHidden" class="rounded">
 		<div class="modal-overlay" v-on:click="addHidden"></div>
 
-		<div class="modal-content mt-4">
+		<div class="modal-content mt-4" style="width:600px!important; position:absolute!important;">
 		
 				<!-- 세션 넣을 곳 -->
-				<!-- <input type="hidden" v-model="clubLeader" value="${login}"/> -->
-				<input type="hidden" v-model="clubLeader"/>
+				<input type="hidden" ref="clubLeader" value="${login}"/>
 				
 				<div class="container-fluid">
 					<div class="modal-header text-start">
@@ -124,15 +137,21 @@
 								*질문 1개는 필수로 등록해야 합니다. <br> *질문은 최대 3개까지 설정가능합니다.
 							</p>
 						</div>
+						
+						<!-- 버튼 디자인 추후에 할 예정 -->
+						<div class="text-end">
+							<button @click="addInput" class="btn btn-plus">+</button>
+							<button @click="removeInput" class="btn btn-minus">-</button>
+						</div>
 						<div class="text-start">
 							<label>질문1</label>
 							<input class="form-control rounded"	type="text" name="clubJoinQuestion1" v-model="clubJoinQuestion1" />
 						</div>
-						<div class="text-start">
+						<div class="text-start" v-if="count > 1">
 							<label>질문2</label>
 							<input class="form-control rounded" type="text" name="clubJoinQuestion2" v-model="clubJoinQuestion2"/>
 						</div>
-						<div class="text-start">
+						<div class="text-start" v-if="count > 2">
 							<label>질문3</label> 
 							<input class="form-control rounded" type="text" name="clubJoinQuestion3" v-model="clubJoinQuestion3"/>
 						</div>
@@ -173,7 +192,7 @@ data() {
 		address2List: [],
 		
 		// 소모임 생성 데이터
-		clubLeader:9, // 세션으로 바꿔줘야 하는 부분
+		clubLeader:"", // 세션으로 바꿔줘야 하는 부분
 		clubName:"",
 		clubSummary:"",
 		clubJoinQuestion1:"",
@@ -188,7 +207,9 @@ data() {
 		// 시/도 번호
 		address1No : "",
 		// 시/군/구 값
-		city: "",		
+		city: "",	
+		
+		count: 1,
 	
 	};
 },
@@ -266,13 +287,21 @@ methods: {
 	
 	// 소모임 생성 with file
 	createClub(){
-		
 		let formData = new FormData();
 		
 		//const fileInput = document.querySelector("input[name=clubProfile]");
 		const fileInput = this.$refs.clubProfile;
 		if(fileInput.files.length == 0) return;
 		const fileData = fileInput.files[0];
+		
+		const session = this.$refs.clubLeader.value;
+		if(session == null || session == ""){
+			window.alert("로그인을 해주세요"); // 어차피 로그인을 해야지만 생성창이 뜨게 할 예정이라 필요없음
+			return;
+		}
+		else{
+			this.clubLeader = session;
+		}
 		
 		formData.append('clubProfile', fileData);
 		formData.append('clubLeader', this.clubLeader);
@@ -306,7 +335,29 @@ methods: {
 	toDetailPage(index){
 		window.location.href="${pageContext.request.contextPath}/club/detail?clubNo="+this.clubList[index].clubNo;
 	},
+	addInput(){
+		if(this.count >= 3) return;
+		this.count = this.count + 1;
+	},
+	removeInput(){
+		if(this.count <= 1) {
+			this.clubJoinQuestion1 = "";
+			return;
+		}
+		else if(this.count == 2){
+			this.clubJoinQuestion2 = "";
+		}
+		else if(this.count == 3){
+			this.clubJoinQuestion3 = "";
+		}
+		
+		this.count = this.count - 1;
+	},
 
+},
+watch:{
+	// 스크롤 이벤트 여기서 걸 예정이고 
+	// 스크롤 이벤트는 디바운스로 처리해야한다.
 },
 created() {
 	axios({

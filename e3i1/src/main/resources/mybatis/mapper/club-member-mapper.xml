@@ -64,4 +64,8 @@
 		)	
 	</insert>
 	
+	<select id="one" parameterType="ClubMemberDto" resultType="ClubMemberDto">
+		select * from club_member where member_no = #{memberNo} and club_no = #{clubNo}
+	</select>
+	
 </mapper>
