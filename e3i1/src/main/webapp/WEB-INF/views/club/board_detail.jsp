@@ -308,7 +308,7 @@ img{border-radius:100% !important}
             </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5">
-                <div class="border-start border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 right-side shadow rounded">
+                <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 right-side shadow rounded">
                     <div class="row">   
                         <select class="form-control" v-model="orderType"  v-on:change="changeList($event)">
                         	<option value="clubBoardNoDesc">최신</option>
@@ -316,7 +316,7 @@ img{border-radius:100% !important}
                         	<option value="clubBoardReadcountDesc">조회</option>
                         	<option value="clubBoardCountDesc">댓글</option>
                         </select>
-                        <div class=" border-buttom border-opacity-10 col-lg-12 col-md-12 col-sm-12 mt-5">
+                        <div class="border-bottm border-opacity-10 col-lg-12 col-md-12 col-sm-12 mt-5">
                         <div v-for="(side, index ) in side" v-bind:key="index" >
                         	<div v-if="this.orderType=='clubBoardNoDesc'" class="row">
                         		<div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
@@ -452,8 +452,8 @@ img{border-radius:100% !important}
 		    		//1.관리자라면 통과
 // 		    		console.log(board)
 		    		const boardWriter = board.clubBoardDto.clubBoardWriter
-		    		console.log("게시글:boardWriter=",boardWriter)
-		    		console.log("게시글:memberNo=",this.memberNo)
+// 		    		console.log("게시글:boardWriter=",boardWriter)
+// 		    		console.log("게시글:memberNo=",this.memberNo)
 		    		if(this.isAdmin) return true;
 		    		//2.현재 사용자가 작성자라면 통과
 		    		if(this.memberNo==boardWriter)return true;
@@ -515,7 +515,7 @@ img{border-radius:100% !important}
                 likey(){
  		    		let uri = window.location.search.substring(1); 
                     let params = new URLSearchParams(uri);
-                    console.log(params.get("clubBoardNo"));
+//                     console.log(params.get("clubBoardNo"));
                     const clubBoardNo = params.get("clubBoardNo");
                 		axios({
                 			url:"${pageContext.request.contextPath}/rest/clubboard/like/",
@@ -536,7 +536,7 @@ img{border-radius:100% !important}
                 notLikey(){
  		    		let uri = window.location.search.substring(1); 
                     let params = new URLSearchParams(uri);
-                    console.log(params.get("clubBoardNo"));
+//                     console.log(params.get("clubBoardNo"));
                     const clubBoardNo = params.get("clubBoardNo");
                 		axios({
                 			url:"${pageContext.request.contextPath}/rest/clubboard/like/",
@@ -634,10 +634,7 @@ img{border-radius:100% !important}
 		    	isReplyEditAndDeleteAvailable(index){
                 	const reply = this.reply[index];
 		    		//1.관리자라면 통과
-// 		    		console.log(board)
 		    		const replyWriter = reply.clubBoardReplyDto.clubReplyWriter
-		    		console.log("댓글:replyWriter=",replyWriter)
-		    		console.log("댓글:memberNo=",this.memberNo)
 		    		if(this.isAdmin) return true;
 		    		//2.현재 사용자가 작성자라면 통과
 		    		if(this.memberNo==replyWriter)return true;
@@ -727,6 +724,7 @@ img{border-radius:100% !important}
                 	const list = this.side[index];
                 	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+list.clubBoardNo;
                 },  
+    
                 //인기게시글
                 TopTenList(){           	
                 	axios({
