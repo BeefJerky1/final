@@ -7,7 +7,6 @@ import com.kh.e3i1.vo.MbtiMemberListVO;
 
 public interface MbtiBoardDao {
 
-	List<MbtiMemberListVO> list(String type, String keyword);
 
 	MbtiMemberListVO read(int mbtiBoardNo);
 
@@ -20,5 +19,12 @@ public interface MbtiBoardDao {
 	MbtiBoardDto info(int mbtiBoardNo);
 
 	boolean edit(MbtiBoardDto mbtiBoardDto);
+
+
+	int count(String type, String keyword);
+
+	List<MbtiMemberListVO> list(String type, String keyword, int page, int size);
+
+	List<MbtiMemberListVO> list(String type, String keyword);
 
 }

@@ -3,6 +3,7 @@ package com.kh.e3i1.repository;
 import java.util.List;
 
 import com.kh.e3i1.entity.ClubBoardReplyDto;
+import com.kh.e3i1.vo.ClubBoardReplyListVO;
 
 public interface ClubBoardReplyDao {
 
@@ -15,5 +16,7 @@ public interface ClubBoardReplyDao {
 	ClubBoardReplyDto edit(ClubBoardReplyDto clubBoardReplyDto);
 
 	void calculateReplyCount(int clubBoardNo);
+
+	List<ClubBoardReplyListVO> listAll(int clubBoardNo, int likeMemberNo);
 
 }

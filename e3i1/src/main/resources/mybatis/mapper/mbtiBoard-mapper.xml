@@ -45,6 +45,7 @@
 			<result column="mbti_board_time" property="mbtiBoardTime"/>
 			<result column="mbti_board_vote1" property="mbtiBoardVote1"/>
 			<result column="mbti_board_vote2" property="mbtiBoardVote2"/>
+			<result column="mbti_board_reply_count" property="mbtiBoardReplyCount"/>
 		</association>
 		
 		<association property="memberDto" javaType="MemberDto">
@@ -73,11 +74,25 @@
 	</resultMap>
 	
 	<select id="mbtiboardList" resultMap="mbtiboardMap">
-		select * from mbti_board B
+		select * from (
+				select * from mbti_board B
       		join member M on B.member_no = M.member_no
     	<if test ="type != null and keyword !=null">
 	 		<![CDATA[where instr(${type}, #{keyword}) > 0]]>
 	 		</if>
+		)
+	</select>
+	
+		<select id="mbtiboardList2" resultMap="mbtiboardMap">
+		select * from (
+			select rownum rn, TMP.* from (
+				select * from mbti_board B
+      		join member M on B.member_no = M.member_no
+    	<if test ="type != null and keyword !=null">
+	 		<![CDATA[where instr(${type}, #{keyword}) > 0]]>
+	 		</if>
+		) TMP
+			) where rn between  #{begin} and #{end}
 	</select>
 	
 	
@@ -128,6 +143,13 @@
 				mbti_board_content = #{mbtiBoardContent}
 			where mbti_board_no = #{mbtiBoardNo}
 		</update>
+		
+ 	<select id="count" parameterType="Map" resultType="int">
+ 		select count(*) from mbti_board
+ 		<if test="type != null and keyword != null">
+ 		<![CDATA[where instr(${type}, #{keyword}) > 0]]>
+ 		</if>
+ 	</select>
 		
 		
 </mapper>

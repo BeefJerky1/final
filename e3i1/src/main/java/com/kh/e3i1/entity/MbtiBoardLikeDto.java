@@ -6,9 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class ClubBoardLikeDto {
-	private int clubBoardLikeNo;
-	private int clubBoardNo;
-	private int likeMemberNo;
-	private int likeCheck;
+public class MbtiBoardLikeDto {
+	
+	private int memberNo;
+	private int mbtiBoardNo;
+	private int itLike;
+	private int count;
+	
+
 }

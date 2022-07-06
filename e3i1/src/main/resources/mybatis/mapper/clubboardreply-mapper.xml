@@ -49,16 +49,18 @@
 		where club_board_no = #{clubBoardNo}
 	</update>
 	
-	<resultMap type="ClubBoardListItemVO" id="clubBoardListItem">
-		<association property="clubBoardDto">
+	<resultMap type="ClubBoardReplyListVO" id="clubBoardReplyItems">
+		<association property="clubBoardReplyDto">
 			<result column="club_board_no" property="clubBoardNo"/>
 			<result column="club_no" property="clubNo"/>
-			<result column="club_board_writer" property="clubBoardWriter"/>
-			<result column="club_board_content" property="clubBoardContent"/>
-			<result column="club_board_time" property="clubBoardTime"/>
- 			<result column="club_board_count" property="clubBoardCount"/> 
+			<result column="reply_no" property="replyNo"/>
+			<result column="club_reply_writer" property="clubReplyWriter"/>
+			<result column="club_reply_content" property="clubReplyContent"/>
+			<result column="club_reply_time" property="clubReplyTime"/>
+			<result column="club_reply_like" property="clubReplyLike"/>
 		</association>
-		
+
+	
 		<association property="memberDto">
 			<result column="member_no" property="memberNo"/>
 			<result column="member_email" property="memberEmail"/>
@@ -81,10 +83,10 @@
 			<result column="member_birth" property="memberBirth"/>
 			<result column="member_name" property="memberName"/>
 		</association>
-		<association property="clubBoardLikeDto">
-			<result column="club_board_like_no" property="heartNo"/>
-			<result column="member_no" property="memberNo"/>
-			<result column="club_board_no" property="clubBoardNo"/>
+		<association property="clubReplyLikeDto">
+			<result column="club_reply_like_no" property="clubReplyLikeNo"/>
+			<result column="like_member_no" property="likeMemberNo"/>
+			<result column="reply_no" property="replyNo"/>
 			<result column="like_check" property="likeCheck"/>
 		</association>
 		<association property="memberProfileDto">
@@ -92,10 +94,40 @@
 			<result column="attach_no" property="attachNo"/>
 		</association>
 		
-		<collection javaType="java.util.List" ofType="ClubboardAttachDto" property="ClubboardAttachDto" select="subListQuery" column="clubNo">
-			<result column="club_board_no" property="clubBoardNo"/>
-			<result column="club_no" property="clubNo"/>
-			<result column="게시글사진번호" property="attachNo"/>
-		</collection>
 	</resultMap>
+		<select id="clubReplyTotalList" resultMap="clubBoardReplyItems" parameterType="Map">
+<!-- 	join된 구문 작성  -->
+		select
+	   C.club_board_no,
+	   C.club_reply_like,
+       C.club_reply_time, 
+       C.club_reply_content,
+       C.club_no,
+       C.reply_no,
+       C.club_reply_writer,
+       M.member_no,
+       M.member_animal,
+       M.member_nick,
+       M.member_interest1,
+       M.member_interest2,
+       M.member_interest3,
+       M.member_gender,
+       M.member_place1,
+       M.member_place2,
+       M.member_place3,
+       M.member_sns_id,
+       M.member_logindate,
+       P.attach_no  as 프로필사진번호,
+       L.club_reply_like_no,
+       L.like_check,
+       L.like_member_no
+from club_board_reply C 
+left outer join member M 
+   on C.club_reply_writer = M.member_no 
+left outer join member_profile P 
+   on C.club_reply_writer = P.member_no
+left outer join (select * from club_reply_like where like_member_no = #{likeMemberNo} ) L
+   on C.reply_no = L.reply_no
+where C.club_board_no =#{clubBoardNo} order by C.reply_no desc
+	</select>
 </mapper>

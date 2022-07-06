@@ -1,6 +1,8 @@
 package com.kh.e3i1.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,15 +43,16 @@ public class ClubController {
 	
 	// 소모임 게시판 목록
 	@GetMapping("/board/{clubNo}")
-	public String clubBoard(@PathVariable int clubNo) {
-		clubBoardDao.list(clubNo);
+	public String clubBoard(@PathVariable int clubNo ) {
+//		clubBoardDao.list(clubNo);
 		return "club/board";
 	}
 	// 소모임 게시판 상세
 	@GetMapping("/board_detail")
 	public String clubBoardDetail(@RequestParam int clubBoardNo, Model model) {
-		ClubBoardDto clubBoardDto = clubBoardDao.selectOne(clubBoardNo);
-		model.addAttribute(clubBoardDto);
+		ClubBoardListItemVO clubBoardListItemVO= clubBoardDao.detail(clubBoardNo);
+		ClubBoardDto clubBoardDto = clubBoardDao.readcount(clubBoardNo);
+		model.addAttribute(clubBoardListItemVO);
 		return "club/board_detail";
 	}
 //	// 소모임 게시글 삭제

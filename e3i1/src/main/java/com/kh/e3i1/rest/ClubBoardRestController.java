@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardLikeDto;
+import com.kh.e3i1.entity.ClubReplyLikeDto;
 import com.kh.e3i1.repository.ClubBoardDao;
 import com.kh.e3i1.repository.ClubBoardLikeDao;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
@@ -37,15 +38,15 @@ public class ClubBoardRestController {
 //	@Autowired
 //	private MemberDao memberDao;
 	
-//	//목록
-//	@GetMapping("/{clubNo}")
-//	public List<ClubBoardDto> list(@PathVariable int clubNo) {
-//		return clubBoardDao.list(clubNo);
-//	}
+	//오른쪽 사이드바 목록
+	@GetMapping("/side/{clubNo}/order/{orderType}")
+	public List<ClubBoardDto> Sidelist(@PathVariable int clubNo , @PathVariable String orderType) {
+		return clubBoardDao.list(clubNo,orderType);
+	}
 	//목록
-	@GetMapping("/{clubNo}")
-	public List<ClubBoardListItemVO> list(@PathVariable int clubNo) {
-		return clubBoardDao.listAll(clubNo);
+	@GetMapping("/{clubNo}/likeMemberNo/{likeMemberNo}")
+	public List<ClubBoardListItemVO> list(@PathVariable int clubNo, @PathVariable int likeMemberNo) {
+		return clubBoardDao.listAll(clubNo,likeMemberNo);
 	}
 	//등록
 	@PostMapping("/")
@@ -61,8 +62,8 @@ public class ClubBoardRestController {
 	}
 	//상세 보기
 	@GetMapping("/detail/{clubBoardNo}")
-	public ClubBoardDto one(@PathVariable int clubBoardNo) {
-		return clubBoardDao.selectOne(clubBoardNo);
+	public ClubBoardListItemVO one(@PathVariable int clubBoardNo) {	
+		return clubBoardDao.detail(clubBoardNo);
 	}
 	//수정
 	@PutMapping("/")
@@ -70,21 +71,31 @@ public class ClubBoardRestController {
 		return clubBoardDao.edit(clubBoardDto);
 	}
 	//좋아요 확인
-	@GetMapping("/like/{clubBoardNo}")
-	public int select(@PathVariable int clubBoardNo) {
-		int clubBoardWriter = 3;
-		return clubBoardLikeDao.selectList(clubBoardNo, clubBoardWriter);
+	@GetMapping("/likecheck/{clubBoardNo}/{likeMemberNo}")
+	public int select(@ApiIgnore HttpSession session,@PathVariable int clubBoardNo,@PathVariable int likeMemberNo) {
+//		int likeMemberNo = (Integer)session.getAttribute("login");
+		return clubBoardLikeDao.findLike(clubBoardNo, likeMemberNo);
 	}
 	@PostMapping("/like")
-	public ClubBoardLikeDto insert(@ApiIgnore HttpSession session, @RequestBody ClubBoardLikeDto clubBoardLikeDto) {
-		int clubBoardWriter = 3;
-		clubBoardLikeDto.setMemberNo(clubBoardWriter);
+	public ClubBoardLikeDto insert(@ApiIgnore HttpSession session, @RequestBody ClubBoardLikeDto clubBoardLikeDto ) {
+		int MemberNo = (Integer)session.getAttribute("login");
+		clubBoardLikeDto.setLikeMemberNo(MemberNo);
 		return clubBoardLikeDao.insert(clubBoardLikeDto);
 	}
 	@DeleteMapping("/like")
 	public void delete(@ApiIgnore HttpSession session, @RequestBody ClubBoardLikeDto clubBoardLikeDto) {
-		int clubBoardWriter = 3;
-		clubBoardLikeDto.setMemberNo(clubBoardWriter);
+		int MemberNo = (Integer)session.getAttribute("login");
+		clubBoardLikeDto.setLikeMemberNo(MemberNo);
 		clubBoardLikeDao.delete(clubBoardLikeDto);
 	}
+	@GetMapping("/likeList/{clubBoardNo}/{likeMemberNo}")
+	public int select2(@PathVariable int clubBoardNo ,@PathVariable int likeMemberNo) {
+		return clubBoardLikeDao.findLikeList(clubBoardNo,likeMemberNo);
+	}
+//	@PostMapping("/replylike")
+//	public ClubReplyLikeDto insert(@ApiIgnore HttpSession session, @RequestBody ClubReplyLikeDto clubReplyLikeDto) {
+//		int memberNo = 3;
+//		clubReplyLikeDto.setMemberNo(memberNo);
+//		return clubReplyLikeDao.insert(clubReplyLikeDto);
+//	}
 }

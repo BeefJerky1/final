@@ -40,7 +40,8 @@ a {
 
 textarea {
 
-    width: 80%;
+    width: 90%;
+	 margin: 0 auto;
     height: 6.25em;
     border: none;
     resize: none;
@@ -65,7 +66,15 @@ textarea:focus {
     background-color: #E9E9E9;
 }
 
+.like-btn {
+	float : right !important;
+	margin-right: 0.4rem;
+}
+
 </style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
 <div class="container " style="float: none; margin:100 auto;">
 	<div id="carouselExampleIndicators" class="carousel slide"
 		data-bs-ride="carousel">
@@ -108,11 +117,20 @@ textarea:focus {
 
 
 <div class="container" id="app">
-	<div class="row mt-2">
-		<div class="col-md-6">
-			<div class="card " style="width: 60rem;">
+	<div class="row mt-2"  style="float: none; margin: 0 auto;">
+		<div class="col-md-6 ">
+			<div class="card " style="width: 80rem;">
 				<div class="card-body">
-					<h5 class="card-title"><i class="fa-solid fa-q me-2"></i>${mbtiMemberListVO.mbtiBoardDto.mbtiBoardTitle }</h5>
+					<span><h5 class="card-title"><i class="fa-solid fa-q me-2"></i>${mbtiMemberListVO.mbtiBoardDto.mbtiBoardTitle }</h5></span>
+
+
+				<!-- 좋아요 버튼 -->
+				<span id="like" class="like-btn" >
+					<i class="fa-solid fa-heart fa-3x" id="likeBtn" @click="likeUpdate" style="color:#f96666;"></i>
+					<input type="hidden" id="likeCheck" v-model="count" value="${mbtiBoardLikeDto.itLike }">
+				</span>
+				<!-- ------ -->
+					
 					<p class="card-text"  style="height:100px;">${mbtiMemberListVO.mbtiBoardDto.mbtiBoardContent }</p>
 
 					<div class="col mb-2 mt-2">
@@ -173,7 +191,7 @@ textarea:focus {
 					<!-- 댓글 작성란 -->
 					<div class="row" style="float: none; margin:100 auto;">
 						<div class="col" style="float: none; margin:0 auto;">
-							<span class="center"><textarea class="" v-model="mbtiReplyContent"></textarea></span>
+							<span class="center"><textarea class="" v-model="mbtiReplyContent"  ></textarea></span>
 							<span><button class="btn btn-outline-success" @click="addReply">작성하기</button></span>
 							
 						</div>
@@ -181,15 +199,15 @@ textarea:focus {
 					
 					<!--  댓글 목록 -->
 					<div class="container">
-						<h5>${mbtiMemberListVO.mbtiBoardDto.mbtiBoardReplyCount}개의 댓글</h5>
+						<span style="font-weight:bold; color:#3E4684;"><h5>${mbtiMemberListVO.mbtiBoardDto.mbtiBoardReplyCount}개의 댓글</h5></span>
 					<div class="row" v-for="(reply, index) in mbtiBoardReplyList" v-bind:key="index">
 						<div v-if="!reply.edit">
 						<div class="col mt-2 mb-2 pb-2 pt-2">
 						<span><img src="${root }/image/mbti/거북이(ISTP).png" class="me-2"  style="width: 2rem;" alt="profile"></span>
 						<span class="me-2">{{reply.memberDto.memberAnimal}}</span>
 						<span class="me-2 time">{{elapsedText(reply.mbtiBoardReplyDto.mbtiReplyTime)}}</span>
-						<span class="me-2"><ion-icon name="create-outline" @click="changeEditMode(index);"></ion-icon></span>
-						<span class="me-2"><ion-icon name="trash-outline" @click="deleteReply(index);"></ion-icon></span>
+						<span class="me-2"><i class="fa-solid fa-pen-to-square" @click="changeEditMode(index);"></i></span>
+						<span class="me-2"><i class="fa-solid fa-trash-can" @click="deleteReply(index);"></i></span>
 						</div>
 						
 						<div class="mt-2 mb-2 pb-2 pt-2 reply-body">
@@ -211,12 +229,12 @@ textarea:focus {
 	
 
 </div>
-  <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
     <script src="${root}/js/time.js"></script>
 <!-- 
 	배포용 cdn (개발자 도구에서 vue가 안 보임)
 	<script src="https://unpkg.com/vue@next/dist/vue.global.prod.js"></script>
  -->
+ 
 <script>
 	const app = Vue.createApp({
 		
@@ -230,7 +248,11 @@ textarea:focus {
 				
 				// 댓글 목록
 				mbtiBoardReplyList:[],
-
+				
+				// 좋아요 기능에 필요한 데이터
+				memberNo:${mbtiMemberListVO.memberDto.memberNo},
+				itLike : "",
+				count : "",
 			};
 		},
 		computed:{
@@ -238,6 +260,33 @@ textarea:focus {
 		
 		},
 		methods:{
+			// 좋아요 
+			likeUpdate(){
+				axios({
+	        		url:"${pageContext.request.contextPath}/rest/mbtiBoardLike/likeUpdate",
+	        		method:"put",
+	        		data:{
+	        			memberNo:this.memberNo,
+	        			mbtiBoardNo:this.mbtiBoardNo,
+	        			count: this.count,
+	        			itLike: this.itLike,
+	        		},
+	        	})
+	        	.then(resp=>{
+	        		
+	        		//완성 시 코드
+	        		if(this.count == 1) {
+	        		window.alert("좋아요 취소");
+	        		this.count = 0;
+	        		}
+	        		else if(this.count == 0) {
+	        		window.alert("좋아요");
+	        		this.count = 1;
+	        		}
+	        	});
+			},
+			
+			
 			// 댓글 추가
 			addReply(){
 	        	axios({
