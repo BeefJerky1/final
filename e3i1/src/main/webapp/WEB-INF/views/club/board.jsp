@@ -50,7 +50,7 @@
     <div id="app" class="container-fluid">
         <div class="row all">
             <div class="col-lg-3 col-md-3 col-sm-3 position-sticky left-side rounded mt-5">
-                <div class="border border-o text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side rounded shadow">
+                <div class="border border-o text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side rounded shadow mt-3">
                     <h4><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="44"
                             height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -188,9 +188,9 @@
 <!--                         <h4><b>홈</b></h4> -->
 <!--                     </a> -->
                 </div>
-                <div v-if="show">
+                <div v-if="cancel">
 
-                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end rounded mt-2  shadow"  >
+                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end rounded mt-3  shadow"  >
                         <textarea class="form-control " v-model="boardContent" placeholder="무슨 일이 일어나고 있나요?"></textarea>
                         <button class="btn btn-primary mt-3 shadow" v-on:click="addBoard" :disabled="clubBoardContentIsEmpty()== true">등록하기</button>
                     </div>
@@ -200,7 +200,7 @@
                 <div  class="text-dark col-lg-12 col-md-12 col-sm-12">
 
                 <div v-for="(clubboard, index ) in board" v-bind:key="index" >
-                    <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 hover rounded mt-2 shadow ">
+                    <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 hover rounded mt-3 shadow ">
                         <div class="row">
                             <div class="col-lg-2 col-md-2 col-sm-2 align-end top">
                                 <a><img src="https://placeimg.com/70/70/animals" class="profile mx-auto d-block"></a>
@@ -306,9 +306,9 @@
         </div>
         </div>
        <div class="col-lg-3 col-md-3 col-sm-3 position-sticky right-side mt-5 ">
-       			<div v-if="isMember">
-        			<button class="btn btn-secondary form-control shadow" v-on:click="notAllowed()" v-if="show ">cancel</button>
-                   	<button class="btn btn-primary form-control shadow" v-on:click="allowed()" v-if="asdf">write</button>
+       			<div v-if="isMember" class="mt-3">
+        			<button class="btn btn-secondary form-control shadow" v-on:click="notAllowed()" v-if="cancel ">cancel</button>
+                   	<button class="btn btn-primary form-control shadow" v-on:click="allowed()" v-if="write">write</button>
        			</div>
                 <div class="border border-opacity-10 text-dark mt-2 p-4 col-lg-12 col-md-12 col-sm-12 right-side rounded shadow">
                     <div class="row">   
@@ -385,8 +385,8 @@
 		            boardContent:"",
 		            boardContent2:"",
 					//게시글 등록/취소 버튼
-					show:false,
-					asdf:true,
+					cancel:false,
+					write:true,
                     clubNo:"1",
                     //더보기
                     boardAll:[], //전체 게시글
@@ -504,17 +504,17 @@
                 	
                 },
                 allowed(){
-                	this.show = true;
-                	this.asdf = false;
+                	this.cancel = true;
+                	this.write = false;
                 },
                 notAllowed(){
-                   	this.show= false;
-					this.asdf = true;
+                   	this.cancel= false;
+					this.write = true;
 					this.boardContent = "";
                 },
-              	iDidit(clubboard){
-	  				if(clubboard.clubBoardLikeDto.likeMemberNo==this.memberNo)return true
-             	}, 
+//               	iDidit(clubboard){
+// 	  				if(clubboard.clubBoardLikeDto.likeMemberNo==this.memberNo)return true
+//              	}, 
                 //게시글 등록
                 addBoard(){
                 	axios({
@@ -549,11 +549,19 @@
 //             	},
                 //상세 페이지로 이동
                 select: function(index) {
+                	if(this.memberNo==''){
+                		window.alert("로그인하여야 사용할 수 있는 컨텐츠입니다.")
+                		return;
+                	}
                 	const clubBoard = this.board[index];
                 	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+clubBoard.clubBoardDto.clubBoardNo;
                 },
                 //인기 게시글로 이동
                 TopTen: function(index) {
+                	if(this.memberNo==''){
+                		window.alert("로그인하여야 사용할 수 있는 컨텐츠입니다.")
+                		return;
+                	}
                 	const list = this.side[index];
                 	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+list.clubBoardNo;
                 },
