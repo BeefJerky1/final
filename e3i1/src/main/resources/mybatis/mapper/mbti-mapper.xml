@@ -35,4 +35,18 @@
 		select animal from mbti_animal where mbti = #{mbti}
 	</select>
 	
+	<select id="mbtiRank" resultType="MbtiRankVO" parameterType="int">
+		SELECT 
+			cm.CLUB_NO, 
+			m.MEMBER_MBTI, 
+			count(m.member_mbti)/(SELECT count(*) FROM club_member WHERE club_no = #{clubNo} and club_member_permission = 1)*100 mbti_percent
+		FROM 
+			MEMBER m 
+		LEFT OUTER JOIN 
+			club_member cm 
+		ON 
+			m.MEMBER_NO = cm.MEMBER_NO 
+		WHERE cm.club_no = #{clubNo} and m.member_mbti is not null and cm.club_member_permission = 1 GROUP BY cm.CLUB_NO, m.MEMBER_MBTI ORDER BY mbti_percent DESC
+	</select>
+	
 </mapper>

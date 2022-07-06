@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class ClubProfile {
+public class ClubProfileDto {
 	private int attachNo;
 	private int clubNo;
 }

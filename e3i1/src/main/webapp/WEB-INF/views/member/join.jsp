@@ -373,6 +373,14 @@
 			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
 				<input type="hidden" name="memberAnimal" v-model="memberAnimal">
 				<div class="row">
+					<div class="card">
+						<div class="card-img">
+							<img src="#">
+						</div>
+						<div class="card-title">{{memberAnimal}}</div>
+					</div>
+				</div>
+				<div class="row">
 					<button type="submit" class="btn btn-primary fill">가입하기</button>
 				</div>
 
@@ -551,7 +559,10 @@ data() {
 		memberAnimal: "",
 	};
 },
-computed: {},
+computed: {
+	// 체크박스 갯수제한 3개를 걸 때 이부분에서 계산하면 될 듯 
+	// - 알림창을 여기서 만들면 성능저하가 되기 때문에 계산된 값을 반환해서 메소드에서 알림을 띄워야 한다. 
+},
 methods: {
 	// 시/군/구 추가
 	addCityList1(){

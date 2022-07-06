@@ -4,6 +4,11 @@
 
 <!-- 절대경로 변수 생성 -->
 <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
+<c:set var="memberNo" value="${login}"></c:set>
+<c:set var="isLogin" value="${memberNo != null}"></c:set>
+<c:set var="isAdmin" value="${auth == '관리자'}"></c:set>
+
+
 <!DOCTYPE html>
 <html lang="kor">
 
@@ -67,9 +72,19 @@
                     <input type="text" name="keyword" class="form-control me-2 input-box" type="search"
                         placeholder="소모임 검색하기" aria-label="Search">
                 </form>
-                <a href="${root}/member/login">
-                <button class="btn btn-outline-success" type="submit">로그인</button>
-                </a>
+                
+                <c:choose>
+	                <c:when test="${isLogin}">
+		                <a href="${root}/member/logout">
+		                <button class="btn btn-outline-success" type="submit">로그아웃</button>
+		                </a>
+	                </c:when>
+	                <c:otherwise>
+		                <a href="${root}/member/login">
+		                <button class="btn btn-outline-success" type="submit">로그인</button>
+		                </a>
+	                </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </nav>
