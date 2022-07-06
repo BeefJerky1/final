@@ -85,7 +85,7 @@
 		</association>
 		<association property="clubReplyLikeDto">
 			<result column="club_reply_like_no" property="clubReplyLikeNo"/>
-			<result column="member_no" property="memberNo"/>
+			<result column="like_member_no" property="likeMemberNo"/>
 			<result column="reply_no" property="replyNo"/>
 			<result column="like_check" property="likeCheck"/>
 		</association>
@@ -95,7 +95,7 @@
 		</association>
 		
 	</resultMap>
-		<select id="clubReplyTotalList" resultMap="clubBoardReplyItems">
+		<select id="clubReplyTotalList" resultMap="clubBoardReplyItems" parameterType="Map">
 <!-- 	join된 구문 작성  -->
 		select
 	   C.club_board_no,
@@ -119,13 +119,14 @@
        M.member_logindate,
        P.attach_no  as 프로필사진번호,
        L.club_reply_like_no,
-       L.like_check
+       L.like_check,
+       L.like_member_no
 from club_board_reply C 
 left outer join member M 
    on C.club_reply_writer = M.member_no 
 left outer join member_profile P 
    on C.club_reply_writer = P.member_no
-left outer join club_reply_like L
+left outer join (select * from club_reply_like where like_member_no = #{likeMemberNo} ) L
    on C.reply_no = L.reply_no
 where C.club_board_no =#{clubBoardNo} order by C.reply_no desc
 	</select>

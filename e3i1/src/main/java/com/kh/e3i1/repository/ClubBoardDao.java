@@ -2,6 +2,9 @@ package com.kh.e3i1.repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardLikeDto;
@@ -25,7 +28,7 @@ public interface ClubBoardDao {
 
 	List<ClubBoardListItemVO> clubBoardListItem(int clubNo);
 
-	List<ClubBoardListItemVO> listAll(int clubNo);
+	List<ClubBoardListItemVO> listAll(int clubNo, int likeMemberNo);
 
 	ClubBoardDto readcount(int clubBoardNo);
 

@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.kh.e3i1.entity.ClubBoardDto;
+import com.kh.e3i1.entity.ClubBoardLikeDto;
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
 import com.kh.e3i1.vo.ClubBoardReplyListVO;
@@ -37,16 +38,24 @@ public class Test {
 			System.out.println(dto);
 		}
 	}
-	@org.junit.Test
+//	@org.junit.Test
 	public void test2() {
-		int clubNo = 1;
-		String orderType = "clubBoardReadcountDesc";
+		int clubBoardNo =125;
+		int likeMemberNo = 3;
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("clubNo",clubNo);
-		param.put("orderType", orderType);
-		List<ClubBoardDto> list = sqlSession.selectList("clubboard.board-side", param);
-		for(ClubBoardDto dto: list) {
-			log.debug("clubBoardDto ={}", dto);
-		}
+		param.put("clubBoardNo", clubBoardNo);
+		param.put("likeMemberNo", likeMemberNo);
+		Integer cluBboardNo = sqlSession.selectOne("clubboardlike.findlikelist", param);
+		log.debug("clubBoardNo ={}",cluBboardNo);
+	}
+	@org.junit.Test
+	public void test3() {
+		ClubBoardLikeDto clubBoardLikeDto = new ClubBoardLikeDto();
+		int likeMemberNo = 3;
+		int clubBoardNo = 124;
+		clubBoardLikeDto.setLikeMemberNo(likeMemberNo);
+		clubBoardLikeDto.setClubBoardNo(clubBoardNo);
+		int checkLike = sqlSession.selectOne("clubboardlike.checkLike", clubBoardLikeDto);
+		log.debug("checklike = {}" , checkLike);
 	}
 }

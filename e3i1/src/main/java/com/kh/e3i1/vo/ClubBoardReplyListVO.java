@@ -1,6 +1,8 @@
 package com.kh.e3i1.vo;
 
 
+import java.util.Set;
+
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubReplyLikeDto;
 import com.kh.e3i1.entity.MemberDto;

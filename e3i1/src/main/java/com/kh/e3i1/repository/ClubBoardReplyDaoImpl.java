@@ -1,6 +1,8 @@
 package com.kh.e3i1.repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +52,11 @@ public class ClubBoardReplyDaoImpl implements ClubBoardReplyDao{
 		sqlSession.update("clubboardreply.calculateReplyCount",clubBoardNo);	
 	}
 	@Override
-	public List<ClubBoardReplyListVO> listAll(int clubBoardNo) {
+	public List<ClubBoardReplyListVO> listAll(int clubBoardNo, int likeMemberNo) {
 //		this.calculateReplyCount(clubNo);
-		return sqlSession.selectList("clubboardreply.clubReplyTotalList", clubBoardNo);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("clubBoardNo", clubBoardNo);
+		param.put("likeMemberNo", likeMemberNo);
+		return sqlSession.selectList("clubboardreply.clubReplyTotalList", param);
 	}
 }

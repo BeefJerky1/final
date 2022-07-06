@@ -17,7 +17,7 @@ public class ClubReplyLikeDaoImpl implements ClubReplyLikeDao{
 	@Override
 	public int selectList(int replyNo, int memberNo) {
 		ClubReplyLikeDto clubReplyLikeDto = new ClubReplyLikeDto();
-		clubReplyLikeDto.setMemberNo(memberNo);
+		clubReplyLikeDto.setLikeMemberNo(memberNo);
 		clubReplyLikeDto.setReplyNo(replyNo);
 		ClubReplyLikeDto isExist = sqlSession.selectOne("clubreplylike.checkLike", clubReplyLikeDto);
 		if (isExist == null) {
