@@ -1,9 +1,12 @@
 package com.kh.e3i1.rest;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +22,7 @@ public class MbtiBoardLikeRestController {
 	
 	@Autowired
 	MbtiBoardLikeDao mbtiBoardLikeDao;
+	
 	
 	@PutMapping("/likeUpdate")
 	public MbtiBoardLikeDto likeUpdate(@RequestBody MbtiBoardLikeDto mbtiBoardLikeDto) {

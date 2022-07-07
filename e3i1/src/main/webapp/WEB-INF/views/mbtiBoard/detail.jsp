@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.text.*"%>
 
 <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
 <style>
@@ -11,8 +12,9 @@ a {
 	font-size: 12px;
 }
 
+
 .card  !important {
-	border-radius: 1px;
+	border-radius: 2em;
 }
 
 .button-write {
@@ -71,6 +73,33 @@ textarea:focus {
 	margin-right: 0.4rem;
 }
 
+.thumbs {
+		float: auto;
+        text-align: center;
+        position: relative;
+	    padding:1rem 1rem;
+	    margin: 1rem 1rem;
+
+}
+
+ .graph {  
+ 	height: 40px; background-color: #ccc; border-radius: 40px; width: 500px;
+ 	
+ 	}
+    .graph span {
+      display : block; height: 40px; line-height: 40px; 
+      padding: 0 10px;
+      text-align: right; background-color: #a7a7c1; border-radius: 40px;
+      box-sizing: border-box; color:#fff; animation:stack 3s 1;
+      margin-top : 1em;
+    }
+
+    @keyframes stack {
+        0% { width: 0; color: rgba(255, 255, 255, 0);}
+        40% { color: rgba(255, 255, 255, 1);}
+        100% {width: 60%;}
+    }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
@@ -125,9 +154,10 @@ textarea:focus {
 
 
 				<!-- 좋아요 버튼 -->
-				<span id="like" class="like-btn" >
+				<span id="like" class="like-btn">
 					<i class="fa-solid fa-heart fa-3x" id="likeBtn" @click="likeUpdate" style="color:#f96666;"></i>
-					<input type="hidden" id="likeCheck" v-model="count" value="${mbtiBoardLikeDto.itLike }">
+					<input type="hidden" id="likeCheck" v-model="likeCheck" >
+					<%-- 좋아요 : ${mbtiBoardLikeDto.itLike } --%>
 				</span>
 				<!-- ------ -->
 					
@@ -145,6 +175,18 @@ textarea:focus {
 						<span><i class="fa-solid fa-message"></i></span>
 					</div>
 
+
+					<!-- 추천 / 반대  -->
+						<div class="col mt-3 mb-2 thumbs" >
+							
+							<i class="fa-solid fa-thumbs-up fa-3x" style="color:#a7a7c1;" @click="addVote1"></i>&ensp; &ensp; 
+							<i class="fa-solid fa-thumbs-down fa-3x" style="color:#dbdbdb;" @click="addVote2"></i>
+							
+						    	<div class="graph mt-3 mb-2" style="float: none; margin:0 auto;">
+							      <span style="width: {{isVotePercent}}%;">{{isVotePercent}}%</span>
+							    </div>
+						</div>
+					
 					<div class="row mt-3">
 						<div class="col mt-3 mr-3">
 							<a href="write" class="btn btn-edit button-write"
@@ -152,6 +194,7 @@ textarea:focus {
 								href="delete?mbtiBoardNo=${mbtiMemberListVO.mbtiBoardDto.mbtiBoardNo}"
 								class="btn btn-outline-success button-write">삭제</a>
 						</div>
+						
 					</div>
 
 
@@ -253,17 +296,88 @@ textarea:focus {
 				memberNo:${mbtiMemberListVO.memberDto.memberNo},
 				itLike : "",
 				count : "",
+				
+				// 투표 공감 카운팅
+				voteCount : "",
+				// 투표 전체 개수 카운팅
+				voteTotalCount : "",
 			};
 		},
 		computed:{
-			
+			isVotePercent () {
+				return this.voteCount * 100.0 / this.voteTotalCount;
+
+			},
 		
 		},
 		methods:{
+			// 투표 *공감 
+			addVote1(){
+	        	axios({
+	        		url:"${pageContext.request.contextPath}/rest/mbtiBoardVote/",
+	        		method:"post",
+	        		data:{
+	        			mbtiBoardNo:this.mbtiBoardNo,
+	        			voteChoice : 1, 
+	        		},
+	        	})
+	        	.then(resp=>{
+	        		
+	        		//완성 시 코드
+	        		window.alert("공감해요!");
+	        		this.loadVote();
+	        		this.loadVoteTotal();
+	        	});
+	        },
+	        // 투표 *반대
+			addVote2(){
+	        	axios({
+	        		url:"${pageContext.request.contextPath}/rest/mbtiBoardVote/",
+	        		method:"post",
+	        		data:{
+	        			mbtiBoardNo:this.mbtiBoardNo,
+	        			voteChoice : 0, 
+	        		},
+	        	})
+	        	.then(resp=>{
+	        		
+	        		//완성 시 코드
+	        		window.alert("공감하지 않아요. ㅜㅜ");
+	        		this.loadVote();
+	        		this.loadVoteTotal();
+	        	});
+	        },
+	        
+	        // 투표 *공감* 카운팅
+			  loadVote(){
+                
+	        	axios({
+	        		url:"${pageContext.request.contextPath}/rest/mbtiBoardVote/"+this.mbtiBoardNo,
+	        		method:"get",
+	        	})
+	        	.then(resp=>{
+	        		this.voteCount = resp.data;
+	        		
+	        	});
+		},
+		 // 투표 *전체 개수* 카운팅
+			  loadVoteTotal(){
+                
+	        	axios({
+	        		url:"${pageContext.request.contextPath}/rest/mbtiBoardVote/total/"+this.mbtiBoardNo,
+	        		method:"get",
+	        	})
+	        	.then(resp=>{
+	        		this.voteTotalCount = resp.data;
+	        		
+	        	});
+		},
+		
+		
 			// 좋아요 
-			likeUpdate(){
+ 			likeUpdate(){
 				axios({
-	        		url:"${pageContext.request.contextPath}/rest/mbtiBoardLike/likeUpdate",
+	        		url:"${pageContext.request.contextPath}/rest/mbtiBoardLike/likeUpdate/",
 	        		method:"put",
 	        		data:{
 	        			memberNo:this.memberNo,
@@ -275,16 +389,16 @@ textarea:focus {
 	        	.then(resp=>{
 	        		
 	        		//완성 시 코드
-	        		if(this.count == 1) {
+	        		if(count == 1) {
 	        		window.alert("좋아요 취소");
 	        		this.count = 0;
 	        		}
-	        		else if(this.count == 0) {
+	        		else if(count == 0) {
 	        		window.alert("좋아요");
 	        		this.count = 1;
 	        		}
-	        	});
-			},
+	        	}); 
+			}, 
 			
 			
 			// 댓글 추가
@@ -317,6 +431,7 @@ textarea:focus {
 		        		this.mbtiBoardReplyList = resp.data;
 		        	});
 			},
+			
 
 			// 댓글 삭제
 			  deleteReply(index){
@@ -367,7 +482,9 @@ textarea:focus {
 		},
 		    
 		created(){
-			this.loadReply();		
+			this.loadReply();	
+			this.loadVote();
+			this.loadVoteTotal();
 		},
 	});
 	app.mount("#app");
