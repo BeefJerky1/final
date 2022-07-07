@@ -4,7 +4,7 @@
 
 <c:set var="saveEmailExist" value="${cookie.saveEmail != null}"></c:set>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/login.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/member.css">
 <style>
 </style>
 
@@ -12,7 +12,7 @@
 
 <div id="app" class="container-fluid">
 	<div class="row mt-4 p-2">
-		<div class="col-md-8 offset-md-2 mb-5 p-2 text-dark bg-light rounded">
+		<div class="col-md-8 offset-md-2 mb-5 p-2 text-dark rounded">
 			<form action="login" method="post">
 				<input type="hidden" name="referer" value="${referer}">
 				<div class="row text-center mt-2 mb-4">

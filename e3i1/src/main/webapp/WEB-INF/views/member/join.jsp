@@ -1,93 +1,52 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/member.css">
 <style>
-.point {
-	font-size: 2.3em;
+.tagtitle {
 	font-weight: 900;
+	font-size: 1.0em;
 }
 
-.btn.btn-next {
-	width: 100px;
-	border-color: #3E4684;
-	background-color: #3E4684;
-	color: white;
+.tagtext {
+	font-weight: 500;
+	font-size: 0.85em;
 }
 
-.btn.btn-next:hover {
-	width: 100px;
-	border-color: #3E4684;
-	background-color: #3E4684;
-	color: white;
-}
-
-.btn.btn-prev {
-	width: 100px;
-	border-color: #3E4684;
-	background-color: #3E4684;
-	color: white;
-}
-
-.btn.btn-prev:hover {
-	width: 100px;
-	border-color: #3E4684;
-	background-color: #3E4684;
-	color: white;
-}
-
-.btn.btn-answer1 {
-	font-size: 0.9em;
-	border-color: #F6F6F6;
+.card {
 	border-width: 0.25em;
-	background-color: #F6F6F6;
-	color: black;
 }
-
-.btn.btn-answer1:hover {
+.card:hover{
 	border-color: #3E4684;
 	border-width: 0.25em;
-	background-color: #F6F6F6;
-	color: black;
 }
 
-.btn.btn-answer2 {
-	font-size: 0.9em;
-	border-color: #F6F6F6;
-	border-width: 0.25em;
-	background-color: #F6F6F6;
-	color: black;
-}
-
-.btn.btn-answer2:hover {
-	border-color: #3E4684;
-	border-width: 0.25em;
-	background-color: #F6F6F6;
-	color: black;
-}
-
-.title {
+.maincolor {
+	color: #3E4684;
 	font-weight: 900;
+	font-size: 1.0em;
 }
 
-.label1 {
-	font-size: 0.8em;
-	color: #6E6E6E;
+
+i{
+	color: #3E4684;
 }
 </style>
 
 
-<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div id="app" class="container-fluid">
 	<form action="join" method="post">
 		<div class="row mt-4 p-2">
-			<div class="col-md-8 offset-md-2 mb-4 p-4 text-dark bg-light rounded">
+			<div class="col-md-8 offset-md-2 text-dark rounded">
 				<div class="row text-center">
 					<span class="point">회원가입</span>
 				</div>
 
 				<div class="container w500 m30 page">
 					<div class="col-md-6 offset-md-3">
-						<div class="form-floating mt-4 mb-3 mt-4">
+						<div class="form-floating mt-4 mb-3">
 							<input type="text" class="form-control" name="memberEmail"
 								autocomplete="off" required> <label for="floatingInput">Email
 								Address</label>
@@ -132,14 +91,16 @@
 							<label class="label1">관심 지역1</label>
 							<div class="row">
 								<div class="col">
-									<select class="form-control rounded" @change="addCityList1" v-model="address1No"> 
+									<select class="form-control rounded" @change="addCityList1"
+										v-model="address1No">
 										<option value="">시/도</option>
 										<option v-for="(address1, index) in address1List1"
 											v-bind:key="index" :value="address1.address1No">{{address1.province}}</option>
 									</select>
 								</div>
 								<div class="col">
-									<select name="memberPlace1" class="form-control rounded" v-model="city1">
+									<select name="memberPlace1" class="form-control rounded"
+										v-model="city1">
 										<option value="">시/군/구</option>
 										<option v-for="(address2, index) in address2List1"
 											v-bind:key="index" :value="address2.city">{{address2.city}}</option>
@@ -151,14 +112,16 @@
 							<label class="label1">관심 지역2</label>
 							<div class="row">
 								<div class="col">
-									<select class="form-control rounded" @change="addCityList2" v-model="address2No">
+									<select class="form-control rounded" @change="addCityList2"
+										v-model="address2No">
 										<option value="">시/도</option>
 										<option v-for="(address1, index) in address1List2"
 											v-bind:key="index" :value="address1.address1No">{{address1.province}}</option>
 									</select>
 								</div>
 								<div class="col">
-									<select name="memberPlace2" class="form-control rounded" v-model="city2">
+									<select name="memberPlace2" class="form-control rounded"
+										v-model="city2">
 										<option value="">시/군/구</option>
 										<option v-for="(address2, index) in address2List2"
 											v-bind:key="index" :value="address2.city">{{address2.city}}</option>
@@ -170,14 +133,16 @@
 							<label class="label1">관심 지역3</label>
 							<div class="row">
 								<div class="col">
-									<select class="form-control rounded" @change="addCityList3" v-model="address3No">
+									<select class="form-control rounded" @change="addCityList3"
+										v-model="address3No">
 										<option value="">시/도</option>
 										<option v-for="(address1, index) in address1List3"
 											v-bind:key="index" :value="address1.address1No">{{address1.province}}</option>
 									</select>
 								</div>
 								<div class="col">
-									<select name="memberPlace3" class="form-control rounded" v-model="city3">
+									<select name="memberPlace3" class="form-control rounded"
+										v-model="city3">
 										<option value="">시/군/구</option>
 										<option v-for="(address2, index) in address2List3"
 											v-bind:key="index" :value="address2.city">{{address2.city}}</option>
@@ -186,21 +151,22 @@
 							</div>
 						</div>
 
-							<button type="button" class="btn btn-prev" style="display: none;">이전</button>
-							<button type="button" class="btn btn-next mt-3" style="float: right;">다음</button>
+						<button type="button" class="btn btn-prev" style="display: none;">이전</button>
+						<button type="button" class="btn btn-next mt-3"
+							style="float: right;">다음</button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- 2번째 페이지 -->
 		<div class="container w500 m30 page">
-			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
+			<div class="col-md-8 offset-md-2 mb-2 p-4 text-dark rounded">
 				<div class="col-md-8 offset-md-2">
 					<c:forEach var="mbtiSurveyDto" items="${list}">
 						<c:if test="${mbtiSurveyDto.surveyNo < 4}">
 							<div class="text-center">
 								<div class="row">
-									<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
+									<span class="title my-1">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
 								</div>
 								<div class="row my-2">
 									<button type="button" value="E" class="btn btn-answer1">${mbtiSurveyDto.surveyAnswer1}</button>
@@ -215,22 +181,24 @@
 					</c:forEach>
 					<span class="answer-record1"></span>
 
-				
-						<button type="button" class="btn btn-prev mt-1" style="float: left;">이전</button>
-						<button type="button" class="btn btn-next mt-1 ml-2" style="float: right;">다음</button>
-					
+
+					<button type="button" class="btn btn-prev mt-1"
+						style="float: left;">이전</button>
+					<button type="button" class="btn btn-next mt-1 ml-2"
+						style="float: right;">다음</button>
+
 				</div>
 			</div>
 		</div>
 
 		<!-- 3번째 페이지 -->
 		<div class="container w500 m30 page">
-			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
+			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark rounded">
 				<div class="col-md-8 offset-md-2">
 					<c:forEach var="mbtiSurveyDto" items="${list}">
 						<c:if
 							test="${mbtiSurveyDto.surveyNo >= 4 && mbtiSurveyDto.surveyNo < 7}">
-							<div class="row text-center">
+							<div class="text-center">
 								<div class="row">
 									<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
 								</div>
@@ -247,20 +215,22 @@
 					</c:forEach>
 					<span class="answer-record2"></span>
 
-						<button type="button" class="btn btn-prev mt-1"  style="float: left;">이전</button>
-						<button type="button" class="btn btn-next mt-1" style="float: right;">다음</button>
+					<button type="button" class="btn btn-prev mt-1"
+						style="float: left;">이전</button>
+					<button type="button" class="btn btn-next mt-1"
+						style="float: right;">다음</button>
 				</div>
 			</div>
 		</div>
 
 		<!-- 4번째 페이지 -->
 		<div class="container w500 m30 page">
-			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
+			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark rounded">
 				<div class="col-md-8 offset-md-2">
 					<c:forEach var="mbtiSurveyDto" items="${list}">
 						<c:if
 							test="${mbtiSurveyDto.surveyNo >= 7 && mbtiSurveyDto.surveyNo < 10}">
-							<div class="row text-center">
+							<div class="text-center">
 								<div class="row">
 									<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.${mbtiSurveyDto.surveyQuestion}</span>
 								</div>
@@ -277,19 +247,21 @@
 					</c:forEach>
 					<span class="answer-record3"></span>
 
-						<button type="button" class="btn btn-prev mt-1" style="float: left;">이전</button>
-						<button type="button" class="btn btn-next mt-1" style="float: right;">다음</button>
+					<button type="button" class="btn btn-prev mt-1"
+						style="float: left;">이전</button>
+					<button type="button" class="btn btn-next mt-1"
+						style="float: right;">다음</button>
 				</div>
 			</div>
 		</div>
 
 		<!-- 5번째 페이지 -->
 		<div class="container w500 m30 page">
-			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
+			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark rounded">
 				<div class="col-md-8 offset-md-2">
 					<c:forEach var="mbtiSurveyDto" items="${list}">
 						<c:if test="${mbtiSurveyDto.surveyNo >= 10}">
-							<div class="row text-center">
+							<div class="text-center">
 								<div class="row">
 									<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.${mbtiSurveyDto.surveyQuestion}</span>
 								</div>
@@ -306,92 +278,215 @@
 					</c:forEach>
 					<span class="answer-record4"></span>
 
-						<button type="button" class="btn btn-prev mt-1" style="float: left;">이전</button>
-						<button type="button" class="btn btn-next mt-1" style="float: right;">다음</button>
-				</div>
-			</div>
-		</div>
-		
-		<!-- 6번째 페이지 -->
-		<div class="container w500 m30 page">
-			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
-				<input type="hidden" name="memberMbti" ref="memberMbti">
-				<div class="col-md-8 offset-md-2">
-				
-						<div class="form-floating mb-3">
-							<select name="memberInterest1" class="form-select"
-								id="floatingSelect">
-								<option value=""></option>
-								<option>#액티비티매니아</option>
-								<option>#인스타그래머</option>
-								<option>#금손모임</option>
-								<option>#친구해요</option>
-								<option>#뇌섹남녀</option>
-								<option>#텅장되자</option>
-								<option>#킹스맨</option>
-								<option>#자연인</option>
-								<option>#집사님</option>
-								<option>#집돌이집순이</option>
-							</select> <label for="floatingSelect">Interest1</label>
-							<select name="memberInterest2" class="form-select"
-								id="floatingSelect">
-								<option value=""></option>
-								<option>#액티비티매니아</option>
-								<option>#인스타그래머</option>
-								<option>#금손모임</option>
-								<option>#친구해요</option>
-								<option>#뇌섹남녀</option>
-								<option>#텅장되자</option>
-								<option>#킹스맨</option>
-								<option>#자연인</option>
-								<option>#집사님</option>
-								<option>#집돌이집순이</option>
-							</select> <label for="floatingSelect">Interest2</label>
-							<select name="memberInterest3" class="form-select"
-								id="floatingSelect">
-								<option value=""></option>
-								<option>#액티비티매니아</option>
-								<option>#인스타그래머</option>
-								<option>#금손모임</option>
-								<option>#친구해요</option>
-								<option>#뇌섹남녀</option>
-								<option>#텅장되자</option>
-								<option>#킹스맨</option>
-								<option>#자연인</option>
-								<option>#집사님</option>
-								<option>#집돌이집순이</option>
-							</select> <label for="floatingSelect">Interest3</label>
-						</div>
-				
-						<button type="button" class="btn btn-prev mt-1" style="float: left;">이전</button>
-						<button type="button" class="btn btn-next mt-1" @click="callAnimal" style="float: right;">다음</button>
+					<button type="button" class="btn btn-prev mt-1"
+						style="float: left;">이전</button>
+					<button type="button" class="btn btn-next mt-1"
+						style="float: right;">다음</button>
 				</div>
 			</div>
 		</div>
 
 		<!-- 6번째 페이지 -->
 		<div class="container w500 m30 page">
-			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
-				<input type="hidden" name="memberAnimal" v-model="memberAnimal">
-				<div class="row">
-					<div class="card">
-						<div class="card-img">
-							<img src="#">
+			<div class="col-md-8 offset-md-2 mb-5 text-dark rounded">
+				<input type="hidden" name="memberMbti" ref="memberMbti">
+
+				<div class="row row-cols-1 row-cols-md-3 g-10 my-2">
+					<div class="col">
+						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+							<div class="card-body m-1">
+								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 인스타그래머 
+								<i class="fa-brands fa-instagram-square"></i>
+								</h5>
+								<p class="card-text text-center tagtext">
+									남는 건 사진 뿐!<br>내 모든 순간을 남기자!
+								</p>
+							</div>
 						</div>
-						<div class="card-title">{{memberAnimal}}</div>
+					</div>
+
+					<div class="col">
+						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+							<div class="card-body m-1">
+								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 액티비티매니아
+								<i class="fa-solid fa-person-running" class="coloricon"></i></h5>
+								<p class="card-text text-center tagtext">
+									나를 죽이지 못한 고통은<br>나를 더욱 강하게 만든다!
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="col">
+						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+							<div class="card-body m-1">
+								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 친구해요
+								<i class="fa-solid fa-user-group"></i></h5>
+								<p class="card-text text-center tagtext">다들 모여!<br>사람 만나는 게 제일 좋아!</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="col">
+						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+							<div class="card-body m-1">
+								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 뇌색남녀
+								<i class="fa-solid fa-book"></i></h5>
+								<p class="card-text text-center tagtext">
+									지금 잠을 자면 꿈을 꾸지만<br>지금 공부하면 꿈을 이룰지도..?
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="col">
+						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+							<div class="card-body m-1">
+								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 텅장되자
+								<i class="fa-solid fa-cart-shopping"></i></h5>
+								<p class="card-text text-center tagtext">
+									사는재미 없으면<br>사는 재미라도!
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="col">
+						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+							<div class="card-body m-1">
+								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 킹스맨
+								<i class="fa-solid fa-clapperboard"></i></h5>
+								<p class="card-text text-center tagtext">
+									관람객 매너가<br>명작을 만든다!
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="col">
+						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+							<div class="card-body m-1">
+								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 집돌이집순이
+								<i class="fa-solid fa-house"></i></i></h5>
+								<p class="card-text text-center tagtext">
+									집에서 할 게<br>얼마나 많은데?!
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="col">
+						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+							<div class="card-body m-1">
+								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 금손모임
+								<i class="fa-solid fa-hand-sparkles"></i></i></h5>
+								<p class="card-text text-center tagtext">똥손도 괜찮아요~<br>함께 만들어요!</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="col">
+						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+							<div class="card-body m-1">
+								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 자연인
+								<i class="fa-solid fa-mountain-sun"></i></h5>
+								<p class="card-text text-center tagtext">
+									산은 산이요~<br>물은 물이로다~
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="col">
+						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+							<div class="card-body m-1">
+								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 집사님
+								<i class="fa-solid fa-paw"></i></h5>
+								<p class="card-text text-center tagtext">
+									저는 주인님을<br>모시고 있습니다!
+								</p>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div class="row">
-					<button type="submit" class="btn btn-outline-success" style="width: 30%;">가입하기</button>
-				</div>
 
-				<div class="row center">
-					<button type="button" class="btn btn-prev" style="display: none;">이전</button>
-					<button type="button" class="btn btn-next" style="display: none;">다음</button>
-				</div>
+				<!-- 				<div class="col-md-8 offset-md-2"> -->
+				<!-- 						<div class="form-floating mb-3"> -->
+				<!-- 							<select name="memberInterest1" class="form-select" -->
+				<!-- 								id="floatingSelect"> -->
+				<!-- 								<option value=""></option> -->
+				<!-- 								<option>#액티비티매니아</option> -->
+				<!-- 								<option>#인스타그래머</option> -->
+				<!-- 								<option>#금손모임</option> -->
+				<!-- 								<option>#친구해요</option> -->
+				<!-- 								<option>#뇌섹남녀</option> -->
+				<!-- 								<option>#텅장되자</option> -->
+				<!-- 								<option>#킹스맨</option> -->
+				<!-- 								<option>#자연인</option> -->
+				<!-- 								<option>#집사님</option> -->
+				<!-- 								<option>#집돌이집순이</option> -->
+				<!-- 							</select> <label for="floatingSelect">Interest1</label> -->
+				<!-- 							<select name="memberInterest2" class="form-select" -->
+				<!-- 								id="floatingSelect"> -->
+				<!-- 								<option value=""></option> -->
+				<!-- 								<option>#액티비티매니아</option> -->
+				<!-- 								<option>#인스타그래머</option> -->
+				<!-- 								<option>#금손모임</option> -->
+				<!-- 								<option>#친구해요</option> -->
+				<!-- 								<option>#뇌섹남녀</option> -->
+				<!-- 								<option>#텅장되자</option> -->
+				<!-- 								<option>#킹스맨</option> -->
+				<!-- 								<option>#자연인</option> -->
+				<!-- 								<option>#집사님</option> -->
+				<!-- 								<option>#집돌이집순이</option> -->
+				<!-- 							</select> <label for="floatingSelect">Interest2</label> -->
+				<!-- 							<select name="memberInterest3" class="form-select" -->
+				<!-- 								id="floatingSelect"> -->
+				<!-- 								<option value=""></option> -->
+				<!-- 								<option>#액티비티매니아</option> -->
+				<!-- 								<option>#인스타그래머</option> -->
+				<!-- 								<option>#금손모임</option> -->
+				<!-- 								<option>#친구해요</option> -->
+				<!-- 								<option>#뇌섹남녀</option> -->
+				<!-- 								<option>#텅장되자</option> -->
+				<!-- 								<option>#킹스맨</option> -->
+				<!-- 								<option>#자연인</option> -->
+				<!-- 								<option>#집사님</option> -->
+				<!-- 								<option>#집돌이집순이</option> -->
+				<!-- 							</select> <label for="floatingSelect">Interest3</label> -->
+				<!-- 						</div> -->
+
+				<button type="button" class="btn btn-prev mt-1" style="float: left;">이전</button>
+				<button type="button" class="btn btn-next mt-1" @click="callAnimal"
+					style="float: right;">다음</button>
 			</div>
 		</div>
-	</form>
+</div>
+
+<!-- 6번째 페이지 -->
+<div class="container w500 m30 page">
+	<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
+		<input type="hidden" name="memberAnimal" v-model="memberAnimal">
+		<div class="row">
+			<div class="card">
+				<div class="card-img">
+					<img src="#">
+				</div>
+				<div class="card-title">{{memberAnimal}}</div>
+			</div>
+		</div>
+		<div class="row">
+			<button type="submit" class="btn btn-outline-success"
+				style="width: 30%;">가입하기</button>
+		</div>
+
+		<div class="row center">
+			<button type="button" class="btn btn-prev" style="display: none;">이전</button>
+			<button type="button" class="btn btn-next" style="display: none;">다음</button>
+		</div>
+	</div>
+</div>
+</form>
 </div>
 
 <script>

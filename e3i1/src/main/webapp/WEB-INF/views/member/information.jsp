@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <style>
 .point {
 	font-size: 2.3em;
@@ -13,7 +14,6 @@
 	width: 100%;
 }
 </style>    
-<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 <div id="app" class="container-fluid">
 	<div class="row mt-4 p-2">
@@ -232,7 +232,7 @@
 						</div>
             
                            
-                                    <button type="submit" class="btn btn-outline-success">정보 수정</button>
+                                    <button type="submit" class="btn btn-outline-success mt-4">수정하기</button>
                                             
                                 <c:if test="${param.error != null}">
                                 <div class="row center">
