@@ -38,8 +38,8 @@ public class ClubBoardReplyRestController {
 	public ClubBoardReplyDto insert(
 			@ApiIgnore HttpSession session, @RequestBody ClubBoardReplyDto clubBoardReplyDto) {
 //		int replyWriter = (Integer)session.getAttribute("login");
-		int replyWriter = 3;
-		clubBoardReplyDto.setClubReplyWriter(replyWriter);
+//		int replyWriter = 3;
+//		clubBoardReplyDto.setClubReplyWriter(replyWriter);
 		return clubBoardReplyDao.insert(clubBoardReplyDto);
 	}
 	
@@ -57,7 +57,6 @@ public class ClubBoardReplyRestController {
 	}
 	@PostMapping("/like")
 	public ClubReplyLikeDto insert(@ApiIgnore HttpSession session, @RequestBody ClubReplyLikeDto clubReplyLikeDto) {
-
 		return clubReplyLikeDao.insert(clubReplyLikeDto);
 	}
 	@DeleteMapping("/like")
