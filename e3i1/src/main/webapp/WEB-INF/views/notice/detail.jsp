@@ -101,9 +101,7 @@
 				<tr>
 					<td style="float: right;">
 					<a href="${pageContext.request.contextPath}/notice/edit?noticeNo=${noticeDto.noticeNo}"
-						class="btn btn-edit">수정</a> <a
-						href="${pageContext.request.contextPath}/notice/edit/${noticeDto.noticeNo}"
-						class="btn btn-edit">수정</a> <a
+						class="btn btn-edit">수정</a>  <a
 						href="${pageContext.request.contextPath}/notice/delete/${noticeDto.noticeNo}"
 						class="btn btn-edit">삭제</a> <a
 						href="${pageContext.request.contextPath}/notice/list"

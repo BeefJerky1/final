@@ -83,7 +83,7 @@
 			<textarea class="form-control"
 				id="floatingTextarea" name="noticeContent" style="height: 400px"></textarea>
 				
-			<label for="floatingTextarea">내용</label>
+			<label for="floatingTextarea">내용</label>s
 		</div>
 		<div class="row col-md-8 offset-md-2 text-center">
 			<a href="list" class="btn btn-edit two m-3">취소</a>
