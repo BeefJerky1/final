@@ -8,59 +8,70 @@
 }
 
 .btn.btn-next {
+	width: 100px;
 	border-color: #3E4684;
 	background-color: #3E4684;
 	color: white;
 }
 
 .btn.btn-next:hover {
+	width: 100px;
 	border-color: #3E4684;
 	background-color: #3E4684;
 	color: white;
 }
 
 .btn.btn-prev {
+	width: 100px;
 	border-color: #3E4684;
 	background-color: #3E4684;
 	color: white;
 }
 
 .btn.btn-prev:hover {
+	width: 100px;
 	border-color: #3E4684;
 	background-color: #3E4684;
 	color: white;
 }
 
 .btn.btn-answer1 {
-	border-color: #F2F2F2;
+	font-size: 0.9em;
+	border-color: #F6F6F6;
 	border-width: 0.25em;
-	background-color: #F2F2F2;
-	color: #3E4684;
+	background-color: #F6F6F6;
+	color: black;
 }
 
 .btn.btn-answer1:hover {
 	border-color: #3E4684;
 	border-width: 0.25em;
-	background-color: #F2F2F2;
-	color: #3E4684;
+	background-color: #F6F6F6;
+	color: black;
 }
 
 .btn.btn-answer2 {
-	border-color: #F2F2F2;
+	font-size: 0.9em;
+	border-color: #F6F6F6;
 	border-width: 0.25em;
-	background-color: #F2F2F2;
-	color: #3E4684;
+	background-color: #F6F6F6;
+	color: black;
 }
 
 .btn.btn-answer2:hover {
 	border-color: #3E4684;
 	border-width: 0.25em;
-	background-color: #F2F2F2;
-	color: #3E4684;
+	background-color: #F6F6F6;
+	color: black;
 }
 
 .title {
 	font-weight: 900;
+}
+
+.label1 {
+	font-size: 0.8em;
+	color: #6E6E6E;
 }
 </style>
 
@@ -69,14 +80,14 @@
 <div id="app" class="container-fluid">
 	<form action="join" method="post">
 		<div class="row mt-4 p-2">
-			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
+			<div class="col-md-8 offset-md-2 mb-4 p-4 text-dark bg-light rounded">
 				<div class="row text-center">
 					<span class="point">회원가입</span>
 				</div>
 
 				<div class="container w500 m30 page">
 					<div class="col-md-6 offset-md-3">
-						<div class="form-floating mt-5 mb-3 mt-4">
+						<div class="form-floating mt-4 mb-3 mt-4">
 							<input type="text" class="form-control" name="memberEmail"
 								autocomplete="off" required> <label for="floatingInput">Email
 								Address</label>
@@ -118,18 +129,18 @@
 						</div>
 
 						<div class="mt-2 text-start">
-							<label>관심 지역1</label>
+							<label class="label1">관심 지역1</label>
 							<div class="row">
 								<div class="col">
 									<select class="form-control rounded" @change="addCityList1" v-model="address1No"> 
-										<option value="">시/도를 선택해주세요</option>
+										<option value="">시/도</option>
 										<option v-for="(address1, index) in address1List1"
 											v-bind:key="index" :value="address1.address1No">{{address1.province}}</option>
 									</select>
 								</div>
 								<div class="col">
 									<select name="memberPlace1" class="form-control rounded" v-model="city1">
-										<option value="">시/군/구를 선택해주세요</option>
+										<option value="">시/군/구</option>
 										<option v-for="(address2, index) in address2List1"
 											v-bind:key="index" :value="address2.city">{{address2.city}}</option>
 									</select>
@@ -137,18 +148,18 @@
 							</div>
 						</div>
 						<div class="mt-2 text-start">
-							<label>관심 지역2</label>
+							<label class="label1">관심 지역2</label>
 							<div class="row">
 								<div class="col">
 									<select class="form-control rounded" @change="addCityList2" v-model="address2No">
-										<option value="">시/도를 선택해주세요</option>
+										<option value="">시/도</option>
 										<option v-for="(address1, index) in address1List2"
 											v-bind:key="index" :value="address1.address1No">{{address1.province}}</option>
 									</select>
 								</div>
 								<div class="col">
 									<select name="memberPlace2" class="form-control rounded" v-model="city2">
-										<option value="">시/군/구를 선택해주세요</option>
+										<option value="">시/군/구</option>
 										<option v-for="(address2, index) in address2List2"
 											v-bind:key="index" :value="address2.city">{{address2.city}}</option>
 									</select>
@@ -156,18 +167,18 @@
 							</div>
 						</div>
 						<div class="mt-2 text-start">
-							<label>관심 지역3</label>
+							<label class="label1">관심 지역3</label>
 							<div class="row">
 								<div class="col">
 									<select class="form-control rounded" @change="addCityList3" v-model="address3No">
-										<option value="">시/도를 선택해주세요</option>
+										<option value="">시/도</option>
 										<option v-for="(address1, index) in address1List3"
 											v-bind:key="index" :value="address1.address1No">{{address1.province}}</option>
 									</select>
 								</div>
 								<div class="col">
 									<select name="memberPlace3" class="form-control rounded" v-model="city3">
-										<option value="">시/군/구를 선택해주세요</option>
+										<option value="">시/군/구</option>
 										<option v-for="(address2, index) in address2List3"
 											v-bind:key="index" :value="address2.city">{{address2.city}}</option>
 									</select>
@@ -175,10 +186,8 @@
 							</div>
 						</div>
 
-						<div class="row center">
 							<button type="button" class="btn btn-prev" style="display: none;">이전</button>
-							<button type="button" class="btn btn-next mt-1">다음</button>
-						</div>
+							<button type="button" class="btn btn-next mt-3" style="float: right;">다음</button>
 					</div>
 				</div>
 			</div>
@@ -189,7 +198,7 @@
 				<div class="col-md-8 offset-md-2">
 					<c:forEach var="mbtiSurveyDto" items="${list}">
 						<c:if test="${mbtiSurveyDto.surveyNo < 4}">
-							<div class="row text-center">
+							<div class="text-center">
 								<div class="row">
 									<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
 								</div>
@@ -206,10 +215,10 @@
 					</c:forEach>
 					<span class="answer-record1"></span>
 
-					<div class="row center">
-						<button type="button" class="btn btn-prev">이전</button>
-						<button type="button" class="btn btn-next mt-1">다음</button>
-					</div>
+				
+						<button type="button" class="btn btn-prev mt-1" style="float: left;">이전</button>
+						<button type="button" class="btn btn-next mt-1 ml-2" style="float: right;">다음</button>
+					
 				</div>
 			</div>
 		</div>
@@ -238,10 +247,8 @@
 					</c:forEach>
 					<span class="answer-record2"></span>
 
-					<div class="row text-center">
-						<button type="button" class="btn btn-prev">이전</button>
-						<button type="button" class="btn btn-next mt-1">다음</button>
-					</div>
+						<button type="button" class="btn btn-prev mt-1"  style="float: left;">이전</button>
+						<button type="button" class="btn btn-next mt-1" style="float: right;">다음</button>
 				</div>
 			</div>
 		</div>
@@ -270,10 +277,8 @@
 					</c:forEach>
 					<span class="answer-record3"></span>
 
-					<div class="row text-center">
-						<button type="button" class="btn btn-prev">이전</button>
-						<button type="button" class="btn btn-next mt-1">다음</button>
-					</div>
+						<button type="button" class="btn btn-prev mt-1" style="float: left;">이전</button>
+						<button type="button" class="btn btn-next mt-1" style="float: right;">다음</button>
 				</div>
 			</div>
 		</div>
@@ -301,10 +306,8 @@
 					</c:forEach>
 					<span class="answer-record4"></span>
 
-					<div class="row text-center">
-						<button type="button" class="btn btn-prev">이전</button>
-						<button type="button" class="btn btn-next mt-1">다음</button>
-					</div>
+						<button type="button" class="btn btn-prev mt-1" style="float: left;">이전</button>
+						<button type="button" class="btn btn-next mt-1" style="float: right;">다음</button>
 				</div>
 			</div>
 		</div>
@@ -360,10 +363,8 @@
 							</select> <label for="floatingSelect">Interest3</label>
 						</div>
 				
-					<div class="row text-center">
-						<button type="button" class="btn btn-prev">이전</button>
-						<button type="button" class="btn btn-next mt-1" @click="callAnimal">다음</button>
-					</div>
+						<button type="button" class="btn btn-prev mt-1" style="float: left;">이전</button>
+						<button type="button" class="btn btn-next mt-1" @click="callAnimal" style="float: right;">다음</button>
 				</div>
 			</div>
 		</div>
@@ -381,7 +382,7 @@
 					</div>
 				</div>
 				<div class="row">
-					<button type="submit" class="btn btn-primary fill">가입하기</button>
+					<button type="submit" class="btn btn-outline-success" style="width: 30%;">가입하기</button>
 				</div>
 
 				<div class="row center">
@@ -575,7 +576,7 @@ methods: {
 			url:"${pageContext.request.contextPath}/rest/category_n_address/address2/"+this.address1No,
 			method:"get",
 		}).then((resp) => {
-			this.city = "";
+			this.city1 = "";
 			this.address2List1 = [];
 			this.address2List1.push(...resp.data);
 		})		
@@ -591,7 +592,7 @@ methods: {
 			url:"${pageContext.request.contextPath}/rest/category_n_address/address2/"+this.address2No,
 			method:"get",
 		}).then((resp) => {
-			this.city = "";
+			this.city2 = "";
 			this.address2List2 = [];
 			this.address2List2.push(...resp.data);
 		})		
@@ -607,7 +608,7 @@ methods: {
 			url:"${pageContext.request.contextPath}/rest/category_n_address/address2/"+this.address3No,
 			method:"get",
 		}).then((resp) => {
-			this.city = "";
+			this.city3 = "";
 			this.address2List3 = [];
 			this.address2List3.push(...resp.data);
 		})		

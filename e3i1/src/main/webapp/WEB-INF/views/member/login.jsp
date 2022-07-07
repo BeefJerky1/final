@@ -2,37 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<c:set var="saveEmailExist" value="${cookie.saveId != null}"></c:set>
-
+<c:set var="saveEmailExist" value="${cookie.saveEmail != null}"></c:set>
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/login.css">
 <style>
-.parent {
-	width: 100%;
-}
-
-.two {
-	float: left;
-	text-align: center;
-	width: 50%;
-}
-
-.point {
-	font-size: 2.3em;
-	font-weight: 900;
-}
-
-.btn.btn-textone {
-	font-size: 0.9em;
-	font-weight: 600;
-	width: 100%;
-}
-
-.btn.btn-texttwo {
-	font-weight: 600;
-	text-decoration: none !important;
-}
 </style>
 
-<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+
 
 <div id="app" class="container-fluid">
 	<div class="row mt-4 p-2">
@@ -46,7 +22,7 @@
 				<div class="col-md-6 offset-md-3">
 					<div class="form-floating mb-2 mx-1">
 						<input type="text" class="form-control" name="memberEmail"
-							placeholder="email@example.com"> <label
+							placeholder="email@example.com" value="${cookie.saveEmail.value}"> <label
 							for="floatingInput">Email address</label>
 					</div>
 
@@ -73,11 +49,11 @@
 					</div>
 
 					<div class="parent my-1">
-						<div class="two btn btn-texttwo">
-							<a href="find_email">이메일찾기</a>
+						<div>
+							<a href="find_email"  class="two btn btn-texttwo" role=button>이메일찾기</a>
 						</div>
-						<div class="two btn btn-texttwo">
-							<a href="find_pw">비밀번호찾기</a>
+						<div>
+							<a href="find_pw"  class="two btn btn-texttwo" role=button>비밀번호찾기</a>
 						</div>
 					</div>
 					<div class="row mb-2 mt-1">

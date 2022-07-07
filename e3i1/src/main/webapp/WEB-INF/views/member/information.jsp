@@ -173,32 +173,64 @@
                                     </select> <label for="floatingSelect">Interest3</label>
                                 </div>
             
-                                <div class="form-floating mb-3">
-                                    <select name="memberPlace1" class="form-select" id="floatingSelect">
-                                        <option value="${memberDto.memberPlace1}">${memberDto.memberPlace1}</option>
-                                        <option>서울시 강남구</option>
-                                        <option>서울시 영등포구</option>
-                                        <option>서울시 강동구</option>
-                                    </select> <label for="floatingSelect">Place1</label>
-                                </div>
+                           <div class="mt-2 text-start">
+							<label class="label1">관심 지역1</label>
+							<div class="row">
+								<div class="col">
+									<select class="form-control rounded" @change="addCityList1" v-model="address1No"> 
+										<option value="" selected>시/도</option>
+										<option v-for="(address1, index) in address1List1"
+											v-bind:key="index" :value="address1.address1No">{{address1.province}}</option>
+									</select>
+								</div>
+								<div class="col">
+									<select name="memberPlace1" class="form-control rounded" v-model="city1">
+										<option value="${memberDto.memberPlace1}">${memberDto.memberPlace1}</option>
+										<option v-for="(address2, index) in address2List1"
+											v-bind:key="index" :value="address2.city">{{address2.city}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="mt-2 text-start">
+							<label class="label1">관심 지역2</label>
+							<div class="row">
+								<div class="col">
+									<select class="form-control rounded" @change="addCityList2" v-model="address2No">
+										<option value="">시/도</option>
+										<option v-for="(address1, index) in address1List2"
+											v-bind:key="index" :value="address1.address1No">{{address1.province}}</option>
+									</select>
+								</div>
+								<div class="col">
+									<select name="memberPlace2" class="form-control rounded" v-model="city2">
+										<option value="${memberDto.memberPlace2 }">${memberDto.memberPlace2 }</option>
+										<option v-for="(address2, index) in address2List2"
+											v-bind:key="index" :value="address2.city">{{address2.city}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="mt-2 text-start">
+							<label class="label1">관심 지역3</label>
+							<div class="row">
+								<div class="col">
+									<select class="form-control rounded" @change="addCityList3" v-model="address3No">
+										<option value="">시/도</option>
+										<option v-for="(address1, index) in address1List3"
+											v-bind:key="index" :value="address1.address1No">{{address1.province}}</option>
+									</select>
+								</div>
+								<div class="col">
+									<select name="memberPlace3" class="form-control rounded" v-model="city3">
+										<option value="${memberDto.memberPlace3 }">${memberDto.memberPlace3}</option>
+										<option v-for="(address2, index) in address2List3"
+											v-bind:key="index" :value="address2.city">{{address2.city}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
             
-                                <div class="form-floating mb-3">
-                                    <select name="memberPlace2" class="form-select" id="floatingSelect">
-                                        <option value="${memberDto.memberPlace3}">${memberDto.memberPlace2}</option>
-                                        <option>서울시 강남구</option>
-                                        <option>서울시 영등포구</option>
-                                        <option>서울시 강동구</option>
-                                    </select> <label for="floatingSelect">Place2</label>
-                                </div>
-            
-                                <div class="form-floating mb-3">
-                                    <select name="memberPlace3" class="form-select" id="floatingSelect">
-                                        <option value="${memberDto.memberPlace3}">${memberDto.memberPlace3}</option>
-                                        <option>서울시 강남구</option>
-                                        <option>서울시 영등포구</option>
-                                        <option>서울시 강동구</option>
-                                    </select> <label for="floatingSelect">Place3</label>
-                                </div>
                            
                                     <button type="submit" class="btn btn-outline-success">정보 수정</button>
                                             
@@ -213,5 +245,99 @@
 		</div>
 	</div>
 </div>
+
+<script>
+const app = Vue.createApp({
+data() {
+	return {
+		// 지역 목록용
+		address1List1: [],
+		address2List1: [],
+		
+		address1List2: [],
+		address2List2: [],
+		
+		address1List3: [],
+		address2List3: [],
+				
+		// 시/도 번호
+		address1No : "",
+		address2No : "",
+		address3No : "",
+		// 시/군/구 값
+		city1: "${memberDto.memberPlace1}",		
+		city2: "${memberDto.memberPlace2}",		
+		city3: "${memberDto.memberPlace3}",		
+		
+	};
+},
+computed: {
+	// 체크박스 갯수제한 3개를 걸 때 이부분에서 계산하면 될 듯 
+	// - 알림창을 여기서 만들면 성능저하가 되기 때문에 계산된 값을 반환해서 메소드에서 알림을 띄워야 한다. 
+},
+methods: {
+	// 시/군/구 추가
+	addCityList1(){
+		if(this.address1No == ""){
+			this.address2List1 = [];
+			return;
+		}
+		// 시/군/구
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/address2/"+this.address1No,
+			method:"get",
+		}).then((resp) => {
+			this.city1 = "${memberDto.memberPlace1}";
+			this.address2List1 = [];
+			this.address2List1.push(...resp.data);
+		})		
+	},
+	
+	addCityList2(){
+		if(this.address2No == ""){
+			this.address2List2 = [];
+			return;
+		}
+		// 시/군/구
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/address2/"+this.address2No,
+			method:"get",
+		}).then((resp) => {
+			this.city2 = "${memberDto.memberPlace2}";
+			this.address2List2 = [];
+			this.address2List2.push(...resp.data);
+		})		
+	},
+	
+	addCityList3(){
+		if(this.address3No == ""){
+			this.address2List3 = [];
+			return;
+		}
+		// 시/군/구
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/address2/"+this.address3No,
+			method:"get",
+		}).then((resp) => {
+			this.city3 = "${memberDto.memberPlace3}";
+			this.address2List3 = [];
+			this.address2List3.push(...resp.data);
+		})		
+	},
+},
+created() {
+	// 시/도 
+	axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/address1",
+			method:"get",
+		}).then((resp) => {
+			this.address1List1.push(...resp.data);
+			this.address1List2.push(...resp.data);
+			this.address1List3.push(...resp.data);
+		})	
+	},
+});
+app.mount("#app");
+</script>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
