@@ -3,6 +3,12 @@
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<c:set var="path" value="${pageContext.request.contextPath}"/>
 	<style>
+	.blind{
+	color:red;
+	}
+	.interest {
+	background-color: #abb0d7 !important;
+}
 	.click{
 	 display: block; 
   	width: 200px;        
@@ -42,6 +48,9 @@
     .profile{
 		border-radius:50%;    
     }
+    .asdf{
+    	border-radius: "2rem !important";
+    }
 
 	</style>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
@@ -49,8 +58,8 @@
   <!-- 특정 영역을 생성하여 이 부분만 vue로 제어한다 -->
     <div id="app" class="container-fluid">
         <div class="row all">
-            <div class="col-lg-3 col-md-3 col-sm-3 position-sticky left-side rounded mt-5">
-                <div class="border border-o text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side rounded shadow mt-3">
+                  <div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5">
+                <div class="border text-dark mt-3 p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side rounded" style="border-radius:1em !important">
                     <h4><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="44"
                             height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -60,127 +69,13 @@
                             <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
                         </svg>소모임 홈</h4>
                     <hr>
-                    <div class="accordion" id="accordionExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    운동 소모임
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <a class="dropdown-item" href="#">게시판</a>
-                                    <a class="dropdown-item" href="#">실시간채팅</a>
-                                    <a class="dropdown-item" href="#">사진첩</a>
-                                    <a class="dropdown-item" href="#">소모임 설정</a>
-                                    <a class="dropdown-item" href="#">일정</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    게임 소모임
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <a class="dropdown-item" href="#">게시판</a>
-                                    <a class="dropdown-item" href="#">실시간채팅</a>
-                                    <a class="dropdown-item" href="#">사진첩</a>
-                                    <a class="dropdown-item" href="#">소모임 설정</a>
-                                    <a class="dropdown-item" href="#">일정</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    개발자 소모임
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <a class="dropdown-item" href="#">게시판</a>
-                                    <a class="dropdown-item" href="#">실시간채팅</a>
-                                    <a class="dropdown-item" href="#">사진첩</a>
-                                    <a class="dropdown-item" href="#">소모임 설정</a>
-                                    <a class="dropdown-item" href="#">일정</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="accordion" id="accordionExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingFour">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pinned"
-                                        width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M9 4v6l-2 4v2h10v-2l-2 -4v-6" />
-                                        <line x1="12" y1="16" x2="12" y2="21" />
-                                        <line x1="8" y1="4" x2="16" y2="4" />
-                                    </svg>찜한 소모임
-                                </button>
-                            </h2>
-                            <div id="collapseFour" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <a class="dropdown-item" href="#">소모임1</a>
-                                    <a class="dropdown-item" href="#">소모임2</a>
-                                    <a class="dropdown-item" href="#">소모임3</a>
-                                    <a class="dropdown-item" href="#">소모임4</a>
-                                    <a class="dropdown-item" href="#">소모임5</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="accordion" id="accordionExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingFive">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-adjustments-horizontal" width="44"
-                                        height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <circle cx="14" cy="6" r="2" />
-                                        <line x1="4" y1="6" x2="12" y2="6" />
-                                        <line x1="16" y1="6" x2="20" y2="6" />
-                                        <circle cx="8" cy="12" r="2" />
-                                        <line x1="4" y1="12" x2="6" y2="12" />
-                                        <line x1="10" y1="12" x2="20" y2="12" />
-                                        <circle cx="17" cy="18" r="2" />
-                                        <line x1="4" y1="18" x2="15" y2="18" />
-                                        <line x1="19" y1="18" x2="20" y2="18" />
-                                    </svg>더보기
-                                </button>
-                            </h2>
-                            <div id="collapseFive" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <a class="dropdown-item" href="#">토픽</a>
-                                    <a class="dropdown-item" href="#">설정</a>
-                                    <a class="dropdown-item" href="#">고객센터</a>
-                                    <hr>
-                                    <a class="dropdown-item" href="#">광고1</a>
-                                    <a class="dropdown-item" href="#">광고2</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                  </div>
+                  <div class="row">
+                  	<div class="col-lg-12 col-md-12 col-sm-12">
+                  		<div class="">
+                  		</div>
+                  	</div>
+                  </div>  
             </div>
             <div class="col-lg-5 col-md-5 col-sm-5 main">
                 <div class="border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end">
@@ -190,9 +85,9 @@
                 </div>
                 <div v-if="cancel">
 
-                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end rounded mt-3  shadow"  >
-                        <textarea class="form-control " v-model="boardContent" placeholder="무슨 일이 일어나고 있나요?"></textarea>
-                        <button class="btn btn-primary mt-3 shadow" v-on:click="addBoard" :disabled="clubBoardContentIsEmpty()== true">등록하기</button>
+                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end rounded mt-3 "  style="border-radius:1em !important">
+                        <textarea class="form-control " v-model="boardContent" placeholder="무슨 일이 일어나고 있나요?" style="border-radius:1em !important"></textarea>
+                        <button class="btn btn-primary mt-3 " v-on:click="addBoard" :disabled="clubBoardContentIsEmpty()== true" style="border-radius:1em !important">등록하기</button>
                     </div>
  
                 </div>
@@ -200,18 +95,18 @@
                 <div  class="text-dark col-lg-12 col-md-12 col-sm-12">
 
                 <div v-for="(clubboard, index ) in board" v-bind:key="index" >
-                    <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 hover rounded mt-3 shadow ">
-                        <div class="row">
+                    <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 hover rounded mt-3 "style="border-radius:1em !important">
+                        <div class="row" >
                             <div class="col-lg-2 col-md-2 col-sm-2 align-end top">
                                 <a><img src="https://placeimg.com/70/70/animals" class="profile mx-auto d-block"></a>
                             </div>
                             <div class="col-lg-8 col-md-8 col-sm-8 align-start top">
-                                <span data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    {{clubboard.memberDto.memberNick}}
+                                <span data-bs-toggle="modal" data-bs-target="#exampleModal" v-on:click="modal(index)">
+                                   <b>{{clubboard.memberDto.memberNick}}</b> 
                                 </span><br>
-                                <span>{{clubboard.memberDto.memberInterest1}}</span>,
-                                <span>{{clubboard.memberDto.memberInterest2}}</span>,
-                                <span>{{clubboard.memberDto.memberInterest3}}</span>
+                                <span class="interest me-1 ">{{clubboard.memberDto.memberInterest1}}</span>
+                                <span class="interest me-1 ">{{clubboard.memberDto.memberInterest2}}</span>
+                                <span class="interest me-1 ">{{clubboard.memberDto.memberInterest3}}</span>
                             </div>
 
                             <div class="col-lg-2 col-md-2 col-sm-2 text-end top time">
@@ -220,7 +115,10 @@
                         </div>
                         <div class="row text-over-cut" v-on:click="select(index)" >
                         	<div class="row">
-                       		<div class="row px-5 p-4">
+                       		<div class="row px-5 p-4" v-if="clubboard.clubBoardDto.clubBoardReportcount>2">
+                       		<pre class="text-start blind">신고로 블라인드 처리되었습니다.</pre>
+                        	</div>
+                        	<div  class="row px-5 p-4" v-else>
                             <pre class="text-start">{{clubboard.clubBoardDto.clubBoardContent}}</pre>
                         	</div>
                             </div>
@@ -244,11 +142,14 @@
                              <i class="fa-regular fa-eye"></i>{{clubboard.clubBoardDto.clubBoardReadcount}}
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
+<!--                             <i class="fa-regular fa-flag"></i>{{clubboard.clubBoardDto.clubBoardReportcount}} -->
                             </div>
                         </div>
 
                     </div>
-                     <!-- Modal -->
+            </div>
+                     <!-- 모달 -->
+      <div v-if="this.Mprofile!=null">
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -259,8 +160,8 @@
                     <a><img src="https://placeimg.com/120/120/animals" class="circle profile"></a>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
-		            <h4><b>{{clubboard.memberDto.memberNick}}</b></h4>
-		            <span>{{clubboard.memberDto.memberGender}}/</span><span>{{elapsedText(clubboard.memberDto.memberBirth)}}/</span> <span>{{clubboard.memberDto.memberPlace1}}</span>           
+		            <h4><b>{{Mprofile.memberDto.memberNick}}</b></h4>
+		            <span>{{Mprofile.memberDto.memberGender}}/</span><span>{{elapsedText(Mprofile.memberDto.memberBirth)}}/</span> <span>{{Mprofile.memberDto.memberPlace1}}</span>           
                 </div>
                 <div class="row mt-5">
                 <div class="col-lg-6col-md-6 col-sm-6">
@@ -272,19 +173,19 @@
                 </div>
                 <div class="row mt-5">
                 	<h5><b>SNS계정</b><img style="width:25px "src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"></h5>
-                	<h5>{{clubboard.memberDto.memberSnsId}}</h5>
+                	<h5>{{Mprofile.memberDto.memberSnsId}}</h5>
                 </div>
                 <div class="row mt-5">
                 	<h5><b>나의 관심분야</b></h5>
                 	<div class="col-lg-12 col-md-12 col-sm-12">
-		            <button class="btn btn-outline-secondary btn-sm">{{clubboard.memberDto.memberInterest1}}</button>
-		            <button class="btn btn-outline-secondary btn-sm">{{clubboard.memberDto.memberInterest2}}</button>
-		            <button class="btn btn-outline-secondary btn-sm">{{clubboard.memberDto.memberInterest3}}</button>
+		            <button class="btn btn-outline-secondary btn-sm">{{Mprofile.memberDto.memberInterest1}}</button>
+		            <button class="btn btn-outline-secondary btn-sm">{{Mprofile.memberDto.memberInterest2}}</button>
+		            <button class="btn btn-outline-secondary btn-sm">{{Mprofile.memberDto.memberInterest3}}</button>
 		            </div>
                 </div>
 				<div class="row mt-5">
 					<h5><b>마지막 로그인</b></h5>
-					<h5>{{convertTime(clubboard.memberDto.memberLogindate)}}({{elapsedText(clubboard.memberDto.memberLogindate)}})</h5>
+					<h5><h5>{{convertTime(Mprofile.memberDto.memberLogindate)}}({{elapsedText(Mprofile.memberDto.memberLogindate)}})</h5></h5>
             	</div>
 
 
@@ -295,10 +196,10 @@
         </div>
       </div>
     </div>
-            </div>
+    </div>
             </div>
             <div class=" mt-3">
-                 <button type="button" v-on:click="appendBoard()" :disabled="this.dataFull == true" class="form-control btn-outline-primary shadow">
+                 <button type="button" v-on:click="appendBoard()" :disabled="this.dataFull == true" class="form-control btn-outline-primary " style="border-radius:1em !important">
         더보기 ({{showBoard}}/{{totalBoard}})
     </button>
 
@@ -307,14 +208,14 @@
         </div>
        <div class="col-lg-3 col-md-3 col-sm-3 position-sticky right-side mt-5 ">
        			<div v-if="isMember" class="mt-3">
-        			<button class="btn btn-secondary form-control shadow" v-on:click="notAllowed()" v-if="cancel ">cancel</button>
-                   	<button class="btn btn-primary form-control shadow" v-on:click="allowed()" v-if="write">write</button>
+        			<button class="btn btn-secondary form-control " v-on:click="notAllowed()" v-if="cancel " style="border-radius:1em !important">cancel</button>
+                   	<button class="btn btn-primary form-control " v-on:click="allowed()" v-if="write" style="border-radius:1em !important">write</button>
        			</div>
-                <div class="border border-opacity-10 text-dark mt-2 p-4 col-lg-12 col-md-12 col-sm-12 right-side rounded shadow">
+                <div class="border border-opacity-10 text-dark mt-2 p-4 col-lg-12 col-md-12 col-sm-12 right-side" style="border-radius:1em !important">
                     <div class="row">   
                     	<div class="col-lg-12 col-md-12 col-sm-12">
                     	
-                        <select class="form-select" v-model="orderType"  v-on:change="changeList($event)">
+                        <select class="form-select" v-model="orderType"  v-on:change="changeList($event)" style="border-radius:1em !important">
                         	<option value="clubBoardNoDesc">최신순 </option>
                         	<option value="clubBoardLikeDesc">좋아요순</option>
                         	<option value="clubBoardReadcountDesc">조회순</option>
@@ -365,7 +266,6 @@
     </div>
 
      <!-- vue js도 lazy loading을 사용한다 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue@next"></script>
     <script src="${path}/js/time.js"></script>
@@ -387,7 +287,7 @@
 					//게시글 등록/취소 버튼
 					cancel:false,
 					write:true,
-                    clubNo:"1",
+                    clubNo:"19",
                     //더보기
                     boardAll:[], //전체 게시글
                     board:[], //보여지는 게시글
@@ -398,6 +298,10 @@
                     //사이드 인기 게시판
                     side:{},
                     orderType:"clubBoardNoDesc",
+                    //소모임 정보
+                    club:{},
+                    //멤버 프로필: 모달
+                    Mprofile:null,
                 };
             },
             //computed : data를 기반으로 하여 실시간 계산이 필요한 경우 작성한다.
@@ -512,9 +416,6 @@
 					this.write = true;
 					this.boardContent = "";
                 },
-//               	iDidit(clubboard){
-// 	  				if(clubboard.clubBoardLikeDto.likeMemberNo==this.memberNo)return true
-//              	}, 
                 //게시글 등록
                 addBoard(){
                 	axios({
@@ -522,7 +423,8 @@
 		        		method:"post",
 		        		data:{
 		        			clubNo:this.clubNo,
-		        			clubBoardContent:this.boardContent
+		        			clubBoardContent:this.boardContent,
+		        			clubBoardWriter:this.memberNo
 		        		},
 		        	})
 		        	.then(resp=>{
@@ -532,21 +434,6 @@
 		        		this.loadClubBoardList();
 		        	});
                 },
-//             	boardLikeCheck(index){
-//                 	const board = this.board[index];
-//                 	const clubBoardNo = board.clubBoardDto.clubBoardNo;
-//                     const likeMemberNo = this.memberNo
-//                		axios({
-//                			url:"${pageContext.request.contextPath}/rest/clubboard/like/"+clubBoardNo+"/"+likeMemberNo,
-//                			method:"get",
-//                		}).then(resp=>{
-// 						let data = []
-// 						for(var i = 0; i<this.resp.length ;i++){
-// // 							console.log(i)
-// 							data.push(resp.data[i])
-// 						}
-//                		})
-//             	},
                 //상세 페이지로 이동
                 select: function(index) {
                 	if(this.memberNo==''){
@@ -593,15 +480,42 @@
                 	})
                     console.log(event.target.value)
                 },
+                //소모임 정보
+                clubInfo(){
+				const clubNo = 1;
+                	axios({
+                		url:"${pageContext.request.contextPath}/rest/club/"+clubNo,
+		        		method:"get",
+                	}).then(resp=>{
+                		this.club = resp.data
+                	})
+                },
+                setProfileImg(event) {
+                    console.log(event);
+                    console.log(event.target.files);
+                    const file = event.target.files[0];
+                 },
+                 modal(index){
+                 	const clubboard = this.board[index];
+					const memberNo = clubboard.memberDto.memberNo
+	                 	axios({
+			        		url:"${pageContext.request.contextPath}/rest/clubboard/modal/"+memberNo,
+			        		method:"get",
+			        	})
+			        	.then(resp=>{
+			        		this.Mprofile = resp.data
+			        	});				
+					
+                		 
 
+            },
             },
             created(){
             	this.loadClubBoardList();
             	this.TopTenList();
-//             	this.boardLikeCheck();
+            	this.clubInfo();
             },
             mounted(){
-            	this.loadClubBoardList();
             },
         });
         app.mount("#app");
