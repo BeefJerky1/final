@@ -232,7 +232,7 @@ i{
 							test="${mbtiSurveyDto.surveyNo >= 7 && mbtiSurveyDto.surveyNo < 10}">
 							<div class="text-center">
 								<div class="row">
-									<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.${mbtiSurveyDto.surveyQuestion}</span>
+									<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
 								</div>
 								<div class="row my-2">
 									<button type="button" value="F" class="btn fill btn-answer1">${mbtiSurveyDto.surveyAnswer1}</button>
@@ -263,7 +263,7 @@ i{
 						<c:if test="${mbtiSurveyDto.surveyNo >= 10}">
 							<div class="text-center">
 								<div class="row">
-									<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.${mbtiSurveyDto.surveyQuestion}</span>
+									<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
 								</div>
 								<div class="row my-2">
 									<button type="button" value="P" class="btn fill btn-answer1">${mbtiSurveyDto.surveyAnswer1}</button>
