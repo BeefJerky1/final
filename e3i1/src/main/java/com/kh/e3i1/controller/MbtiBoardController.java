@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiBoardLikeDto;
+import com.kh.e3i1.entity.MbtiBoardVoteDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.repository.MbtiBoardDao;
 import com.kh.e3i1.repository.MbtiBoardLikeDao;
@@ -111,21 +112,27 @@ public class MbtiBoardController {
 		MbtiMemberListVO mbtiMemberListVO = mbtiBoardDao.read(mbtiBoardNo);
 		model.addAttribute("mbtiMemberListVO", mbtiMemberListVO);
 		
+		
 		// 좋아요 기능 
 		MbtiBoardLikeDto mbtiBoardLikeDto = new MbtiBoardLikeDto();
 		mbtiBoardLikeDto.setMemberNo(mbtiMemberListVO.getMbtiBoardDto().getMemberNo());
 		mbtiBoardLikeDto.setMbtiBoardNo(mbtiBoardNo);
 		
-		int itLike = 0;
+		int itLike = 0; 
 		
 		int check = mbtiBoardLikeDao.likeCount(mbtiBoardLikeDto);
-		if(check == 0) {
+		//memberNo와 boardNo를 이용하여 itLike를 count하는 구문
+		
+		if(check == 0) { // count가 0일 경우 like insert
 			mbtiBoardLikeDao.likeInsert(mbtiBoardLikeDto);
 		}
-		else if (check ==1) {
-			mbtiBoardLikeDao.ItLikeInfo(mbtiBoardLikeDto);
+		else if (check ==1) { // count가 1일 경우 like 정보 불러오기
+			itLike = mbtiBoardLikeDao.ItLikeInfo(mbtiBoardLikeDto);
 		}
+		
+		mbtiBoardLikeDto.setItLike(itLike);
 		model.addAttribute("itLike", itLike);
+		model.addAttribute("mbtiBoardLikeDto", mbtiBoardLikeDto);
 		
 		return "mbtiBoard/detail";
 	}
@@ -151,6 +158,7 @@ public class MbtiBoardController {
 		return "redirect:detail";
 
 	}
+	
 
 	// 게시글 삭제하기
 

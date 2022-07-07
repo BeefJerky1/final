@@ -3,6 +3,7 @@ package com.kh.e3i1.repository;
 import java.util.List;
 
 import com.kh.e3i1.entity.MbtiBoardDto;
+import com.kh.e3i1.entity.MbtiBoardVoteDto;
 import com.kh.e3i1.vo.MbtiMemberListVO;
 
 public interface MbtiBoardDao {
@@ -26,5 +27,11 @@ public interface MbtiBoardDao {
 	List<MbtiMemberListVO> list(String type, String keyword, int page, int size);
 
 	List<MbtiMemberListVO> list(String type, String keyword);
+
+	MbtiBoardVoteDto vote(MbtiBoardVoteDto mbtiBoardVoteDto);
+
+	int voteCount(int mbtiBoardNo);
+
+	int voteCountTotal(int mbtiBoardNo);
 
 }
