@@ -19,39 +19,58 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mbtiBoardLike">
-
-    <select id="likeCount" resultType="Integer" parameterType="MbtiBoardLikeDto">
-		select count(it_like) from mbti_board_like where member_no = #{memberNo} and mbti_board_no = #{mbtiBoardNo}
+<mapper namespace="notice">
+	
+	<select id="list" parameterType="Map" resultType="NoticeDto">
+	 		select * from (
+				select rownum rn, TMP.* from (
+				select * from notice 
+		 		<if test ="type != null and keyword !=null">
+		 		<![CDATA[where instr(${type}, #{keyword}) > 0]]>
+		 		</if>
+		 		order by notice_no desc
+			)TMP
+		) where rn between #{begin} and #{end}
 	</select>
 	
-	<insert id="likeInsert" parameterType="MbtiBoardLikeDto">
-		insert into mbti_board_like (member_no, mbti_board_no)
-		values (#{memberNo},#{mbtiBoardNo})
-	</insert>
-	
-	<select id="ItLikeInfo" resultType="Integer" parameterType="MbtiBoardLikeDto">
-		select it_like from mbti_board_like where member_no = #{memberNo} and mbti_board_no = #{mbtiBoardNo}
+	<select id="count" parameterType="Map" resultType="int">
+		select count(*) from notice
+		<if test="type != null and keyword != null">
+			<![CDATA[
+			where instr(${type}, #{keyword}) > 0
+			]]>
+		</if>
 	</select>
 	
-	<select id="list" resultType="MbtiBoardLikeDto" parameterType="int">
-		select * from mbti_board_like where mbti_board_no = #{mbtiBoardNo}
+	<select id="one" parameterType="int" resultType="NoticeDto">
+		select * from notice where notice_no = #{noticeNo}
 	</select>
 	
-	<update id="likeUpdate" parameterType="MbtiBoardLikeDto">
-		update mbti_board_like
-		set <include refid="cal"></include>
-		where member_no = #{memberNo} and mbti_board_no = #{mbtiBoardNo}
+	<delete id="delete" parameterType="int">
+		delete notice where notice_no = #{noticeNo}
+	</delete>
+	
+	<update id="edit" parameterType="NoticeDto">
+		update notice
+			set 
+				notice_head = #{noticeHead},
+				notice_title = #{noticeTitle},
+				notice_content = #{noticeContent}
+			where
+				notice_no = #{noticeNo}
 	</update>
 	
-	<sql id="cal">
-		<if test="count == 1">
-			it_like = 0
-		</if> 
-		
-		<if test="count == 0">
-			it_like = it_like + 1 
-		</if>
-	</sql>
-
+	<select id="sequence" resultType="int">
+		select notice_seq.nextval from dual
+	</select>
+	
+	<insert id="write" parameterType="NoticeDto">
+		insert into notice(
+			notice_no, member_no, notice_title, notice_content, notice_head
+		)
+		values(
+			#{noticeNo}, #{memberNo}, #{noticeTitle}, #{noticeContent}, #{noticeHead}
+		)
+	</insert>
+	
 </mapper>

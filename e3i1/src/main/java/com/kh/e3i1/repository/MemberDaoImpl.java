@@ -22,9 +22,9 @@ public class MemberDaoImpl implements MemberDao{
 	//회원가입
 	@Override
 	public void join(MemberDto memberDto) {
-//		String rawPassword = memberDto.getMemberPw();
-//		String encryptPassword = passwordEncoder.encode(rawPassword);
-//		memberDto.setMemberPw(encryptPassword);
+		String rawPassword = memberDto.getMemberPw();
+		String encryptPassword = passwordEncoder.encode(rawPassword);
+		memberDto.setMemberPw(encryptPassword);
 		memberDto.setMemberNo(sqlSession.selectOne("member.sequence"));
 		sqlSession.insert("member.join", memberDto);
 	}
@@ -32,7 +32,7 @@ public class MemberDaoImpl implements MemberDao{
 	//로그인
 	@Override
 	public MemberDto login(String memberEmail, String memberPw) {
-		MemberDto memberDto = sqlSession.selectOne("member.one", memberEmail);
+		MemberDto memberDto = sqlSession.selectOne("member.existEmail",memberEmail);
 		if(memberDto == null) {
 			return null;
 		}
@@ -64,8 +64,7 @@ public class MemberDaoImpl implements MemberDao{
 		if(memberDto == null) {
 			return false;
 		}
-		//비밀번호 암호화 코드 추가
-//		String encodePassword = passwordEncoder.encode(changePw);
+		//String encodePassword = passwordEncoder.encode(changePw);
 		
 		int count = sqlSession.update("member.changePassword", 
 				MemberDto.builder().memberEmail(memberEmail).memberPw(changePw).build());
@@ -118,8 +117,8 @@ public class MemberDaoImpl implements MemberDao{
 	
 	// 회원정보
 	@Override
-	public MemberDto info(String memberEmail) {
-		return sqlSession.selectOne("member.one", memberEmail);
+	public MemberDto info(int memberNo) {
+		return sqlSession.selectOne("member.one", memberNo);
 	}
 	
 	//회원정보 수정

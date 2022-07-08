@@ -27,7 +27,7 @@ public interface MemberDao {
 	boolean changePassword(MemberDto memberDto);
 	
 	// 마이페이지
-	MemberDto info(String memberEmail);
+	MemberDto info(int memberNo);
 	
 	//회원정보수정
 	boolean changeInformation(MemberDto memberDto);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.e3i1.entity.MbtiBoardDto;
+import com.kh.e3i1.entity.MbtiBoardVoteDto;
 import com.kh.e3i1.vo.MbtiMemberListVO;
 
 @Repository
@@ -46,6 +47,17 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 		sqlSession.insert("mbtiBoard.write", mbtiBoardDto);
 		
 		return mbtiBoardNo;
+	}
+	
+	// 투표하기
+	
+	@Override
+	public MbtiBoardVoteDto vote(MbtiBoardVoteDto mbtiBoardVoteDto) {
+		int voteChoiceNo = sqlSession.selectOne("mbtiBoardVote.sequence");
+		mbtiBoardVoteDto.setVoteChoiceNo(voteChoiceNo);
+		
+		sqlSession.insert("mbtiBoardVote.vote", mbtiBoardVoteDto);
+		return sqlSession.selectOne("mbtiBoardVote.one", mbtiBoardVoteDto);
 	}
 
 	// 게시판 글 삭제하기
@@ -94,5 +106,21 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 		
 		return sqlSession.selectList("mbtiBoard.mbtiboardList2", param);
 	}
+
+	// 투표 공감 개수 구하기
+	@Override
+	public int voteCount(int mbtiBoardNo) {
+		return sqlSession.selectOne("mbtiBoardVote.voteCount", mbtiBoardNo);
+	}
+	
+	// 전체 투표 개수 구하기
+
+	@Override
+	public int voteCountTotal(int mbtiBoardNo) {
+		
+		return sqlSession.selectOne("mbtiBoardVote.voteCountTotal", mbtiBoardNo);
+	}
+
+
 
 }

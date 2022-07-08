@@ -1,5 +1,7 @@
 package com.kh.e3i1.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,8 +28,13 @@ public class MbtiBoardLikeDaoImpl implements MbtiBoardLikeDao {
 	}
 	
 	public MbtiBoardLikeDto likeUpdate(MbtiBoardLikeDto mbtiBoardLikeDto) {
-		sqlSession.update("mbtiBoardLike.likeUpdate", mbtiBoardLikeDto);
-		return mbtiBoardLikeDto;
+		int count = sqlSession.update("mbtiBoardLike.likeUpdate", mbtiBoardLikeDto);
+		return sqlSession.selectOne("mbtiBoardLike.likeCount", mbtiBoardLikeDto);
+	}
+
+	@Override
+	public List<MbtiBoardLikeDto> list(int mbtiBoardNo) {
+		return sqlSession.selectList("mbtiBoardLike.list", mbtiBoardNo);
 	}
 	
 

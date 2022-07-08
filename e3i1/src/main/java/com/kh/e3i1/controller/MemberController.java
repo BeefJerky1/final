@@ -110,12 +110,12 @@ public class MemberController {
 			}
 			
 			if(remember != null) {
-				Cookie ck = new Cookie("saveId", memberDto.getMemberEmail());
+				Cookie ck = new Cookie("saveEmail", memberDto.getMemberEmail());
 				ck.setMaxAge(4 * 7 * 24 * 60 * 60);//4주
 				response.addCookie(ck);
 			}
 			else {
-				Cookie ck = new Cookie("saveId", memberDto.getMemberEmail());
+				Cookie ck = new Cookie("saveEmail", memberDto.getMemberEmail());
 				ck.setMaxAge(0);
 				response.addCookie(ck);
 			}
@@ -238,13 +238,19 @@ public class MemberController {
 	
 	@PostMapping("/exit")
 	public String exit(@RequestParam String memberPw, HttpSession session) {
-		String memberEmail = (String) session.getAttribute("login");
-		boolean success = memberDao.exit(memberEmail, memberPw);
+		int memberNo = (Integer) session.getAttribute("login");
+		MemberDto memberDto = memberDao.info(memberNo);
+		
+		System.out.println("확인");
+		
+		boolean success = memberDao.exit(memberDto.getMemberEmail(), memberPw);
 		if(success) {			
 			session.removeAttribute("login");
 			session.removeAttribute("auth");
+			System.out.println("성공");
 			return "redirect:exit_finish";
 		} else {
+			System.out.println("실패");
 			return "redirect:exit?error";
 		}
 	}
@@ -254,12 +260,12 @@ public class MemberController {
 		return "member/exit_finish";
 	}
 	
-	// 회원정보
+	// 회원정보보기
 	@GetMapping("/mypage")
 	public String mypage(HttpSession session, Model model) {
-		String memberEmail = (String) session.getAttribute("login");
+		int memberNo = (Integer) session.getAttribute("login");
+		MemberDto memberDto = memberDao.info(memberNo);
 		
-		MemberDto memberDto = memberDao.info(memberEmail);
 		model.addAttribute("memberDto", memberDto);
 		
 		//프로필 이미지의 다운로드 주소를 추가
@@ -288,8 +294,9 @@ public class MemberController {
 				@RequestParam String changePw,
 				HttpSession session
 			) {
-		String memberEmail = (String) session.getAttribute("login");
-		boolean success = memberDao.changePassword(memberEmail, currentPw, changePw);
+		int memberNo = (Integer) session.getAttribute("login");
+		MemberDto memberDto = memberDao.info(memberNo);
+		boolean success = memberDao.changePassword(memberDto.getMemberEmail(), currentPw, changePw);
 		if(success) {
 			return "redirect:mypage";
 		}
@@ -301,8 +308,8 @@ public class MemberController {
 	// 개인정보 수정
 	@GetMapping("/information")
 	public String information(HttpSession session, Model model) {
-		String memberEmail = (String) session.getAttribute("login");
-		MemberDto memberDto = memberDao.info(memberEmail);
+		int memberNo = (Integer) session.getAttribute("login");
+		MemberDto memberDto = memberDao.info(memberNo);
 		model.addAttribute("memberDto", memberDto);
 		return "member/information";
 	}
