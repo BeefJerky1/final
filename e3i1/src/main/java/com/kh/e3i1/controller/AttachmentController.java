@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.e3i1.entity.AttachmentDto;
+import com.kh.e3i1.error.CannotFindException;
 import com.kh.e3i1.repository.AttachmentDao;
 
 @RestController // @Controller + @ResponseBody / 메소드에 ResponsBody를 따로 붙이지 않아도 된다. 
@@ -26,14 +27,14 @@ public class AttachmentController {
 	
 	@GetMapping("/download")
 	public ResponseEntity<ByteArrayResource> download(
-			@RequestParam int attachmentNo) throws IOException{
+			@RequestParam int attachNo) throws IOException{
 		// attachmentNo를 이용하여 DTO 정보를 조회(없으면 404)
-		AttachmentDto attachmentDto = attachmentDao.info(attachmentNo);
+		AttachmentDto attachmentDto = attachmentDao.info(attachNo);
 		
 		
 		
-		// if(attachmentDto == null) 
-		//  	throw new CannotFindException(); // 404 처리를 위임 
+		 if(attachmentDto == null) 
+		  	throw new CannotFindException(); // 404 처리를 위임 
 		
 		
 		

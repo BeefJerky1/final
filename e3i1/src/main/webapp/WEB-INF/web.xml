@@ -46,6 +46,11 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	
+	<!-- session 유지 시간 설정, 단위: 분 -->
+	<session-config>
+    		<session-timeout>60</session-timeout>
+	</session-config>
 
 	<!-- 
 		스프링 핵심 도구인 DispatcherServlet에 대한 설정
