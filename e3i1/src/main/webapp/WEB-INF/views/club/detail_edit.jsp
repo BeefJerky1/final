@@ -2,8 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/modal.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/modal.css">
 <style>
 .hash-tag {
 	font-size: 12px;
@@ -34,16 +33,16 @@
 					<div class="card-title">
 						<div class="row">
 							<div class="col-md-2 align-self-center">
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="44"
-                            height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <polyline points="5 12 3 12 12 3 21 12 19 12" />
-                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-                        </svg>
+								<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="44"
+	                            height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
+	                            stroke-linecap="round" stroke-linejoin="round">
+	                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+	                            <polyline points="5 12 3 12 12 3 21 12 19 12" />
+	                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+	                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
 							</div>
-							<div class="col-md-8 align-self-center" v-if="clubList.clubDto != null">
+							<div class="col-md-8 align-self-center"
+								v-if="clubList.clubDto != null">
 								<h4 style="margin: 0px;">{{clubList.clubDto.clubName}}</h4>
 							</div>
 							<div class="col-md-2 align-self-center">
@@ -165,48 +164,50 @@
 		<!-- 중앙 -->
 		<div class="col-md-6">
 			<div class="card">
-				<img src="https://via.placeholder.com/250/69f/fff.png" class="card-img-top" style="width: 100%; height: 350px;" v-if="clubList.clubProfileDto == null">
-				<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"  style="width: 100%; height: 350px;" class="card-img-top" v-if="clubList.clubProfileDto != null">
-				<div class="card-body">
-					<div class="card-title">
-						<h4 style="font-weight: bold">소모임 소개</h4>
-					</div>
-					<div class="card-text" v-if="clubList.clubDto != null">
-						<h5>{{clubList.clubDto.clubSummary}}</h5>
+				<div class="card-body mt-4">
+					<div class="card-title text-center">
+						<h2>소모임 정보변경</h2>
 					</div>
 				</div>
-
-				<div class="card-body mt-4">
-					<div class="card-title mt-4">
-						<h4 style="font-weight: bold">우리 소모임 MBTI</h4>
+				<div class="card-body" v-if="clubList.clubDto != null">
+					<div class="mt-4">
+						<label>소모임 프로필</label>
+						<input type="file" class="form-control" onchange="previewFile()">
 					</div>
-
-
-					<!-- 배치 및 디자인은 머리가 복잡하거나 생각하기 싫을 때 할 예정 -->
-					<div v-if="mbtiList != null" v-for="(mbti, index) in mbtiList" :key="index">
-					<div class="card m-3">
-						<div class="card-img-top">
-							<img src="https://via.placeholder.com/250/69f/fff.png" style="width:100px; height:100px; border:1px solid black">
-						</div>
-						<div class="card-body">
-							<div>
-								<h4 style="margin: 0px 0px; font-weight: bold;">{{mbti.memberMbti}}</h4>
-							</div>
-							<div>
-								<p style="margin: 0px 0px;">{{mbti.mbtiPercent}}%</p>
-							</div>
-						</div>
+					<div class="card-img-top">
+						<img class="preview" :src="uploadImageFile+clubList.clubProfileDto.attachNo" style="width:100%; height: 350px; border:0.5px solid black">	
 					</div>
+					<div class="mt-4">
+						<label>소모임 이름</label>
+						<input class="form-control" type="text" :value="clubList.clubDto.clubName" >
 					</div>
-					
-					
+					<div class="mt-4">
+						<label>소모임 이름</label>
+						<textarea class="form-control" type="text">{{clubList.clubDto.clubSummary}}</textarea>
+					</div>
+					<div class="mt-4" v-if="clubList.clubDto.clubJoinQuestion1 != null">
+						<label>가입 질문1</label>
+						<input class="form-control" type="text" :value="clubList.clubDto.clubJoinQuestion1">
+					</div>
+					<div class="mt-2" v-if="clubList.clubDto.clubJoinQuestion2 != null">
+						<label>가입 질문2</label>
+						<input class="form-control" type="text" :value="clubList.clubDto.clubJoinQuestion2">
+					</div>
+					<div class="mt-2" v-if="clubList.clubDto.clubJoinQuestion3 != null">
+						<label>가입 질문3</label>
+						<input class="form-control" type="text" :value="clubList.clubDto.clubJoinQuestion3">
+					</div>
+				</div>
+				<div class="card-footer">
+					<button class="btn-create">정보 수정하기</button>
 				</div>
 			</div>
 		</div>
-
 		
+		
+
+
 		<!-- 오른쪽 사이드바 -->
-		<!-- 배치 및 디자인은 머리가 복잡하거나 생각하기 싫을 때 할 예정 -->
 		<div class="col-md-3">
 			<button class="btn-create" v-on:click="removeHidden">소모임 가입하기</button>
 				
@@ -281,8 +282,7 @@
 							<h6>Q1.{{clubList.clubDto.clubJoinQuestion1}}</h6>
 						</div>
 						<div class="mt-2">
-							<input type="text" class="form-control"
-								v-model="clubMemberAnswer1">
+							<input type="text" class="form-control" v-model="clubMemberAnswer1">
 						</div>
 					</div>
 
@@ -291,8 +291,7 @@
 							<h6>Q2.{{clubList.clubDto.clubJoinQuestion2}}</h6>
 						</div>
 						<div class="mt-2">
-							<input type="text" class="form-control"
-								v-model="clubMemberAnswer2">
+							<input type="text" class="form-control" v-model="clubMemberAnswer2">
 						</div>
 					</div>
 
@@ -301,8 +300,7 @@
 							<h6>Q3.{{clubList.clubDto.clubJoinQuestion3}}</h6>
 						</div>
 						<div class="mt-2">
-							<input type="text" class="form-control"
-								v-model="clubMemberAnswer3">
+							<input type="text" class="form-control" v-model="clubMemberAnswer3">
 						</div>
 					</div>
 
@@ -329,6 +327,24 @@
 
 
 <script>
+// 파일 미리보기
+function previewFile() {
+	  var preview = document.querySelector('.preview');
+	  var file = document.querySelector('input[type=file]').files[0];
+	  var reader = new FileReader();
+
+	  reader.addEventListener('load',
+	    function () {
+	      preview.src = reader.result;
+	    },
+	    false
+	  );
+
+	  if (file) {
+	    reader.readAsDataURL(file);
+	  }
+}
+  
 const app = Vue.createApp({
 data() {
 	return {
@@ -345,7 +361,15 @@ data() {
 		clubMemberAnswe3:"",
 		memberNo:"${login}",
 		
+		uploadImageFile:"${pageContext.request.contextPath}/attachment/download?attachNo=",
+		
+		
 		isLike:false,
+		
+		// 파일 업로드 
+		file:[],
+		filesPreview:[],
+		uploadImageIndex: 0, // 이미지 업로드를 위한 변수
 	};
 },
 computed: {
@@ -456,6 +480,7 @@ methods: {
 			this.isLike = true;
 		});
 	},
+	
 	
 },
 

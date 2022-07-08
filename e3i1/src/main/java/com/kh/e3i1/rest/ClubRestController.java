@@ -54,6 +54,7 @@ public class ClubRestController {
 			@ModelAttribute ClubDto clubDto, 
 			@RequestParam MultipartFile clubProfile
 			) throws IllegalStateException, IOException {
+		System.out.println(clubDto.getClubLeader());
 		return clubService.createClub(clubDto, clubProfile);
 	}
 	
@@ -76,9 +77,9 @@ public class ClubRestController {
 	}
 	
 	// 소모임 좋아요 여부 확인
-	@PostMapping("/is_like")
-	public boolean isLike(@RequestBody ClubLikeDto clubLikeDto) {
-		return clubDao.isLike(clubLikeDto);
+	@GetMapping("/is_like/{clubNo}/{memberNo}")
+	public boolean isLike(@PathVariable int clubNo, @PathVariable int memberNo) {
+		return clubDao.isLike(clubNo, memberNo);
 	}
 	
 }

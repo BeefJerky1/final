@@ -34,16 +34,16 @@
 					<div class="card-title">
 						<div class="row">
 							<div class="col-md-2 align-self-center">
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="44"
-                            height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <polyline points="5 12 3 12 12 3 21 12 19 12" />
-                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-                        </svg>
+								<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="44"
+	                            height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
+	                            stroke-linecap="round" stroke-linejoin="round">
+	                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+	                            <polyline points="5 12 3 12 12 3 21 12 19 12" />
+	                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+	                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
 							</div>
-							<div class="col-md-8 align-self-center" v-if="clubList.clubDto != null">
+							<div class="col-md-8 align-self-center"
+								v-if="clubList.clubDto != null">
 								<h4 style="margin: 0px;">{{clubList.clubDto.clubName}}</h4>
 							</div>
 							<div class="col-md-2 align-self-center">
@@ -165,48 +165,18 @@
 		<!-- 중앙 -->
 		<div class="col-md-6">
 			<div class="card">
-				<img src="https://via.placeholder.com/250/69f/fff.png" class="card-img-top" style="width: 100%; height: 350px;" v-if="clubList.clubProfileDto == null">
-				<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"  style="width: 100%; height: 350px;" class="card-img-top" v-if="clubList.clubProfileDto != null">
 				<div class="card-body">
 					<div class="card-title">
-						<h4 style="font-weight: bold">소모임 소개</h4>
-					</div>
-					<div class="card-text" v-if="clubList.clubDto != null">
-						<h5>{{clubList.clubDto.clubSummary}}</h5>
+						<h4 style="font-weight: bold">소모임 회원관리</h4>
 					</div>
 				</div>
-
-				<div class="card-body mt-4">
-					<div class="card-title mt-4">
-						<h4 style="font-weight: bold">우리 소모임 MBTI</h4>
-					</div>
-
-
-					<!-- 배치 및 디자인은 머리가 복잡하거나 생각하기 싫을 때 할 예정 -->
-					<div v-if="mbtiList != null" v-for="(mbti, index) in mbtiList" :key="index">
-					<div class="card m-3">
-						<div class="card-img-top">
-							<img src="https://via.placeholder.com/250/69f/fff.png" style="width:100px; height:100px; border:1px solid black">
-						</div>
-						<div class="card-body">
-							<div>
-								<h4 style="margin: 0px 0px; font-weight: bold;">{{mbti.memberMbti}}</h4>
-							</div>
-							<div>
-								<p style="margin: 0px 0px;">{{mbti.mbtiPercent}}%</p>
-							</div>
-						</div>
-					</div>
-					</div>
-					
-					
+				<div class="card-body">
+					<h6>소모임 회원 목록</h6>
 				</div>
 			</div>
 		</div>
 
-		
 		<!-- 오른쪽 사이드바 -->
-		<!-- 배치 및 디자인은 머리가 복잡하거나 생각하기 싫을 때 할 예정 -->
 		<div class="col-md-3">
 			<button class="btn-create" v-on:click="removeHidden">소모임 가입하기</button>
 				
@@ -329,6 +299,7 @@
 
 
 <script>
+  
 const app = Vue.createApp({
 data() {
 	return {

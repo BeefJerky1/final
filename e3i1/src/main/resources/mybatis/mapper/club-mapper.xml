@@ -113,11 +113,6 @@
 			<result column="club_join_question3" property="clubJoinQuestion3"/>
 			<result column="club_member_limit" property="clubMemberLimit"/>
 		</association>
-		<association property="clubLikeDto">
-			<result column="club_like_no" property="clubLikeNo"/>
-			<result column="club_no" property="clubNo"/>
-			<result column="member_no" property="memberNo"/>
-		</association>
 		<association property="clubProfileDto">
 			<result column="attach_no" property="attachNo"/>
 			<result column="club_no" property="clubNo"/>
@@ -145,8 +140,8 @@
 			<result column="member_logindate" property="memberLogindate"/>
 		</association>
 		<association property="memberProfileDto">
-			<result column="member_no" property="memberNo"/>
-			<result column="attach_no" property="attachNo"/>
+			<result column="member_no2" property="memberNo"/>
+			<result column="attach_no2" property="attachNo"/>
 		</association>
 		
 	</resultMap>
@@ -176,7 +171,8 @@
 		m.MEMBER_CLUB_COUNT,
 		m.MEMBER_SNS_ID,
 		m.MEMBER_LOGINDATE,
-		mp.*
+		mp.MEMBER_NO member_no2,
+		mp.ATTACH_NO attach_no2
 	FROM CLUB_MBTI_PERCENT cmp 
 		LEFT OUTER JOIN club c ON cmp.CLUB_NO = c.CLUB_NO
 		LEFT OUTER JOIN CLUB_PROFILE cp ON c.club_no = cp.CLUB_NO
@@ -200,7 +196,7 @@
 	</insert>
 	
 	<!-- 이미 좋아요를 한 게시글인지 확인 -->
-	<select id="exist_like" parameterType="ClubLikeDto" resultType="ClubLikeDto">
+	<select id="exist_like" parameterType="Map" resultType="ClubLikeDto">
 		select * from club_like where club_no = #{clubNo} and member_no = #{memberNo}
 	</select>
 	
