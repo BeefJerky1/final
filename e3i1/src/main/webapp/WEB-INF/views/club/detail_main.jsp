@@ -71,7 +71,7 @@
 								</div>
 								<div class="col-md-9 align-self-center"
 									v-if="clubList.memberDto != null">
-									<h5 style="margin: 0px;">{{clubList.memberDto.memberNick}}</h5>
+									<h6 style="margin: 0px;">{{clubList.memberDto.memberNick}}</h6>
 								</div>
 							</div>
 						</div>

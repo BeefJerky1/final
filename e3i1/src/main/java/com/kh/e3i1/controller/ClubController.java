@@ -1,6 +1,7 @@
 package com.kh.e3i1.controller;
 
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.e3i1.entity.AttachmentDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubDto;
+import com.kh.e3i1.repository.AttachmentDao;
 import com.kh.e3i1.repository.ClubBoardDao;
 import com.kh.e3i1.repository.ClubDao;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
@@ -28,6 +31,8 @@ public class ClubController {
 	private ClubDao clubDao;
 	@Autowired
 	private ClubBoardDao clubBoardDao;
+	@Autowired
+	private AttachmentDao attachmentDao;
 	
 	// 소모임 목록 
 	@GetMapping("/")
@@ -71,14 +76,5 @@ public class ClubController {
 		model.addAttribute(clubBoardListItemVO);
 		return "club/board_detail";
 	}
-//	// 소모임 게시글 삭제
-//	@GetMapping("/delete")
-//	public String delete(@RequestParam int clubBoardNo) {
-//		boolean success = clubBoardDao.delete(clubBoardNo);
-//		if(success) {
-//			return "club/board";			
-//		}else {
-//			return "club/board";
-//		}
-//	}
+
 }
