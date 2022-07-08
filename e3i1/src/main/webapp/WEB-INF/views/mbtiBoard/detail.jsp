@@ -156,8 +156,6 @@ textarea:focus {
 				<!-- 좋아요 버튼 -->
 				<span id="like" class="like-btn">
 					<i class="fa-solid fa-heart fa-3x" id="likeBtn" @click="likeUpdate" style="color:#f96666;"></i>
-					<input type="hidden" id="likeCheck" v-model="likeCheck" >
-					<%-- 좋아요 : ${mbtiBoardLikeDto.itLike } --%>
 				</span>
 				<!-- ------ -->
 					
@@ -293,9 +291,8 @@ textarea:focus {
 				mbtiBoardReplyList:[],
 				
 				// 좋아요 기능에 필요한 데이터
-				memberNo:${mbtiMemberListVO.memberDto.memberNo},
+				memberNo:9,
 				itLike : "",
-				count : "",
 				
 				// 투표 공감 카운팅
 				voteCount : "",
@@ -377,25 +374,21 @@ textarea:focus {
 			// 좋아요 
  			likeUpdate(){
 				axios({
-	        		url:"${pageContext.request.contextPath}/rest/mbtiBoardLike/likeUpdate/",
+	        		url:"${pageContext.request.contextPath}/rest/mbtiBoardLike/likeUpdate",
 	        		method:"put",
 	        		data:{
 	        			memberNo:this.memberNo,
 	        			mbtiBoardNo:this.mbtiBoardNo,
-	        			count: this.count,
-	        			itLike: this.itLike,
 	        		},
 	        	})
 	        	.then(resp=>{
-	        		
+	        		console.log(resp);
 	        		//완성 시 코드
-	        		if(count == 1) {
+	        		if(resp.data.itLike == 1) {
 	        		window.alert("좋아요 취소");
-	        		this.count = 0;
 	        		}
-	        		else if(count == 0) {
+	        		else if(resp.data.itLike == 0 || resp.data.itLike == null) {
 	        		window.alert("좋아요");
-	        		this.count = 1;
 	        		}
 	        	}); 
 			}, 
