@@ -114,7 +114,7 @@
 			<result column="club_board_no" property="clubBoardNo"/>
 			<result column="like_check" property="likeCheck"/>
 		</association>
-		<collection javaType="java.util.List" ofType="ClubBoardAttachDto" property="attach" select="subListQuery1" column="club_no">
+		<collection javaType="java.util.List" ofType="ClubBoardAttachDto" property="attach" select="subListQuery1" column="club_board_no">
 			<result column="club_board_no" property="clubBoardNo"/>
 			<result column="club_no" property="clubNo"/>
 			<result column="게시글사진번호" property="attachNo"/>
@@ -149,7 +149,7 @@
        M.member_sns_id,
        M.member_logindate,
        P.attach_no  as 프로필사진번호,
-       A.attach_no as 게시글사진번호,
+<!--        A.attach_no as 게시글사진번호, -->
 	 L.like_member_no
 from club_board C 
 left outer join member M 
@@ -158,8 +158,8 @@ left outer join member_profile P
    on C.club_board_writer = P.member_no
 left outer join (select * from club_board_like where like_member_no = #{likeMemberNo} ) L
    on C.club_board_No = L.club_board_no 
-left outer join club_board_attach A 
-   on C.club_board_No = A.club_board_no
+<!-- left outer join club_board_attach A  -->
+<!--    on C.club_board_No = A.club_board_no -->
 where C.club_no = #{clubNo} order by club_board_time desc
 
 	</select>
@@ -201,13 +201,16 @@ left outer join member_profile P
 <!--    on C.club_board_no = R. club_report_target -->
 <!-- left outer join club_board_like L -->
 <!--    on C.club_board_No = L.club_board_no  -->
- left outer join club_board_attach A 
-   on C.club_board_No = A.club_board_no 
+<!--  left outer join club_board_attach A  -->
+<!--    on C.club_board_No = A.club_board_no  -->
 where C.club_board_No = #{clubBoardNo} 
 	</select>
-	<select id="subListQuery1" resultType="ClubboardAttachDto" parameterType="int">
-		select * from club_board_attach where club_no = #{clubNo}
+	<select id="subListQuery1" resultType="clubBoardAttachDto" parameterType="int">
+		select * from club_board_attach where club_board_no = #{clubBoardNo}
 	</select>
+<!-- 	<select id="subListQuery1" resultType="ClubboardAttachDto" parameterType="int"> -->
+<!-- 		select * from club_board_attach where club_no = #{clubNo} -->
+<!-- 	</select> -->
 
 	<!-- 상세 조회 -->
 	<select id="info" parameterType="int" resultType="clubBoardDto">

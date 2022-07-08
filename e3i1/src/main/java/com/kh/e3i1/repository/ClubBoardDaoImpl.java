@@ -46,10 +46,8 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	//등록
 	@Override
 	public ClubBoardDto insert(ClubBoardDto clubBoardDto) {
-		int clubBoardNo = sqlSession.selectOne("clubboard.sequence");
-		clubBoardDto.setClubBoardNo(clubBoardNo);
 		sqlSession.insert("clubboard.insert", clubBoardDto);
-		
+		int clubBoardNo = clubBoardDto.getClubBoardNo();
 		
 		return sqlSession.selectOne("clubboard.info", clubBoardNo);
 	}
