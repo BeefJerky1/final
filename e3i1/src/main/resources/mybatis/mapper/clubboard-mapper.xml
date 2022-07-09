@@ -186,8 +186,8 @@ where C.club_no = #{clubNo} order by club_board_time desc
        M.member_place3,
        M.member_sns_id,
        M.member_logindate,
-       P.attach_no  as 프로필사진번호,
-       A.attach_no as 게시글사진번호
+       P.attach_no  as 프로필사진번호
+<!--        A.attach_no as 게시글사진번호 -->
 <!--        R.club_report_reporter -->
 <!--        L.club_board_like_no, -->
 <!--        L.like_check, -->

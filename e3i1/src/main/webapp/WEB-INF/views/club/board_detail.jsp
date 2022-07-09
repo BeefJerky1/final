@@ -6,6 +6,12 @@
 <c:set var="memberAdmin" value="${auth == '관리자'}"></c:set>
 <c:set var="isLogin" value="${memberNo != null}"></c:set>
 <style>
+.position-sticky{
+	position:sticky;
+}
+ul{
+	padding-left:0px !important;
+}
 .blind{
 	color:red;
 	text-decoration: none !important;
@@ -55,19 +61,33 @@ img{border-radius:100% !important}
     img{
 		border-radius:50%;    
     }
+    .profile {
+	width: 80px;
+	height: 80px;
+	border-radius: 70%;
+	overflow: hidden;
+}
+.hash-tag {
+	font-size: 12px;
+	color: #686666;
+	background-color: #E9E9E9;
+	padding: 0px 0px;
+	text-align: center;
+}
 </style>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
     <div id="app" class="container-fluid">
         <div class="row">
             <div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5">
                 <div class="border text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side rounded" style="border-radius:1em !important">
+						<div class="row">
 							<div class="col-md-2 align-self-center">
 								<i class="fa-solid fa-house-chimney fa-2x"
 									style="color: lightgray;"></i>
 							</div>
 							<div class="col-md-8 align-self-center"
 								v-if="clubList.clubDto != null">
-								<h6 style="margin: 0px;">{{clubList.clubDto.clubName}}</h6>
+								<h5 style="margin: 0px;">{{clubList.clubDto.clubName}}</h5>
 							</div>
 							<div class="col-md-2 align-self-center">
 								<div class="row" @click="likeClub">
@@ -79,6 +99,102 @@ img{border-radius:100% !important}
 									<i class="fa-solid fa-bullhorn"></i>
 								</div>
 							</div>
+						</div>
+				
+					<hr>
+
+					
+						<div class="row">
+							<div class="col-md-2" width="10px" height="10px">
+								<img src="https://via.placeholder.com/250/69f/fff.png"
+									class="profile">
+							</div>
+							<div class="col-md-8 offset-md-2 row align-self-center">
+								<div class="col-md-3">
+									<i class="fa-solid fa-crown fa-2x" style="color: #f6e58d"></i>
+								</div>
+								<div class="col-md-9 align-self-center"
+									v-if="clubList.memberDto != null">
+									<h6 style="margin: 0px;">{{clubList.memberDto.memberNick}}</h6>
+								</div>
+							</div>
+						</div>
+
+						<div class="row mt-4" v-if="clubList.clubDto != null">
+							<div class="col-md-4">
+								<div class="hash-tag">
+									<span>\#{{clubList.clubDto.clubMainCategory}}</span>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="hash-tag">
+									<span>\#{{clubList.clubDto.clubSubCategory}}</span>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-4" v-if="clubList.clubMbtiPercent != null">
+							<div class="col-md-2">
+								<i class="fa-solid fa-user-group"></i>
+							</div>
+							<div class="col-md-10">{{clubList.clubMbtiPercent.total}} /
+								{{clubList.clubDto.clubMemberLimit}}</div>
+						</div>
+
+
+						<div class="col">
+							<h5 style="font-weight: bold">우리 소모임 MBTI 순위</h5>
+						</div>
+
+						<!-- v-for index를 []안에 사용할 방법을 찾으면 v-for로 반복할 예정 너무 복잡해지면 그냥 이대로 사용 -->
+						<div class="row mt-4" v-if="mbtiList[0] != null">
+							<div class="col-md-4">
+								<img src="https://via.placeholder.com/250/69f/fff.png"
+									class="profile">
+							</div>
+							<div class="col-md-8 align-self-center">
+								<div>
+									<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[0].memberMbti}}</h4>
+								</div>
+								<div>
+									<p style="margin: 0px 0px;">{{mbtiList[0].mbtiPercent}}%</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="row mt-4" v-if="mbtiList[1] != null">
+							<div class="col-md-4">
+								<img src="https://via.placeholder.com/250/69f/fff.png"
+									class="profile">
+							</div>
+							<div class="col-md-8 align-self-center">
+								<div>
+									<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[1].memberMbti}}</h4>
+								</div>
+								<div>
+									<p style="margin: 0px 0px;">{{mbtiList[1].mbtiPercent}}%</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="row mt-4" v-if="mbtiList[2] != null">
+							<div class="col-md-4">
+								<img src="https://via.placeholder.com/250/69f/fff.png"
+									class="profile">
+							</div>
+							<div class="col-md-8 align-self-center">
+								<div>
+									<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[2].memberMbti}}</h4>
+								</div>
+								<div>
+									<p style="margin: 0px 0px;">{{mbtiList[2].mbtiPercent}}%</p>
+								</div>
+							</div>
+						</div>
+
+
+			
+	
+						
                     
                </div>
                  
@@ -147,7 +263,7 @@ img{border-radius:100% !important}
                                     <i class="fa-solid fa-pen-to-square" v-on:click="changeEditMode()"></i>
                                 </div>
                                  <div class="col-lg-2 col-md-2 col-sm-2 text-center">
-                                 	<div v-if="!AllowedToReport()">
+                                 	<div v-if="AllowedToReport()">
                                  	<i class="fa-solid fa-flag red" v-on:click="AlreadyReported()"></i>{{board.clubBoardDto.clubBoardReportcount}}
                                  	</div>
                                  	<div v-else>
@@ -410,7 +526,9 @@ img{border-radius:100% !important}
                    replyinformation:"",           
                    
                    //소모임정보
-                   clubList:null,
+                   	clubList:[],
+					mbtiList:[],
+                   isLike:false,
                 };
             },
             computed:{
@@ -434,6 +552,29 @@ img{border-radius:100% !important}
             		}).then((resp) => {
             			this.clubList = resp.data;
             		})
+            	},
+            	//소모임 좋아요
+            	likeClub(){      
+            		if(this.memberNo == null || this.memberNo == ""){
+            			window.alert("로그인을 해주세요");
+            			return;
+            		}
+            		
+            		
+            		axios({
+            			url:"${pageContext.request.contextPath}/rest/club/like",
+            			method:"post",
+            			data: {
+            				clubNo:this.clubNo,
+            				memberNo:this.memberNo,
+            			},
+            		}).then((resp) => {
+            			if(resp.data == 0){
+            				window.alert("좋아요 취소");
+            				return;
+            			}
+            			window.alert("좋아요 완료!");
+            		});
             	},
             	//main
             	//게시글 로드
@@ -581,9 +722,9 @@ img{border-radius:100% !important}
                 			}
                 		}).then(resp=>{
                 			
-							this.loadContent();
-                			this.boardLike=true;
-                			this.boardNotLike=false;
+							this.loadContent(); //게시글 다시 불러오기
+                			this.boardLike=true; //좋아요가 트루
+                			this.boardNotLike=false; 
                 		})
                 		
                 	
