@@ -3,6 +3,11 @@
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<c:set var="path" value="${pageContext.request.contextPath}"/>
 	<style>
+	.imgfile1{
+		width:100%;
+	}
+	.imgfile2{
+	width:40% !important;}
 	    .profile {
 	width: 80px;
 	height: 80px;
@@ -15,6 +20,22 @@
 	background-color: #E9E9E9;
 	padding: 0px 0px;
 	text-align: center;
+}
+.btn-primary{
+border-color:#A78BFA !important;
+background-color:#A78BFA !important;
+}
+.btn-outline-primary{
+border-color:#A78BFA !important;
+color:#A78BFA !important
+}
+.btn-outline-primary:hover{
+border-color:#A78BFA !important;
+background-color:#A78BFA !important;
+color:white	!important;
+}
+.right-side{
+	background-color:#F7F7F7;
 }
 	.blind{
 	color:red;
@@ -199,7 +220,7 @@
 							<label>이미지 넣기</label> 
 							<input class="form-control" type="file" name="attach" accept="image/*" ref="clubBoardAttach" name="clubBoardAttach"  multiple/>
 						</div>  
-                        <button class="btn btn-primary mt-3 " v-on:click="addBoard" :disabled="clubBoardContentIsEmpty()== true" style="border-radius:1em !important">등록하기</button>
+                        <button class="btn btn-primary mt-3 " v-on:click="addBoard" :disabled="clubBoardContentIsEmpty()== true" style="border-radius:1em !important" v-if="cancel ">등록하기</button>
                     </div>
  
                 </div>
@@ -225,21 +246,28 @@
                                 {{elapsedText(clubboard.clubBoardDto.clubBoardTime)}}
                             </div>
                         </div>
-                        <div class="row text-over-cut" v-on:click="select(index)" >
-                        	<div class="row">
-                       		<div class="row px-5 p-4" v-if="clubboard.clubBoardDto.clubBoardReportcount>2">
+                        <div class="row mx-auto" v-on:click="select(index)" >
+                       		<div class="row px-5 " v-if="clubboard.clubBoardDto.clubBoardReportcount>2">
                        		<pre class="text-start blind">신고로 블라인드 처리되었습니다.</pre>
                         	</div>
-                        	<div  class="row px-5 p-4" v-else>
+                        	<div  class="row px-5 	 mx-auto" v-else>
                             <pre class="text-start">{{clubboard.clubBoardDto.clubBoardContent}}</pre>
+                        	<span v-for="(attach , index) in clubboard.attach" style="display:inline !important">
+                        		<span v-if="clubboard.attach.length ==1">
+                        		<img  v-if="clubboard.attach.length ==1" class="imgfile1 rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+attach.attachNo" style="border-radius:1em !important"> 
+                        		</span>
+                        		
+                        		<span v-else-if="clubboard.attach.length >=2">
+                        			<img class="imgfile2 img-thumbnail rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+attach.attachNo" style="border-radius:1em !important "> 
+                        		</span>
+                        	</span>
                         	</div>
-                            </div>
                         </div>
-                        <div class="container row mt-5">
+                        <div class="container row mt-1">
                             <div class="col-lg-3 col-md-3 col-sm-3 text-center">
                                 <i class="fa-regular fa-comment"></i>{{clubboard.clubBoardDto.clubBoardCount}}
                             </div>
-                            <div class="col-lg-3 col-md-3 col-sm-3 text-center">
+                            <div class="col-lg-3 col-md-3 col-sm-3 text-center p-1">
                             	<div v-if="this.memberNo==''">
   									<span><i class="fa-regular fa-heart red" ></i>{{clubboard.clubBoardDto.clubBoardLike}}</span>
                             	</div>
@@ -318,7 +346,7 @@
             
         </div>
         </div>
-       <div class="col-lg-3 col-md-3 col-sm-3 position-sticky right-side mt-5 ">
+       <div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5 ">
        			<div v-if="isMember" class="mt-3">
         			<button class="btn btn-secondary form-control " v-on:click="notAllowed()" v-if="cancel " style="border-radius:1em !important">cancel</button>
                    	<button class="btn btn-primary form-control " v-on:click="allowed()" v-if="write" style="border-radius:1em !important">write</button>
@@ -416,6 +444,7 @@
                    isLike:false,
                     //멤버 프로필: 모달
                     Mprofile:null,
+                    True:1,
                 };
             },
             //computed : data를 기반으로 하여 실시간 계산이 필요한 경우 작성한다.
@@ -586,9 +615,10 @@
 		        	})
 		        	.then(resp=>{
 		        		//완성 시 코드
-		        		//window.alert("댓글 등록 완료!");
+		        		window.confirm("게시글 등록이 완료되었습니다!");
 		        		this.boardContent = "";
 		        		this.loadClubBoardList();
+		        		this.notAllowed();
 		        	});
                 },
                 //상세 페이지로 이동
@@ -648,10 +678,11 @@
 			        	.then(resp=>{
 			        		this.Mprofile = resp.data
 			        	});				
-					
+				
                 		 
 
-            },
+            	},
+            	
             },
             created(){
             	this.loadClubBoardList();
