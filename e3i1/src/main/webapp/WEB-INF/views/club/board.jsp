@@ -4,10 +4,13 @@
 	<c:set var="path" value="${pageContext.request.contextPath}"/>
 	<style>
 	.imgfile1{
-		width:100%;
+		width:1000%;
+	}
+	ul{
+	padding-left:0!important;
 	}
 	.imgfile2{
-	width:40% !important;}
+	width:500% }
 	    .profile {
 	width: 80px;
 	height: 80px;
@@ -20,19 +23,6 @@
 	background-color: #E9E9E9;
 	padding: 0px 0px;
 	text-align: center;
-}
-.btn-primary{
-border-color:#A78BFA !important;
-background-color:#A78BFA !important;
-}
-.btn-outline-primary{
-border-color:#A78BFA !important;
-color:#A78BFA !important
-}
-.btn-outline-primary:hover{
-border-color:#A78BFA !important;
-background-color:#A78BFA !important;
-color:white	!important;
 }
 .right-side{
 	background-color:#F7F7F7;
@@ -250,17 +240,16 @@ color:white	!important;
                        		<div class="row px-5 " v-if="clubboard.clubBoardDto.clubBoardReportcount>2">
                        		<pre class="text-start blind">신고로 블라인드 처리되었습니다.</pre>
                         	</div>
-                        	<div  class="row px-5 	 mx-auto" v-else>
+                        	<div  class="row px-5 text-over-cut	 mx-auto" v-else>
                             <pre class="text-start">{{clubboard.clubBoardDto.clubBoardContent}}</pre>
-                        	<span v-for="(attach , index) in clubboard.attach" style="display:inline !important">
-                        		<span v-if="clubboard.attach.length ==1">
-                        		<img  v-if="clubboard.attach.length ==1" class="imgfile1 rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+attach.attachNo" style="border-radius:1em !important"> 
-                        		</span>
-                        		
-                        		<span v-else-if="clubboard.attach.length >=2">
-                        			<img class="imgfile2 img-thumbnail rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+attach.attachNo" style="border-radius:1em !important "> 
-                        		</span>
-                        	</span>
+                           		 <div style="margin-top: 5px; width: 100%;">
+   								 	<ul  style="display: grid ;grid-template-columns:repeat(2,1fr);">
+       								 	<li v-for="(attach , index) in clubboard.attach" style="width: 20%;display: inline" >
+                        				<img v-if="clubboard.attach.length ==1" class="imgfile1  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+attach.attachNo" style="border-radius:1em !important "> 
+                        				<img v-else-if="clubboard.attach.length >=2" class="imgfile2  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+attach.attachNo" style="border-radius:1em !important "> 
+      								   </li>
+    								</ul>                                          
+								</div>
                         	</div>
                         </div>
                         <div class="container row mt-1">
