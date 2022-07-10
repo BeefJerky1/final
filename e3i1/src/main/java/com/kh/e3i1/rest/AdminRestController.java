@@ -7,10 +7,15 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubDto;
+import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.repository.AdminDao;
 
@@ -41,11 +46,30 @@ public class AdminRestController {
 	@GetMapping("/club/{orderType}")
 	public List<ClubDto> clubList(@PathVariable String orderType){
 			return adminDao.clubList(orderType);
-
 	}
 	//소모임 삭제
 	@DeleteMapping("/club/{clubNo}")
 	public int deleteClub(@PathVariable int clubNo){
 		return adminDao.deleteClub(clubNo);
+	}
+	//mbti 설문 목록
+	@GetMapping("/mbtisurvey/")
+	public List<MbtiSurveyDto> mbtiSurveyList(){
+		return adminDao.mbtiSurveyList();
+	}
+	//mbti 설문 수정
+	@PutMapping("/mbtisurvey/")
+	public MbtiSurveyDto edit(@RequestBody MbtiSurveyDto mbtiSurveyDto) {
+		return adminDao.changeSurveyInformation(mbtiSurveyDto);
+	}
+	//mbti 설문 추가
+	@PostMapping("/mbtisurvey/")
+	public MbtiSurveyDto insert(@RequestBody MbtiSurveyDto mbtiSurveyDto) {
+		return adminDao.insert(mbtiSurveyDto);
+	}
+	//mbti 설문 삭제
+	@DeleteMapping("/mbtisurvey/{surveyNo}")
+	public int deleteSurvey(@PathVariable int surveyNo){
+		return adminDao.deleteSurvey(surveyNo);
 	}
 }

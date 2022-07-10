@@ -107,7 +107,7 @@ li a:hover {
       </li>
            <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#mbti-collapse" aria-expanded="false">
-         MBTI 게시판
+         MBTI 설문
         </button>
         <div class="collapse" id="mbti-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -168,17 +168,17 @@ li a:hover {
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="club , index) in allClub">
-									<td>{{club.clubNo}}</td>
-									<td>{{club.clubName}}</td>
-									<td>{{club.clubLeader}}</td>
-									<td>{{club.clubMainCategory}}</td>
-									<td>{{club.clubSubCategory}}</td>
-									<td>{{club.clubPlace}}</td>
-									<td>{{club.clubMemberLimit}}</td>
+								<tr v-for="(club1 , index) in club">
+									<td>{{club1.clubNo}}</td>
+									<td>{{club1.clubName}}</td>
+									<td>{{club1.clubLeader}}</td>
+									<td>{{club1.clubMainCategory}}</td>
+									<td>{{club1.clubSubCategory}}</td>
+									<td>{{club1.clubPlace}}</td>
+									<td>{{club1.clubMemberLimit}}</td>
 									<td>
 										<button type="button" class="btn btn-warning"
-											v-on:click=" select(index)">상세보기</button>
+											v-on:click=" select(index)">수정</button>
 									</td>
 									<td><button class="btn btn-danger"
 											v-on:click="deleteClub(index)">삭제</button></td>
@@ -187,6 +187,8 @@ li a:hover {
 						</table>
 
 					</div>
+					<button type="button" v-on:click="append()" :disabled="this.dataFull == true" class="form-control btn-outline-primary " style="border-radius:1em !important">
+        더보기 ({{showClub}}/{{totalClub}})
 				</div>
 			</div>
   	
@@ -202,9 +204,18 @@ li a:hover {
         const app = Vue.createApp({
             data(){
                 return {
-                	allClub:null,
     				orderType:"clubNoAsc",//정렬 방식
     				deleteResult:"",
+    				
+    				//더보기
+    				allClub:{},//전체 리스트
+    				club:{}, //보여지는 리스트
+    	            totalClub:0, //전체 멤버
+                    showClub:5, //보여주는 멤버 수
+                    ClubLeft:0,//남은 멤버 수
+                    dataFull:false,
+    				
+    				
     				
                 };
             },
@@ -218,7 +229,21 @@ li a:hover {
 						url:"${pageContext.request.contextPath}/rest/admin/club/"+this.orderType,
 						method:"get",
 					}).then(resp=>{
-						this.allClub = resp.data;
+						let data = []
+						for(var i = 0; i<this.showClub;i++){
+// 							console.log(i)
+							data.push(resp.data[i])
+						}
+						this.allClub = resp.data,
+						this.club = data,
+						this.totalClub = this.allClub.length
+						if(this.totalClub < this.showClub){
+							this.showClub = this.totalClub;
+							this.club = this.allClub;
+	                		this.dataFull=true;
+						}else if(this.totalClub==this.showClub){
+	                		this.dataFull=true;
+						}
 					})
 				},
 				//소모임 정렬
@@ -227,9 +252,49 @@ li a:hover {
                 		url:"${pageContext.request.contextPath}/rest/admin/club/"+event.target.value,
 		        		method:"get",
                 	}).then(resp=>{
-                		this.allClub = resp.data
+            			let data = []
+						for(var i = 0; i<this.showClub;i++){
+// 							console.log(i)
+							data.push(resp.data[i])
+						}
+						this.allClub = resp.data,
+						this.club = data,
+						this.totalClub = this.allClub.length
+						if(this.totalClub < this.showClub){
+							this.showClub = this.totalClub;
+							this.club = this.allClub;
+	                		this.dataFull=true;
+						}else if(this.totalClub==this.showClub){
+	                		this.dataFull=true;
+						}
                 	})
                     console.log(event.target.value)
+                },
+                //더보기
+                append(){
+                	this.clubLeft = this.totalClub- this.showClub;
+                	if(this.clubLeft < 5){
+						this.showClub = this.totalClub;
+						this.club = this.allClub;
+						this.clubLeft = this.totalClub- this.showClub;
+	                	this.clubList();
+                	}else 
+                	//게시글 수가 5개 이상이면 showBoard +5에 데이터 추가
+                	if(this.clubLeft >= 5){
+                		this.showClub +=5
+                		this.clubLeft = this.totalClub- this.showClub;
+                	let data =[]
+                	for(var i=0; i<this.showClub; i++){
+                		data.push(this.allClub[i])
+                	}
+                	this.club = data
+                	this.clubList();
+                	//남은 게시글 수가 0개라면 버튼 클릭 X
+                	}else if(this.clubLeft==0){
+                		this.dataFull=true;
+                		
+                	}
+                	
                 },
 				//소모임 상세 조회
 	            select: function(index) {

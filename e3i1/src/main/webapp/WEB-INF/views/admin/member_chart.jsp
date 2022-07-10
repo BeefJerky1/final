@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mbti게시판</title>
+<title>회원 통계 차트</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -107,7 +107,7 @@ li a:hover {
       </li>
            <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#mbti-collapse" aria-expanded="false">
-         MBTI 설문
+         MBTI 게시판
         </button>
         <div class="collapse" id="mbti-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -131,6 +131,9 @@ li a:hover {
     </ul>
   </div>
     </div>
+    </div>
+    <div class="col-md-9">
+    	
     </div>
     </div>
 

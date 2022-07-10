@@ -79,7 +79,7 @@ li a:hover {
         <div class="collapse" id="user-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/member" class="link-light rounded">회원 목록</a></li>
-            <li><a href="#" class="link-light rounded">회원 차트</a></li>
+            <li><a href="${root}/admin/member_chart" class="link-light rounded">회원 차트</a></li>
           </ul>
         </div>
       </li>
@@ -107,7 +107,7 @@ li a:hover {
       </li>
            <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#mbti-collapse" aria-expanded="false">
-         MBTI 게시판
+        MBTI 설문
         </button>
         <div class="collapse" id="mbti-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -130,6 +130,8 @@ li a:hover {
       </li>
     </ul>
   </div>
+    </div>
+    </div>
     </div>
 
     <!-- vue js도 lazy loading을 사용한다 -->

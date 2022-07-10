@@ -107,7 +107,7 @@ li a:hover {
       </li>
            <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#mbti-collapse" aria-expanded="false">
-         MBTI 게시판
+         MBTI 설문
         </button>
         <div class="collapse" id="mbti-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -171,28 +171,30 @@ li a:hover {
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(member , index) in allMember">
-									<td>{{member.memberNo}}</td>
-									<td>{{member.memberEmail}}</td>
-									<td>{{member.memberNick}}</td>
-									<td>{{member.memberGender}}</td>
-									<td>{{convertTime(member.memberBirth)}}</td>
+								<tr v-for="(member1 , index) in member">
+									<td>{{member1.memberNo}}</td>
+									<td>{{member1.memberEmail}}</td>
+									<td>{{member1.memberNick}}</td>
+									<td>{{member1.memberGender}}</td>
+									<td>{{convertTime(member1.memberBirth)}}</td>
 									<!--   					<td>{{member.memberInterest1}}</td> -->
-									<td>{{member.memberClubCount}}</td>
-									<td>{{member.memberReportCount}}</td>
-									<td>{{elapsedText(member.memberLogindate)}}</td>
+									<td>{{member1.memberClubCount}}</td>
+									<td>{{member1.memberReportCount}}</td>
+									<td>{{elapsedText(member1.memberLogindate)}}</td>
 									<td>
 										<button type="button" class="btn btn-warning"
-											v-on:click=" select(index)">상세보기</button>
+											v-on:click=" select(index)">수정</button>
 									</td>
 									<td><button class="btn btn-danger"
 											v-on:click="deleteMember(index)">삭제</button></td>
 								</tr>
 							</tbody>
 						</table>
-
 					</div>
 				</div>
+<button type="button" v-on:click="append()" :disabled="this.dataFull == true" class="form-control btn-outline-primary " style="border-radius:1em !important">
+        더보기 ({{showMember}}/{{totalMember}})
+    </button>
 			</div>
 		</div>
 	</div>
@@ -206,6 +208,10 @@ li a:hover {
 	<script src="https://unpkg.com/vue@next"></script>
 	<script src="${root}/js/sidebars.js"></script>
 	<script src="${root}/js/time.js"></script>
+	    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <!-- char.js cdn-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
 	<script>
@@ -213,13 +219,20 @@ li a:hover {
             data(){
                 return {
                 	deleteResult:"",//삭제 결과
-    				allMember:null,//전체 리스트
     				orderType:"memberNoAsc",//정렬 방식
     				editMode:false,
-    			
+    				
+    				//더보기
+    				allMember:{},//전체 리스트
+    				member:{}, //보여지는 리스트
+    	            totalMember:0, //전체 멤버
+                    showMember:5, //보여주는 멤버 수
+                    MemberLeft:0,//남은 멤버 수
+                    dataFull:false,
                 };
             },
             computed:{
+            	
             },
             methods:{
             	//멤버 전체 조회
@@ -228,9 +241,48 @@ li a:hover {
 						url:"${pageContext.request.contextPath}/rest/admin/member/"+this.orderType,
 						method:"get",
 					}).then(resp=>{
-						this.allMember = resp.data;
-					})
+						let data = []
+						for(var i = 0; i<this.showMember;i++){
+// 							console.log(i)
+							data.push(resp.data[i])
+						}
+						this.allMember = resp.data,
+						this.member = data,
+						this.totalMember = this.allMember.length
+						if(this.totalMember < this.showMember){
+							this.showMember = this.totalMember;
+							this.member = this.allMember;
+	                		this.dataFull=true;
+						}else if(this.totalMember==this.showMember){
+	                		this.dataFull=true;
+						}
+					});
 				},
+				append(){
+                	this.memberLeft = this.totalMember- this.showMember;
+                	if(this.memberLeft < 5){
+						this.showMember = this.totalMember;
+						this.member = this.allMember;
+						this.memberLeft = this.totalMember- this.showMember;
+	                	this.memberList();
+                	}else 
+                	//게시글 수가 5개 이상이면 showBoard +5에 데이터 추가
+                	if(this.memberLeft >= 5){
+                		this.showMember +=5
+                		this.memberLeft = this.totalMember- this.showMember;
+                	let data =[]
+                	for(var i=0; i<this.showMember; i++){
+                		data.push(this.allMember[i])
+                	}
+                	this.member = data
+                	this.memberList();
+                	//남은 게시글 수가 0개라면 버튼 클릭 X
+                	}else if(this.memberLeft==0){
+                		this.dataFull=true;
+                		
+                	}
+                	
+                },
 				//멤버 상세 조회
 	            select: function(index) {
 	                	const member = this.allMember[index];
@@ -259,7 +311,21 @@ li a:hover {
                 		url:"${pageContext.request.contextPath}/rest/admin/member/"+event.target.value,
 		        		method:"get",
                 	}).then(resp=>{
-                		this.allMember = resp.data
+            			let data = []
+						for(var i = 0; i<this.showMember;i++){
+// 							console.log(i)
+							data.push(resp.data[i])
+						}
+						this.allMember = resp.data,
+						this.member = data,
+						this.totalMember = this.allMember.length
+						if(this.totalMember < this.showMember){
+							this.showMember = this.totalMember;
+							this.member = this.allMember;
+	                		this.dataFull=true;
+						}else if(this.totalMember==this.showMember){
+	                		this.dataFull=true;
+						}
                 	})
                     console.log(event.target.value)
                 },

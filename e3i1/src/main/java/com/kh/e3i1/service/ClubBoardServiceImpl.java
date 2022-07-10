@@ -38,15 +38,22 @@ public class ClubBoardServiceImpl implements ClubBoardService{
 	@Override
 	public ClubBoardDto insert(ClubBoardDto clubBoardDto, List<MultipartFile> files)
 			throws IllegalStateException, IOException {
-		int clubBoardNo = sqlSession.selectOne("clubboard.sequence");
-		clubBoardDto.setClubBoardNo(clubBoardNo);
-		clubBoardDao.insert(clubBoardDto);
 		
-		for(MultipartFile attach: files) {
-			
-			int attachNo = attachmentDao.save(attach);
-			clubBoardAttachDao.insert(attachNo, clubBoardNo,clubBoardDto.getClubNo());
+		if(files==null) {			
+			int clubBoardNo = sqlSession.selectOne("clubboard.sequence");
+			clubBoardDto.setClubBoardNo(clubBoardNo);
+			clubBoardDao.insert(clubBoardDto);
+		}else {
+			int clubBoardNo = sqlSession.selectOne("clubboard.sequence");
+			clubBoardDto.setClubBoardNo(clubBoardNo);
+			clubBoardDao.insert(clubBoardDto);
+			for(MultipartFile attach: files) {
+				
+				int attachNo = attachmentDao.save(attach);
+				clubBoardAttachDao.insert(attachNo, clubBoardNo,clubBoardDto.getClubNo());
+			}
 		}
+		
 		return clubBoardDto;
 	}
 

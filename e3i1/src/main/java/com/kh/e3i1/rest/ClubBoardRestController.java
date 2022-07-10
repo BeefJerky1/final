@@ -67,7 +67,7 @@ public class ClubBoardRestController {
 	//등록
 	@PostMapping("/")
 	public ClubBoardDto insert(@ModelAttribute ClubBoardDto clubBoardDto, 
-			@RequestParam List<MultipartFile> files)throws IllegalStateException, IOException {
+			@RequestParam(required=false) List<MultipartFile> files)throws IllegalStateException, IOException {
 		return clubBoardService.insert(clubBoardDto , files);
 	}	
 //	//등록
@@ -82,10 +82,11 @@ public class ClubBoardRestController {
 		clubBoardDao.delete(clubBoardNo);
 	}
 	//상세 보기
-	@GetMapping("/detail/{clubBoardNo}")
-	public ClubBoardListItemVO one(@PathVariable int clubBoardNo) {	
-		return clubBoardDao.detail(clubBoardNo);
+	@GetMapping("/detail/{clubBoardNo}/memberNo/{memberNo}")
+	public ClubBoardListItemVO one(@PathVariable int clubBoardNo ,@PathVariable int memberNo) {	
+		return clubBoardDao.detail(clubBoardNo, memberNo);
 	}
+	
 	//수정
 	@PutMapping("/")
 	public ClubBoardDto edit(@RequestBody ClubBoardDto clubBoardDto) {

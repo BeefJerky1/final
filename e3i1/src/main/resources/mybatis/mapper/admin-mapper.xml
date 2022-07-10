@@ -29,7 +29,7 @@
 	</delete>
 	
 	<!-- 회원정보 변경 -->
-	<update id="changeInformation" parameterType="MemberDto">
+	<update id="changeMemberInformation" parameterType="MemberDto">
 		update member 
 			set
 				member_name = #{memberName},
@@ -79,9 +79,36 @@
 				club_leader = #{clubLeader}, 
 				club_main_category = #{clubMainCategory}, club_sub_category = #{clubSubCategory},
 				club_summary = #{clubSummary}, club_place = #{clubPlace},
-				club_join_question1 = #{clubJoinQuestion1}, club_join_question2 = #{clubJoinQuestion2},
-				club_join_question2 = #{clubJoinQuestion3}, club_member_limit = #{clubMemberLimit}
+				club_member_limit = #{clubMemberLimit}
 			where
 				club_no = #{clubNo}
 	</update>
+	<!-- mbti 설문 목록 -->
+	<select id="mbtisurveylist" resultType="mbtiSurveyDto">
+		select * from mbti_survey order by survey_no asc
+	</select>
+	<!-- mbti 설문 수정 -->
+	<update id="changeSurveyInformation" parameterType="mbtiSurveyDto">
+		update mbti_survey
+			set
+				survey_question = #{surveyQuestion}, survey_answer1 = #{surveyAnswer1},
+				survey_answer2 = #{surveyAnswer2} 
+			where 
+				survey_no = #{surveyNo}
+	</update>
+	<!-- 상세 -->
+	<select id="oneSurvey" resultType="mbtiSurveyDto" parameterType="int">
+		select * from mbti_survey where survey_no = #{surveyNo}
+	</select>
+	<!-- 등록 -->
+	<insert id="insert" parameterType="mbtiSurveyDto">
+		insert into mbti_survey
+			(survey_no, survey_question, survey_answer1, survey_answer2) 
+			values
+			(#{surveyNo}, #{surveyQuestion}, #{surveyAnswer1}, #{surveyAnswer2})
+	</insert>
+	<!-- 삭제 -->
+	<delete id="deleteSurvey" parameterType="int">
+		delete mbti_survey where survey_no = #{SurveyNo}
+	</delete>
 </mapper>

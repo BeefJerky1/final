@@ -22,6 +22,9 @@
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" type="text/css" href="${root}/css/sidebars.css">
 <style>
+.question{
+	color:red;
+}
 .cont {
 	background-color: white;
 	color: black;
@@ -107,7 +110,7 @@ li a:hover {
       </li>
            <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#mbti-collapse" aria-expanded="false">
-         MBTI 게시판
+        MBTI 설문
         </button>
         <div class="collapse" id="mbti-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -131,7 +134,99 @@ li a:hover {
     </ul>
   </div>
     </div>
+    <div class="col-lg-6 col-md-6 col-sm-6">
+    	<div class="row mt-5">
+    		<div class="col-lg-9 col-md-9 col-sm-9 text-center mt-5">
+    		<h1>Mbti 설문</h1>
+    		</div>
+    	</div>
+    	<div class="row">
+                <div v-for="(mbti, index ) in allMbtiSurvey" v-bind:key="index" >
+                    <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12  rounded mt-3 "style="border-radius:1em !important">
+                        <div v-if="!mbti.edit">
+                        <div class="row" >
+                            	<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+                                <span class="question">{{mbti.surveyNo}}.{{mbti.surveyQuestion}}</span>
+                                </div>
+                              	<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
+                                 <button class="btn btn-primary" v-on:click="changeEditMode(index)">수정</button>
+                                 <button class="btn btn-danger" v-on:click="deleteSurvey(index)">삭제</button>
+                                 </div>
+                        </div>
+                        <div class="row" >
+                        	    <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+                                <span>답안:{{mbti.surveyAnswer1}}</span>
+                                </div>
+                              	<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
+                                 </div>
+                        		<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+                                <span>답안:{{mbti.surveyAnswer2}}</span>
+                                </div>
+                              	<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
+                                 </div>
+                        	</div>
+                        </div>
+                        <div class="row" v-else>
+                        <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+                        <label>문제</label>
+                     	<textarea class="form-control " v-model="mbti.surveyQuestion" style="border-radius:1em !important"></textarea>
+                    	</div>
+                    	<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+                    	<label>답변1</label>
+                     	<textarea class="form-control " v-model="mbti.surveyAnswer1" style="border-radius:1em !important"></textarea>
+                    	</div>
+                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+                    	<label>답변2</label>
+                     	<textarea class="form-control " v-model="mbti.surveyAnswer2" style="border-radius:1em !important"></textarea>
+                    	</div>
+                    	<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
+                    	<button class="btn btn-primary "  v-on:click="editSurvey(index)">수정</button>
+                    	<button class="btn btn-secondary "  v-on:click="changeDisplayMode(index)">취소</button>
+                        </div>
+                    	 
+                        </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 mt-5">
+            <div v-if="this.survey" class="col-lg-9 col-md-9 col-sm-9  text-end mt-5">
+            <div class="mt-5">
+    			<button class="btn btn-success" v-on:click="insertMode()" >설문 추가</button>
+            </div>
+    		</div>
+    		<div v-else class="mt-5">
+    		</div>
+    		<div class="row mt-5">
+            <div class="col-lg-8 col-md-8 col-sm-8 offset-2 mt-5" v-if="this.insert==true">
+             <div class="col-lg-12 col-md-12 col-sm-12 mt-1">
+            <label>번호</label>
+            <input type="number" class="form-control" v-model="this.no">
+             </div>
+    		 <div class="col-lg-12 col-md-12 col-sm-12 mt-1">
+    		 <label>문제</label>
+             <textarea class="form-control update-reply" v-model="this.question" ></textarea>
+             </div>
+             <div class="col-lg-12 col-md-12 col-sm-12 mt-1 rounded">
+             <label>답변1</label>
+             <textarea class="form-control update-reply" v-model="this.answer1" ></textarea>
+             </div>
+             <div class="col-lg-12 col-md-12 col-sm-12 mt-1 rounded " >
+             <label>답변2</label>
+             <textarea class="form-control update-reply" v-model="this.answer2" ></textarea>
+    		 </div>
+    		 <div class="col-lg-12 col-md-12 col-sm-12 mt-1 rounded">
+    		 <button class="btn btn-primary form-control" v-on:click="insertSurvey()">등록</button>
+    		 </div>
+    		 <div class="col-lg-12 col-md-12 col-sm-12 mt-1 rounded">
+    		 <button class="btn btn-secondary form-control" v-on:click="displayMode()">취소</button>    		 
+    		 </div>
+    	</div>
+    	<div v-else></div>
+            </div>
+    	</div>
     </div>
+
     </div>
 
     <!-- vue js도 lazy loading을 사용한다 -->
@@ -143,14 +238,99 @@ li a:hover {
         const app = Vue.createApp({
             data(){
                 return {
-    
+                	allMbtiSurvey:{},
+                	insert:false,
+                	survey:true,
+                	
+                	//설문 등록
+                	no:"",
+                	question:"",
+                	answer1:"",
+                	answer2:"",
                 };
             },
             computed:{
                 
             },
             methods:{
-
+				mbtisurveylist(){
+					axios({
+						url:"${pageContext.request.contextPath}/rest/admin/mbtisurvey/",
+						method:"get",
+					}).then(resp=>{
+						this.allMbtiSurvey = resp.data
+					})
+				},
+		        //수정모드
+		        changeEditMode(index){
+					this.allMbtiSurvey[index].edit=true;
+		        },
+		        //수정모드 해제
+		        changeDisplayMode(index){
+		        	this.allMbtiSurvey[index].edit=false;
+		        },
+		        //추가모드
+		        insertMode(){
+		        	this.survey=false;
+					this.insert=true;
+		        },
+		        //추가모드 해제
+		        displayMode(){
+					this.insert=false;
+					this.survey=true;
+                	this.no = "";
+                	this.question="";
+                	this.answer1="";
+                	this.answer2="";
+		        },
+		        //설문 수정
+		        editSurvey(index){
+		        	const mbti = this.allMbtiSurvey[index];
+		        	if(mbti.surveyQuestion.length==0)return;
+		        	if(mbti.surveyAnswer1.length==0)return;
+		        	if(mbti.surveyAnswer2.length==0)return;
+		        	axios({
+		        		url:"${pageContext.request.contextPath}/rest/admin/mbtisurvey/",
+		        		method:"put",
+		        		data:{
+		        			surveyNo: mbti.surveyNo,
+		        			surveyQuestion: mbti.surveyQuestion,
+		        			surveyAnswer1:mbti.surveyAnswer1,
+		        			surveyAnswer2:mbti.surveyAnswer2,		        		
+		        		},
+		        	}).then(resp=>{
+		        		this.mbtisurveylist();
+		        	});
+		        },
+		        //설문 삭제
+		        deleteSurvey(index){
+		        	const mbti = this.allMbtiSurvey[index];
+		        	axios({
+		        		url:"${pageContext.request.contextPath}/rest/admin/mbtisurvey/"+mbti.surveyNo,
+		        		method:"delete",
+		        	}).then(resp=>{
+		        		this.mbtisurveylist();
+		        	});
+		        },
+		        //설문 추가
+		        insertSurvey(){
+		        	axios({
+		        		url:"${pageContext.request.contextPath}/rest/admin/mbtisurvey/",
+		        		method:"post",
+		        		data:{
+		        			surveyNo: this.no,
+		           			surveyQuestion: this.question,
+		        			surveyAnswer1:this.answer1,
+		        			surveyAnswer2:this.answer2,		
+		        		},
+		        	}).then(resp=>{
+		        		this.mbtisurveylist();
+		        		this.displayMode();
+		        	});
+		        }
+            },
+            created(){
+            	this.mbtisurveylist();
             },
         });
         app.mount("#app");

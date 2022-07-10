@@ -38,8 +38,8 @@ public class AdminController {
 		model.addAttribute("memberDto", memberDto);
 		return "admin/member_detail";
 	}
-	@PostMapping("/asdf")
-	public String information(@ModelAttribute MemberDto memberDto) {
+	@PostMapping("/memberInformation")
+	public String changeMemberInformation(@ModelAttribute MemberDto memberDto) {
 		
 		boolean success = adminDao.changeMember(memberDto);
 		if(success) {
@@ -49,6 +49,10 @@ public class AdminController {
 			return "redirect:information?error";
 		}
 	}
+	@GetMapping("/member_chart")
+	public String memberChart() {
+		return "admin/member_chart";
+	}
 	@GetMapping("/club")
 	public String club() {
 		return "admin/club";
@@ -56,8 +60,19 @@ public class AdminController {
 	@GetMapping("/club_detail")
 	public String clubDetail(@RequestParam int clubNo, Model model) {
 		ClubDto clubDto = adminDao.oneClub(clubNo);
-		model.addAttribute("memberDto", clubDto);
+		model.addAttribute("clubDto", clubDto);
 		return "admin/club_detail";
+	}
+	@PostMapping("/clubInformation")
+	public String changeClubInformation(@ModelAttribute ClubDto clubDto) {
+		
+		boolean success = adminDao.changeClub(clubDto);
+		if(success) {
+			return "redirect:club";
+		}
+		else {
+			return "redirect:information?error";
+		}
 	}
 	@GetMapping("/mbtiboard")
 	public String MbtiBoard() {
