@@ -19,6 +19,8 @@ public interface ClubBoardDao {
 
 	boolean delete(int clubBoardNo);
 
+	ClubBoardListItemVO detail(int clubBoardNo, int memberNo);
+	
 	ClubBoardListItemVO detail(int clubBoardNo);
 
 	ClubBoardDto edit(ClubBoardDto clubBoardDto);

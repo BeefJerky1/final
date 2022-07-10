@@ -37,7 +37,7 @@
 	<update id="calculateReportCount" parameterType="int">
 	  	update club_board_reply
 		set club_reply_reportcount = (
-		select count(*) from club_report where club_report_type =2
+		select count(*) from club_report where club_report_target = #{replyNo}
 		)
 		where reply_no = #{replyNo}
 	</update>
@@ -95,6 +95,17 @@
 			<result column="member_no" property="memberNo"/>
 			<result column="attach_no" property="attachNo"/>
 		</association>
+		<association property ="clubReportDto">
+			<result column="club_report_no" property="clubReportNo"/>
+			<result column="club_no" property="clubNo"/>
+			<result column="club_report_target" property="clubReportTarget"/>
+			<result column="club_report_type" property="clubReportType"/>	
+			<result column="club_report_writer" property="clubReportWriter"/>
+			<result column="club_report_reporter" property="clubReportReporter"/>
+			<result column="club_report_time" property="clubReportTime"/>
+			<result column="club_report_category" property="clubReportCategory"/>
+			<result column="club_report_content" property="clubReportContent"/>
+		</association>
 		
 	</resultMap>
 		<select id="clubReplyTotalList" resultMap="clubBoardReplyItems" parameterType="Map">
@@ -123,7 +134,8 @@
        P.attach_no  as 프로필사진번호,
        L.club_reply_like_no,
        L.like_check,
-       L.like_member_no
+       L.like_member_no,
+       R.club_report_reporter
 from club_board_reply C 
 left outer join member M 
    on C.club_reply_writer = M.member_no 
@@ -131,6 +143,11 @@ left outer join member_profile P
    on C.club_reply_writer = P.member_no
 left outer join (select * from club_reply_like where like_member_no = #{likeMemberNo} ) L
    on C.reply_no = L.reply_no
+left outer join (select * from club_report where club_report_reporter = #{likeMemberNo}) R
+   on C.reply_no = R.club_report_target
 where C.club_board_no =#{clubBoardNo} order by C.reply_no desc
+	</select>
+	<select id="boardlist" resultType="clubBoardReplyDto" parameterType="int">
+		        select * from club_board_reply where club_board_no = #{clubBoardNo}
 	</select>
 </mapper>

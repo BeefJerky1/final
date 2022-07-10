@@ -52,11 +52,23 @@ public class ClubBoardReplyDaoImpl implements ClubBoardReplyDao{
 		sqlSession.update("clubboardreply.calculateReplyCount",clubBoardNo);	
 	}
 	@Override
+	public void calculateReportCount(int clubBoardNo) {
+		sqlSession.update("clubboardreply.calculateReportCount",clubBoardNo);	
+	}
+	@Override
 	public List<ClubBoardReplyListVO> listAll(int clubBoardNo, int likeMemberNo) {
-//		this.calculateReplyCount(clubNo);
+		List<ClubBoardReplyDto> list= sqlSession.selectList("clubboardreply.boardlist", clubBoardNo);
+		for(ClubBoardReplyDto dto : list) {
+			this.calculateReportCount(dto.getReplyNo());			
+		}
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("clubBoardNo", clubBoardNo);
 		param.put("likeMemberNo", likeMemberNo);
 		return sqlSession.selectList("clubboardreply.clubReplyTotalList", param);
+	}
+
+	@Override
+	public ClubBoardReplyDto reportInfo(int replyNo) {
+		return sqlSession.selectOne("clubboardreply.one", replyNo);
 	}
 }

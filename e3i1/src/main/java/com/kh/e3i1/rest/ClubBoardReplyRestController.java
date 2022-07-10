@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubReplyLikeDto;
+import com.kh.e3i1.entity.ClubReportDto;
 import com.kh.e3i1.repository.ClubBoardReplyDao;
 import com.kh.e3i1.repository.ClubReplyLikeDao;
+import com.kh.e3i1.repository.ClubReportDao;
 import com.kh.e3i1.vo.ClubBoardReplyListVO;
 
 import springfox.documentation.annotations.ApiIgnore;
@@ -32,7 +34,8 @@ public class ClubBoardReplyRestController {
 	private ClubBoardReplyDao clubBoardReplyDao;
 	@Autowired
 	private ClubReplyLikeDao clubReplyLikeDao;
-	
+	@Autowired
+	private ClubReportDao clubReportDao;
 	
 	@PostMapping("/")
 	public ClubBoardReplyDto insert(
@@ -62,6 +65,14 @@ public class ClubBoardReplyRestController {
 	@DeleteMapping("/like")
 	public void delete(@ApiIgnore HttpSession session, @RequestBody ClubReplyLikeDto clubReplyLikeDto) {
 		clubReplyLikeDao.delete(clubReplyLikeDto);
+	}
+	@GetMapping("/report/{replyNo}")
+	public ClubBoardReplyDto reportInfo(@ApiIgnore HttpSession session, @PathVariable int replyNo ) {
+		return clubBoardReplyDao.reportInfo(replyNo);
+	}
+	@PostMapping("/report")
+	public int reportReply(@ApiIgnore HttpSession session, @RequestBody ClubReportDto clubReportDto) {
+		return clubReportDao.reportReply(clubReportDto);
 	}
 }
 
