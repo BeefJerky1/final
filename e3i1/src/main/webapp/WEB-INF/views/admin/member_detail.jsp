@@ -107,7 +107,7 @@ li a:hover {
       </li>
            <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#mbti-collapse" aria-expanded="false">
-         MBTI 게시판
+         MBTI 설문
         </button>
         <div class="collapse" id="mbti-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -132,11 +132,11 @@ li a:hover {
   </div>
   </div>
 		<div class="col-md-8 mb-5 p-4 text-dark  rounded">
-					<form action="asdf" method="post" enctype="multipart/form-data">
+					<form action="memberInformation" method="post" enctype="multipart/form-data">
 				<div class="col-md-6 offset-md-3">
 					<div class="row text-center mt-3 mb-5">
-                                <div class="row text-center mb-3">
-                                    <span class="point">회원정보 수정</span>
+                                <div class="row text-center mb-3 mt-5">
+                                  <h1>회원 수정</h1>
                                   </div>
 
                                            <div class="form-floating mb-3">
@@ -309,10 +309,10 @@ li a:hover {
 									</select>
 								</div>
 							</div>
+                                    <button type="submit" class="btn btn-outline-success mt-4 form-control">수정하기</button>
 						</div>
             
                            
-                                    <button type="submit" class="btn btn-outline-success mt-4">수정하기</button>
                                            
                             </div>    
                                      

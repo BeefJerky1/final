@@ -163,7 +163,52 @@ left outer join (select * from club_board_like where like_member_no = #{likeMemb
 where C.club_no = #{clubNo} order by club_board_time desc
 
 	</select>
-	<!-- 단일조회 -->
+	<!-- 단일조회 restContoller-->
+	<select id="oneRest" resultMap="clubBoardListItem" parameterType="Map">
+				select
+	   C.club_board_no,
+	   C.club_board_count,
+	   C.club_board_like,
+       C.club_board_time, 
+       C.club_board_content,
+       C.club_no,
+       C.club_board_writer,
+       C.club_board_reportcount,
+       M.member_animal,
+       M.member_no ,
+       M.member_nick,
+       M.member_interest1,
+       M.member_interest2,
+       M.member_interest3,
+       M.member_gender,
+       M.member_place1,
+       M.member_place2,
+       M.member_place3,
+       M.member_sns_id,
+       M.member_logindate,
+       P.attach_no  as 프로필사진번호,
+       R.club_report_reporter
+<!--        A.attach_no as 게시글사진번호 -->
+<!--        R.club_report_reporter -->
+<!--        L.club_board_like_no, -->
+<!--        L.like_check, -->
+<!--        L.like_member_no -->
+from club_board C 
+left outer join member M 
+   on C.club_board_writer = M.member_no 
+left outer join member_profile P 
+   on C.club_board_writer = P.member_no
+ left outer join (select * from club_report where club_report_reporter = #{memberNo})R
+    on C.club_board_no = R. club_report_target
+<!-- left outer join club_report R -->
+<!--    on C.club_board_no = R. club_report_target -->
+<!-- left outer join club_board_like L -->
+<!--    on C.club_board_No = L.club_board_no  -->
+<!--  left outer join club_board_attach A  -->
+<!--    on C.club_board_No = A.club_board_no  -->
+where C.club_board_No = #{clubBoardNo} 
+	</select>
+		<!-- 단일조회 controller -->
 	<select id="one" resultMap="clubBoardListItem">
 				select
 	   C.club_board_no,

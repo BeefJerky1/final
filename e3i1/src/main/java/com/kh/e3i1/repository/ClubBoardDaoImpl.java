@@ -61,6 +61,17 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 
 	//상세조회
 	@Override
+	public ClubBoardListItemVO detail(int clubBoardNo, int memberNo) {
+		this.calculateReplyCount(clubBoardNo);
+		this.calculateLikeCount(clubBoardNo);
+		this.calculateReportCount(clubBoardNo);
+		Map<String, Integer> param = new HashMap<String, Integer>();
+		param.put("clubBoardNo", clubBoardNo);
+		param.put("memberNo", memberNo);
+		return sqlSession.selectOne("clubboard.oneRest", param);
+	}
+	//상세조회
+	@Override
 	public ClubBoardListItemVO detail(int clubBoardNo) {
 		this.calculateReplyCount(clubBoardNo);
 		this.calculateLikeCount(clubBoardNo);

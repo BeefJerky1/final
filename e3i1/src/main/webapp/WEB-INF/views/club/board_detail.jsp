@@ -6,6 +6,20 @@
 <c:set var="memberAdmin" value="${auth == '관리자'}"></c:set>
 <c:set var="isLogin" value="${memberNo != null}"></c:set>
 <style>
+	.imgfile1{
+		width:1000%;
+	}
+	ul{
+	padding-left:0!important;
+	}
+	.imgfile2{
+	width:500% }
+	    .profile {
+	width: 80px;
+	height: 80px;
+	border-radius: 70%;
+	overflow: hidden;
+}
 .position-sticky{
 	position:sticky;
 }
@@ -229,15 +243,24 @@ img{border-radius:100% !important}
                      <div v-if="board != null">
                     <div v-if="!board.edit">
                     <div class="row px-5">
-                    <div v-if="board.clubBoardDto.clubBoardReportcount > 2">
-                    	<pre class="text-start blind" v-on:click="this.blind=true">
+                    <div v-if="board.clubBoardDto.clubBoardReportcount > 2" >
+                    	<pre class="text-start blind" v-on:click="this.blind=false">
 신고로 인하여 블라인드 처리되었습니다. 
 내용을 보기를 원하신다면 여기를 클릭하세요.
                     	</pre>
-                    	<p v-if="this.blind">{{board.clubBoardDto.clubBoardContent}}</p>                    	
                     </div>
+                   	<div v-if="this.blind==true">
+                   	</div>                    	
                     <div v-else>
-                        <pre> {{board.clubBoardDto.clubBoardContent}}</pre>	                    
+                        <p> {{board.clubBoardDto.clubBoardContent}}</p>	   
+                                		<div style="margin-top: 5px; width: 100%;">
+   								 	<ul  style="display: grid ;grid-template-columns:repeat(2,1fr);">
+       								 	<li v-for="(attach , index) in board.attach" style="width: 20%;display: inline" >
+                        				<img v-if="board.attach.length ==1" class="imgfile1  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+attach.attachNo" style="border-radius:1em !important "> 
+                        				<img v-else-if="board.attach.length >=2" class="imgfile2  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+attach.attachNo" style="border-radius:1em !important "> 
+      								   </li>
+    								</ul>                                          
+								</div>                 
                     </div>
                     </div>		
                     <div class="container row mt-5 rounded" style="border-radius:1em !important">
@@ -263,11 +286,11 @@ img{border-radius:100% !important}
                                     <i class="fa-solid fa-pen-to-square" v-on:click="changeEditMode()"></i>
                                 </div>
                                  <div class="col-lg-2 col-md-2 col-sm-2 text-center">
-                                 	<div v-if="AllowedToReport()">
-                                 	<i class="fa-solid fa-flag red" v-on:click="AlreadyReported()"></i>{{board.clubBoardDto.clubBoardReportcount}}
+                                 	<div v-if="AllowedToReport()==true">
+                                 	<i class="fa-solid fa-flag black"  data-bs-toggle="modal" data-bs-target="#reportBoard" ></i>{{board.clubBoardDto.clubBoardReportcount}}                                 	                                 	
                                  	</div>
                                  	<div v-else>
-                                 	<i class="fa-solid fa-flag black"  data-bs-toggle="modal" data-bs-target="#reportBoard" ></i>{{board.clubBoardDto.clubBoardReportcount}}                                 	                                 	
+                                 	<i class="fa-solid fa-flag red" v-on:click="AlreadyReported()"></i>{{board.clubBoardDto.clubBoardReportcount}}
                                  	</div>
                                  </div>
                             </div>
@@ -520,7 +543,7 @@ img{border-radius:100% !important}
                    boardResult:"", //신고결과
                    //게시글 신고 조회
                    searchBoardReport:"",
-                   blind:false,
+                   blind:true,
                    //댓글 신고
                    replyResult:"",
                    replyinformation:"",           
@@ -540,6 +563,14 @@ img{border-radius:100% !important}
  		        },
  		        isAdmin(){
  		        	return this.isMember && this.memberAdmin == "관리자";
+ 		        },
+ 		        //게시글 작성자 == 세션 멤버 일때 신고 불가
+ 		        isBoardWriter(){
+ 		        	return this.memberNo== this.board.clubBoardDto.clubBoardWriter;
+ 		        },
+ 		        //게시글 이미 신고한 자라면 신고불가
+ 		        isAlreadyReported(){
+ 		        	return this.memberNo== this.board.clubReportDto.clubReportReporter;
  		        },
             },
             methods:{
@@ -583,7 +614,7 @@ img{border-radius:100% !important}
                     let params = new URLSearchParams(uri);
                     const clubBoardNo = params.get("clubBoardNo");
  		        	axios({
- 		        		url:"${pageContext.request.contextPath}/rest/clubboard/detail/"+clubBoardNo,
+ 		        		url:"${pageContext.request.contextPath}/rest/clubboard/detail/"+clubBoardNo+"/memberNo/"+this.memberNo,
  		        		method:"get",
  		        		
  		        	})
@@ -591,6 +622,8 @@ img{border-radius:100% !important}
  		        		this.board= resp.data;
  	            		console.log(this.memberNo);
  	            		console.log(this.board.clubBoardDto.clubBoardWriter)
+ 	            		console.log(this.board.clubReportDto.clubReportReporter)
+ 	            		this.AllowedToReport();
  		        	});
  		        
  		    	},
@@ -641,7 +674,7 @@ img{border-radius:100% !important}
 		        changeDisplayMode(){
 		        	this.board.edit=false;
 		        },
-		      	//게시글 좋아요 체크
+		      	//게시글 좋아요 가능자 확인
              	boardLikeCheck(){
 	               	let uri = window.location.search.substring(1); 
                     let params = new URLSearchParams(uri);
@@ -689,11 +722,11 @@ img{border-radius:100% !important}
                 	this.clubReportCategory="",
                 	this.clubReportContent=""
                 },
-                //게시글 신고 가능
+                //게시글 신고 가능한 사람
                 AllowedToReport(){                	
-                	//1. 게시글 작성자 == 세션 멤버 동일인은 신고 불가능
-                	if(this.memberNo!=this.board.clubBoardDto.clubBoardWriter && this.searchBoardReport==1)return;
-                	//2. 소모임 가입자아니면 신고 불가능        	
+                	if(this.isBoardWriter) return false
+                	if(this.isAlreadyReported) return false
+                	return true
                 },
             	//게시글 신고 체크
              	boardReportCheck(){
@@ -985,6 +1018,7 @@ img{border-radius:100% !important}
 	            elapsedText(date) {
                 	return dateformat.elapsedText(new Date(date));
                 },
+                //소모임 멤버
             },
             created(){
             	this.loadContent(); //게시글 상세
