@@ -19,6 +19,10 @@
 	border-radius: 70%;
 	overflow: hidden;
 }
+
+.hiddenRow {
+    padding: 0 !important;
+}
 </style>
 
 <div id="app" class="container-fluid">
@@ -171,16 +175,56 @@
 					</div>
 				</div>
 				<div class="card-body">
-					<h6>소모임 회원 목록</h6>
+				
+				 	 <table class="table table-hover">
+						<thead>
+							<th>회원이름</th>
+							<th>회원등급</th>
+							<th>신청/승인 날짜</th>
+							<th>승인여부</th>
+						</thead>
+						<tbody v-for="(clubMember, index) in clubMemberList" :key="index">
+							<tr  @click="isHidden1['hidden1'] = !isHidden1['hidden1']">
+								<td>{{clubMember.memberDto.memberNick}}</td>
+								<td v-if="clubMember.clubMemberDto.clubMemberGrade == 1">관리자</td>
+								<td v-if="clubMember.clubMemberDto.clubMemberGrade == 0">일반</td>
+								<td>{{clubMember.clubMemberDto.clubMemberDate}}</td>
+								<td v-if="clubMember.clubMemberDto.clubMemberPermission == 0">대기중</td>
+								<td v-if="clubMember.clubMemberDto.clubMemberPermission == 1" style="color:green">승인</td>
+								<td v-if="clubMember.clubMemberDto.clubMemberPermission == 2" style="color:red">거절</td>
+							</tr>
+							<tr :class="isHidden1" v-if="clubMember.clubMemberDto.clubMemberGrade != 1">
+								<td colspan="4">
+									<div if="clubMember.clubMemberDto.clubMemberAnswer1 != null">
+										{{clubMember.clubMemberDto.clubMemberAnswer1}}
+									</div>
+									<div if="clubMember.clubMemberDto.clubMemberAnswer2 != null">
+										{{clubMember.clubMemberDto.clubMemberAnswer2}}
+									</div>
+									<div if="clubMember.clubMemberDto.clubMemberAnswer3 != null">
+										{{clubMember.clubMemberDto.clubMemberAnswer3}}
+									</div>
+									<div class="row mt-4" v-if="clubMember.clubMemberDto.clubMemberPermission == 0">
+										<div class="col-md-6">
+											<button class="btn-cancel" @click="removeHidden(index)">거절</button>
+										</div>
+										<div class="col-md-6">
+											<button class="btn-create" @click="approveClub(index)">승인</button>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					
 				</div>
 			</div>
 		</div>
 
 		<!-- 오른쪽 사이드바 -->
 		<div class="col-md-3">
-			<button class="btn-create" v-on:click="removeHidden">소모임 가입하기</button>
 				
-			<div class="accordion mt-2">
+			<div class="accordion">
 				<div class="accordion-item"  v-if="clubList.clubDto != null">
                       <h2 class="accordion-header" id="headingOne">
                           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
@@ -217,89 +261,45 @@
                  </div>
 			</div>
 		</div>
-
-	</div>
-
-
-
-	<!-- 소모임 생성 모달 -->
-	<div class="modal" v-bind:class="isHidden" class="rounded"
-		v-if="clubList.clubDto != null">
+		
+		
+		
+	<!-- 거절 모달창 -->
+	<div class="modal" v-bind:class="isHidden" class="rounded">
 		<div class="modal-overlay" v-on:click="addHidden"></div>
 
-		<div class="modal-content mt-4"
-			style="width: 600px !important; position: absolute !important;">
-			<input type="hidden" ref="memberNo" value="${login}" />
-
+		<div class="modal-content mt-4" style="width:800px!important; position:absolute!important;">
+		
 			<div class="container-fluid">
-				<div class="modal-header">
-					<div class="text-start col-md-12" v-if="clubList.clubDto != null">
-						<h2>소모임 가입하기</h2>
-					</div>
+				<div class="modal-header text-start">
+					<h1>소모임 가입 거절 메세지</h1>
 				</div>
-
-				<div class="modal-body">
-
-					<div class="text-start">
-						<h4>가입 질문</h4>
-						<p style="font-size: 10px">
-							*소모임 성격과 맞지 않는 답변 시 가입이 거절 될 수 있습니다.<br> *답변은 성심성의껏 작성해주세요.
-						</p>
-					</div>
-					<div class="mt-2" v-if="clubList.clubDto.clubJoinQuestion1 != null">
-						<div class="text-start">
-							<h6>Q1.{{clubList.clubDto.clubJoinQuestion1}}</h6>
-						</div>
-						<div class="mt-2">
-							<input type="text" class="form-control"
-								v-model="clubMemberAnswer1">
-						</div>
-					</div>
-
-					<div class="mt-4" v-if="clubList.clubDto.clubJoinQuestion2 != null">
-						<div class="row text-start">
-							<h6>Q2.{{clubList.clubDto.clubJoinQuestion2}}</h6>
-						</div>
-						<div class="mt-2">
-							<input type="text" class="form-control"
-								v-model="clubMemberAnswer2">
-						</div>
-					</div>
-
-					<div class="mt-4" v-if="clubList.clubDto.clubJoinQuestion3 != null">
-						<div class="row text-start">
-							<h6>Q3.{{clubList.clubDto.clubJoinQuestion3}}</h6>
-						</div>
-						<div class="mt-2">
-							<input type="text" class="form-control"
-								v-model="clubMemberAnswer3">
-						</div>
-					</div>
-
-					<div class="mt-2">
-						<p class="text-start" style="color: red; font-size: 10px;">*답변 시 회원님의 소중한 개인정보가 유출되지 않도록 주의해주시기 바랍니다.</p>
-					</div>
-
-					<div class="row mt-4">
-						<div class="col">
-							<button type="button" class="btn-cancel" @click="addHidden">돌아가기</button>
-						</div>
-						<div class="col">
-							<button type="submit" class="btn-create" @click="insertClubMember">가입하기</button>
-						</div>
-					</div>
+				<div class="text-start mt-2">
+					<p style="font-size: 10px">
+						*거절 메세지는 최대한 자세하고 친절하게 부탁드리겠습니다.
+					</p>
+				</div>		
+				<div class="text-start mt-2">
+					<textarea class="form-control rounded" v-model="clubMemberRefuseMsg"></textarea>
+				</div>
+						
+				<div class="row mt-4">
+				<div class="col">
+					<button type="button" class="btn-cancel" @click="addHidden(index)">돌아가기</button>
+				</div>
+				<div class="col">
+					<button type="submit" class="btn-create" @click="refuseClub(index)">거절하기</button>
+				</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
-
+	
 </div>
 
 
 
 <script>
-  
 const app = Vue.createApp({
 data() {
 	return {
@@ -307,16 +307,22 @@ data() {
 			"hidden" : true,
 		},
 		
+		isHidden1: {
+			"hidden1" : true,
+		},
+		
 		// 소모임 상세에 필요한 정보(소모임, 소모임좋아요, mbti, 소모임프로필)
 		clubList:[],
 		mbtiList:[],
+		// 소모임 회원 목록
+		clubMemberList: [],
 		
-		clubMemberAnswe1:"",
-		clubMemberAnswe2:"",
-		clubMemberAnswe3:"",
 		memberNo:"${login}",
 		
 		isLike:false,
+		
+		clubMemberRefuseMsg:"",
+		index:"",
 	};
 },
 computed: {
@@ -338,47 +344,17 @@ computed: {
 },
 methods: {
 	
-	removeHidden(){
+	removeHidden(index){
 		this.isHidden["hidden"] = false;
+		
+		this.index = index;
 	},
 	
 	addHidden(){
 		this.isHidden["hidden"] = true; 
 		
-		this.clubMemberAnswer1 = "";
-		this.clubMemberAnswer2 = "";
-		this.clubMemberAnswer3 = "";
-	},
-	
-	insertClubMember(){
-		const session = this.$refs.memberNo.value;
-		if(session == null || session == ""){
-			window.alert("로그인을 해주세요");
-			return;
-		}
-		else{
-			this.memberNo = session;
-		}
-		
-		axios({
-			url:"${pageContext.request.contextPath}/rest/club/member",
-			method:"post",
-			data: {
-				clubMemberAnswer1:this.clubMemberAnswer1,
-				clubMemberAnswer2:this.clubMemberAnswer2,
-				clubMemberAnswer3:this.clubMemberAnswer3,
-				clubNo:this.clubNo,
-				memberNo:this.memberNo,
-			},
-		}).then((resp) => {
-			if(resp.data == 0){
-				window.alert("이미 가입 신청 완료된 소모임입니다.");
-				this.addHidden();
-				return;
-			}
-			window.alert("소모임 가입신청 완료!");
-			this.addHidden();
-		});
+		this.clubMemberRefuseMsg = "";
+		this.index = "";
 	},
 	
 	existLike(){
@@ -398,7 +374,6 @@ methods: {
 			this.isLike = resp.data;
 		});
 	},
-	
 	
 	likeClub(){
 		const session = this.$refs.memberNo.value;
@@ -428,6 +403,43 @@ methods: {
 		});
 	},
 	
+	// 소모임 가입 승인
+	approveClub(index){
+		axios({
+			url:"${pageContext.request.contextPath}/rest/club/approve",
+			method:"put",
+			data: {
+				clubMemberNo:this.clubMemberList[index].clubMemberDto.clubMemberNo,
+			},
+		}).then((resp) => {
+			if(resp.data == 0){
+				window.alert("승인 실패");
+				return;
+			}
+			window.alert("승인 완료!");
+			window.location.href="${pageContext.request.contextPath}/club/member_management?clubNo="+this.clubNo;
+		});
+	},
+	
+	// 소모임 가입 거절
+	refuseClub(index){
+		axios({
+			url:"${pageContext.request.contextPath}/rest/club/refuse",
+			method:"put",
+			data: {
+				clubMemberNo:this.clubMemberList[this.index].clubMemberDto.clubMemberNo,
+				clubMemberRefuseMsg:this.clubMemberRefuseMsg,
+			},
+		}).then((resp) => {
+			if(resp.data == 0){
+				window.alert("승인 실패");
+				return;
+			}
+			window.alert("승인 완료!");
+			window.location.href="${pageContext.request.contextPath}/club/member_management?clubNo="+this.clubNo;
+		});
+	},
+	
 },
 
 created() {
@@ -438,6 +450,14 @@ created() {
 		method: "get",
 	}).then((resp) => {
 		this.clubList = resp.data;
+	})
+	
+	// 소모임 회원 정보
+	axios({
+		url: "${pageContext.request.contextPath}/rest/club/member/"+this.clubNo,
+		method: "get",
+	}).then((resp) => {
+		this.clubMemberList = resp.data;
 	})
 	
 	

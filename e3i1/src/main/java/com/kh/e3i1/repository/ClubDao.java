@@ -17,4 +17,6 @@ public interface ClubDao {
 	boolean isLike(int clubNo, int memberNo);
 	
 	int likeClub(ClubLikeDto clubLikeDto);
+	
+	public int editClub(ClubDto clubDto);
 }

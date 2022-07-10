@@ -51,4 +51,19 @@ public class AttachmentDaoImpl implements AttachmentDao {
 		ByteArrayResource resource = new ByteArrayResource(data);
 		return resource;
 	}
+	
+	@Override
+	public int delete(int attachNo) {
+		return sqlSession.delete("attachment.delete",attachNo);
+	}
+	
+	@Override
+	public int edit(MultipartFile attachment, int attachNo) throws IllegalStateException, IOException {
+		int success = this.save(attachment);
+		if(success != 0) {
+			this.delete(attachNo);
+		}
+		return success;
+	}
+	
 }

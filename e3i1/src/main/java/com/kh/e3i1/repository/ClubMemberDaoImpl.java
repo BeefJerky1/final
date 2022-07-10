@@ -1,11 +1,16 @@
 package com.kh.e3i1.repository;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.kh.e3i1.entity.ClubMemberDto;
+import com.kh.e3i1.vo.ClubMemberListVO;
 
 @Repository
 public class ClubMemberDaoImpl implements ClubMemberDao {
@@ -35,7 +40,7 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 	// 소모임회원 가입신청
 	@Override
 	public int insert(ClubMemberDto clubMemberDto) {
-		ClubMemberDto isExist = sqlSession.selectOne("clubMember.one",clubMemberDto);
+		ClubMemberDto isExist = this.one(clubMemberDto.getClubNo(), clubMemberDto.getMemberNo());
 		System.out.println(isExist);
 		if(isExist != null) {
 			return 0;
@@ -46,6 +51,32 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 		sqlSession.insert("clubMember.insert", clubMemberDto);
 		return clubMemberNo;
 	}
+	
+	// 소모임회원 단일 조회 - clubNo, memberNo 필요
+	@Override
+	public ClubMemberDto one(int clubNo, int memberNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("clubNo", clubNo);
+		param.put("memberNo", memberNo);
+		return sqlSession.selectOne("clubMember.one",param);
+	}
+	
+	// 소모임회원 조회
+	@Override
+	public List<ClubMemberListVO> select(int clubNo) {
+		return sqlSession.selectList("clubMember.clubMemberList",clubNo);
+	}
 
+	// 소모임 가입 승인
+	@Override
+	public int approveClub(int clubMemberNo) {
+		return sqlSession.update("clubMember.approve",clubMemberNo);
+	}
+	
+	// 소모임 가입 거절
+	@Override
+	public int refuseClub(ClubMemberDto clubMemberDto) {
+		return sqlSession.update("clubMember.refuse", clubMemberDto);
+	}
 	
 }

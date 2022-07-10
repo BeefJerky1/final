@@ -340,9 +340,9 @@ data() {
 		clubList:[],
 		mbtiList:[],
 		
-		clubMemberAnswe1:"",
-		clubMemberAnswe2:"",
-		clubMemberAnswe3:"",
+		clubMemberAnswer1:"",
+		clubMemberAnswer2:"",
+		clubMemberAnswer3:"",
 		memberNo:"${login}",
 		
 		isLike:false,

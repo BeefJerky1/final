@@ -12,6 +12,9 @@
 		<setting name="cacheEnabled" value="true" />
 		<!-- 자동 매핑시 언더스코어 형태의 데이터를 카멜케이스 변수로 복사해주는 설정 -->
 		<setting name="mapUnderscoreToCamelCase" value="true"></setting>
+		
+		<!-- Null값 허용 -->
+		<!-- <setting name="jdbcTypeForNull" value="NULL"/> -->
 	</settings>
 	
 	<!-- - typeAliases 설정을 통해 특정 클래스 또는 패키지에 원하는 명칭을 부여 

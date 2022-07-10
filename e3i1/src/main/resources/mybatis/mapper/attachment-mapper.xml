@@ -38,4 +38,9 @@
 	<select id="one" resultType="AttachmentDto" parameterType="int">
 		select * from attachment where attach_no = #{attachNo}
 	</select>
+	
+	<delete id="delete" parameterType="int">
+		delete attachment where attach_no = #{attachNo}
+	</delete>
+	
 </mapper>

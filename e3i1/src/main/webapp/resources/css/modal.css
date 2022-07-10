@@ -33,6 +33,9 @@
 .hidden {
 	display: none;
 }
+.hidden1 {
+	display: none;
+}
 
 textarea {
     width: 100%;
