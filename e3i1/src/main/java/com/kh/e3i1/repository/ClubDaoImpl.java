@@ -81,4 +81,10 @@ public class ClubDaoImpl implements ClubDao {
 		}
 	}
 	
+	// 소모임 정보 변경 
+	public int editClub(ClubDto clubDto) {
+		// sql에서 소모임장 여부도 같이 판단
+		return sqlSession.update("club.edit",clubDto);
+	}
+	
 }

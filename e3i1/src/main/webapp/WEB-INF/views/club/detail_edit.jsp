@@ -170,36 +170,39 @@
 					</div>
 				</div>
 				<div class="card-body" v-if="clubList.clubDto != null">
+				
+					<input type="hidden" ref="clubLeader" value="${login}"/>
+					
 					<div class="mt-4">
 						<label>소모임 프로필</label>
-						<input type="file" class="form-control" onchange="previewFile()">
 					</div>
 					<div class="card-img-top">
 						<img class="preview" :src="uploadImageFile+clubList.clubProfileDto.attachNo" style="width:100%; height: 350px; border:0.5px solid black">	
+						<input type="file" class="form-control" accept="image/*" ref="clubProfile" onchange="previewFile()">
 					</div>
 					<div class="mt-4">
 						<label>소모임 이름</label>
-						<input class="form-control" type="text" :value="clubList.clubDto.clubName" >
+						<input class="form-control" type="text" v-model="clubName" v-on:input="clubName = $event.target.value">
 					</div>
 					<div class="mt-4">
-						<label>소모임 이름</label>
-						<textarea class="form-control" type="text">{{clubList.clubDto.clubSummary}}</textarea>
+						<label>소모임 설명</label>
+						<textarea class="form-control" type="text" v-model="clubSummary"></textarea>
 					</div>
 					<div class="mt-4" v-if="clubList.clubDto.clubJoinQuestion1 != null">
 						<label>가입 질문1</label>
-						<input class="form-control" type="text" :value="clubList.clubDto.clubJoinQuestion1">
+						<input class="form-control" type="text" v-model="clubJoinQuestion1">
 					</div>
 					<div class="mt-2" v-if="clubList.clubDto.clubJoinQuestion2 != null">
 						<label>가입 질문2</label>
-						<input class="form-control" type="text" :value="clubList.clubDto.clubJoinQuestion2">
+						<input class="form-control" type="text" v-model="clubJoinQuestion2">
 					</div>
 					<div class="mt-2" v-if="clubList.clubDto.clubJoinQuestion3 != null">
 						<label>가입 질문3</label>
-						<input class="form-control" type="text" :value="clubList.clubDto.clubJoinQuestion3">
+						<input class="form-control" type="text" v-model="clubJoinQuestion3">
 					</div>
 				</div>
 				<div class="card-footer">
-					<button class="btn-create">정보 수정하기</button>
+					<button class="btn-create" @click="editClub">정보 수정하기</button>
 				</div>
 			</div>
 		</div>
@@ -209,9 +212,8 @@
 
 		<!-- 오른쪽 사이드바 -->
 		<div class="col-md-3">
-			<button class="btn-create" v-on:click="removeHidden">소모임 가입하기</button>
 				
-			<div class="accordion mt-2">
+			<div class="accordion">
 				<div class="accordion-item"  v-if="clubList.clubDto != null">
                       <h2 class="accordion-header" id="headingOne">
                           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
@@ -251,77 +253,6 @@
 
 	</div>
 
-
-
-	<!-- 소모임 생성 모달 -->
-	<div class="modal" v-bind:class="isHidden" class="rounded"
-		v-if="clubList.clubDto != null">
-		<div class="modal-overlay" v-on:click="addHidden"></div>
-
-		<div class="modal-content mt-4"
-			style="width: 600px !important; position: absolute !important;">
-			<input type="hidden" ref="memberNo" value="${login}" />
-
-			<div class="container-fluid">
-				<div class="modal-header">
-					<div class="text-start col-md-12" v-if="clubList.clubDto != null">
-						<h2>소모임 가입하기</h2>
-					</div>
-				</div>
-
-				<div class="modal-body">
-
-					<div class="text-start">
-						<h4>가입 질문</h4>
-						<p style="font-size: 10px">
-							*소모임 성격과 맞지 않는 답변 시 가입이 거절 될 수 있습니다.<br> *답변은 성심성의껏 작성해주세요.
-						</p>
-					</div>
-					<div class="mt-2" v-if="clubList.clubDto.clubJoinQuestion1 != null">
-						<div class="text-start">
-							<h6>Q1.{{clubList.clubDto.clubJoinQuestion1}}</h6>
-						</div>
-						<div class="mt-2">
-							<input type="text" class="form-control" v-model="clubMemberAnswer1">
-						</div>
-					</div>
-
-					<div class="mt-4" v-if="clubList.clubDto.clubJoinQuestion2 != null">
-						<div class="row text-start">
-							<h6>Q2.{{clubList.clubDto.clubJoinQuestion2}}</h6>
-						</div>
-						<div class="mt-2">
-							<input type="text" class="form-control" v-model="clubMemberAnswer2">
-						</div>
-					</div>
-
-					<div class="mt-4" v-if="clubList.clubDto.clubJoinQuestion3 != null">
-						<div class="row text-start">
-							<h6>Q3.{{clubList.clubDto.clubJoinQuestion3}}</h6>
-						</div>
-						<div class="mt-2">
-							<input type="text" class="form-control" v-model="clubMemberAnswer3">
-						</div>
-					</div>
-
-					<div class="mt-2">
-						<p class="text-start" style="color: red; font-size: 10px;">*답변 시 회원님의 소중한 개인정보가 유출되지 않도록 주의해주시기 바랍니다.</p>
-					</div>
-
-					<div class="row mt-4">
-						<div class="col">
-							<button type="button" class="btn-cancel" @click="addHidden">돌아가기</button>
-						</div>
-						<div class="col">
-							<button type="submit" class="btn-create" @click="insertClubMember">가입하기</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
-
 </div>
 
 
@@ -356,13 +287,17 @@ data() {
 		clubList:[],
 		mbtiList:[],
 		
-		clubMemberAnswe1:"",
-		clubMemberAnswe2:"",
-		clubMemberAnswe3:"",
 		memberNo:"${login}",
 		
 		uploadImageFile:"${pageContext.request.contextPath}/attachment/download?attachNo=",
-		
+				
+		// 소모임 수정에 필요한 정보
+		clubLeader: "",
+		clubName: "",
+		clubSummary: "",
+		clubJoinQuestion1:"",
+		clubJoinQuestion2:"",
+		clubJoinQuestion3:"",
 		
 		isLike:false,
 		
@@ -403,39 +338,8 @@ methods: {
 		this.clubMemberAnswer3 = "";
 	},
 	
-	insertClubMember(){
-		const session = this.$refs.memberNo.value;
-		if(session == null || session == ""){
-			window.alert("로그인을 해주세요");
-			return;
-		}
-		else{
-			this.memberNo = session;
-		}
-		
-		axios({
-			url:"${pageContext.request.contextPath}/rest/club/member",
-			method:"post",
-			data: {
-				clubMemberAnswer1:this.clubMemberAnswer1,
-				clubMemberAnswer2:this.clubMemberAnswer2,
-				clubMemberAnswer3:this.clubMemberAnswer3,
-				clubNo:this.clubNo,
-				memberNo:this.memberNo,
-			},
-		}).then((resp) => {
-			if(resp.data == 0){
-				window.alert("이미 가입 신청 완료된 소모임입니다.");
-				this.addHidden();
-				return;
-			}
-			window.alert("소모임 가입신청 완료!");
-			this.addHidden();
-		});
-	},
-	
+	// 좋아요 여부
 	existLike(){
-		// 좋아요 여부
 		if(this.memberNo == null || this.memberNo == "") {
 			this.isLike = false;
 			return;
@@ -452,7 +356,7 @@ methods: {
 		});
 	},
 	
-	
+	// 소모임 좋아요
 	likeClub(){
 		const session = this.$refs.memberNo.value;
 		if(session == null || session == ""){
@@ -481,6 +385,74 @@ methods: {
 		});
 	},
 	
+	// 소모임 정보 수정
+	editClub(){
+		let formData = new FormData();
+		
+		const fileInput = this.$refs.clubProfile;
+		const fileData = fileInput.files[0];
+		
+		const session = this.$refs.clubLeader.value;
+		if(session == null || session == ""){
+			window.alert("로그인을 해주세요"); 
+			return;
+		}
+		else{
+			this.clubLeader = session;
+		}
+		
+		// without file
+		if(fileInput.files.length == 0) {
+			axios({
+				url:"${pageContext.request.contextPath}/rest/club/edit2",
+				method:"put",
+				data:{
+					clubNo: this.clubNo,
+					clubLeader: this.clubLeader,
+					clubName: this.clubName,
+					clubSummary: this.clubSummary,
+					clubJoinQuestion1: this.clubJoinQuestion1,
+					clubJoinQuestion2: this.clubJoinQuestion2,
+					clubJoinQuestion3: this.clubJoinQuestion3,
+				},
+			}).then((resp) => {
+				if(resp.data == 0){
+					window.alert("정보 변경에 실패했습니다.");
+					return;
+				}
+				window.alert("정보 변경 완료!");
+				window.location.href="${pageContext.request.contextPath}/club/edit?clubNo="+this.clubNo;
+			});
+		}
+		// with file
+		else {	
+			formData.append('clubProfile', fileData);
+			formData.append('clubNo', this.clubNo);
+			formData.append('clubLeader', this.clubLeader);
+			formData.append('clubName', this.clubName);
+			formData.append('clubSummary', this.clubSummary);
+			formData.append('clubJoinQuestion1', this.clubJoinQuestion1);
+			formData.append('clubJoinQuestion2', this.clubJoinQuestion2);
+			formData.append('clubJoinQuestion3', this.clubJoinQuestion3);
+			formData.append('attachNo', this.clubList.clubProfileDto.attachNo);
+			
+			axios({
+				url:"${pageContext.request.contextPath}/rest/club/edit",
+				method:"post",
+				headers:{
+					"Content-Type" : "multipart/form-data",
+				},
+				data: formData,
+			}).then((resp) => {
+				if(resp.data == 0){
+					window.alert("정보 변경에 실패했습니다.");
+					return;
+				}
+				window.alert("정보 변경 완료!");
+				window.location.href="${pageContext.request.contextPath}/club/edit?clubNo="+this.clubNo;
+			});
+		}
+	},
 	
 },
 
@@ -492,6 +464,12 @@ created() {
 		method: "get",
 	}).then((resp) => {
 		this.clubList = resp.data;
+		
+		this.clubName = this.clubList.clubDto.clubName;
+		this.clubSummary = this.clubList.clubDto.clubSummary;
+		this.clubJoinQuestion1 = this.clubList.clubDto.clubJoinQuestion1;
+		this.clubJoinQuestion2 = this.clubList.clubDto.clubJoinQuestion2;
+		this.clubJoinQuestion3 = this.clubList.clubDto.clubJoinQuestion3;
 	})
 	
 	

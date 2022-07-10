@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.e3i1.entity.ClubDto;
+import com.kh.e3i1.entity.ClubMemberDto;
 import com.kh.e3i1.repository.AttachmentDao;
 import com.kh.e3i1.repository.ClubDao;
 import com.kh.e3i1.repository.ClubMemberDao;
@@ -45,6 +46,21 @@ public class ClubServiceImpl implements ClubService {
 		}
 		
 		return clubNo;
+	}
+
+	@Transactional
+	@Override
+	public int editClub(ClubDto clubDto, MultipartFile clubProfile, int attachNo) throws IllegalStateException, IOException {
+		// 소모임 정보 변경
+		int success = clubDao.editClub(clubDto);
+		// 첨부파일, 소모임프로필 정보 삭제 및 저장
+		if(success != 0) {
+			if(!clubProfile.isEmpty() || attachNo != 0) {
+				int newAttachNo = attachmentDao.edit(clubProfile, attachNo);
+				clubProfileDao.insert(clubDto.getClubNo(), newAttachNo);
+			}
+		}
+		return success;
 	}
 
 }

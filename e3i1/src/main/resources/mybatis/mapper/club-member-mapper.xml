@@ -64,8 +64,93 @@
 		)	
 	</insert>
 	
-	<select id="one" parameterType="ClubMemberDto" resultType="ClubMemberDto">
+	<select id="one" parameterType="Map" resultType="ClubMemberDto">
 		select * from club_member where member_no = #{memberNo} and club_no = #{clubNo}
 	</select>
+	
+	<select id="list" parameterType="int" resultType="ClubMemberDto">
+		select * from club_member where club_no = #{clubNo} order by club_member_no asc
+	</select>
+	
+	<resultMap type="ClubMemberListVO" id="clubMemberListVO">
+		<association property="clubMemberDto">
+			<result column="club_member_no" property="clubMemberNo"/>			
+			<result column="club_no" property="clubNo"/>			
+			<result column="member_no" property="memberNo"/>			
+			<result column="club_member_date" property="clubMemberDate"/>			
+			<result column="club_member_grade" property="clubMemberGrade"/>			
+			<result column="club_member_answer1" property="clubMemberAnswer1"/>			
+			<result column="club_member_answer2" property="clubMemberAnswer2"/>			
+			<result column="club_member_answer3" property="clubMemberAnswer3"/>			
+			<result column="club_member_permission" property="clubMemberPermission"/>			
+			<result column="club_member_refuse_msg" property="clubMemberRefuseMsg"/>			
+		</association>
+
+		<association property="memberDto">
+			<result column="member_no" property="memberNo"/>
+			<result column="member_email" property="memberEmail"/>
+			<result column="member_nick" property="memberNick"/>
+			<result column="member_gender" property="memberGender"/>
+			<result column="member_phone" property="memberPhone"/>
+			<result column="member_birth" property="memberBirth"/>
+			<result column="member_name" property="memberName"/>
+			<result column="member_mbti" property="memberMbti"/>
+			<result column="member_animal" property="memberAnimal"/>
+			<result column="member_interest1" property="memberInterest1"/>
+			<result column="member_interest2" property="memberInterest2"/>
+			<result column="member_interest3" property="memberInterest3"/>
+			<result column="member_place1" property="memberPlace1"/>
+			<result column="member_place2" property="memberPlace2"/>
+			<result column="member_place3" property="memberPlace3"/>
+			<result column="member_admin" property="memberAdmin"/>
+			<result column="member_report_count" property="memberReportCount"/>
+			<result column="member_club_count" property="memberClubCount"/>
+			<result column="member_sns_id" property="memberSnsId"/>
+			<result column="member_logindate" property="memberLogindate"/>
+		</association>
+	</resultMap>
+	
+	<select id="clubMemberList" resultMap="clubMemberListVO">
+		SELECT 
+			cm.*,
+			m.MEMBER_GENDER,
+			m.MEMBER_MBTI,
+			m.MEMBER_ANIMAL,
+			m.MEMBER_INTEREST1,
+			m.MEMBER_INTEREST2,
+			m.MEMBER_INTEREST3,
+			m.MEMBER_PLACE1,
+			m.MEMBER_PLACE2,
+			m.MEMBER_PLACE3,
+			m.MEMBER_SNS_ID,
+			m.MEMBER_NICK,
+			m.MEMBER_BIRTH 
+		FROM 
+			club_member cm 
+		LEFT OUTER JOIN MEMBER m 
+		ON cm.MEMBER_NO = m.MEMBER_NO 
+		WHERE club_no = #{clubNo}
+	</select>
+	
+	<!-- 소모임 가입 승인 -->
+	<update id="approve" parameterType="int">
+		update 
+			club_member
+		set
+			club_member_permission = 1
+		where 
+			club_member_no = #{clubMemberNo}
+	</update>
+	
+	<!-- 소모임 가입 거절 -->
+	<update id="refuse" parameterType="ClubMemberDto">
+		update 
+			club_member
+		set
+			club_member_permission = 2, 
+			club_member_refuse_msg = #{clubMemberRefuseMsg}
+		where 
+			club_member_no = #{clubMemberNo}
+	</update>
 	
 </mapper>

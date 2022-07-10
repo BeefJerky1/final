@@ -1,6 +1,7 @@
 package com.kh.e3i1.entity;
 
-import java.sql.Date;
+
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +13,7 @@ public class ClubMemberDto {
 	private int clubMemberNo;
 	private int clubNo;
 	private int memberNo;
-	private Date clubMemberDate;
+	private String clubMemberDate;
 	private int clubMemberGrade;
 	private String clubMemberAnswer1;
 	private String clubMemberAnswer2;

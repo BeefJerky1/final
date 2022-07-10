@@ -14,4 +14,8 @@ public interface AttachmentDao {
 	AttachmentDto info(int attachmentNo);
 
 	ByteArrayResource load(String attachmentSavename) throws IOException;
+	
+	public int delete(int attachNo);
+	
+	public int edit(MultipartFile attachment, int attachNo) throws IllegalStateException, IOException;
 }

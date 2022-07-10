@@ -66,9 +66,8 @@
 	<div class="modal" v-bind:class="isHidden" class="rounded">
 		<div class="modal-overlay" v-on:click="addHidden"></div>
 
-		<div class="modal-content mt-4" style="width:600px!important; position:absolute!important;">
+		<div class="modal-content mt-4" style="width:800px!important; position:absolute!important;">
 		
-				<!-- 세션 넣을 곳 -->
 				<input type="hidden" ref="clubLeader" value="${login}"/>
 				
 				<div class="container-fluid">
@@ -83,7 +82,7 @@
 						</div>
 						<div class="mt-2 text-start">
 							<label>대표 이미지 설정</label> 
-							<input class="form-control" type="file" name="attach" accept="image/*" ref="clubProfile" name="clubProfile" onchange="previewFile()"/>
+							<input class="form-control" type="file" accept="image/*" ref="clubProfile" name="clubProfile" onchange="previewFile()"/>
 						</div>  
 						<div class="mt-2">
 							<img class="preview" style="width:100%; height:100px">
@@ -214,7 +213,7 @@ data() {
 		address2List: [],
 		
 		// 소모임 생성 데이터
-		clubLeader:"", // 세션으로 바꿔줘야 하는 부분
+		clubLeader:"", 
 		clubName:"",
 		clubSummary:"",
 		clubJoinQuestion1:"",
