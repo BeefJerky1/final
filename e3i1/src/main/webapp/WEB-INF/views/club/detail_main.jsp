@@ -34,18 +34,22 @@
 					<div class="card-title">
 						<div class="row">
 							<div class="col-md-2 align-self-center">
-								<i class="fa-solid fa-house-chimney fa-2x"
-									style="color: lightgray;"></i>
+							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="44"
+                            height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <polyline points="5 12 3 12 12 3 21 12 19 12" />
+                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+                        </svg>
 							</div>
-							<div class="col-md-8 align-self-center"
-								v-if="clubList.clubDto != null">
+							<div class="col-md-8 align-self-center" v-if="clubList.clubDto != null">
 								<h4 style="margin: 0px;">{{clubList.clubDto.clubName}}</h4>
 							</div>
 							<div class="col-md-2 align-self-center">
 								<div class="row" @click="likeClub">
 									<i class="fa-solid fa-heart" style="color: red;" v-if="isLike"></i>
-									<i class="fa-regular fa-heart" style="color: red;"
-										v-if="!isLike"></i>
+									<i class="fa-regular fa-heart" style="color: red;" v-if="!isLike"></i>
 								</div>
 								<div class="row mt-2">
 									<i class="fa-solid fa-bullhorn"></i>
@@ -58,8 +62,8 @@
 					<div class="card-title">
 						<div class="row">
 							<div class="col-md-2" width="10px" height="10px">
-								<img src="https://via.placeholder.com/250/69f/fff.png"
-									class="profile">
+								<img src="https://via.placeholder.com/250/69f/fff.png" class="profile" v-if="clubList.memberProfileDto == null" >
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachmentNo='+clubList.memberProfileDto.attachNo" class="profile" v-if="clubList.memberProfileDto != null">
 							</div>
 							<div class="col-md-8 offset-md-2 row align-self-center">
 								<div class="col-md-3">
@@ -67,7 +71,7 @@
 								</div>
 								<div class="col-md-9 align-self-center"
 									v-if="clubList.memberDto != null">
-									<h5 style="margin: 0px;">{{clubList.memberDto.memberNick}}</h5>
+									<h6 style="margin: 0px;">{{clubList.memberDto.memberNick}}</h6>
 								</div>
 							</div>
 						</div>
@@ -97,15 +101,19 @@
 				<div class="card-body">
 					<div class="card-title">
 
-						<div class="col">
-							<h4 style="font-weight: bold">우리 소모임 MBTI 순위</h4>
+						<div class="col row">
+							<div class="col-md-2">
+								<i class="fa-solid fa-ranking-star"></i>
+							</div>
+							<div class="col-md-10" style="padding:0px">
+								<h4 style="font-weight: bold">우리 소모임 MBTI 순위</h4>
+							</div>
 						</div>
 
 						<!-- v-for index를 []안에 사용할 방법을 찾으면 v-for로 반복할 예정 너무 복잡해지면 그냥 이대로 사용 -->
 						<div class="row mt-4" v-if="mbtiList[0] != null">
 							<div class="col-md-4">
-								<img src="https://via.placeholder.com/250/69f/fff.png"
-									class="profile">
+								<img src="https://via.placeholder.com/250/69f/fff.png" class="profile">
 							</div>
 							<div class="col-md-8 align-self-center">
 								<div>
@@ -156,9 +164,9 @@
 
 		<!-- 중앙 -->
 		<div class="col-md-6">
-			<div class="card" style="height: 800px;">
-				<img src="https://via.placeholder.com/250/69f/fff.png"
-					class="card-img-top" style="width: 100%; height: 350px;">
+			<div class="card">
+				<img src="https://via.placeholder.com/250/69f/fff.png" class="card-img-top" style="width: 100%; height: 350px;" v-if="clubList.clubProfileDto == null">
+				<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"  style="width: 100%; height: 350px;" class="card-img-top" v-if="clubList.clubProfileDto != null">
 				<div class="card-body">
 					<div class="card-title">
 						<h4 style="font-weight: bold">소모임 소개</h4>
@@ -173,18 +181,71 @@
 						<h4 style="font-weight: bold">우리 소모임 MBTI</h4>
 					</div>
 
-					<div class="card-text" v-if="clubList.clubMbtiPercent != null">
 
+					<!-- 배치 및 디자인은 머리가 복잡하거나 생각하기 싫을 때 할 예정 -->
+					<div v-if="mbtiList != null" v-for="(mbti, index) in mbtiList" :key="index">
+					<div class="card m-3">
+						<div class="card-img-top">
+							<img src="https://via.placeholder.com/250/69f/fff.png" style="width:100px; height:100px; border:1px solid black">
+						</div>
+						<div class="card-body">
+							<div>
+								<h4 style="margin: 0px 0px; font-weight: bold;">{{mbti.memberMbti}}</h4>
+							</div>
+							<div>
+								<p style="margin: 0px 0px;">{{mbti.mbtiPercent}}%</p>
+							</div>
+						</div>
 					</div>
-
+					</div>
+					
+					
 				</div>
 			</div>
 		</div>
 
+		
 		<!-- 오른쪽 사이드바 -->
+		<!-- 배치 및 디자인은 머리가 복잡하거나 생각하기 싫을 때 할 예정 -->
 		<div class="col-md-3">
-			<button class="btn-create" v-on:click="removeHidden">소모임
-				가입하기</button>
+			<button class="btn-create" v-on:click="removeHidden">소모임 가입하기</button>
+				
+			<div class="accordion mt-2">
+				<div class="accordion-item"  v-if="clubList.clubDto != null">
+                      <h2 class="accordion-header" id="headingOne">
+                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                          	소모임
+                         </button>
+                      </h2>
+					<div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                             <a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/detail?clubNo='+clubList.clubDto.clubNo">
+								소모임 홈
+							</a>
+							<a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/board/'+clubList.clubDto.clubNo">
+								소모임 게시판
+							</a>
+							<a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/chat?clubNo='+clubList.clubDto.clubNo">
+								소모임 채팅방
+							</a>
+                         </div>
+                     </div>
+                 </div>
+				
+				<div class="accordion-item" v-if="leaderJudge">
+                      <h2 class="accordion-header" id="headingTwo">
+                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          	소모임 관리
+                         </button>
+                      </h2>
+					<div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                             <a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/edit?clubNo='+clubList.clubDto.clubNo">소모임 정보변경</a>
+                             <a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/member_management?clubNo='+clubList.clubDto.clubNo">소모임 회원관리</a>
+                         </div>
+                     </div>
+                 </div>
+			</div>
 		</div>
 
 	</div>
@@ -201,10 +262,9 @@
 			<input type="hidden" ref="memberNo" value="${login}" />
 
 			<div class="container-fluid">
-				<div class="ow">
-					<div class="modal-header text-start col-md-12"
-						v-if="clubList.clubDto != null">
-						<h2>{{clubList.clubDto.clubName}} 가입하기</h2>
+				<div class="modal-header">
+					<div class="text-start col-md-12" v-if="clubList.clubDto != null">
+						<h2>소모임 가입하기</h2>
 					</div>
 				</div>
 
@@ -247,8 +307,7 @@
 					</div>
 
 					<div class="mt-2">
-						<p class="text-start" style="color: red; font-size: 10px;">*답변
-							시 회원님의 소중한 개인정보가 유출되지 않도록 주의해주시기 바랍니다.</p>
+						<p class="text-start" style="color: red; font-size: 10px;">*답변 시 회원님의 소중한 개인정보가 유출되지 않도록 주의해주시기 바랍니다.</p>
 					</div>
 
 					<div class="row mt-4">
@@ -256,8 +315,7 @@
 							<button type="button" class="btn-cancel" @click="addHidden">돌아가기</button>
 						</div>
 						<div class="col">
-							<button type="submit" class="btn-create"
-								@click="insertClubMember">가입하기</button>
+							<button type="submit" class="btn-create" @click="insertClubMember">가입하기</button>
 						</div>
 					</div>
 				</div>
@@ -271,7 +329,6 @@
 
 
 <script>
-  
 const app = Vue.createApp({
 data() {
 	return {
@@ -283,10 +340,10 @@ data() {
 		clubList:[],
 		mbtiList:[],
 		
-		clubMemberAnswe1:"",
-		clubMemberAnswe2:"",
-		clubMemberAnswe3:"",
-		memberNo:"",
+		clubMemberAnswer1:"",
+		clubMemberAnswer2:"",
+		clubMemberAnswer3:"",
+		memberNo:"${login}",
 		
 		isLike:false,
 	};
@@ -297,6 +354,15 @@ computed: {
 		const href = window.location.href;
 		const url = new URL(href);
 		return url.searchParams.get("clubNo");
+	},
+	
+	leaderJudge(){
+		if(this.clubList.clubDto != null){
+			if(this.memberNo == this.clubList.clubDto.clubLeader){
+				return true;
+			}
+		}
+		return false;
 	},
 },
 methods: {
@@ -345,27 +411,21 @@ methods: {
 	},
 	
 	existLike(){
-		const session = this.$refs.memberNo.value;
-		if(session == null || session == ""){
+		// 좋아요 여부
+		if(this.memberNo == null || this.memberNo == "") {
 			this.isLike = false;
 			return;
 		}
-		else{
-			this.memberNo = session;
-			
-			// 좋아요 여부
-			axios({
-				url: "${pageContext.request.contextPath}/rest/club/is_like",
-				method: "post",
-				data: {
-					clubNo:this.clubNo,
-					memberNo:this.memberNo,
-				},
-			}).then((resp) => {
-				this.isLike = resp.data;
-			});
-		}
-			
+		axios({
+			url: "${pageContext.request.contextPath}/rest/club/is_like/"+this.clubNo+"/"+this.memberNo,
+			method: "get",
+			data: {
+				clubNo:this.clubNo,
+				memberNo:this.memberNo,
+			},
+		}).then((resp) => {
+			this.isLike = resp.data;
+		});
 	},
 	
 	
@@ -389,15 +449,18 @@ methods: {
 		}).then((resp) => {
 			if(resp.data == 0){
 				window.alert("좋아요 취소");
+				this.isLike = false;
 				return;
 			}
 			window.alert("좋아요 완료!");
+			this.isLike = true;
 		});
 	},
 	
 },
 
 created() {
+	this.existLike();
 	
 	axios({
 		url: "${pageContext.request.contextPath}/rest/club/"+this.clubNo,
@@ -415,6 +478,8 @@ created() {
 		this.mbtiList = resp.data;
 	})
 },
+
+mounted(){},
 
 
 });

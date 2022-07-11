@@ -14,11 +14,11 @@ public class ClubProfileDaoImpl implements ClubProfileDao {
 	private SqlSession sqlSession;
 	
 	@Override
-	public void insert(int clubNo, int attachNo) {
+	public int insert(int clubNo, int attachNo) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("clubNo", clubNo);
 		param.put("attachNo", attachNo);
-		sqlSession.insert("clubProfile.insert",param);
+		return sqlSession.insert("clubProfile.insert",param);
 	}
 
 	@Override
@@ -31,5 +31,4 @@ public class ClubProfileDaoImpl implements ClubProfileDao {
 			return attachNo;
 		}
 	}
-
 }

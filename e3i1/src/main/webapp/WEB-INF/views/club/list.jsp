@@ -54,7 +54,7 @@
 			<div class="card">
 				<img src="https://via.placeholder.com/250/69f/fff.png" class="card-img-top">
 				<div class="card-body clubList">
-					<h5 class="card-title">{{club.clubName}}</h5>
+					<h5 class="card-title" style="white-space:nowrap; overflow:hidden">{{club.clubName}}</h5>
 					<h6 style="color:gray" class="card-subtitle">\#{{club.clubMainCategory}} / {{club.clubSubCategory}}</h6>
 				</div>
 			</div>
@@ -66,9 +66,8 @@
 	<div class="modal" v-bind:class="isHidden" class="rounded">
 		<div class="modal-overlay" v-on:click="addHidden"></div>
 
-		<div class="modal-content mt-4" style="width:600px!important; position:absolute!important;">
+		<div class="modal-content mt-4" style="width:800px!important; position:absolute!important;">
 		
-				<!-- 세션 넣을 곳 -->
 				<input type="hidden" ref="clubLeader" value="${login}"/>
 				
 				<div class="container-fluid">
@@ -81,10 +80,13 @@
 							<h4>기본 정보</h4>
 							<p style="font-size: 10px">*나와 같은 관심사를 가진 멤버를 모집하고 열심히 운영하여 소모임을 성장시켜보세요.</p>
 						</div>
-						  <div class="mt-2 text-start">
+						<div class="mt-2 text-start">
 							<label>대표 이미지 설정</label> 
-							<input class="form-control" type="file" name="attach" accept="image/*" ref="clubProfile" name="clubProfile"/>
+							<input class="form-control" type="file" accept="image/*" ref="clubProfile" name="clubProfile" onchange="previewFile()"/>
 						</div>  
+						<div class="mt-2">
+							<img class="preview" style="width:100%; height:100px">
+						</div>
 						<div class="mt-2 text-start">
 							<label>소모임 이름</label> 
 							<input class="form-control rounded" type="text" name="clubName" v-model="clubName" v-on:input="clubName = $event.target.value" />
@@ -174,6 +176,25 @@
 
 <!-- 로다쉬 적용해야함 -->
 <script>
+//파일 미리보기
+function previewFile() {
+	  var preview = document.querySelector('.preview');
+	  var file = document.querySelector('input[type=file]').files[0];
+	  var reader = new FileReader();
+
+	  reader.addEventListener(
+	    'load',
+	    function () {
+	      preview.src = reader.result;
+	    },
+	    false
+	  );
+
+	  if (file) {
+	    reader.readAsDataURL(file);
+	  }
+}
+
 const app = Vue.createApp({
 data() {
 	return {
@@ -192,7 +213,7 @@ data() {
 		address2List: [],
 		
 		// 소모임 생성 데이터
-		clubLeader:"", // 세션으로 바꿔줘야 하는 부분
+		clubLeader:"", 
 		clubName:"",
 		clubSummary:"",
 		clubJoinQuestion1:"",

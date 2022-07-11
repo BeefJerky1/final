@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="clubreport">
+	<select id="sequence" resultType="int">
+		select club_report_seq.nextval from dual
+	</select>
+	<insert id="board" parameterType="clubReportDto">
+	 insert into club_report (
+   		club_report_no, club_no, club_report_target, club_report_type,
+   		club_report_writer, club_report_reporter, club_report_category,
+   		club_report_content)
+   		values(
+   #{clubReportNo}, #{clubNo}, #{clubReportTarget},#{clubReportType},
+   #{clubReportWriter},#{clubReportReporter},#{clubReportCategory},
+   #{clubReportContent})
+	</insert>
+	<insert id="reply" parameterType="clubReportDto">
+	 insert into club_report (
+   		club_report_no, club_no, club_report_target, club_report_type,
+   		club_report_writer, club_report_reporter, club_report_category,
+   		club_report_content)
+   		values(
+   #{clubReportNo}, #{clubNo}, #{clubReportTarget},#{clubReportType},
+   #{clubReportWriter},#{clubReportReporter},#{clubReportCategory},
+   #{clubReportContent})
+	</insert>
+	<select id="info" parameterType="int" resultType="clubReportDto">
+		select * from club_report where club_report_no = #{clubReportNo}
+	</select>
+	<select id="find" parameterType="clubReportDto" resultType="int">
+		select club_report_no from club_report where club_report_reporter =#{clubReportReporter} and club_report_target	= #{clubReportTarget}
+	</select>
+</mapper>

@@ -26,8 +26,7 @@ public class AttachmentDaoImpl implements AttachmentDao {
 	public int save(MultipartFile attachment) throws IllegalStateException, IOException {
 		int attachNo = sqlSession.selectOne("attachment.sequence");
 		
-		String fileName = String.valueOf(attachNo);
-		File target = new File(directory, fileName);
+		File target = new File(directory, attachment.getOriginalFilename());
 		attachment.transferTo(target); // 저장
 		
 		sqlSession.insert("attachment.insert",AttachmentDto.builder()
@@ -52,4 +51,19 @@ public class AttachmentDaoImpl implements AttachmentDao {
 		ByteArrayResource resource = new ByteArrayResource(data);
 		return resource;
 	}
+	
+	@Override
+	public int delete(int attachNo) {
+		return sqlSession.delete("attachment.delete",attachNo);
+	}
+	
+	@Override
+	public int edit(MultipartFile attachment, int attachNo) throws IllegalStateException, IOException {
+		int success = this.save(attachment);
+		if(success != 0) {
+			this.delete(attachNo);
+		}
+		return success;
+	}
+	
 }

@@ -1,6 +1,8 @@
 package com.kh.e3i1.repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,13 +46,17 @@ public class ClubDaoImpl implements ClubDao {
 	// 소모임 상세페이지
 	@Override
 	public ClubDetailVO detail(int clubNo) {
+		// 
 		return sqlSession.selectOne("club.clubDetail",clubNo);
 	}
 	
 	// 소모임 좋아요 여부 
 	@Override
-	public boolean isLike(ClubLikeDto clubLikeDto) {
-		ClubLikeDto existDto = sqlSession.selectOne("club.exist_like", clubLikeDto);
+	public boolean isLike(int clubNo, int memberNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("clubNo", clubNo);
+		param.put("memberNo", memberNo);
+		ClubLikeDto existDto = sqlSession.selectOne("club.exist_like", param);
 		if(existDto == null) {
 			return false;
 		}
@@ -61,7 +67,7 @@ public class ClubDaoImpl implements ClubDao {
 	@Override
 	public int likeClub(ClubLikeDto clubLikeDto) {
 		
-		if(!this.isLike(clubLikeDto)) {
+		if(!this.isLike(clubLikeDto.getClubNo(), clubLikeDto.getMemberNo())) {
 			// 시퀀스 생성
 			clubLikeDto.setClubLikeNo(sqlSession.selectOne("club.like_sequence"));
 			// 좋아요 테이블 생성 - 좋아요
@@ -73,6 +79,12 @@ public class ClubDaoImpl implements ClubDao {
 			sqlSession.delete("club.like_cancel",clubLikeDto);
 			return 0;
 		}
+	}
+	
+	// 소모임 정보 변경 
+	public int editClub(ClubDto clubDto) {
+		// sql에서 소모임장 여부도 같이 판단
+		return sqlSession.update("club.edit",clubDto);
 	}
 	
 }

@@ -34,4 +34,8 @@
 		select attach_no from club_profile where club_no = #{clubNo}
 	</select>
 	
+	<delete id="delete" parameterType="Integer">
+		delete club_profile where attach_no = #{attachNo}
+	</delete>
+	
 </mapper>

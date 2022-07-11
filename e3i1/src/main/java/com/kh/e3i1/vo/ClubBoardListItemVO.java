@@ -5,6 +5,7 @@ import java.util.List;
 import com.kh.e3i1.entity.ClubBoardAttachDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardLikeDto;
+import com.kh.e3i1.entity.ClubReportDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.entity.MemberProfileDto;
 
@@ -20,5 +21,6 @@ public class ClubBoardListItemVO {
 	private MemberDto memberDto;
 	private MemberProfileDto memberProfileDto;
 	private ClubBoardLikeDto clubBoardLikeDto;
+	private ClubReportDto clubReportDto;
 
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
+import com.kh.e3i1.vo.ClubMemberProfileVO;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -45,9 +46,8 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	//등록
 	@Override
 	public ClubBoardDto insert(ClubBoardDto clubBoardDto) {
-		int clubBoardNo = sqlSession.selectOne("clubboard.sequence");
-		clubBoardDto.setClubBoardNo(clubBoardNo);
 		sqlSession.insert("clubboard.insert", clubBoardDto);
+		int clubBoardNo = clubBoardDto.getClubBoardNo();
 		
 		return sqlSession.selectOne("clubboard.info", clubBoardNo);
 	}
@@ -61,9 +61,21 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 
 	//상세조회
 	@Override
+	public ClubBoardListItemVO detail(int clubBoardNo, int memberNo) {
+		this.calculateReplyCount(clubBoardNo);
+		this.calculateLikeCount(clubBoardNo);
+		this.calculateReportCount(clubBoardNo);
+		Map<String, Integer> param = new HashMap<String, Integer>();
+		param.put("clubBoardNo", clubBoardNo);
+		param.put("memberNo", memberNo);
+		return sqlSession.selectOne("clubboard.oneRest", param);
+	}
+	//상세조회
+	@Override
 	public ClubBoardListItemVO detail(int clubBoardNo) {
 		this.calculateReplyCount(clubBoardNo);
 		this.calculateLikeCount(clubBoardNo);
+		this.calculateReportCount(clubBoardNo);
 		return sqlSession.selectOne("clubboard.one", clubBoardNo);
 	}
 
@@ -76,20 +88,31 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 		}
 		return sqlSession.selectOne("clubboard.info", clubBoardDto.getClubBoardNo());
 	}
-	//댓글 수 조회
+	//댓글 수 갱신
 	@Override
 	public void calculateReplyCount(int clubBoardNo) {
 		sqlSession.update("clubboard.calculateReplyCount",clubBoardNo);	
 	}
-	//좋아요 수 조회
+	//좋아요 수 갱신
 	@Override
 	public void calculateLikeCount(int clubBoardNo) {
 		sqlSession.update("clubboard.calculateLikeCount",clubBoardNo);	
 	}
+	//신고 수 갱신
+	@Override
+	public void calculateReportCount(int clubBoardNo) {
+		sqlSession.update("clubboard.calculateReportCount",clubBoardNo);	
+	}
+	
 	//리스트 조회
 	@Override
 	public List<ClubBoardListItemVO> listAll(int clubNo, int likeMemberNo){
-			this.calculateReplyCount(clubNo);
+			List<ClubBoardDto> list = sqlSession.selectList("clubboard.clubboardno", clubNo);
+			for(ClubBoardDto clubBoardDto:list) {
+				this.calculateReplyCount(clubBoardDto.getClubBoardNo());
+				this.calculateLikeCount(clubBoardDto.getClubBoardNo());
+				this.calculateReportCount(clubBoardDto.getClubBoardNo());
+			}
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("clubNo", clubNo);
 			param.put("likeMemberNo", likeMemberNo);
@@ -100,12 +123,18 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	public List<ClubBoardListItemVO> clubBoardListItem(int clubNo) {
 		return sqlSession.selectList("clubboard.subListQuery",clubNo);
 	}
-
+	//조회수 불러오기
 	@Override
 	public ClubBoardDto readcount(int clubBoardNo) {
 		sqlSession.update("clubboard.readcount", clubBoardNo);
 		return sqlSession.selectOne("clubboard.info", clubBoardNo);
 	}
+	//모달: 멤버 프로필 불러오기
+	@Override
+	public ClubMemberProfileVO memberProfile(int memberNo) {
+		return sqlSession.selectOne("clubboard.memberprofile", memberNo);
+	}
+	
 
 	
 

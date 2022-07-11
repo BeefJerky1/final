@@ -14,7 +14,9 @@ public interface ClubDao {
 
 	ClubDetailVO detail(int clubNo);
 
-	boolean isLike(ClubLikeDto clubLikeDto);
+	boolean isLike(int clubNo, int memberNo);
 	
 	int likeClub(ClubLikeDto clubLikeDto);
+	
+	public int editClub(ClubDto clubDto);
 }

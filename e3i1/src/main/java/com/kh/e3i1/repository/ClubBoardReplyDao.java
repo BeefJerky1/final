@@ -19,4 +19,8 @@ public interface ClubBoardReplyDao {
 
 	List<ClubBoardReplyListVO> listAll(int clubBoardNo, int likeMemberNo);
 
+	ClubBoardReplyDto reportInfo(int replyNo);
+
+	void calculateReportCount(int replyNob);
+
 }

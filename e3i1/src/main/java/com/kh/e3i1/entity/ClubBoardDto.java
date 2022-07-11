@@ -20,4 +20,5 @@ public class ClubBoardDto {
 	private int clubBoardCount;
 	private int clubBoardLike;
 	private int clubBoardReadcount;
+	private int clubBoardReportcount;
 }
