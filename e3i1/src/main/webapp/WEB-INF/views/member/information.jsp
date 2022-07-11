@@ -245,7 +245,6 @@
 		</div>
 	</div>
 </div>
-
 <script>
 const app = Vue.createApp({
 data() {
