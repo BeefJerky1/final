@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiBoardLikeDto;
+import com.kh.e3i1.entity.MbtiBoardVoteDto;
 import com.kh.e3i1.repository.MbtiBoardLikeDao;
 
 @RestController
@@ -46,6 +47,11 @@ public class MbtiBoardLikeRestController {
 			param.put("itLike", itLike);
 			
 			return param;
+	}
+	
+	@GetMapping("/{mbtiBoardNo}") 
+	public int count(@RequestBody MbtiBoardLikeDto mbtiBoardLikeDto) {
+		return mbtiBoardLikeDao.likeCount(mbtiBoardLikeDto);
 	}
 
 	

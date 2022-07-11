@@ -36,6 +36,7 @@
      </style>
 </head>
 <body>
+
      <!--  Vue, axios, bootstrap script, lodash -->
      <script src="https://unpkg.com/vue@next"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
@@ -45,6 +46,7 @@
     </script>
   <!-- nav bar -->
 <header>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a href="${root}" class="logo-item"><img src="${root }/image/LOGO.png" width="100px"></a>

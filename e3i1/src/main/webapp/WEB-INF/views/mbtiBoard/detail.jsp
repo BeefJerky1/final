@@ -156,6 +156,7 @@ textarea:focus {
 				<!-- 좋아요 버튼 -->
 				<span id="like" class="like-btn">
 					<i class="fa-solid fa-heart fa-3x" id="likeBtn" @click="likeUpdate" style="color:#f96666;"></i>
+					<span v-model="count">{{count}}</span>
 				</span>
 				<!-- ------ -->
 					
@@ -291,8 +292,9 @@ textarea:focus {
 				mbtiBoardReplyList:[],
 				
 				// 좋아요 기능에 필요한 데이터
-				memberNo:9,
+				memberNo:4,
 				itLike : "",
+				count : "",
 				
 				// 투표 공감 카운팅
 				voteCount : "",
@@ -302,8 +304,8 @@ textarea:focus {
 		},
 		computed:{
 			isVotePercent () {
-				return this.voteCount * 100.0 / this.voteTotalCount;
-
+				var num = this.voteCount * 100.0 / this.voteTotalCount;
+				return num.toFixed(2);
 			},
 		
 		},
@@ -315,15 +317,23 @@ textarea:focus {
 	        		method:"post",
 	        		data:{
 	        			mbtiBoardNo:this.mbtiBoardNo,
+	        			memberNo:this.memberNo,
 	        			voteChoice : 1, 
 	        		},
 	        	})
 	        	.then(resp=>{
-	        		
+	        		console.log(resp);
+					if(resp.data.voteChoice == null) {
 	        		//완성 시 코드
 	        		window.alert("공감해요!");
+					}
+					else {
+						window.alert("투표가 취소되었어요.");
+					}
+	        		
 	        		this.loadVote();
 	        		this.loadVoteTotal();
+	        		
 	        	});
 	        },
 	        // 투표 *반대
@@ -333,15 +343,22 @@ textarea:focus {
 	        		method:"post",
 	        		data:{
 	        			mbtiBoardNo:this.mbtiBoardNo,
+	        			memberNo:this.memberNo,
 	        			voteChoice : 0, 
 	        		},
 	        	})
 	        	.then(resp=>{
-	        		
-	        		//완성 시 코드
-	        		window.alert("공감하지 않아요. ㅜㅜ");
+					if(resp.data.voteChoice == null) {
+		        		//완성 시 코드
+		        		window.alert("공감하지 않아요.");
+						}
+						else {
+							window.alert("투표가 취소되었어요.");
+						}
+
 	        		this.loadVote();
 	        		this.loadVoteTotal();
+	        		
 	        	});
 	        },
 	        

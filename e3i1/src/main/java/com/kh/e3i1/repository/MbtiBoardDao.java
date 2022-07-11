@@ -34,4 +34,8 @@ public interface MbtiBoardDao {
 
 	int voteCountTotal(int mbtiBoardNo);
 
+	Integer itVoteinfo(MbtiBoardVoteDto mbtiBoardVoteDto);
+
+	void voteDelete(MbtiBoardVoteDto mbtiBoardVoteDto);
+
 }
