@@ -14,6 +14,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardLikeDto;
 import com.kh.e3i1.entity.ClubBoardReplyDto;
+import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
 import com.kh.e3i1.vo.ClubBoardReplyListVO;
 
@@ -48,7 +49,7 @@ public class Test {
 		Integer cluBboardNo = sqlSession.selectOne("clubboardlike.findlikelist", param);
 		log.debug("clubBoardNo ={}",cluBboardNo);
 	}
-	@org.junit.Test
+//	@org.junit.Test
 	public void test3() {
 		ClubBoardLikeDto clubBoardLikeDto = new ClubBoardLikeDto();
 		int likeMemberNo = 3;
@@ -57,5 +58,18 @@ public class Test {
 		clubBoardLikeDto.setClubBoardNo(clubBoardNo);
 		int checkLike = sqlSession.selectOne("clubboardlike.checkLike", clubBoardLikeDto);
 		log.debug("checklike = {}" , checkLike);
+	}
+	@org.junit.Test
+	public void test4() {
+		String type="member_nick";
+		int keyword=5;
+				
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("type", type);
+		param.put("keyword", keyword);
+		List<MemberDto> list = sqlSession.selectList("admin.findMember", param);
+		for(MemberDto dto:list) {
+			log.debug("memberDto={}", dto);
+		}
 	}
 }

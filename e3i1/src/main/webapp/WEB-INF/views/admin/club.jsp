@@ -134,24 +134,41 @@ li a:hover {
   	<div class="col-lg-9 col-md-9 col-sm-9">
 				<div class="row">
 					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4">
-						<h1>소모임 목록 (전체 회원 수)</h1>
+						<h1>소모임 목록 (총: {{count}})</h1>
 					</div>
-					<div class="col-lg-4 col-md-4 col-sm-4  p-4">
-						<select class="form-select" v-model="orderType"
-							v-on:change="changeList($event)"
-							style="border-radius: 1em !important">
-							<option value="clubNoAsc">번호(오름차순)</option>
-							<option value="clubNoDesc">번호(내림차순)</option>
-							<option value="clubNameAsc">이름(오름차순)</option>
-							<option value="clubNameDesc">이름(내림차순)</option>
-							<option value="clubMainCategoryAsc">대분류(오름차순)</option>
-							<option value="clubMainCategoryDesc">대분류(내림차순)</option>
-							<option value="clubSubCategoryAsc">소분류(오름차순)</option>
-							<option value="clubSubCategoryDesc">소분류(내림차순)</option>
-							<option value="clubMemberLimitAsc">인원제한(오름차순)</option>
-							<option value="clubMemberLimitDesc">인원제한(내림차순)</option>
-						</select>
-					</div>
+					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4 text-start">
+						<div class="row">
+						<h5>검색</h5>
+							<div class="col-lg-5 col-md-5 col-sm-5">
+							       <select class=""v-model="type">
+           							 	<option value="">종류</option>
+							            <option value="club_no">소모임 번호</option>
+							            <option value="club_name">이름</option>
+							            <option value="club_leader">리더</option>
+							            <option value="club_main_category">대분류</option>
+							            <option value="club_sub_category">소분류</option>
+							        </select>
+							        <input type="text" v-model="keyword" class="" v-on:input="keyword=$event.target.value" placeholder="검색어 입력">	             
+							  </div>
+							<h5>정렬</h5>
+						<div class="col-lg-5 col-md-5 col-sm-5">
+							<select class="" v-model="column">
+								<option value="club_no">소모임 번호</option>
+								<option value="club_name">이름</option>
+								<option value="club_leader">리더</option>
+								<option value="club_main_category">대분류</option>							
+								<option value="club_sub_category">소분류</option>
+							</select>
+							<select class="" v-model="order" v-on:change="clubList()">
+								<option value="asc">오름차순</option>
+								<option value="desc">내림차순</option>				
+							</select>
+							<button type="button" class="btn btn-primary " v-on:click="search()">조회</button>
+							<button type="button" class="btn btn-success " v-on:click="reset()">초기화</button>
+						</div>
+							
+							</div>
+						</div>	
 					<div class="col-lg-12 col-md-12 col-sm-12">
 						<table class="table text-center">
 							<thead class="table-dark">
@@ -189,6 +206,7 @@ li a:hover {
 					</div>
 					<button type="button" v-on:click="append()" :disabled="this.dataFull == true" class="form-control btn-outline-primary " style="border-radius:1em !important">
         더보기 ({{showClub}}/{{totalClub}})
+        </button>
 				</div>
 			</div>
   	
@@ -204,7 +222,6 @@ li a:hover {
         const app = Vue.createApp({
             data(){
                 return {
-    				orderType:"clubNoAsc",//정렬 방식
     				deleteResult:"",
     				
     				//더보기
@@ -215,7 +232,14 @@ li a:hover {
                     ClubLeft:0,//남은 멤버 수
                     dataFull:false,
     				
-    				
+                    //검색
+                    keyword:"", 
+                    type:"",
+                    column:"club_no",
+                    order:"asc",
+                    
+                    //총 회원수
+                    count:"",
     				
                 };
             },
@@ -226,7 +250,7 @@ li a:hover {
                	//소모임 전체 조회
 				clubList(){
 					axios({
-						url:"${pageContext.request.contextPath}/rest/admin/club/"+this.orderType,
+						url:"${pageContext.request.contextPath}/rest/admin/club/"+this.column+"/"+this.order,
 						method:"get",
 					}).then(resp=>{
 						let data = []
@@ -246,30 +270,6 @@ li a:hover {
 						}
 					})
 				},
-				//소모임 정렬
-                changeList(event) {
-                	axios({
-                		url:"${pageContext.request.contextPath}/rest/admin/club/"+event.target.value,
-		        		method:"get",
-                	}).then(resp=>{
-            			let data = []
-						for(var i = 0; i<this.showClub;i++){
-// 							console.log(i)
-							data.push(resp.data[i])
-						}
-						this.allClub = resp.data,
-						this.club = data,
-						this.totalClub = this.allClub.length
-						if(this.totalClub < this.showClub){
-							this.showClub = this.totalClub;
-							this.club = this.allClub;
-	                		this.dataFull=true;
-						}else if(this.totalClub==this.showClub){
-	                		this.dataFull=true;
-						}
-                	})
-                    console.log(event.target.value)
-                },
                 //더보기
                 append(){
                 	this.clubLeft = this.totalClub- this.showClub;
@@ -319,9 +319,56 @@ li a:hover {
                 	  return;
                 	}
                 },
+              //검색
+                search(){
+           			axios({
+						url:"${pageContext.request.contextPath}/rest/admin/club/",
+						method:"post",
+						data:{
+							order:this.order,
+							column:this.column,
+							keyword:this.keyword,
+							type:this.type,
+						}
+					}).then(resp=>{
+						let data = []
+						for(var i = 0; i<this.showClub;i++){
+							data.push(resp.data[i])
+						}
+						this.allClub = resp.data,
+						this.club = data,
+						this.totalClub = this.allClub.length
+
+						if(this.totalClub < this.showClub){
+							this.club = this.allClub;	//게시글에 게시글 전체를 넣는다.
+	                		this.dataFull=true;	//버튼은 disable
+						}else if(this.totalClub>this.showClub){ 
+	                		this.dataFull=false; //버튼은 disable
+						}else if(this.totalClub==this.showClub){//전체 게시글 수와 보이는 게시글 수가 동일하면
+							this.dataFull=true;	//버튼은 disable
+						}
+					})
+				},
+                reset(){
+                	this.order="asc";
+                	this.column="club_no";
+                	this.type="";
+                	this.keyword="";
+                	this.clubList();
+                },
+                clubCount(){
+                	axios({
+                		url:"${pageContext.request.contextPath}/rest/admin/clubcount",
+                		method:"get",
+                	}).then(resp=>{
+                		this.count =resp.data
+                	})
+                },
+                
             },
             created(){
             	this.clubList();
+            	this.clubCount();
             },
         });
         app.mount("#app");

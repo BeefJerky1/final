@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubReplyLikeDto;
-import com.kh.e3i1.entity.ClubReportDto;
+import com.kh.e3i1.entity.ClubReplyReportDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.entity.MemberProfileDto;
 
@@ -20,5 +20,5 @@ public class ClubBoardReplyListVO {
 	private MemberDto memberDto;
 	private MemberProfileDto memberProfileDto;
 	private ClubReplyLikeDto clubReplyLikeDto;
-	private ClubReportDto clubReportDto;
+	private ClubReplyReportDto clubReplyReportDto;
 }

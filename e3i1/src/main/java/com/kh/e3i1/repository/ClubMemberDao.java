@@ -12,4 +12,7 @@ public interface ClubMemberDao {
 	List<ClubMemberListVO> select(int clubNo);
 	public int approveClub(int clubMemberNo);
 	int refuseClub(ClubMemberDto clubMemberDto);
+	
+	//소모임 멤버확인용
+	int check(int clubNo, int memberNo);
 }

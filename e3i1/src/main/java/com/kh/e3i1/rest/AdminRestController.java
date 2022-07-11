@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubDto;
+import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.repository.AdminDao;
+import com.kh.e3i1.vo.AdminSearchVO;
 
 @CrossOrigin(
 		origins = {"http://127.0.0.1:5500"}
@@ -28,9 +30,19 @@ public class AdminRestController {
 	@Autowired
 	private AdminDao adminDao;
 	//멤버 리스트
-	@GetMapping("/member/{orderType}")
-	public List<MemberDto> memberList(@PathVariable(required=false) String orderType){
-		return adminDao.memberList(orderType);
+	@GetMapping("/member/{column}/{order}")
+	public List<MemberDto> memberList(@PathVariable String column, @PathVariable String order){
+		return adminDao.memberList(column, order);
+	}
+	//검색
+	@PostMapping("/member/")
+	public List<MemberDto> memberSearch(@RequestBody AdminSearchVO searchVO){
+		return adminDao.memberSearch(searchVO);
+	}
+	//총 회원수
+	@GetMapping("/membercount")
+	public int memberCount(){
+		return adminDao.memberCount();
 	}
 	//멤버 삭제
 	@DeleteMapping("/member/{memberNo}")
@@ -42,10 +54,25 @@ public class AdminRestController {
 	public MemberDto oneMember(@PathVariable int memberNo){
 		return adminDao.oneMember(memberNo);
 	}
+	//멤버 검색
+	@PostMapping("/membersearch")
+	public List<MemberDto> findMember(@RequestBody AdminSearchVO searchVO) {
+		return adminDao.findMember(searchVO);
+	}
+	//총 소모임수
+	@GetMapping("/clubcount")
+	public int clubCount(){
+		return adminDao.clubCount();
+	}
 	//소모임 리스트
-	@GetMapping("/club/{orderType}")
-	public List<ClubDto> clubList(@PathVariable String orderType){
-			return adminDao.clubList(orderType);
+	@GetMapping("/club/{column}/{order}")
+	public List<ClubDto> clubList(@PathVariable String column, @PathVariable String order){
+		return adminDao.clubList(column, order);
+	}
+	//소모임 검색
+	@PostMapping("/club/")
+	public List<ClubDto> clubSearch(@RequestBody AdminSearchVO searchVO){
+		return adminDao.clubSearch(searchVO);
 	}
 	//소모임 삭제
 	@DeleteMapping("/club/{clubNo}")
@@ -71,5 +98,10 @@ public class AdminRestController {
 	@DeleteMapping("/mbtisurvey/{surveyNo}")
 	public int deleteSurvey(@PathVariable int surveyNo){
 		return adminDao.deleteSurvey(surveyNo);
+	}
+	//mbti 게시 목록
+	@GetMapping("/mbtiboard")
+	public List<MbtiBoardDto> mbtiBoardList(){
+		return adminDao.mbtiBoardList();
 	}
 }

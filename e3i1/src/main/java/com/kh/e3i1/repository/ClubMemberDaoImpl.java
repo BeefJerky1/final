@@ -78,5 +78,18 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 	public int refuseClub(ClubMemberDto clubMemberDto) {
 		return sqlSession.update("clubMember.refuse", clubMemberDto);
 	}
+
+	@Override
+	public int check(int clubNo, int memberNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("clubNo", clubNo);
+		param.put("memberNo", memberNo);
+		ClubMemberDto clubMemberDto = sqlSession.selectOne("clubMember.one",param);
+		if(clubMemberDto==null) {
+			return 0;
+		}else {		
+			return 1;
+		}
+	}
 	
 }
