@@ -19,7 +19,7 @@
 
 <div id="app" class="container-fluid">
 	<div class="row mt-4 p-2">
-		<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
+		<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark rounded">
 			<div class="col-md-6 offset-md-3">
 				<div class="row text-center mt-3 mb-5">
 					<span class="point">탈퇴완료</span>
