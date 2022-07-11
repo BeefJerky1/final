@@ -32,30 +32,24 @@
 .info {
 	height: 59px;
 }
-
 li button {
 	color: black !important;
 }
-
 li button:hover {
 	color: white !important;
 	background-color: #3E4684 !important
 }
-
 .container-fluid {
 	padding-left: 0px !important;
 }
-
 li a {
 	background-color: white !important;
 	color: black !important;
 }
-
 li a:hover {
 	background-color: #3E4684 !important;
 	color: white !important;
 }
-
 .logo-item {
 	width: 100% !important;
 }
@@ -299,13 +293,11 @@ li a:hover {
             			url:"${pageContext.request.contextPath}/rest/admin/clubmember/"+this.clubNo,
             			method:"get",
             		}).then(resp=>{
-
 						let data = []
 						for(var i = 0; i<this.showMember;i++){
 // 							console.log(i)
 							data.push(resp.data[i])
 						}
-
 						this.memberAll = resp.data,
 						this.member = data,
 						this.totalMember = this.memberAll.length
@@ -354,14 +346,11 @@ li a:hover {
             			url:"${pageContext.request.contextPath}/rest/admin/clubboard/"+this.clubNo,
             			method:"get",
             		}).then(resp=>{
-
 						let data = []
 						for(var i = 0; i<this.showBoard;i++){
 // 							console.log(i)
 							data.push(resp.data[i])
 						}
-
-
 						this.boardAll = resp.data,
 						this.board = data,
 						this.totalBoard = this.boardAll.length
