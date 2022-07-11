@@ -12,6 +12,7 @@ import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.ClubLikeDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.vo.ClubDetailVO;
+import com.kh.e3i1.vo.ClubListVO;
 
 @Repository
 public class ClubDaoImpl implements ClubDao {
@@ -20,7 +21,7 @@ public class ClubDaoImpl implements ClubDao {
 	private SqlSession sqlSession;
 
 	@Override
-	public List<ClubDto> list() {
+	public List<ClubListVO> list() {
 		return sqlSession.selectList("club.list");
 	}
 

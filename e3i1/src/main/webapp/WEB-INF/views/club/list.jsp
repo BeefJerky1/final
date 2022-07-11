@@ -100,8 +100,8 @@
 				<img src="https://via.placeholder.com/250/69f/fff.png" class="card-img-top">
 				<%-- <img :src="'${pageContext.request.contextPath}/attachment/download?attachmentNo='+clubList.memberProfileDto.attachNo" v-if="clubList.memberProfileDto != null"> --%>
 				<div class="card-body clubList">
-					<h5 class="card-title" style="white-space:nowrap; overflow:hidden">{{club.clubName}}</h5>
-					<h6 style="color:gray" class="card-subtitle">\#{{club.clubMainCategory}} / {{club.clubSubCategory}}</h6>
+				<!-- 	<h5 class="card-title" style="white-space:nowrap; overflow:hidden">{{club.clubName}}</h5>
+					<h6 style="color:gray" class="card-subtitle">\#{{club.clubMainCategory}} / {{club.clubSubCategory}}</h6> -->
 				</div>
 			</div>
 		</div>

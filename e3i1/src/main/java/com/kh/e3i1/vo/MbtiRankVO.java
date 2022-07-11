@@ -14,4 +14,6 @@ public class MbtiRankVO {
 	private int attachNo;
 	private int mbtiCount;
 	private int mbtiPercent;
+	private String greatestMbti;
+	private String leastMbti;
 }

@@ -24,6 +24,7 @@ import com.kh.e3i1.repository.ClubDao;
 import com.kh.e3i1.repository.ClubMemberDao;
 import com.kh.e3i1.service.ClubService;
 import com.kh.e3i1.vo.ClubDetailVO;
+import com.kh.e3i1.vo.ClubListVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
 
 @CrossOrigin(
@@ -46,7 +47,7 @@ public class ClubRestController {
 	private ClubMemberDao clubMemberDao;
 	
 	@GetMapping("/")
-	public List<ClubDto> list(){
+	public List<ClubListVO> list(){
 		return clubDao.list();
 	}
 	

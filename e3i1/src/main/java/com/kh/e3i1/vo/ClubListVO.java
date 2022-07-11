@@ -13,6 +13,5 @@ public class ClubListVO {
 	private ClubDto clubDto;
 	private ClubMbtiPercentVO clubMbtiPercentVO;
 	private ClubProfileDto clubProfileDto;
-	private String greatestMbti;
-	private String leastMbti;
+	private MbtiRankVO mbtiRankVO;
 }

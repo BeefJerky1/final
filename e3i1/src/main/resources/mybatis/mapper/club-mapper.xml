@@ -21,10 +21,6 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="club">
 	
-	<select id="list" resultType="ClubDto">
-		select * from club order by club_no asc
-	</select>
-	
  	<select id="sequence" resultType="int">
 		select club_seq.nextval from dual
 	</select>
@@ -223,8 +219,8 @@
 				club_no = #{clubNo} and club_leader = #{clubLeader}
 	</update>
 	
-	<resultMap type="ClubListVO" id="clubListVO">
-		<association property="clubMbtiPercent">
+ 		<resultMap type="ClubListVO" id="clubListVO">
+		<association property="clubMbtiPercentVO">
 			<result column="club_no" property="clubNo"/>
 			<result column="total" property="total"/>
 			<result column="enfj" property="enfj"/>
@@ -274,12 +270,21 @@
 			<result column="club_join_question3" property="clubJoinQuestion3"/>
 			<result column="club_member_limit" property="clubMemberLimit"/>
 		</association>
-		
 		<association property="clubProfileDto">
 			<result column="attach_no" property="attachNo"/>
 			<result column="club_no" property="clubNo"/>
 		</association>
 		
-		</resultMap>
+		<association property="mbtiRankVO">
+			<result column="greatest_mbti" property="greatestMbti"/>
+			<result column="least_mbti" property="leastMbti"/>
+		</association>
+		
+	</resultMap>
+	
+	<select id="list" resultMap="clubListVO">
+		select * from club_list_vo order by club_no desc
+	</select> 
+	
 	
 </mapper>
