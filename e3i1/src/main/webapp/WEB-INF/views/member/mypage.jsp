@@ -66,6 +66,19 @@
 	font-weight: 600;
 }
 
+.tableInterest {
+	background-color: #E9E9E9;
+	color: #3E4684;
+	border-radius: 15px;
+	font-size: 0.8em;
+	font-weight: 600;
+	width: 30px;
+}
+
+.tabletitle{
+	font-size: 0.9em;
+}
+
 .nav-link {
 	color: #3E4684;
 	font-weight: 900;
@@ -73,6 +86,11 @@
 
 i {
 	color: #3E4684;
+}
+
+.boldfont2{
+	font-size: 0.8em;
+	font-weight: 900;
 }
 
 .titlefont {
@@ -87,6 +105,9 @@ i {
 	width: 40px;
 	height: 40px;
 	margin-bottom: 5px;
+}
+.smalllabel{
+	font-size: 0.8em;
 }
 </style>
 </head>
@@ -147,54 +168,66 @@ i {
 								<div class="titlefont boldfont mx-1">
 									운영중 소모임&nbsp;<i class="fa-solid fa-circle-info"></i>
 								</div>
-								<table class="table">
+								<table class="table text-center">
 									<thead>
 										<tr>
-											<th>Firstname</th>
-											<th>Lastname</th>
-											<th>Email</th>
+											<th style="width: 55%;"></th>
+											<th style="width: 45%;"></th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
-											<td>John</td>
-											<td>Doe</td>
-											<td>john@example.com</td>
+											<td class="tabletitle">서울 맛집탐방모임</td>
+											<td>
+											<span class="tableInterest mx-2">#친구해요</span>
+											<span class="tableInterest mx-2">#맛집탐방</span>
+											<span class="tableInterest mx-2">#서울시 강남구</span>
+											<span class="tableInterest mx-2">30 / 30</span>
+											</td>
+											
 										</tr>
 									</tbody>
-
 								</table>
 								<div class="titlefont boldfont mt-5 mx-1">
 									가입한 소모임&nbsp;<i class="fa-solid fa-circle-info"></i>
 								</div>
-								<table class="table">
+								<table class="table text-center">
 									<thead>
 										<tr>
-											<th>Firstname</th>
-											<th>Lastname</th>
-											<th>Email</th>
+											<th style="width: 55%;"></th>
+											<th style="width: 45%;"></th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
-											<td>John</td>
-											<td>Doe</td>
-											<td>john@example.com</td>
+											<td class="tabletitle">서울 맛집탐방모임</td>
+											<td>
+											<span class="tableInterest mx-2">#친구해요</span>
+											<span class="tableInterest mx-2">#맛집탐방</span>
+											<span class="tableInterest mx-2">#서울시 강남구</span>
+											<span class="tableInterest mx-2">30 / 30</span>
+											</td>
 										</tr>
 										<tr>
-											<td>Mary</td>
-											<td>Moe</td>
-											<td>mary@example.com</td>
+											<td class="tabletitle">인천 사람 모여라</td>
+											<td>
+											<span class="tableInterest mx-2">#친구해요</span>
+											<span class="tableInterest mx-2">#술친구</span>
+											<span class="tableInterest mx-2">#인천시 계양구</span>
+											<span class="tableInterest mx-2">18 / 30</span>
+											</td>
 										</tr>
 										<tr>
-											<td>July</td>
-											<td>Dooley</td>
-											<td>july@example.com</td>
+											<td class="tabletitle">감성 카페 찾으러가요</td>
+											<td>
+											<span class="tableInterest mx-2">#인스타그래머</span>
+											<span class="tableInterest mx-2">#사진</span>
+											<span class="tableInterest mx-2">#서울시 영등포구</span>
+											<span class="tableInterest mx-2">27 / 30</span>
+											</td>
 										</tr>
 									</tbody>
-
 								</table>
-								</p>
 							</div>
 							<div class="tab-pane fade" id="buy">
 								<p>
@@ -271,97 +304,87 @@ i {
 									<button type="submit" class="btn btn-outline-success">구매</button>
 								</div>
 								<div class="row titlefont boldfont mt-5 mx-1">구매 및 사용내역</div>
-								<table class="table">
+								<table class="table text-center">
 									<thead>
 										<tr>
-											<th>Firstname</th>
-											<th>Lastname</th>
-											<th>Email</th>
+											<th style="width: 20%;"></th>
+											<th style="width: 30%;"></th>
+											<th style="width: 50%;"></th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
-											<td>John</td>
-											<td>Doe</td>
-											<td>john@example.com</td>
+											<td class="tableInterest">구매</td>
+											<td class="tableInterest">2022-07-11</td>
+											<td class="tabletitle">구매내역상세정보입니다 123</td>											
 										</tr>
+										
 										<tr>
-											<td>Mary</td>
-											<td>Moe</td>
-											<td>mary@example.com</td>
+											<td class="tableInterest">사용</td>
+											<td class="tableInterest">2022-07-10</td>
+											<td class="tabletitle">사용내역상세정보입니다 12345</td>											
 										</tr>
+										
 										<tr>
-											<td>July</td>
-											<td>Dooley</td>
-											<td>july@example.com</td>
+											<td class="tableInterest">구매</td>
+											<td class="tableInterest">2022-07-09</td>
+											<td class="tabletitle">구매내역상세정보입니다 12345</td>											
 										</tr>
 									</tbody>
-
 								</table>
-							</div>
-							
-							
+								</div>
 							<div class="tab-pane fade" id="info">
 								<p>
 								<form action="information" method="post"
 									enctype="multipart/form-data">
-									<div class="col-md-6 offset-md-3">
+									<div class="col-md-6 offset-md-3 mt-5">
 										<div class="row text-center mt-3 mb-5">
-										
-										<div class="input-group input-group-sm mb-3">
-										  <span class="input-group-text px-3" id="inputGroup-sizing-sm">Name</span>
-										  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-										  name="memberName" autocomplete="off" value="${memberDto.memberName}" required>
-										</div>
-										
-										<div class="input-group input-group-sm mb-3">
-										  <span class="input-group-text" id="inputGroup-sizing-sm">Nickname</span>
-										  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-										  name="memberNick" autocomplete="off" value="${memberDto.memberNick}" required>
-										</div>
-										
-										<div class="input-group input-group-sm mb-3">
-										  <span class="input-group-text px-3" id="inputGroup-sizing-sm">Phone</span>
-										  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-										  name="memberPhone" autocomplete="off" value="${memberDto.memberPhone}" placeholder="'-' 제외 입력" required>
-										</div>
-										
-										<div class="input-group input-group-sm mb-3">
-										  <span class="input-group-text" id="inputGroup-sizing-sm">Instagram Id</span>
-										  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
-										  name="memberSnsId" autocomplete="off" value="${memberDto.memberSnsId}" required>
-										</div>
-										
-<!-- 										<div class="input-group"> -->
-<!-- 										  <div class="input-group-text"> -->
-<%-- 										    <input class="form-check-input" type="radio" value="${memberDto.memberGender}" aria-label="Radio button for following text input"> --%>
-<!-- 										  </div> -->
-<!-- 										  <input type="text" class="form-control" aria-label="Text input with radio button"> -->
-<!-- 										</div> -->
-										
-<!-- 											<div class="form-floating mb-3"> -->
-<!-- 												<select name="memberGender" class="form-select" -->
-<!-- 													id="floatingSelect"> -->
-<%-- 													<option value="${memberDto.memberGender}">${memberDto.memberGender}</option> --%>
-<!-- 													<option>남자</option> -->
-<!-- 													<option>여자</option> -->
-<!-- 												</select> <label for="floatingSelect">Gender</label> -->
-<!-- 											</div> -->
 
-<!-- 											<div class="form-floating mb-3"> -->
-<!-- 												<input type="text" class="form-control" name="memberPhone" -->
-<%-- 													autocomplete="off" value="${memberDto.memberPhone}" --%>
-<!-- 													required> <label for="floatingInput">Phone</label> -->
-<!-- 											</div> -->
+											<div class="input-group input-group-sm mb-3">
+												<span class="input-group-text px-3"
+													id="inputGroup-sizing-sm">Name</span> <input type="text"
+													class="form-control" aria-label="Sizing example input"
+													aria-describedby="inputGroup-sizing-sm" name="memberName"
+													autocomplete="off" value="${memberDto.memberName}" required>
+											</div>
 
-<!-- 											<div class="form-floating mb-3"> -->
-<!-- 												<input type="text" class="form-control" name="memberSnsId" -->
-<%-- 													autocomplete="off" value="${memberDto.memberSnsId}" --%>
-<!-- 													required> <label for="floatingInput">SNS Id</label> -->
-<!-- 											</div> -->
+											<div class="input-group input-group-sm mb-3">
+												<span class="input-group-text" id="inputGroup-sizing-sm">Nickname</span>
+												<input type="text" class="form-control"
+													aria-label="Sizing example input"
+													aria-describedby="inputGroup-sizing-sm" name="memberNick"
+													autocomplete="off" value="${memberDto.memberNick}" required>
+											</div>
 
+											<div class="input-group input-group-sm mb-3">
+												<span class="input-group-text px-3"
+													id="inputGroup-sizing-sm">Phone</span> <input type="text"
+													class="form-control" aria-label="Sizing example input"
+													aria-describedby="inputGroup-sizing-sm" name="memberPhone"
+													autocomplete="off" value="${memberDto.memberPhone}"
+													placeholder="'-' 제외 입력" required>
+											</div>
+
+											<div class="input-group input-group-sm mb-3">
+												<span class="input-group-text" id="inputGroup-sizing-sm">Instagram
+													Id</span> <input type="text" class="form-control"
+													aria-label="Sizing example input"
+													aria-describedby="inputGroup-sizing-sm" name="memberSnsId"
+													autocomplete="off" value="${memberDto.memberSnsId}"
+													required>
+											</div>
+
+											<div class="input-group-sm">
+												<label class="input-group-text" for="inputGroupSelect01">Gender</label>
+												<select class="form-select" id="inputGroupSelect01"
+													name="memberGender">
+													<option value="${memberDto.memberGender}">${memberDto.memberGender}</option>
+													<option value="남자">남자</option>
+													<option value="여자">여자</option>
+												</select>
+											</div>
 											<div class="mt-2 text-start">
-												<label class="label1">관심 지역1</label>
+												<label class="label1 smalllabel">관심 지역1</label>
 												<div class="row">
 													<div class="col">
 														<select class="form-control rounded"
@@ -382,7 +405,7 @@ i {
 												</div>
 											</div>
 											<div class="mt-2 text-start">
-												<label class="label1">관심 지역2</label>
+												<label class="label1 smalllabel">관심 지역2</label>
 												<div class="row">
 													<div class="col">
 														<select class="form-control rounded"
@@ -403,7 +426,7 @@ i {
 												</div>
 											</div>
 											<div class="mt-2 text-start">
-												<label class="label1">관심 지역3</label>
+												<label class="label1 smalllabel">관심 지역3</label>
 												<div class="row">
 													<div class="col">
 														<select class="form-control rounded"
@@ -430,10 +453,15 @@ i {
 							</div>
 							<div class="tab-pane fade" id="pw">
 								<p>
-								<form action="password" method="post">
+									<div class="boldfont2 text-center mt-4 mb-4">
+												<i class="fa-solid fa-circle-exclamation"></i>
+												비밀번호는 영문대소문자/숫자/특수문자 포함 8~16자로 설정하세요.
+											
+									</div>
+									<form action="password" method="post">
 									<div class="col-md-6 offset-md-3">
-										<div class="row text-center mt-3 mb-5">
-											<div class="form-floating mb-3 mt-4">
+										<div class="row text-center mb-5">
+											<div class="form-floating mb-3">
 												<input type="password" class="form-control" name="currentPw"
 													autocomplete="off" required> <label
 													for="floatingInput">기존 비밀번호</label>
@@ -454,11 +482,15 @@ i {
 								<form action="exit" method="post">
 									<div class="col-md-6 offset-md-3">
 										<div class="row text-center mt-3 mb-5">
-											<p class="my-4">비밀번호를 입력하세요</p>
+											<p class="mt-3 boldfont2">
+												<i class="fa-solid fa-circle-exclamation"></i></i>
+												소모임을 운영하고 있는 회원은<br> 소모임을 폐쇄한 뒤 탈퇴 회원탈퇴가 가능합니다!<br><br><br>
+												탈퇴를 원하시면 비밀번호를 입력하세요.
+											</p>
 											<div class="form-floating mb-3">
 												<input type="password" class="form-control" name="memberPw"
-													autocomplete="off" placeholder="password" required>
-												<label for="floatingInput">Password</label>
+													autocomplete="off" required>
+												<label for="floatingInput">비밀번호 입력</label>
 											</div>
 
 											<button type="submit" class="btn btn-outline-success my-2">탈퇴하기</button>
@@ -492,185 +524,185 @@ i {
 <!--                         <div class="form-floating mb-3"> -->
 <!--                             <input  -->
 <!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberName" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberName}" --%>
-<!--                             required readonly>  -->
-<!--                             <label for="floatingInput">Name</label> -->
-<!--                         </div> -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberName" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberName}" --%>
+									<!--                             required readonly>  -->
+									<!--                             <label for="floatingInput">Name</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberEmail" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberEmail}" --%>
-<!--                             required -->
-<!--                             readonly>  -->
-<!--                             <label for="floatingInput">Email</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="text"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberEmail" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberEmail}" --%>
+									<!--                             required -->
+									<!--                             readonly>  -->
+									<!--                             <label for="floatingInput">Email</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="password"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberPw" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberPw}" --%>
-<!--                             required -->
-<!--                             readonly>  -->
-<!--                             <label for="floatingInput">Password</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="password"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberPw" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberPw}" --%>
+									<!--                             required -->
+									<!--                             readonly>  -->
+									<!--                             <label for="floatingInput">Password</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberNick" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberNick}" --%>
-<!--                             required readonly>  -->
-<!--                             <label for="floatingInput">Nickname</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="text"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberNick" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberNick}" --%>
+									<!--                             required readonly>  -->
+									<!--                             <label for="floatingInput">Nickname</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberGender" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberGender}" --%>
-<!--                             required readonly>  -->
-<!--                             <label for="floatingInput">Gender</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="text"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberGender" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberGender}" --%>
+									<!--                             required readonly>  -->
+									<!--                             <label for="floatingInput">Gender</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberPhone" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberPhone}" --%>
-<!--                             required readonly>  -->
-<!--                             <label for="floatingInput">Phone</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="text"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberPhone" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberPhone}" --%>
+									<!--                             required readonly>  -->
+									<!--                             <label for="floatingInput">Phone</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberSnsId" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberSnsId}" --%>
-<!--                             required readonly>  -->
-<!--                             <label for="floatingInput">SNS Id</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="text"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberSnsId" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberSnsId}" --%>
+									<!--                             required readonly>  -->
+									<!--                             <label for="floatingInput">SNS Id</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberMbti" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberMbti}" --%>
-<!--                             required -->
-<!--                             readonly readonly>  -->
-<!--                             <label for="floatingInput">MBTI</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="text"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberMbti" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberMbti}" --%>
+									<!--                             required -->
+									<!--                             readonly readonly>  -->
+									<!--                             <label for="floatingInput">MBTI</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberAnimal" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberAnimal}" --%>
-<!--                             required -->
-<!--                             readonly>  -->
-<!--                             <label for="floatingInput">MBTI Animal</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="text"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberAnimal" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberAnimal}" --%>
+									<!--                             required -->
+									<!--                             readonly>  -->
+									<!--                             <label for="floatingInput">MBTI Animal</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberInterest1" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberInterest1}" --%>
-<!--                             required -->
-<!--                             readonly>  -->
-<!--                             <label for="floatingInput">Interest1</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="text"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberInterest1" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberInterest1}" --%>
+									<!--                             required -->
+									<!--                             readonly>  -->
+									<!--                             <label for="floatingInput">Interest1</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberInterest2" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberInterest2}" --%>
-<!--                             required -->
-<!--                             readonly>  -->
-<!--                             <label for="floatingInput">Interest2</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="text"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberInterest2" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberInterest2}" --%>
+									<!--                             required -->
+									<!--                             readonly>  -->
+									<!--                             <label for="floatingInput">Interest2</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberInterest3" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberInterest3}" --%>
-<!--                             required -->
-<!--                             readonly>  -->
-<!--                             <label for="floatingInput">Interest3</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="text"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberInterest3" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberInterest3}" --%>
+									<!--                             required -->
+									<!--                             readonly>  -->
+									<!--                             <label for="floatingInput">Interest3</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberPlace1" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberPlace1}" --%>
-<!--                             required -->
-<!--                             readonly>  -->
-<!--                             <label for="floatingInput">Place1</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="text"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberPlace1" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberPlace1}" --%>
+									<!--                             required -->
+									<!--                             readonly>  -->
+									<!--                             <label for="floatingInput">Place1</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberPlace2" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberPlace2}" --%>
-<!--                             required -->
-<!--                             readonly>  -->
-<!--                             <label for="floatingInput">Place2</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="text"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberPlace2" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberPlace2}" --%>
+									<!--                             required -->
+									<!--                             readonly>  -->
+									<!--                             <label for="floatingInput">Place2</label> -->
+									<!--                         </div> -->
 
-<!--                         <div class="form-floating mb-3"> -->
-<!--                             <input  -->
-<!--                             type="text"  -->
-<!--                             class="form-control"  -->
-<!--                             name="memberPlace3" -->
-<!--                             autocomplete="off" -->
-<%--                             value="${memberDto.memberPlace3}" --%>
-<!--                             required -->
-<!--                             readonly>  -->
-<!--                             <label for="floatingInput">Place3</label> -->
-<!--                         </div> -->
+									<!--                         <div class="form-floating mb-3"> -->
+									<!--                             <input  -->
+									<!--                             type="text"  -->
+									<!--                             class="form-control"  -->
+									<!--                             name="memberPlace3" -->
+									<!--                             autocomplete="off" -->
+									<%--                             value="${memberDto.memberPlace3}" --%>
+									<!--                             required -->
+									<!--                             readonly>  -->
+									<!--                             <label for="floatingInput">Place3</label> -->
+									<!--                         </div> -->
 
-<!--                     </div> -->
-<!--                 </div> -->
-<!--             </div> -->
-<!--         </div> -->
-<!--     </div> -->
+									<!--                     </div> -->
+									<!--                 </div> -->
+									<!--             </div> -->
+									<!--         </div> -->
+									<!--     </div> -->
 
-<script>
+									<script>
 const app = Vue.createApp({
 data() {
 	return {
@@ -764,4 +796,4 @@ created() {
 app.mount("#app");
 </script>
 
-<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
+									<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
