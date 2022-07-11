@@ -27,7 +27,7 @@
 
 		<!-- 왼쪽 사이드바 -->
 		<div class="col-md-3">
-			<div class="card">
+			<div class="card shadow">
 
 				<div class="card-body">
 
@@ -164,7 +164,7 @@
 
 		<!-- 중앙 -->
 		<div class="col-md-6">
-			<div class="card">
+			<div class="card shadow">
 				<img src="https://via.placeholder.com/250/69f/fff.png" class="card-img-top" style="width: 100%; height: 350px;" v-if="clubList.clubProfileDto == null">
 				<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"  style="width: 100%; height: 350px;" class="card-img-top" v-if="clubList.clubProfileDto != null">
 				<div class="card-body">
@@ -184,7 +184,7 @@
 
 					<!-- 배치 및 디자인은 머리가 복잡하거나 생각하기 싫을 때 할 예정 -->
 					<div v-if="mbtiList != null" v-for="(mbti, index) in mbtiList" :key="index">
-					<div class="card m-3">
+					<div class="card mt-3">
 						<div class="card-img-top">
 							<img src="https://via.placeholder.com/250/69f/fff.png" style="width:100px; height:100px; border:1px solid black">
 						</div>
@@ -208,10 +208,10 @@
 		<!-- 오른쪽 사이드바 -->
 		<!-- 배치 및 디자인은 머리가 복잡하거나 생각하기 싫을 때 할 예정 -->
 		<div class="col-md-3">
-			<button class="btn-create" v-on:click="removeHidden">소모임 가입하기</button>
+			<button class="btn-create shadow" v-on:click="removeHidden">소모임 가입하기</button>
 				
 			<div class="accordion mt-2">
-				<div class="accordion-item"  v-if="clubList.clubDto != null">
+				<div class="accordion-item shadow"  v-if="clubList.clubDto != null">
                       <h2 class="accordion-header" id="headingOne">
                           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                           	소모임

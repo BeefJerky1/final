@@ -18,6 +18,20 @@
 	border: 1px solid #3E4684;
 	color: #3E4684;
 }
+
+.club-card {
+	transform: scale(1);
+   	transition: transform 0.1s ease-in-out;
+   	border-radius:0px 0px 30px 30px!important;
+}
+.club-card:hover{
+	transform: scale(1.05);
+}
+
+/* input[type=checkbox]{
+	display:none!important;
+} */
+
 </style>
 
 <div id="app" class="container-fluid">
@@ -32,16 +46,47 @@
 	<div class="row mt-4">
 		<div class="col-md-8 offset-md-2">
 			<div class="card">
-				<div class="card-text">
-					<p>검색부분</p>
+				<div class="card-text row mt-4 mb-4">
+					<div class="col-md-2 text-center align-self-center">관심 카테고리</div>
+					
+					<!-- 메인 카테고리 -->
+					<div class="col-md-4 ps-4" style="border-left:1px solid lightgray;">
+						<div class="mt-2 mb-2" v-for="(main, index) in mainCategory" :key="index">
+							<label :for="'main'+index">\#{{main.categoryContent}}</label>
+							<input :id="'main'+index" name="mainCategory" type="radio" >
+						</div>
+					</div>
+					
+					<div class="col-md-6">서브</div>
 				</div>
+				
+				<div style="border-top:1px solid lightgray">
+					<div class="row mt-4 mb-4">
+						<div class="col-md-2 text-center align-self-center">관심 지역</div>
+						
+						<div class="col-md-4 align-self-center" style="border-left:1px solid lightgray">
+							<select class="form-control rounded" @change="cityList" v-model="place1No">
+								<option value="">시/도를 선택해주세요</option>
+								<option v-for="(p1, index) in place1" v-bind:key="index" :value="p1.address1No" >{{p1.province}}</option>
+							</select>
+						</div>
+						
+						<div class="col-md-4 align-self-center">
+							<select class="form-control rounded" v-model="city2">
+								<option value="">시/군/구를 선택해주세요</option>
+								<option v-for="(p2, index) in place2" v-bind:key="index" :value="p2.city">{{p2.city}}</option>
+							</select>
+						</div>
+						
+						<div class="col-md-2 align-self-center">
+							<button class="btn-create p-0" style="width:100px; height:38px">검색</button>
+						</div>
+					</div>
+				</div>
+				
 			</div>
 		</div>
 	</div>
-	
-	<!-- 비회원이면 로그인 페이지로 보내기 -->
-	
-	
 	
 	<div class="row mt-4">
 		<div class="col-md-2 offset-md-10" style="padding-right:50px">
@@ -50,9 +95,10 @@
 	</div>
 	
 	<div class="row mt-4">
-		<div style="padding:50px"class="col-md-4" v-for="(club,index) in clubList" v-bind:key="index" @click="toDetailPage(index)">
-			<div class="card">
+		<div style="padding:30px"class="col-md-3" v-for="(club,index) in clubList" v-bind:key="index">
+			<div class="card club-card shadow" @click="toDetailPage(index)">
 				<img src="https://via.placeholder.com/250/69f/fff.png" class="card-img-top">
+				<%-- <img :src="'${pageContext.request.contextPath}/attachment/download?attachmentNo='+clubList.memberProfileDto.attachNo" v-if="clubList.memberProfileDto != null"> --%>
 				<div class="card-body clubList">
 					<h5 class="card-title" style="white-space:nowrap; overflow:hidden">{{club.clubName}}</h5>
 					<h6 style="color:gray" class="card-subtitle">\#{{club.clubMainCategory}} / {{club.clubSubCategory}}</h6>
@@ -181,10 +227,8 @@ function previewFile() {
 	  var preview = document.querySelector('.preview');
 	  var file = document.querySelector('input[type=file]').files[0];
 	  var reader = new FileReader();
-
-	  reader.addEventListener(
-	    'load',
-	    function () {
+	  
+	  reader.addEventListener('load', function () {
 	      preview.src = reader.result;
 	    },
 	    false
@@ -231,12 +275,27 @@ data() {
 		city: "",	
 		
 		count: 1,
-	
+		
+		// 검색창 
+		mainCategory:[],
+		subCategory: [],
+		place1: [],
+		place2: [],
+		
+		main: "",
+		sub: "",
+		place1No: "",
+		city2: "",
 	};
 },
 computed: {},
 methods: {
 	removeHidden(){
+		if(this.$refs.clubLeader.value == ""){
+			window.location.href="${pageContext.request.contextPath}/member/login/";
+			return;
+		}
+		
 		this.isHidden["hidden"] = false;
 	},
 	
@@ -252,6 +311,8 @@ methods: {
 		this.clubJoinQuestion1 = "";
 		this.clubJoinQuestion2 = "";
 		this.clubJoinQuestion3 = "";
+		
+		this.$refs.clubProfile.value = null;
 	},
 	
 	// 가입시 필요한 카테고리, 지역 목록
@@ -374,6 +435,36 @@ methods: {
 		
 		this.count = this.count - 1;
 	},
+	
+	// 검색 카테고리
+	searchList(){
+		// 메인 카테고리
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/category1",
+			method:"get",
+		}).then((resp) => {
+			this.mainCategory.push(...resp.data);
+		})	
+		// 시/도 
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/address1",
+			method:"get",
+		}).then((resp) => {
+			this.place1.push(...resp.data);
+		})	
+	},
+	// 검색 시/군/구
+	cityList(){
+		// 시/군/구
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/address2/"+this.place1No,
+			method:"get",
+		}).then((resp) => {
+			this.city2 = "";
+			this.place2 = [];
+			this.place2.push(...resp.data);
+		})		
+	},
 
 },
 watch:{
@@ -381,6 +472,7 @@ watch:{
 	// 스크롤 이벤트는 디바운스로 처리해야한다.
 },
 created() {
+	this.searchList();
 	axios({
 			url: "${pageContext.request.contextPath}/rest/club/",
 			method: "get",

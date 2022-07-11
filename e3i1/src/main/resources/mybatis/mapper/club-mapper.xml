@@ -223,4 +223,63 @@
 				club_no = #{clubNo} and club_leader = #{clubLeader}
 	</update>
 	
+	<resultMap type="ClubListVO" id="clubListVO">
+		<association property="clubMbtiPercent">
+			<result column="club_no" property="clubNo"/>
+			<result column="total" property="total"/>
+			<result column="enfj" property="enfj"/>
+			<result column="enfj_percent" property="enfjPercent"/>
+			<result column="esfp" property="esfp"/>
+			<result column="esfp_percent" property="esfpPercent"/>
+			<result column="isfp" property="isfp"/>
+			<result column="isfp_percent" property="isfpPercent"/>
+			<result column="estp" property="estp"/>
+			<result column="estp_percent" property="estpPercent"/>
+			<result column="istp" property="istp"/>
+			<result column="istp_percent" property="istpPercent"/>
+			<result column="estj" property="estj"/>
+			<result column="estj_percent" property="estjPercent"/>
+			<result column="esfj" property="esfj"/>
+			<result column="esfj_percent" property="esfjPercent"/>
+			<result column="isfj" property="isfj"/>
+			<result column="isfj_percent" property="isfjPercent"/>
+			<result column="enfp" property="enfp"/>
+			<result column="enfp_percent" property="enfpPercent"/>
+			<result column="istj" property="istj"/>
+			<result column="istj_percent" property="istjPercent"/>
+			<result column="infp" property="infp"/>
+			<result column="infp_percent" property="infpPercent"/>
+			<result column="entp" property="entp"/>
+			<result column="entp_percent" property="entpPercent"/>
+			<result column="infj" property="infj"/>
+			<result column="infj_percent" property="infjPercent"/>
+			<result column="intj" property="intj"/>
+			<result column="intj_percent" property="intjPercent"/>
+			<result column="intp" property="intp"/>
+			<result column="intp_percent" property="intpPercent"/>
+			<result column="entj" property="entj"/>
+			<result column="entj_percent" property="entjPercent"/>
+		</association>
+		
+		<association property="clubDto">
+			<result column="club_no" property="clubNo"/>
+			<result column="club_leader" property="clubLeader"/>
+			<result column="club_name" property="clubName"/>
+			<result column="club_summary" property="clubSummary"/>
+			<result column="club_main_category" property="clubMainCategory"/>
+			<result column="club_sub_category" property="clubSubCategory"/>
+			<result column="club_place" property="clubPlace"/>
+			<result column="club_join_question1" property="clubJoinQuestion1"/>
+			<result column="club_join_question2" property="clubJoinQuestion2"/>
+			<result column="club_join_question3" property="clubJoinQuestion3"/>
+			<result column="club_member_limit" property="clubMemberLimit"/>
+		</association>
+		
+		<association property="clubProfileDto">
+			<result column="attach_no" property="attachNo"/>
+			<result column="club_no" property="clubNo"/>
+		</association>
+		
+		</resultMap>
+	
 </mapper>
