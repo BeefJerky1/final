@@ -2,11 +2,14 @@ package com.kh.e3i1.repository;
 
 import java.util.List;
 
+import com.kh.e3i1.entity.ClubBoardDto;
+import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.vo.AdminSearchVO;
+import com.kh.e3i1.vo.ClubMemberListVO;
 
 public interface AdminDao {
 	//멤버 목록
@@ -45,6 +48,12 @@ public interface AdminDao {
 	int deleteSurvey(int surveyNo);
 	//mbti 게시판 목록
 	List<MbtiBoardDto> mbtiBoardList();
+	//소모임 멤버 목록
+	List<ClubMemberListVO> clubMemberList(int clubNo);
+	//소모임 게시글 목록
+	List<ClubBoardDto> clubBoardList(int clubNo);
+	//소모임 댓글 목록
+	List<ClubBoardReplyDto> clubReplyList(int clubNo);
 
 
 

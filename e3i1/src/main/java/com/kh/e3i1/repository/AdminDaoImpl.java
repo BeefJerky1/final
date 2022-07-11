@@ -8,12 +8,14 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.vo.AdminSearchVO;
+import com.kh.e3i1.vo.ClubMemberListVO;
 
 @Repository
 public class AdminDaoImpl implements AdminDao{
@@ -71,6 +73,12 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public int clubCount() {
 		return sqlSession.selectOne("admin.clubCount");
+	}
+	//소모임 멤버 목록
+	@Override
+	public List<ClubMemberListVO> clubMemberList(int clubNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("admin.clubMemberList",clubNo);
 	}
 	//소모임 목록
 	@Override
@@ -133,6 +141,14 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public List<MbtiBoardDto> mbtiBoardList() {
 		return sqlSession.selectList("admin.mbtiboardlist");
+	}
+	@Override
+	public List<ClubBoardDto> clubBoardList(int clubNo) {
+		return sqlSession.selectList("admin.clubboardlist", clubNo);
+	}
+	@Override
+	public List<ClubBoardReplyDto> clubReplyList(int clubNo) {
+		return sqlSession.selectList("admin.clubreplylist", clubNo);
 	}
 
 

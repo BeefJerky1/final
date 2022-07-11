@@ -13,13 +13,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.repository.AdminDao;
+import com.kh.e3i1.repository.ClubMemberDao;
 import com.kh.e3i1.vo.AdminSearchVO;
+import com.kh.e3i1.vo.ClubMemberListVO;
 
 @CrossOrigin(
 		origins = {"http://127.0.0.1:5500"}
@@ -29,6 +32,8 @@ import com.kh.e3i1.vo.AdminSearchVO;
 public class AdminRestController {
 	@Autowired
 	private AdminDao adminDao;
+	@Autowired
+	private ClubMemberDao clubMemberDao;
 	//멤버 리스트
 	@GetMapping("/member/{column}/{order}")
 	public List<MemberDto> memberList(@PathVariable String column, @PathVariable String order){
@@ -68,6 +73,21 @@ public class AdminRestController {
 	@GetMapping("/club/{column}/{order}")
 	public List<ClubDto> clubList(@PathVariable String column, @PathVariable String order){
 		return adminDao.clubList(column, order);
+	}
+	//소모임 멤버 리스트
+	@GetMapping("/clubmember/{clubNo}")
+	public List<ClubMemberListVO> clubMemberList(@PathVariable int clubNo){
+		return adminDao.clubMemberList(clubNo);
+	}
+	//소모임 게시글 리스트
+	@GetMapping("/clubboard/{clubNo}")
+	public List<ClubBoardDto> clubBoardList(@PathVariable int clubNo){
+		return adminDao.clubBoardList(clubNo);
+	}
+	//소모임 댓글 리스트
+	@GetMapping("/clubreply/{clubNo}")
+	public List<ClubBoardReplyDto> clubReplyList(@PathVariable int clubNo){
+		return adminDao.clubReplyList(clubNo);
 	}
 	//소모임 검색
 	@PostMapping("/club/")
