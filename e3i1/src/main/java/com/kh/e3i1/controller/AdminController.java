@@ -61,6 +61,12 @@ public class AdminController {
 	public String club() {
 		return "admin/club";
 	}
+	@GetMapping("/club_update")
+	public String clubUpdate(@RequestParam int clubNo, Model model) {
+		ClubDto clubDto = adminDao.oneClub(clubNo);
+		model.addAttribute("clubDto", clubDto);
+		return "admin/club_update";
+	}
 	@GetMapping("/club_detail")
 	public String clubDetail(@RequestParam int clubNo, Model model) {
 		ClubDto clubDto = adminDao.oneClub(clubNo);

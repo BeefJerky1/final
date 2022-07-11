@@ -134,7 +134,7 @@ li a:hover {
   	<div class="col-lg-9 col-md-9 col-sm-9">
 				<div class="row">
 					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4">
-						<h1>소모임 목록 (총: {{count}})</h1>
+						<h1>소모임 목록 (총: {{count}}개)</h1>
 					</div>
 					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4 text-start">
 						<div class="row">
@@ -187,7 +187,7 @@ li a:hover {
 							<tbody>
 								<tr v-for="(club1 , index) in club">
 									<td>{{club1.clubNo}}</td>
-									<td>{{club1.clubName}}</td>
+									<td v-on:click="detail(index)">{{club1.clubName}}</td>
 									<td>{{club1.clubLeader}}</td>
 									<td>{{club1.clubMainCategory}}</td>
 									<td>{{club1.clubSubCategory}}</td>
@@ -296,7 +296,7 @@ li a:hover {
                 	}
                 	
                 },
-				//소모임 상세 조회
+				//소모임 수정
 	            select: function(index) {
 	                	const club = this.allClub[index];
 	                	window.location.href='http://localhost:8080/e3i1/admin/club_detail?clubNo='+club.clubNo;
@@ -364,6 +364,10 @@ li a:hover {
                 		this.count =resp.data
                 	})
                 },
+                detail(index){
+                	const club = this.allClub[index];
+                	window.location.href='http://localhost:8080/e3i1/admin/club_detail?clubNo='+club.clubNo;
+                }
                 
             },
             created(){
