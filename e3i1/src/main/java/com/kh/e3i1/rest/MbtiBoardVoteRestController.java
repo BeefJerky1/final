@@ -1,5 +1,8 @@
 package com.kh.e3i1.rest;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,13 +22,23 @@ public class MbtiBoardVoteRestController {
 	private MbtiBoardDao mbtiBoardDao;
 	
 	@PostMapping("/")
-	public MbtiBoardVoteDto insert(
+	public Map<String, Object> insert(
 			@RequestBody MbtiBoardVoteDto mbtiBoardVoteDto) {
 		
-		int memberNo =5;
-		mbtiBoardVoteDto.setMemberNo(memberNo);
+		Map<String, Object> param = new HashMap<String, Object>();
 		
-		return mbtiBoardDao.vote(mbtiBoardVoteDto);
+		Integer voteChoice = mbtiBoardDao.itVoteinfo(mbtiBoardVoteDto);
+		
+		if(voteChoice == null) { // 투표한 적 없으면 insert
+			mbtiBoardDao.vote(mbtiBoardVoteDto);
+		}
+		else if(voteChoice == 0 || voteChoice == 1) { // 투표한 적 있으면 삭제
+			mbtiBoardDao.voteDelete(mbtiBoardVoteDto);
+		}
+		
+		param.put("voteChoice", voteChoice);
+		return param;
+		
 	}
 	
 	@GetMapping("/{mbtiBoardNo}")

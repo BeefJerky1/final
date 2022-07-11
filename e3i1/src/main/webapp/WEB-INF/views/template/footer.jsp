@@ -4,7 +4,11 @@
 </section>
 
  <!--footer-->
-
+<style>
+footer {
+z-index:1;
+	}
+</style>
     <footer>
         <div class="container">
             <div class="pb-3 pt-3 first-line">
