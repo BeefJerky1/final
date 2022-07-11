@@ -1,15 +1,18 @@
 package com.kh.e3i1.repository;
 
 import com.kh.e3i1.entity.ClubBoardReplyDto;
-import com.kh.e3i1.entity.ClubReportDto;
+import com.kh.e3i1.entity.ClubBoardReportDto;
+import com.kh.e3i1.entity.ClubReplyReportDto;
 
 public interface ClubReportDao {
 
-	int reportBoard(ClubReportDto clubReportDto);
+	int reportBoard(ClubBoardReportDto clubReportDto);
 
-	int findReport(int clubReportTarget, int clubReportReporter);
+	int findBoardReport(int clubReportTarget, int clubReportReporter);
+	
+	int findReplyReport(int clubReportTarget, int clubReportReporter);
 
-	int reportReply(ClubReportDto clubReportDto);
+	int reportReply(ClubReplyReportDto clubReportDto);
 
 	void calculateReplyCount(int replyNo);
 

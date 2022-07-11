@@ -53,6 +53,10 @@ public class AdminController {
 	public String memberChart() {
 		return "admin/member_chart";
 	}
+	@GetMapping("/member_search")
+	public String memberSearch() {
+		return "admin/member_search";
+	}
 	@GetMapping("/club")
 	public String club() {
 		return "admin/club";

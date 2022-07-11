@@ -21,11 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardLikeDto;
+import com.kh.e3i1.entity.ClubBoardReportDto;
 import com.kh.e3i1.entity.ClubDto;
+import com.kh.e3i1.entity.ClubMemberDto;
 import com.kh.e3i1.entity.ClubReplyLikeDto;
-import com.kh.e3i1.entity.ClubReportDto;
 import com.kh.e3i1.repository.ClubBoardDao;
 import com.kh.e3i1.repository.ClubBoardLikeDao;
+import com.kh.e3i1.repository.ClubMemberDao;
 import com.kh.e3i1.repository.ClubReportDao;
 import com.kh.e3i1.service.ClubBoardService;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
@@ -47,6 +49,8 @@ public class ClubBoardRestController {
 	private ClubReportDao clubReportDao;
 	@Autowired
 	private ClubBoardService clubBoardService; 
+	@Autowired
+	private ClubMemberDao clubMemberDao;
 //	private MemberDao memberDao;
 	
 	//오른쪽 사이드바 목록
@@ -59,23 +63,12 @@ public class ClubBoardRestController {
 	public List<ClubBoardListItemVO> list(@PathVariable int clubNo, @PathVariable int likeMemberNo) {
 		return clubBoardDao.listAll(clubNo,likeMemberNo);
 	}
-//	//등록
-//	@PostMapping("/")
-//	public ClubBoardDto insert(@ApiIgnore HttpSession session, @RequestBody ClubBoardDto clubBoardDto) {
-//		return clubBoardDao.insert(clubBoardDto);
-//	}	
 	//등록
 	@PostMapping("/")
 	public ClubBoardDto insert(@ModelAttribute ClubBoardDto clubBoardDto, 
 			@RequestParam(required=false) List<MultipartFile> files)throws IllegalStateException, IOException {
 		return clubBoardService.insert(clubBoardDto , files);
 	}	
-//	//등록
-//	@PostMapping("/")
-//	public ClubBoardDto insert(@ModelAttribute ClubBoardDto clubBoardDto, 
-//			@RequestParam MultipartFile clubBoardAttach)throws IllegalStateException, IOException {
-//		return clubBoardService.insert(clubBoardDto , clubBoardAttach);
-//	}	
 	//삭제
 	@DeleteMapping("/{clubBoardNo}")
 	public void delete(@PathVariable int clubBoardNo) {
@@ -95,7 +88,6 @@ public class ClubBoardRestController {
 	//좋아요 확인
 	@GetMapping("/likecheck/{clubBoardNo}/{likeMemberNo}")
 	public int select(@ApiIgnore HttpSession session,@PathVariable int clubBoardNo,@PathVariable int likeMemberNo) {
-//		int likeMemberNo = (Integer)session.getAttribute("login");
 		return clubBoardLikeDao.findLike(clubBoardNo, likeMemberNo);
 	}
 	//좋아요 등록
@@ -124,14 +116,18 @@ public class ClubBoardRestController {
 	}
 	//게시글 신고접수
 	@PostMapping("/report")
-	public int clubBoardReport(@RequestBody ClubReportDto clubReportDto) {
-		return clubReportDao.reportBoard(clubReportDto);
+	public int clubBoardReport(@RequestBody ClubBoardReportDto clubBoardReportDto) {
+		return clubReportDao.reportBoard(clubBoardReportDto);
 	}
 	//신고 확인//게시글 상세조회
 	@GetMapping("/reportcheck/{clubReportTarget}/{clubReportReporter}")
 	public int searchReport(@ApiIgnore HttpSession session,@PathVariable int clubReportTarget,@PathVariable int clubReportReporter) {
-//		int clubReportReporter = (Integer)session.getAttribute("login");
-		return clubReportDao.findReport(clubReportTarget, clubReportReporter);
+		return clubReportDao.findBoardReport(clubReportTarget, clubReportReporter);
+	}
+	//소모임 멤버 확인
+	@GetMapping("/member/{clubNo}/{memberNo}")
+	public int verify(@PathVariable int clubNo, @PathVariable int memberNo){
+		return clubMemberDao.check(clubNo, memberNo);		
 	}
 	
 }
