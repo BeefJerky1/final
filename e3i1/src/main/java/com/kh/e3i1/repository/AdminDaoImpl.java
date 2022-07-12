@@ -18,9 +18,11 @@ import com.kh.e3i1.entity.MbtiAnimalDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.vo.AdminClubSearchVO;
 import com.kh.e3i1.vo.AdminMbtiAnimalListVO;
 import com.kh.e3i1.vo.AdminSearchVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
+import com.kh.e3i1.vo.ClubStatisticVO;
 
 @Repository
 public class AdminDaoImpl implements AdminDao{
@@ -115,6 +117,25 @@ public class AdminDaoImpl implements AdminDao{
 		int count = sqlSession.update("admin.changeClubInformation", clubDto);
 		return count>0;
 	}
+	//소모임 게시글 목록
+	@Override
+	public List<ClubBoardDto> clubBoardList(String column, String order, int clubNo) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("column", column);
+		param.put("order", order);
+		param.put("clubNo", clubNo);
+		return sqlSession.selectList("admin.clubboardlist", param);
+	}
+	//소모임 게시글 검색
+	@Override
+	public List<ClubBoardDto> clubBoardSearch(AdminClubSearchVO searchVO) {
+		return sqlSession.selectList("admin.clubboardsearch",searchVO);			
+	}	
+	//소모임 게시글 통계
+	@Override
+	public List<ClubStatisticVO> clubBoardStat(int clubNo) {
+		return sqlSession.selectList("admin.clubboardstat", clubNo);
+	}
 	
 	//mbti 설문 목록
 	@Override
@@ -150,11 +171,7 @@ public class AdminDaoImpl implements AdminDao{
 		param.put("order", order);
 		return sqlSession.selectList("admin.mbtiboardlist", param);
 	}
-	//소모임 게시글 목록
-	@Override
-	public List<ClubBoardDto> clubBoardList(int clubNo) {
-		return sqlSession.selectList("admin.clubboardlist", clubNo);
-	}
+
 	//소모임 댓글 목록
 	@Override
 	public List<ClubBoardReplyDto> clubReplyList(int clubNo) {
@@ -198,6 +215,7 @@ public class AdminDaoImpl implements AdminDao{
 			return 1;
 		}
 	}
+
 
 
 

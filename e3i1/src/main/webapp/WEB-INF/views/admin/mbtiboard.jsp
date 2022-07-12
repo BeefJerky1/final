@@ -191,7 +191,7 @@ li a:hover {
 								<tr v-for="(mbti , index) in board">
 									<td>{{mbti.mbtiBoardNo}}</td>
 									<td>{{mbti.memberNo}}</td>
-									<td>{{mbti.mbtiBoardTitle}}</td>
+									<td><a :href="'http://localhost:8080/e3i1/mbtiboard_detail?mbtiBoardNo='+mbti.mbtiBoardNo">{{mbti.mbtiBoardTitle}}</a></td>
 									<td>{{mbti.mbtiBoardContent}}</td>
 									<td>{{mbti.mbtiBoardTime}}</td>
 									<td>{{mbti.mbtiBoardVote1}}</td>
@@ -306,7 +306,8 @@ li a:hover {
 				//소모임 상세 조회
 	            select: function(index) {
 	                	const board = this.board[index];
-	                	window.location.href='http://localhost:8080/e3i1/admin/mbtiboard_detail?mbtiBoardNo='+board.mbtiBoardNo;
+	                	const mbtiBoardNo = board.mbtiBoardNo
+	                	window.location.href='${pageContext.request.contextPath}/mbtiboard_detail?mbtiBoardNo='+mbtiBoardNo;
 	             },
 	                //moment js
 			        convertTime(time){
@@ -360,6 +361,9 @@ li a:hover {
 	                		this.count =resp.data
 	                	})
 	                },
+	                move(){
+	                	
+	                }
 
             },
             created(){

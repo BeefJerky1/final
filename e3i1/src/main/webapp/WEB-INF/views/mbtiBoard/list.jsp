@@ -9,7 +9,6 @@
 a {
 	text-decoration: none;
 	color: #686666;
-	font-size: 12px;
 }
 
 .mbti-board:hover {

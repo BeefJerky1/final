@@ -65,7 +65,7 @@
 	</insert>
 	
 	<select id="one" parameterType="Map" resultType="ClubMemberDto">
-		select * from club_member where member_no = #{memberNo} and club_no = #{clubNo}
+		select * from club_member where member_no = #{memberNo} and club_no = #{clubNo} and club_member_permission =1
 	</select>
 	
 	<select id="list" parameterType="int" resultType="ClubMemberDto">

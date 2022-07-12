@@ -179,6 +179,40 @@ li a:hover {
 					</div>
 					<div class="row mt-5">
 						<h3>소모임 게시글</h3>
+						<div class="row">
+						<h5>검색</h5>
+							<div class="col-lg-5 col-md-5 col-sm-5">
+							       <select class=""v-model="type">
+           								<option value="club_board_no">게시글 번호</option>
+										<option value="club_board_writer">작성자</option>
+										<option value="club_board_time">작성시간</option>
+										<option value="club_board_count">댓글</option>							
+										<option value="club_board_like">좋아요</option>		
+										<option value="club_board_readcount">조회수</option>		
+										<option value="club_board_reportcount">신고수</option>		
+							        </select>
+							        <input type="text" v-model="keyword" class="" v-on:input="keyword=$event.target.value" placeholder="검색어 입력">	             
+							  </div>
+							<h5>정렬</h5>
+						<div class="col-lg-5 col-md-5 col-sm-5">
+							<select class="" v-model="column" v-on:change="clubBoardList()">
+								<option value="club_board_no">게시글 번호</option>
+								<option value="club_board_writer">작성자</option>
+								<option value="club_board_time">작성시간</option>
+								<option value="club_board_count">댓글</option>							
+								<option value="club_board_like">좋아요</option>		
+								<option value="club_board_readcount">조회수</option>		
+								<option value="club_board_reportcount">신고수</option>		
+							</select>
+							<select class="" v-model="order" v-on:change="clubBoardList()">
+								<option value="asc">오름차순</option>
+								<option value="desc">내림차순</option>				
+							</select>
+							<button type="button" class="btn btn-primary " v-on:click="clubBoardSearch()">조회</button>
+							<button type="button" class="btn btn-success " v-on:click="boardReset()">초기화</button>
+						</div>
+							
+							</div>
 					<div class="col-lg-8 col-md-8 col-sm-8 mt-2 mb-5">
 					
 						<table class="table">
@@ -227,7 +261,7 @@ li a:hover {
 							</thead>
 							<tbody>
 								<tr v-for="(boardreply , index) in reply">
-									<td>{{boardreply.clubBoardNo}}</td>
+									<td><a :href="'http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+boardreply.clubBoardNo">{{boardreply.clubBoardNo}}</a></td>
 									<td>{{boardreply.replyNo}}</td>
 									<td>{{boardreply.clubReplyLike}}</td>
 									<td>{{boardreply.clubReplyReportcount}}</td>
@@ -279,6 +313,13 @@ li a:hover {
                     showBoard:5, //보여주는 게시글 수
                     boardLeft:0,//남은 게시글 수
                     boarddataFull:false,
+                    //게시글 검색
+					order:"asc",
+					column:"club_board_no",
+					keyword:"",
+					type:"",
+					//게시글 통계
+					stat:null,
                     
                     //댓글
      	           replyAll:[], //전체 댓글
@@ -352,7 +393,7 @@ li a:hover {
                 },
             	clubBoardList(){
             		axios({
-            			url:"${pageContext.request.contextPath}/rest/admin/clubboard/"+this.clubNo,
+            			url:"${pageContext.request.contextPath}/rest/admin/clubboard/"+this.column+"/"+this.order+"/"+this.clubNo,
             			method:"get",
             		}).then(resp=>{
 						let data = []
@@ -376,6 +417,47 @@ li a:hover {
 						}
             		})
             	},
+            	 clubBoardSearch(){
+           			axios({
+						url:"${pageContext.request.contextPath}/rest/admin/clubboard/",
+						method:"post",
+						data:{
+							order:this.order,
+							column:this.column,
+							keyword:this.keyword,
+							type:this.type,
+							clubNo:this.clubNo,
+						}
+					}).then(resp=>{
+						let data = []
+						for(var i = 0; i<this.showBoard;i++){
+// 							console.log(i)
+							data.push(resp.data[i])
+						}
+						this.boardAll = resp.data,
+						this.board = data,
+						this.totalBoard = this.boardAll.length
+						
+						//총 게시글 수가 보이는 게시글 수(5)보다 작으면
+						if(this.totalBoard < this.showBoard){
+// 							this.showReply = this.totalReply; //보이는 수를 전체 게시글수로 변경
+							this.board = this.boardAll;	//게시글에 게시글 전체를 넣는다.
+	                		this.boarddataFull=true;	//버튼은 disable
+						}else if(this.totalBoard>this.showBoard){ 
+	                		this.boarddataFull=false; //버튼은 disable
+						}else if(this.totalBoard==this.showBoard){//전체 게시글 수와 보이는 게시글 수가 동일하면
+							this.boarddataFull=true;	//버튼은 disable
+						}
+					})
+				},
+				//게시글 초기화
+				boardReset(){
+                	this.order="asc";
+                	this.column="club_board_no";
+                	this.type="";
+                	this.keyword="";
+                	this.clubBoardList();
+                },
             	appendBoard(){
                 	//남은 게시글 수 확인
                 	this.boardLeft = this.totalBoard- this.showBoard;
@@ -452,14 +534,23 @@ li a:hover {
                 	}else if(this.replyLeft==0){
                 		this.replydataFull=true;
                 		
-                	} 	
+                	}	
                 },
+                clubBoardStatistic(){
+                	axios({
+                		url:"${pageContext.request.contextPath}/rest/admin/clubboardstat/"+this.clubNo,
+                		method:"get",
+                	}).then(resp=>{
+                		this.stat = resp.data
+                	})
+                }
             	
             },
             created(){
 				this.clubMemberList();
 				this.clubBoardList();
 				this.clubReplyList();
+				this.clubBoardStatistic();
             },
         });
         app.mount("#app");

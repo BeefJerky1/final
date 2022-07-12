@@ -86,7 +86,7 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 		param.put("memberNo", memberNo);
 		ClubMemberDto clubMemberDto = sqlSession.selectOne("clubMember.one",param);
 		if(clubMemberDto==null) {
-			return 0;
+			return 2;
 		}else {		
 			return 1;
 		}

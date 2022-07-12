@@ -97,5 +97,12 @@ public class ClubDaoImpl implements ClubDao {
 		// sql에서 소모임장 여부도 같이 판단
 		return sqlSession.update("club.edit",clubDto);
 	}
+
+	// 상단 검색바 기능
+	@Override
+	public List<ClubDto> search(String keyword) {
+		
+		return sqlSession.selectList("club.search", keyword);
+	}
 	
 }

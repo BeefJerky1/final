@@ -219,6 +219,16 @@
 				club_no = #{clubNo} and club_leader = #{clubLeader}
 	</update>
 	
+
+	<!--  상단 검색바 기능 -->
+	<select id="search" resultType="ClubDto" parameterType="String">
+	    select * from club
+		where instr(club_name, #{keyword}) > 0
+			or  instr(club_main_category, #{keyword}) > 0
+			or  instr(club_sub_category, #{keyword}) > 0
+        order by club_no asc        
+       </select>
+
  		<resultMap type="ClubListVO" id="clubListVO">
 		<association property="clubMbtiPercentVO">
 			<result column="club_no" property="clubNo"/>
