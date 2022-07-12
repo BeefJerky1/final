@@ -97,7 +97,7 @@
 							<form class="d-flex">
 								<i class="fa-solid fa-magnifying-glass search-icon"></i> <input
 									type="text" name="keyword" class="form-control me-2 input-box"
-									type="search" placeholder="소모임 검색하기" aria-label="Search">
+									type="search" placeholder="소모임 검색하기" aria-label="Search" autocomplete="off">
 							</form>
 						</c:otherwise>
 					</c:choose>
