@@ -737,38 +737,50 @@ methods: {
 		})	
 	},
 	
-	searchClubList(){
+	clubAllList(){
 		axios({
 			url: "${pageContext.request.contextPath}/rest/club/",
 			method: "get",
+		}).then((resp) => {
+			this.clubList = resp.data;
+		}) 
+	},
+	
+	// 검색
+	searchClubList(){
+		
+		var clubComplexSearchVO = [];
+		if(this.mainList != null){
+			clubComplexSearchVO = this.mainList;
+		};
+		if(this.subList != null){
+			clubComplexSearchVO = this.subList;
+		};
+		if(this.city2 != null){
+			clubComplexSearchVO = this.city2;
+		};
+		if(this.mbtiList != null){
+			clubComplexSearchVO = this.mbtiList;
+		};
+		
+		axios({
+			url: "${pageContext.request.contextPath}/rest/club/search",
+			method: "post",
 			data:{
-				mainList : this.mainList,
-				subList : this.subList,
-				city2 : this.city2,
-				mbtiList : this.mbtiList,
+				clubComplexSearchVO, 
 			},
 		}).then((resp) => {
-			this.clubList = [];
-			this.clubList.push(...resp.data);
+			this.clubList = resp.data;
 		})
 	},
-
 },
 watch:{
 	// 스크롤 이벤트 여기서 걸 예정이고 
 	// 스크롤 이벤트는 디바운스로 처리해야한다.
 },
 created() {
-	
 	 this.searchList();
-	
-	 axios({
-			url: "${pageContext.request.contextPath}/rest/club/",
-			method: "get",
-		}).then((resp) => {
-			this.clubList.push(...resp.data);
-	}) 
-	
+	 this.clubAllList();
 	},
 });
 app.mount("#app");
