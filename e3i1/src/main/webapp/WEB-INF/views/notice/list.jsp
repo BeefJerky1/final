@@ -8,8 +8,15 @@
 
 <style>
 .point {
-	font-size: 2.3em;
+	font-size: 1.5em;
 	font-weight: 900;
+	color: #3E4684;
+}
+
+.point2 {
+	font-size: 3em;
+	font-weight: 900;
+	color: #3E4684;
 }
 
 a {
@@ -61,118 +68,190 @@ a {
 .interest {
 	background-color: #E9E9E9;
 }
-.noticetitle{
-	font-size: 1.2em;
+
+.noticetitle {
+	font-size: 1.5em;
+	font-weight: 900;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+.noticetitle:hover {
+	color: #3E4684;
+	font-size: 1.5em;
+	font-weight: 900;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-size: 1.5em;
+}
+
+.noticehead {
+	font-size: 1.1em;
+	font-weight: 900;
+	color: #3E4684;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	margin-left: 2em;
+}
+
+.nav-link {
+	color: #3E4684;
+	font-size: 1.0em;
+}
+
+.nav-link.active {
 	font-weight: 900;
 }
 
-.noticehead{
-	font-size: 0.9em;
-	font-weight: 900;
+.active2 {
+	font-size: 1em;
+	color: white;
+	background-color: #3E4684;
+	padding-right: 11px;
+	padding-left: 11px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
-/* .card {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(50%,-50%);
+.active2:hover {
+	font-size: 1em;
+	color: white;
+	background-color: #3E4684;
+	padding-right: 11px;
+	padding-left: 11px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
 
-} */
+.active3 {
+	font-size: 1em;
+	color: #3E4684;
+	border-color: #3E4684;
+	padding-right: 11px;
+	padding-left: 11px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-right: 11px;
+}
+
+.active3:hover {
+	font-size: 1em;
+	color: #3E4684;
+	border-color: #3E4684;
+	padding-right: 11px;
+	padding-left: 11px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.active4 {
+	font-size: 1.3em;
+	color: #3E4684;
+}
 </style>
 
 <div class="container w950 m30">
-
-	<div class="container ">
-		<div id="carouselExampleIndicators" class="carousel slide"
-			data-bs-ride="carousel">
-			<div class="carousel-indicators">
-				<button type="button" data-bs-target="#carouselExampleIndicators"
-					data-bs-slide-to="0" class="active" aria-current="true"
-					aria-label="Slide 1"></button>
-				<button type="button" data-bs-target="#carouselExampleIndicators"
-					data-bs-slide-to="1" aria-label="Slide 2"></button>
-				<button type="button" data-bs-target="#carouselExampleIndicators"
-					data-bs-slide-to="2" aria-label="Slide 3"></button>
-			</div>
-			<div class="carousel-inner">
-				<div class="carousel-item active">
-					<img src="${root }/image/banner01.png" class="d-block w-100"
-						alt="banner">
-				</div>
-				<div class="carousel-item">
-					<img src="${root }/image/banner02.png" class="d-block w-100"
-						alt="banner">
-				</div>
-				<div class="carousel-item">
-					<img src="${root }/image/banner03.png" class="d-block w-100"
-						alt="banner">
-				</div>
-			</div>
-			<button class="carousel-control-prev" type="button"
-				data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Previous</span>
-			</button>
-			<button class="carousel-control-next" type="button"
-				data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Next</span>
-			</button>
-		</div>
+	<div class="text-center mt-2 point2">
+		NOTICE
 	</div>
+	<ul class="nav justify-content-center mt-2 mb-3">
+		<li class="nav-item"><a class="nav-link active"
+			aria-current="page" href="${root}/notice/list">전체</a></li>
+		<li class="nav-item"><a class="nav-link active"
+			href="${root}/notice/list?type=notice_head&keyword=%EA%B3%B5%EC%A7%80">공지</a></li>
+		<li class="nav-item"><a class="nav-link active"
+			href="${root}/notice/list?type=notice_head&keyword=%EC%9D%B4%EB%B2%A4%ED%8A%B8">이벤트</a></li>
+		<li class="nav-item"><a class="nav-link active"
+			href="${root}/notice/list?type=notice_head&keyword=%EA%B8%B4%EA%B8%89">긴급</a></li>
+	</ul>
 
-	<div class="container " style="float: none; margin: 0 auto;">
-		<div class=" mb-3 mt-1 ">
-			<a href="write" class="btn btn-outline-success" style="float: right;"
-				role=button>글쓰기</a>
-		</div>
-		<!-- 검색창 -->
-		<form action="list" method="get">
-			<select name="type" class="input-box input-box">
-				<option value="notice_title">제목</option>
-				<option value="notice_content">내용</option>
-			</select> <input type="search" name="keyword" placeholder="검색어 입력" required
-				class="input-box">
+	<div class="container text-center">
+		<button type="button" class="btn btn-outline-success"
+			data-bs-toggle="modal" data-bs-target="#exampleModal">글쓰기</button>
 
-		</form>
-	</div>
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title point" id="exampleModalLabel">NOTICE</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form action="write" method="post">
+							<div class="form-floating mb-3">
+								<select name="noticeHead" class="form-select"
+									id="floatingSelect">
+									<option value=""></option>
+									<option>이벤트</option>
+									<option>공지</option>
+									<option>긴급</option>
+								</select> <label for="floatingSelect">말머리</label>
+							</div>
 
-	<div class="mb-4 p-4 mt-4 text-dark bg-light rounded">
-		<div class="row">
-			<span class="point mb-2">NOTICE</span>
-			<table class="table table-border">
-				<thead>
-					<tr>
-						<th class="text-center">말머리</th>
-						<th class="text-center" width="80%">제목</th>
-					</tr>
-				</thead>
-				<tbody align="center">
-					<c:forEach var="noticeDto" items="${list}">
-						<tr>
-							<td> <span class="noticehead"> [${noticeDto.noticeHead}] </span></td>
-							<td class="left">
-							<a href="detail?noticeNo=${noticeDto.noticeNo}">
-								<span class="noticetitle">${noticeDto.noticeTitle}</span></a>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
+							<div class="form-floating mb-3">
+								<input type="text" class="form-control" name="noticeTitle"
+									autocomplete="off" required> <label for="floatingInput">제목</label>
+							</div>
+
+							<div class="form-floating mb-3">
+								<textarea class="form-control" id="floatingTextarea"
+									name="noticeContent" style="height: 250px"></textarea>
+
+								<label for="floatingTextarea">내용</label>
+							</div>
+							<div class="col-md-8 offset-md-2 text-center">
+								<a href="list" class="btn btn-edit two m-3"
+									data-bs-dismiss="modal">취소</a>
+								<button type="submit" class="btn btn-outline-success two m-3">등록</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 
+<div class="container" style="width: 70%;">
+	<div class="row mt-3">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th style="width: 20%;"></th>
+					<th style="width: 50%;"></th>
+					<th style="width: 30%;"></th>
+				</tr>
+			</thead>
+			<tbody align="center">
+				<c:forEach var="noticeDto" items="${list}">
+					<tr>
+						<td><div class="noticehead my-5">[${noticeDto.noticeHead}]</div></td>
+						<td><a href="detail?noticeNo=${noticeDto.noticeNo}"><div
+									class="noticetitle text-center my-5">${noticeDto.noticeTitle}</div></a></td>
+						<td><a href="detail?noticeNo=${noticeDto.noticeNo}"><img
+								src="${root }/image/LOGO.png"
+								style="width: 200px; height: 130px; float: right; padding: 10px; margin-right: 2.5em;" /></a></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+</div>
+</div>
 
-
-<div class="text-center mb-4">
+<div class="text-center mt-3 mb-4">
 
 	<c:if test="${p > 1}">
 		<c:choose>
 			<c:when test="${search}">
-				<a href="list?p=1&s=${s}&type=${type}&keyword=${keyword}">&laquo;</a>
+				<a class="active4"
+					href="list?p=1&s=${s}&type=${type}&keyword=${keyword}">&laquo;</a>
 			</c:when>
 			<c:otherwise>
-				<a href="list?p=1&s=${s}">&laquo;</a>
+				<a class="active4" href="list?p=1&s=${s}">&laquo;</a>
 			</c:otherwise>
 		</c:choose>
 	</c:if>
@@ -180,11 +259,11 @@ a {
 	<c:if test="${startBlock > 1}">
 		<c:choose>
 			<c:when test="${search}">
-				<a
+				<a class="active4"
 					href="list?p=${startBlock-1}&s=${s}&type=${type}&keyword=${keyword}">&laquo;</a>
 			</c:when>
 			<c:otherwise>
-				<a href="list?p=${startBlock-1}&s=${s}">&laquo;</a>
+				<a class="active4" href="list?p=${startBlock-1}&s=${s}">&laquo;</a>
 			</c:otherwise>
 		</c:choose>
 	</c:if>
@@ -195,7 +274,7 @@ a {
 			<c:when test="${search}">
 				<c:choose>
 					<c:when test="${i == p}">
-						<a class="active"
+						<a class="active2"
 							href="list?p=${i}&s=${s}&type=${type}&keyword=${keyword}">${i}</a>
 					</c:when>
 					<c:otherwise>
@@ -206,10 +285,10 @@ a {
 			<c:otherwise>
 				<c:choose>
 					<c:when test="${i == p}">
-						<a class="active" href="list?p=${i}&s=${s}">${i}</a>
+						<a class="active2" href="list?p=${i}&s=${s}">${i}</a>
 					</c:when>
 					<c:otherwise>
-						<a href="list?p=${i}&s=${s}">${i}</a>
+						<a class="active3" href="list?p=${i}&s=${s}">${i}</a>
 					</c:otherwise>
 				</c:choose>
 			</c:otherwise>
@@ -220,11 +299,11 @@ a {
 	<c:if test="${endBlock < lastPage}">
 		<c:choose>
 			<c:when test="${search}">
-				<a
+				<a class="active4"
 					href="list?p=${endBlock+1}&s=${s}&type=${type}&keyword=${keyword}">&gt;</a>
 			</c:when>
 			<c:otherwise>
-				<a href="list?p=${endBlock+1}&s=${s}">&gt;</a>
+				<a class="active4" href="list?p=${endBlock+1}&s=${s}">&gt;</a>
 			</c:otherwise>
 		</c:choose>
 	</c:if>
@@ -232,13 +311,27 @@ a {
 	<c:if test="${p < lastPage}">
 		<c:choose>
 			<c:when test="${search}">
-				<a href="list?p=${lastPage}&s=${s}&type=${type}&keyword=${keyword}">&raquo;</a>
+				<a class="active4"
+					href="list?p=${lastPage}&s=${s}&type=${type}&keyword=${keyword}">&raquo;</a>
 			</c:when>
 			<c:otherwise>
-				<a href="list?p=${lastPage}&s=${s}">&raquo;</a>
+				<a class="active4" href="list?p=${lastPage}&s=${s}">&raquo;</a>
 			</c:otherwise>
 		</c:choose>
 	</c:if>
+
+</div>
+
+<!-- 검색창 -->
+<div class="text-center mt-3 mb-5">
+	<form action="list" method="get">
+		<select name="type" class="input-box input-box">
+			<option value="notice_title">제목</option>
+			<option value="notice_content">내용</option>
+		</select> <input type="search" name="keyword" required class="input-box">
+</div>
+
+</form>
 
 </div>
 

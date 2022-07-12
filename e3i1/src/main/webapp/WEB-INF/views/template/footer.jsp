@@ -6,6 +6,7 @@
  <!--footer-->
 <style>
 footer {
+position: relative!important;
 z-index:1;
 	}
 </style>
