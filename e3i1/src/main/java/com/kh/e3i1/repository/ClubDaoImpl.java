@@ -30,9 +30,7 @@ public class ClubDaoImpl implements ClubDao {
 	// 소모임 검색목록
 	@Override
 	public List<ClubListVO> searchList(ClubComplexSearchVO clubComplexSearchVO) {
-		System.out.println(clubComplexSearchVO.getCity2());
-		System.out.println(clubComplexSearchVO.getMbtiList());
-		return sqlSession.selectList("club.search", clubComplexSearchVO);
+		return sqlSession.selectList("club.searchList", clubComplexSearchVO);
 	}
 
 	

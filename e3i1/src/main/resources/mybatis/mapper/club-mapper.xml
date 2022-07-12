@@ -325,7 +325,7 @@
 		ORDER BY total ASC, club_no DESC
 	</select>
 	
-	<select id="search" resultMap="clubListVO">
+	<select id="searchList" resultMap="clubListVO">
 		<bind name="mainCategoryExist" value="mainList != null and !mainList.equals('')"/>
 		<bind name="subCategoryExist" value="subList != null and !subList.equals('')"/>
 		<bind name="cityExist" value="city2 != null and !city2.equals('')"/>
