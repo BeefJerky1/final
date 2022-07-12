@@ -788,7 +788,8 @@ img {
  		    	},
  		    	//게시글 삭제
  		    	deleteBoard(){
- 		    		const choice = window.confirm("정말 삭제하시겠습니까?\n삭제한 데이터는 복구되지 않습니다");
+					const choice = window.confirm("정말 삭제하시겠습니까?\n삭제한 데이터는 복구되지 않습니다");
+					if(choice==false)return
  		    		let uri = window.location.search.substring(1); 
                     let params = new URLSearchParams(uri);
                     console.log(params.get("clubBoardNo"));
@@ -1055,6 +1056,8 @@ img {
 		    	},
 		    	//댓글 삭제
 		        deleteReply(index){
+					const choice = window.confirm("정말 삭제하시겠습니까?\n삭제한 데이터는 복구되지 않습니다");
+					if(choice==false)return
 		        	const reply = this.reply[index];
 		        	axios({
 		        		url:"${pageContext.request.contextPath}/rest/clubboardreply/"+reply.clubBoardReplyDto.replyNo,

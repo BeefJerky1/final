@@ -112,7 +112,7 @@ li a:hover {
         <div class="collapse" id="mbti-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/mbtisurvey" class="link-light rounded">MBTI 설문</a></li>
-            <li><a href="#" class="link-light rounded">MBTI 동물</a></li>
+            <li><a href="${root}/admin/mbtianimal" class="link-light rounded">MBTI 동물</a></li>
           </ul>
         </div>
       </li>
@@ -152,7 +152,7 @@ li a:hover {
 							  </div>
 							<h5>정렬</h5>
 						<div class="col-lg-5 col-md-5 col-sm-5">
-							<select class="" v-model="column">
+							<select class="" v-model="column" v-on:change="clubList()">
 								<option value="club_no">소모임 번호</option>
 								<option value="club_name">이름</option>
 								<option value="club_leader">리더</option>
@@ -180,19 +180,25 @@ li a:hover {
 									<th>소분류</th>
 									<th>지역</th>
 									<th>인원제한</th>
+									<th>상세</th>
 									<th>수정</th>
 									<th>삭제</th>
+									
 								</tr>
 							</thead>
 							<tbody>
 								<tr v-for="(club1 , index) in club">
 									<td>{{club1.clubNo}}</td>
-									<td v-on:click="detail(index)">{{club1.clubName}}</td>
+									<td >{{club1.clubName}}</td>
 									<td>{{club1.clubLeader}}</td>
 									<td>{{club1.clubMainCategory}}</td>
 									<td>{{club1.clubSubCategory}}</td>
 									<td>{{club1.clubPlace}}</td>
 									<td>{{club1.clubMemberLimit}}</td>
+									<td>
+									<button type="button" class="btn btn-secondary"
+											v-on:click="detail(index)">상세</button>
+									</td>
 									<td>
 										<button type="button" class="btn btn-warning"
 											v-on:click=" select(index)">수정</button>
@@ -349,6 +355,10 @@ li a:hover {
 						}
 					})
 				},
+                //moment js
+		        convertTime(time){
+                	return moment(time).format("MM/DD");   //월 일
+		        },
                 reset(){
                 	this.order="asc";
                 	this.column="club_no";

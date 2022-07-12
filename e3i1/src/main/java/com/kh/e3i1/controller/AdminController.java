@@ -92,4 +92,8 @@ public class AdminController {
 	public String MbtiSurvey() {
 		return "admin/mbtisurvey";
 	}
+	@GetMapping("/mbtianimal")
+	public String MbtiAnimal() {
+		return "admin/mbtianimal";
+	}
 }
