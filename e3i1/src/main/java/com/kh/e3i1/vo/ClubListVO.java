@@ -1,5 +1,6 @@
 package com.kh.e3i1.vo;
 
+import com.kh.e3i1.entity.AnimalPhotoDto;
 import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.ClubProfileDto;
 
@@ -14,4 +15,6 @@ public class ClubListVO {
 	private ClubMbtiPercentVO clubMbtiPercentVO;
 	private ClubProfileDto clubProfileDto;
 	private MbtiRankVO mbtiRankVO;
+	private AnimalPhotoDto animalPhotoG;
+	private AnimalPhotoDto animalPhotoL;
 }

@@ -21,17 +21,75 @@
 
 .club-card {
 	transform: scale(1);
-   	transition: transform 0.1s ease-in-out;
+   	transition: transform 0.3s ease-in-out;
    	border-radius:0px 0px 30px 30px!important;
 }
 .club-card:hover{
 	transform: scale(1.05);
 }
 
-/* input[type=checkbox]{
+input[type=radio]{
 	display:none!important;
-} */
+} 
+input[type=checkbox]{
+	display:none!important;
+} 
 
+.mbti-photo1 {
+	width: 30px;
+	height: 30px;
+	border-radius: 70%;
+	overflow: hidden;
+}
+.mbti-photo2 {
+	width: 30px;
+	height: 30px;
+	border-radius: 70%;
+	overflow: hidden;
+}
+
+.mbti-photo3 {
+	width: 60px;
+	height: 60px;
+	border-radius: 70%;
+	transform: scale(1);
+   	transition: transform 0.1s ease-in-out;
+}
+.mbti-photo3:hover {
+	transform: scale(1.3);
+}
+.checkedMbti{
+	border:3px solid #3E4684;
+	transform: scale(1.3);
+}
+
+.main-card {
+	border-width: 0.25em;
+}
+.main-card:hover{
+	border-color: #3E4684;
+	border-width: 0.25em;
+}
+.checkedMain{
+	color:#3E4684;
+	font-size:18px;
+	font-weight:bold;
+	border-color: #3E4684;
+	border-width: 0.25em;
+}
+
+.sub-label {
+	background-color:lightgray;
+	color:white;
+}
+.sub-label:hover {
+	background-color:gray;
+	color:white;
+}
+.checkedSub{
+	background-color:gray;
+	color:white;
+}
 </style>
 
 <div id="app" class="container-fluid">
@@ -45,19 +103,48 @@
 	<!-- 검색창 -->
 	<div class="row mt-4">
 		<div class="col-md-8 offset-md-2">
-			<div class="card">
+			<div class="card" style="border:4px solid lightgray">
 				<div class="card-text row mt-4 mb-4">
 					<div class="col-md-2 text-center align-self-center">관심 카테고리</div>
 					
-					<!-- 메인 카테고리 -->
-					<div class="col-md-4 ps-4" style="border-left:1px solid lightgray;">
-						<div class="mt-2 mb-2" v-for="(main, index) in mainCategory" :key="index">
-							<label :for="'main'+index">\#{{main.categoryContent}}</label>
-							<input :id="'main'+index" name="mainCategory" type="radio" >
+					<div class="col-md-10 row ps-4" style="border-left:1px solid lightgray;">
+						
+						<div class="col-md-3 card main-card my-2" :class="checkedMain(main.categoryContent)" style="width: 12rem; border-radius: 30px;" v-for="(main, index) in mainCategory" :key="index">
+						<label :for="'main'+index">
+							<div class="card-body m-1"  style="padding:15px 0px;">
+								<h6 class="card-title text-center tagtitle">
+									<span class="maincolor">\# {{main.categoryContent}}
+									<i class="fa-solid fa-person-running" class="coloricon" v-if="main.categoryNo == 1"></i>
+									<i class="fa-brands fa-instagram-square" v-if="main.categoryNo == 2"></i>
+									<i class="fa-solid fa-hand-sparkles" v-if="main.categoryNo == 3"></i>
+									<i class="fa-solid fa-user-group" v-if="main.categoryNo == 4"></i>
+									<i class="fa-solid fa-book" v-if="main.categoryNo == 5"></i>
+									<i class="fa-solid fa-cart-shopping" v-if="main.categoryNo == 6"></i>
+									<i class="fa-solid fa-clapperboard" v-if="main.categoryNo == 7"></i>
+									<i class="fa-solid fa-mountain-sun" v-if="main.categoryNo == 8"></i>
+									<i class="fa-solid fa-paw" v-if="main.categoryNo == 9"></i>
+									<i class="fa-solid fa-house" v-if="main.categoryNo == 10"></i>
+									</span>
+								</h6>
+								<input :id="'main'+index" name="mainCategory" type="radio" @change="checkMain($event)" v-model="mainList" :value="main.categoryContent" >
+							</div>
+						</label>
 						</div>
+						<hr>
+						<span class="text-center" v-if="isNull">상위 카테고리를 선택해주세요</span>
+						<div class="row">
+							<div class="col mt-4 mb-2" style="padding:0px 60px;" v-for="(sub, index) in subCategory" :key="index">
+							<label class="sub-label" :for="'sub'+index" :class="checkedSub(sub.categoryContent)">
+							<div class="text-center" >
+								<h6>\#{{sub.categoryContent}}</h6>
+								<input :id="'sub'+index" name="subCategory" type="radio" @change="checkSub($event)" v-model="subList" :value="sub.categoryContent" >
+							</div>
+							</label>
+							</div>
+						</div>
+						
 					</div>
 					
-					<div class="col-md-6">서브</div>
 				</div>
 				
 				<div style="border-top:1px solid lightgray">
@@ -88,6 +175,95 @@
 		</div>
 	</div>
 	
+	<!-- mbti -->
+	<div class="mt-4" style="padding:0px 50px; margin:0px;" >
+	<div class="col-md-12 card mt-4 row shadow">
+		<div class="col card-body text-center">
+		
+			<label for="enfp" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ENFP')}" src="${pageContext.request.contextPath}/image/mbti/강아지(ENFP).png">
+			</label>	
+			<input id="enfp" type="checkbox" value="ENFP" v-model="mbtiList">
+			
+			<label for="istp" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ISTP')}" src="${pageContext.request.contextPath}/image/mbti/거북이(ISTP).png">
+			</label>	
+			<input id="istp" type="checkbox" value="ISTP" v-model="mbtiList">
+			
+			<label for="intp" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('INTP')}" src="${pageContext.request.contextPath}/image/mbti/고양이(INTP).png">
+			</label>	
+			<input id="intp" type="checkbox" value="INTP" v-model="mbtiList">
+			
+			<label for="estj" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ESTJ')}" src="${pageContext.request.contextPath}/image/mbti/늑대(ESTJ).png">
+			</label>	
+			<input id="estj" type="checkbox" value="ESTJ" v-model="mbtiList">
+			
+			<label for="enfj" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ENFJ')}" src="${pageContext.request.contextPath}/image/mbti/돌고래(ENFJ).png">
+			</label>	
+			<input id="enfj" type="checkbox" value="ENFJ" v-model="mbtiList">
+			
+			<label for="esfp" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ESFP')}" src="${pageContext.request.contextPath}/image/mbti/물개(ESFP).png">
+			</label>	
+			<input id="esfp" type="checkbox" value="ESFP" v-model="mbtiList">
+			
+			<label for="infj" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('INFJ')}" src="${pageContext.request.contextPath}/image/mbti/백조(INFJ).png">
+			</label>	
+			<input id="infj" type="checkbox" value="INFJ" v-model="mbtiList">
+			
+			<label for="entj" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ENTJ')}" src="${pageContext.request.contextPath}/image/mbti/사자(ENTJ).png">
+			</label>	
+			<input id="entj" type="checkbox" value="ENTJ" v-model="mbtiList">
+			
+			<label for="istj" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ISTJ')}" src="${pageContext.request.contextPath}/image/mbti/양(ISTJ).png">
+			</label>	
+			<input id="istj" type="checkbox" value="ISTJ" v-model="mbtiList">
+			
+			<label for="entp" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ENTP')}" src="${pageContext.request.contextPath}/image/mbti/여우(ENTP).png">
+			</label>	
+			<input id="entp" type="checkbox" value="ENTP" v-model="mbtiList">
+			
+			<label for="estp" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ESTP')}" src="${pageContext.request.contextPath}/image/mbti/원숭이(ESTP).png">
+			</label>	
+			<input id="estp" type="checkbox" value="ESTP" v-model="mbtiList">
+			
+			<label for="infp" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('INFP')}" src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png">
+			</label>	
+			<input id="infp" type="checkbox" value="INFP" v-model="mbtiList">
+			
+			<label for="esfj" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ESFJ')}" src="${pageContext.request.contextPath}/image/mbti/코알라(ESFJ).png">
+			</label>	
+			<input id="esfj" type="checkbox" value="ESFJ" v-model="mbtiList">
+			
+			<label for="isfp" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ESFJ')}" src="${pageContext.request.contextPath}/image/mbti/판다(ISFP).png">
+			</label>	
+			<input id="isfp" type="checkbox" value="ISFP" v-model="mbtiList">
+			
+			<label for="isfj" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ISFJ')}" src="${pageContext.request.contextPath}/image/mbti/펭귄(ISFJ).png">
+			</label>	
+			<input id="isfj" type="checkbox" value="ISFJ" v-model="mbtiList">
+			
+			<label for="intj" style="margin:10px">
+				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('INTJ')}" src="${pageContext.request.contextPath}/image/mbti/호랑이(INTJ).png">
+			</label>	
+			<input id="intj" type="checkbox" value="INTJ" v-model="mbtiList">
+		</div>
+	</div>
+	</div>
+	
+	
 	<div class="row mt-4">
 		<div class="col-md-2 offset-md-10" style="padding-right:50px">
 			<button class="btn-create" v-on:click="removeHidden" @click.once="callList">소모임 생성</button>
@@ -97,11 +273,32 @@
 	<div class="row mt-4">
 		<div style="padding:30px"class="col-md-3" v-for="(club,index) in clubList" v-bind:key="index">
 			<div class="card club-card shadow" @click="toDetailPage(index)">
-				<img src="https://via.placeholder.com/250/69f/fff.png" class="card-img-top">
-				<%-- <img :src="'${pageContext.request.contextPath}/attachment/download?attachmentNo='+clubList.memberProfileDto.attachNo" v-if="clubList.memberProfileDto != null"> --%>
+				<img src="https://via.placeholder.com/250/69f/fff.png" style="width:100%; height:300px;" class="card-img-top" v-if="!isClubProfile(index)">
+				<img class="card-img-top" style="width:100%; height:300px;" :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+club.clubProfileDto.attachNo" v-if="isClubProfile(index)">
+				
 				<div class="card-body clubList">
-				<!-- 	<h5 class="card-title" style="white-space:nowrap; overflow:hidden">{{club.clubName}}</h5>
-					<h6 style="color:gray" class="card-subtitle">\#{{club.clubMainCategory}} / {{club.clubSubCategory}}</h6> -->
+					<div class="col-md-12">
+					 	<h5 class="card-title" style="white-space:nowrap; overflow:hidden">{{club.clubDto.clubName}}</h5>
+						<h6 style="color:gray" class="card-subtitle">\#{{club.clubDto.clubMainCategory}} \# {{club.clubDto.clubSubCategory}}</h6>
+					</div>
+				</div>
+				<div class="card-body row" style="margin:0px; padding:0px 0px 10px 10px">
+					<div class="col-md-9">
+						<!-- 제일 많은 MBTI -->
+						<img class="mbti-photo1" src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png" v-if="!isAnimalG(index)">
+						<img class="mbti-photo1" :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+club.animalPhotoG.attachNo" v-if="isAnimalG(index)">
+						<!-- 제일 적은 MBTI -->
+						<img class="mbti-photo2" src="${pageContext.request.contextPath}/image/mbti/돌고래(ENFJ).png" v-if="!isAnimalL(index)">
+						<img class="mbti-photo2" :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+club.animalPhotoL.attachNo" v-if="isAnimalL(index)">
+					</div>
+					<div class="col-md-3 text-end">
+						<div class="row">
+							<i class="fa-solid fa-user-group"></i>
+						</div>
+						<div class="row-md-12 text-end">
+							{{club.clubMbtiPercentVO.total}}/{{club.clubDto.clubMemberLimit}}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -219,7 +416,6 @@
 </div>
 
 
-
 <!-- 로다쉬 적용해야함 -->
 <script>
 //파일 미리보기
@@ -248,6 +444,8 @@ data() {
 		isHidden:{
 			"hidden" : true,
 		},
+		
+		isChecked : false,
 		
 	
 		// 카테고리, 지역 목록용
@@ -282,14 +480,75 @@ data() {
 		place1: [],
 		place2: [],
 		
-		main: "",
-		sub: "",
+		main: '',
+		sub: '',
 		place1No: "",
 		city2: "",
+		
+		mainList:[],
+		subList:[],
+		mbtiList:[],
 	};
 },
-computed: {},
+computed: {
+	isNull(){
+		if(this.mainList.length != 0){
+			return false;
+		}
+		return true;
+	},
+},
 methods: {
+	// mbti check
+	checkedMbti(value){
+		return this.mbtiList?.includes(value);
+	},
+	// 메인 체크여부
+	checkedMain(target){
+		const index1 = this.mainList.indexOf(target);
+		return index1 >= 0 ? {checkedMain : true} : {checkedMain : false}
+	},
+	
+	// 서브 체크여부
+	checkedSub(target){
+		const index2 = this.subList.indexOf(target);
+		return index2 >= 0 ? {checkedSub : true} : {checkedSub : false}
+	},
+	
+	isCheck(index){
+		if(input[id=main+index]==checked){
+			return true;
+		}
+		return false;
+	},
+	
+	isClubProfile(index){
+		if(this.clubList[index].clubProfileDto != null){
+			if(this.clubList[index].clubProfileDto.attachNo != 0){
+				return true;
+			}
+		}
+		return false;
+	},
+	
+	isAnimalG(index){
+		if(this.clubList[index].animalPhotoG != null){
+			if(this.clubList[index].animalPhotoG.attachNo != 0){
+				return true;
+			}
+		}
+		return false;
+	},
+	
+	isAnimalL(index){
+		if(this.clubList[index].animalPhotoL != null){
+			if(this.clubList[index].animalPhotoL.attachNo != 0){
+				return true;
+			}
+		}
+		return false;
+	},
+	
 	removeHidden(){
 		if(this.$refs.clubLeader.value == ""){
 			window.location.href="${pageContext.request.contextPath}/member/login/";
@@ -415,7 +674,7 @@ methods: {
 	
 	// 디테일 페이지 이동
 	toDetailPage(index){
-		window.location.href="${pageContext.request.contextPath}/club/detail?clubNo="+this.clubList[index].clubNo;
+		window.location.href="${pageContext.request.contextPath}/club/detail?clubNo="+this.clubList[index].clubDto.clubNo;
 	},
 	addInput(){
 		if(this.count >= 3) return;
@@ -464,6 +723,26 @@ methods: {
 			this.place2 = [];
 			this.place2.push(...resp.data);
 		})		
+	},
+	
+	// 메인 카테고리 검색 
+	checkMain(event){
+		this.main = event.target.value;
+		
+		this.isChecked = !this.isChecked;
+		
+		// 카테고리 - 분류
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/category2/"+this.main,
+			method:"get",
+		}).then((resp) => {
+			this.subCategory = [];
+			this.subCategory.push(...resp.data);
+		})	
+	},
+	
+	checkSub(event){
+		this.sub = event.target.value;
 	},
 
 },

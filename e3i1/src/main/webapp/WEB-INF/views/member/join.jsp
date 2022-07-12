@@ -22,6 +22,10 @@
 	border-color: #3E4684;
 	border-width: 0.25em;
 }
+.checked{
+	border-color: #3E4684;
+	border-width: 0.25em;
+}
 
 .maincolor {
 	color: #3E4684;
@@ -260,7 +264,7 @@ i{
 			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark rounded">
 				<div class="col-md-8 offset-md-2">
 					<c:forEach var="mbtiSurveyDto" items="${list}">
-						<c:if test="${mbtiSurveyDto.surveyNo >= 10}">
+						<c:if test="${mbtiSurveyDto.surveyNo >= 10 && mbtiSurveyDto.surveyNo < 13}">
 							<div class="text-center">
 								<div class="row">
 									<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
@@ -293,168 +297,152 @@ i{
 
 				<div class="row row-cols-1 row-cols-md-3 g-10 my-2">
 					<div class="col">
-						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
-							<div class="card-body m-1">
-								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 인스타그래머 
-								<i class="fa-brands fa-instagram-square"></i>
-								</h5>
-								<p class="card-text text-center tagtext">
-									남는 건 사진 뿐!<br>내 모든 순간을 남기자!
-								</p>
-							</div>
+						<div class="card my-2" :class="{'checked':isChecked('인스타그래머')}" style="width: 15rem; border-radius: 30px;">
+							<label for="cat1">
+								<div class="card-body m-1">
+									<h5 class="card-title text-center tagtitle"><label class="maincolor"># </label> 인스타그래머 
+									<i class="fa-brands fa-instagram-square"></i>
+									</h5>
+									<input id="cat1" type="checkbox" value="인스타그래머" v-model="interest">
+									<p class="card-text text-center tagtext">
+										남는 건 사진 뿐!<br>내 모든 순간을 남기자!
+									</p>
+								</div>
+							</label>
 						</div>
 					</div>
 
 					<div class="col">
-						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('액티비티매니아')}" style="width: 15rem; border-radius: 30px;">
+							<label for="cat2">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 액티비티매니아
 								<i class="fa-solid fa-person-running" class="coloricon"></i></h5>
+								<input id="cat2" type="checkbox" value="액티비티매니아" v-model="interest">
 								<p class="card-text text-center tagtext">
 									나를 죽이지 못한 고통은<br>나를 더욱 강하게 만든다!
 								</p>
 							</div>
+							</label>
 						</div>
 					</div>
 
 					<div class="col">
-						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('친구해요')}" style="width: 15rem; border-radius: 30px;">
+							<label for="cat3">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 친구해요
 								<i class="fa-solid fa-user-group"></i></h5>
+								<input id="cat3" type="checkbox" value="친구해요" v-model="interest">
 								<p class="card-text text-center tagtext">다들 모여!<br>사람 만나는 게 제일 좋아!</p>
 							</div>
+							</label>
 						</div>
 					</div>
 
 					<div class="col">
-						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('뇌색남녀')}" style="width: 15rem; border-radius: 30px;">
+							<label for="cat4">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 뇌색남녀
 								<i class="fa-solid fa-book"></i></h5>
+								<input id="cat4" type="checkbox" value="뇌색남녀" v-model="interest">
 								<p class="card-text text-center tagtext">
 									지금 잠을 자면 꿈을 꾸지만<br>지금 공부하면 꿈을 이룰지도..?
 								</p>
 							</div>
+							</label>
 						</div>
 					</div>
 
 					<div class="col">
-						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('텅장되자')}" style="width: 15rem; border-radius: 30px;">
+						<label for="cat5">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 텅장되자
 								<i class="fa-solid fa-cart-shopping"></i></h5>
+								<input id="cat5" type="checkbox" value="텅장되자" v-model="interest">
 								<p class="card-text text-center tagtext">
 									사는재미 없으면<br>사는 재미라도!
 								</p>
 							</div>
+						</label>
 						</div>
 					</div>
 
 					<div class="col">
-						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('킹스맨')}" style="width: 15rem; border-radius: 30px;">
+						<label for="cat6">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 킹스맨
 								<i class="fa-solid fa-clapperboard"></i></h5>
+								<input id="cat6" type="checkbox" value="킹스맨" v-model="interest">
 								<p class="card-text text-center tagtext">
 									관람객 매너가<br>명작을 만든다!
 								</p>
 							</div>
+						</label>
 						</div>
 					</div>
 
 					<div class="col">
-						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('집돌이집순이')}" style="width: 15rem; border-radius: 30px;">
+						<label for="cat7">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 집돌이집순이
 								<i class="fa-solid fa-house"></i></i></h5>
+								<input id="cat7" type="checkbox" value="집돌이집순이" v-model="interest">
 								<p class="card-text text-center tagtext">
 									집에서 할 게<br>얼마나 많은데?!
 								</p>
 							</div>
+						</label>
 						</div>
 					</div>
 
 					<div class="col">
-						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('금손모임')}" style="width: 15rem; border-radius: 30px;">
+						<label for="cat8">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 금손모임
 								<i class="fa-solid fa-hand-sparkles"></i></i></h5>
+								<input id="cat8" type="checkbox" value="금손모임" v-model="interest">
 								<p class="card-text text-center tagtext">똥손도 괜찮아요~<br>함께 만들어요!</p>
 							</div>
+						</label>
 						</div>
 					</div>
 
 					<div class="col">
-						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('자연인')}" style="width: 15rem; border-radius: 30px;">
+						<label for="cat9">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 자연인
 								<i class="fa-solid fa-mountain-sun"></i></h5>
+								<input id="cat9" type="checkbox" value="자연인" v-model="interest">
 								<p class="card-text text-center tagtext">
 									산은 산이요~<br>물은 물이로다~
 								</p>
 							</div>
+						</label>
 						</div>
 					</div>
 
 					<div class="col">
-						<div class="card my-2" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('집사님')}" style="width: 15rem; border-radius: 30px;">
+						<label for="cat10">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 집사님
 								<i class="fa-solid fa-paw"></i></h5>
+								<input id="cat10" type="checkbox" value="집사님" v-model="interest">
 								<p class="card-text text-center tagtext">
 									저는 주인님을<br>모시고 있습니다!
 								</p>
 							</div>
+						</label>
 						</div>
 					</div>
 				</div>
-
-				<!-- 				<div class="col-md-8 offset-md-2"> -->
-				<!-- 						<div class="form-floating mb-3"> -->
-				<!-- 							<select name="memberInterest1" class="form-select" -->
-				<!-- 								id="floatingSelect"> -->
-				<!-- 								<option value=""></option> -->
-				<!-- 								<option>#액티비티매니아</option> -->
-				<!-- 								<option>#인스타그래머</option> -->
-				<!-- 								<option>#금손모임</option> -->
-				<!-- 								<option>#친구해요</option> -->
-				<!-- 								<option>#뇌섹남녀</option> -->
-				<!-- 								<option>#텅장되자</option> -->
-				<!-- 								<option>#킹스맨</option> -->
-				<!-- 								<option>#자연인</option> -->
-				<!-- 								<option>#집사님</option> -->
-				<!-- 								<option>#집돌이집순이</option> -->
-				<!-- 							</select> <label for="floatingSelect">Interest1</label> -->
-				<!-- 							<select name="memberInterest2" class="form-select" -->
-				<!-- 								id="floatingSelect"> -->
-				<!-- 								<option value=""></option> -->
-				<!-- 								<option>#액티비티매니아</option> -->
-				<!-- 								<option>#인스타그래머</option> -->
-				<!-- 								<option>#금손모임</option> -->
-				<!-- 								<option>#친구해요</option> -->
-				<!-- 								<option>#뇌섹남녀</option> -->
-				<!-- 								<option>#텅장되자</option> -->
-				<!-- 								<option>#킹스맨</option> -->
-				<!-- 								<option>#자연인</option> -->
-				<!-- 								<option>#집사님</option> -->
-				<!-- 								<option>#집돌이집순이</option> -->
-				<!-- 							</select> <label for="floatingSelect">Interest2</label> -->
-				<!-- 							<select name="memberInterest3" class="form-select" -->
-				<!-- 								id="floatingSelect"> -->
-				<!-- 								<option value=""></option> -->
-				<!-- 								<option>#액티비티매니아</option> -->
-				<!-- 								<option>#인스타그래머</option> -->
-				<!-- 								<option>#금손모임</option> -->
-				<!-- 								<option>#친구해요</option> -->
-				<!-- 								<option>#뇌섹남녀</option> -->
-				<!-- 								<option>#텅장되자</option> -->
-				<!-- 								<option>#킹스맨</option> -->
-				<!-- 								<option>#자연인</option> -->
-				<!-- 								<option>#집사님</option> -->
-				<!-- 								<option>#집돌이집순이</option> -->
-				<!-- 							</select> <label for="floatingSelect">Interest3</label> -->
-				<!-- 						</div> -->
 
 				<button type="button" class="btn btn-prev mt-1" style="float: left;">이전</button>
 				<button type="button" class="btn btn-next mt-1" @click="callAnimal"
@@ -653,6 +641,8 @@ data() {
 		
 		// mbti별 동물 
 		memberAnimal: "",
+		
+		interest:[],
 	};
 },
 computed: {
@@ -660,6 +650,11 @@ computed: {
 	// - 알림창을 여기서 만들면 성능저하가 되기 때문에 계산된 값을 반환해서 메소드에서 알림을 띄워야 한다. 
 },
 methods: {
+	// checkbox 
+	isChecked(value){
+		return this.interest?.includes(value);
+	},
+	
 	// 시/군/구 추가
 	addCityList1(){
 		if(this.address1No == ""){

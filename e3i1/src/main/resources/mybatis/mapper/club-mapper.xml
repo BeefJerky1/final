@@ -277,13 +277,42 @@
 		
 		<association property="mbtiRankVO">
 			<result column="greatest_mbti" property="greatestMbti"/>
+			<result column="greatest_animal_no" property="greatestAnimalNo"/>
+			<result column="greatest_animal" property="greatestAnimal"/>
 			<result column="least_mbti" property="leastMbti"/>
+			<result column="least_animal_no" property="leastAnimalNo"/>
+			<result column="least_animal" property="leastAnimal"/>
+		</association>
+		
+		<association property="animalPhotoG">
+			<result column="greatest_attach_no" property="attachNo"/>
+		</association>
+		
+		<association property="animalPhotoL">
+			<result column="least_attach_no" property="attachNo"/>
 		</association>
 		
 	</resultMap>
 	
 	<select id="list" resultMap="clubListVO">
-		select * from club_list_vo order by club_no desc
+		SELECT 
+			clv.*,
+			mag.ANIMAL_NO GREATEST_animal_no,
+			mag.ANIMAL GREATEST_aniaml,
+			apg.ATTACH_NO GREATEST_attach_no,
+			mal.ANIMAL_NO LEAST_animal_no,
+			mal.ANIMAL LEAST_animal,
+			apl.ATTACH_NO LEAST_attach_no
+		FROM CLUB_LIST_VO clv
+		LEFT OUTER JOIN MBTI_ANIMAL mag
+		ON clv.GREATEST_MBTI = mag.MBTI 
+		LEFT OUTER JOIN ANIMAL_PHOTO apg 
+		ON mag.ANIMAL_NO = apg.ANIMAL_NO 
+		LEFT OUTER JOIN MBTI_ANIMAL mal
+		ON clv.LEAST_MBTI = mal.MBTI 
+		LEFT OUTER JOIN ANIMAL_PHOTO apl
+		ON mal.ANIMAL_NO = apl.ANIMAL_NO 
+		ORDER BY total ASC, club_no DESC
 	</select> 
 	
 	

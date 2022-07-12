@@ -63,7 +63,7 @@
 						<div class="row">
 							<div class="col-md-2" width="10px" height="10px">
 								<img src="https://via.placeholder.com/250/69f/fff.png" class="profile" v-if="clubList.memberProfileDto == null" >
-								<img :src="'${pageContext.request.contextPath}/attachment/download?attachmentNo='+clubList.memberProfileDto.attachNo" class="profile" v-if="clubList.memberProfileDto != null">
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo" class="profile" v-if="clubList.memberProfileDto != null">
 							</div>
 							<div class="col-md-8 offset-md-2 row align-self-center">
 								<div class="col-md-3">
