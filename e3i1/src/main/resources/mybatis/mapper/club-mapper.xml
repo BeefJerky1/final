@@ -295,6 +295,10 @@
 	</resultMap>
 	
 	<select id="list" resultMap="clubListVO">
+		<bind name="mainCategoryExist" value="mainList != null and mainList.equals('')"/>
+		<bind name="subCategoryExist" value="subList != null and subList.equals('')"/>
+		<bind name="cityExist" value="city2 != null and city2.equals('')"/>
+		<bind name="mbtiExist" value="mbtiList != null and mbtiList.size() > 0"/>
 		SELECT 
 			clv.*,
 			mag.ANIMAL_NO GREATEST_animal_no,
@@ -312,6 +316,33 @@
 		ON clv.LEAST_MBTI = mal.MBTI 
 		LEFT OUTER JOIN ANIMAL_PHOTO apl
 		ON mal.ANIMAL_NO = apl.ANIMAL_NO 
+		<where>
+			<!-- 메인 카테고리 -->
+			<if test="mainCategoryExist">
+				<![CDATA[
+				and instr(club_main_category, #{mainList}) > 0
+				]]>
+			</if>
+			<!-- 서브 카테고리 -->
+			<if test="subCategoryExist">
+				<![CDATA[
+				and instr(club_sub_category, #{mainList}) > 0
+				]]>
+			</if>
+			<!-- 도시 -->
+			<if test="cityExist">
+				<![CDATA[
+				and instr(club_place, #{city2}) > 0
+				]]>
+			</if>
+			<!-- mbti -->
+			<if test="mbtiExist">
+				and greatest_mbti in
+				<foreach collection="mbtiList" item="mbti" open="(" close=")" separator=",">
+					#{mbti}
+				</foreach>
+			</if>
+		</where>
 		ORDER BY total ASC, club_no DESC
 	</select> 
 	

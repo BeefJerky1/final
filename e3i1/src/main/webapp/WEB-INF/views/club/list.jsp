@@ -137,7 +137,7 @@ input[type=checkbox]{
 							<label class="sub-label" :for="'sub'+index" :class="checkedSub(sub.categoryContent)">
 							<div class="text-center" >
 								<h6>\#{{sub.categoryContent}}</h6>
-								<input :id="'sub'+index" name="subCategory" type="radio" @change="checkSub($event)" v-model="subList" :value="sub.categoryContent" >
+								<input :id="'sub'+index" name="subCategory" type="radio" v-model="subList" :value="sub.categoryContent" >
 							</div>
 							</label>
 							</div>
@@ -166,7 +166,7 @@ input[type=checkbox]{
 						</div>
 						
 						<div class="col-md-2 align-self-center">
-							<button class="btn-create p-0" style="width:100px; height:38px">검색</button>
+							<button class="btn-create p-0" style="width:100px; height:38px" @click="searchClubList">검색</button>
 						</div>
 					</div>
 				</div>
@@ -480,8 +480,6 @@ data() {
 		place1: [],
 		place2: [],
 		
-		main: '',
-		sub: '',
 		place1No: "",
 		city2: "",
 		
@@ -727,13 +725,11 @@ methods: {
 	
 	// 메인 카테고리 검색 
 	checkMain(event){
-		this.main = event.target.value;
-		
 		this.isChecked = !this.isChecked;
 		
 		// 카테고리 - 분류
 		axios({
-			url:"${pageContext.request.contextPath}/rest/category_n_address/category2/"+this.main,
+			url:"${pageContext.request.contextPath}/rest/category_n_address/category2/"+this.mainList,
 			method:"get",
 		}).then((resp) => {
 			this.subCategory = [];
@@ -741,8 +737,20 @@ methods: {
 		})	
 	},
 	
-	checkSub(event){
-		this.sub = event.target.value;
+	searchClubList(){
+		axios({
+			url: "${pageContext.request.contextPath}/rest/club/",
+			method: "get",
+			data:{
+				mainList : this.mainList,
+				subList : this.subList,
+				city2 : this.city2,
+				mbtiList : this.mbtiList,
+			},
+		}).then((resp) => {
+			this.clubList = [];
+			this.clubList.push(...resp.data);
+		})
 	},
 
 },
@@ -751,13 +759,16 @@ watch:{
 	// 스크롤 이벤트는 디바운스로 처리해야한다.
 },
 created() {
-	this.searchList();
-	axios({
+	
+	 this.searchList();
+	
+	 axios({
 			url: "${pageContext.request.contextPath}/rest/club/",
 			method: "get",
 		}).then((resp) => {
 			this.clubList.push(...resp.data);
-		})
+	}) 
+	
 	},
 });
 app.mount("#app");
