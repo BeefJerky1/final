@@ -1,4 +1,4 @@
-package com.kh.e3i1.vo;
+	package com.kh.e3i1.vo;
 
 import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.ClubProfileDto;

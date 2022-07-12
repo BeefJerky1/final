@@ -87,7 +87,7 @@
 			</if>		
 		</where>
 	</select>
-		<!-- 소모임 검색 -->
+	
 		
 		<!-- 소모임 삭제 -->
 	<delete id="deleteClub" parameterType="int">
@@ -182,8 +182,39 @@
 		ON cm.CLUB_NO = C.CLUB_NO
 		WHERE CM.club_no = #{clubNo} and cm.club_member_permission =1
 	</select>
-	<select id="clubboardlist" resultType="clubBoardDto" parameterType="int">
-		select * from club_board where club_no= #{clubNo}
+	<!-- 소모임 게시글 목록 -->
+	<select id="clubboardlist" resultType="clubBoardDto" parameterType="Map"> 	
+	select * from club_board where club_no = #{clubNo} order by ${column} ${order} 
+	</select>	
+	<!-- 소모임 게시글 검색 -->
+	<select id="clubboardsearch" resultType="clubBoardDto" parameterType="AdminSearchVO"> 
+	<bind name="keywordExist" value="keyword!=null and type!=null and !keyword.equals('') and !type.equals('')" />
+	
+	select * from club_board 
+			<where>
+			club_no = #{clubNo}
+			<!-- 아이디: 유사한 항목  -->
+			<if test="keywordExist">
+				and instr(${type}, #{keyword})>0
+			</if>	
+			<if test="column!=null and order !=null">
+			order by ${column} ${order}
+			</if>		
+		</where>
+	</select>
+	<!-- 소모임 게시글 통계 -->
+	<select id="clubboardstat" resultType="clubStatisticVO" parameterType="int">
+	      select 
+    TO_CHAR(club_board_time, 'YYYYMMDD') as "daily",
+     count(*) "total",sum(club_board_like)"Like" , sum(club_board_reportcount)"report"  , sum(club_board_count)"reply" , sum(club_board_readcount)"read" 
+from 
+    club_board
+where
+ 	<![CDATA[  club_no = 19 and  club_board_time >='20000101' and club_board_time <= sysdate ]]>
+GROUP BY
+    to_char(club_board_time, 'YYYYMMDD') order by "daily" desc
+	 
+<!-- 	    select  count(*) "total",sum(club_board_like)"like" , sum(club_board_reportcount)"report"  , sum(club_board_count)"reply" , sum(club_board_readcount)"read" from club_board where club_no = #{clubNo} -->
 	</select>
 	<select id="clubreplylist" resultType="clubBoardReplyDto" parameterType="int">
 		select * from club_board_reply where club_no= #{clubNo}
@@ -297,4 +328,44 @@
 	<select id="selectmbtianimal" resultType="int">
 		select animal_no from mbti_animal where animal_no = #{animalNo}
 	</select>
+	
+	
+		<resultMap type="ClubDetailVO" id="clubDetailVO">
+		<association property="clubMbtiPercent">
+			<result column="club_no" property="clubNo"/>
+			<result column="total" property="total"/>
+			<result column="enfj" property="enfj"/>
+			<result column="enfj_percent" property="enfjPercent"/>
+			<result column="esfp" property="esfp"/>
+			<result column="esfp_percent" property="esfpPercent"/>
+			<result column="isfp" property="isfp"/>
+			<result column="isfp_percent" property="isfpPercent"/>
+			<result column="estp" property="estp"/>
+			<result column="estp_percent" property="estpPercent"/>
+			<result column="istp" property="istp"/>
+			<result column="istp_percent" property="istpPercent"/>
+			<result column="estj" property="estj"/>
+			<result column="estj_percent" property="estjPercent"/>
+			<result column="esfj" property="esfj"/>
+			<result column="esfj_percent" property="esfjPercent"/>
+			<result column="isfj" property="isfj"/>
+			<result column="isfj_percent" property="isfjPercent"/>
+			<result column="enfp" property="enfp"/>
+			<result column="enfp_percent" property="enfpPercent"/>
+			<result column="istj" property="istj"/>
+			<result column="istj_percent" property="istjPercent"/>
+			<result column="infp" property="infp"/>
+			<result column="infp_percent" property="infpPercent"/>
+			<result column="entp" property="entp"/>
+			<result column="entp_percent" property="entpPercent"/>
+			<result column="infj" property="infj"/>
+			<result column="infj_percent" property="infjPercent"/>
+			<result column="intj" property="intj"/>
+			<result column="intj_percent" property="intjPercent"/>
+			<result column="intp" property="intp"/>
+			<result column="intp_percent" property="intpPercent"/>
+			<result column="entj" property="entj"/>
+			<result column="entj_percent" property="entjPercent"/>
+		</association>
+		</resultMap>
 </mapper>

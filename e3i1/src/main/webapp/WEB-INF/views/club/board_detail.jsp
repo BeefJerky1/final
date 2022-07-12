@@ -810,7 +810,7 @@ img {
 		    		//2.현재 사용자가 작성자라면 통과
 		    		if(this.memberNo==boardWriter)return true;
 		    		//3.현재 사용자가 소모임 리더일때
-		    		if(this.memberNo==this.clubList.clubDto.clubLeader)return true;
+// 		    		if(this.memberNo==this.clubList.clubDto.clubLeader)return true;
 		    		//나머지 차단
 		    		return false;
 		    	},
