@@ -21,10 +21,6 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="club">
 	
-	<select id="list" resultType="ClubDto">
-		select * from club order by club_no asc
-	</select>
-	
  	<select id="sequence" resultType="int">
 		select club_seq.nextval from dual
 	</select>
@@ -223,6 +219,7 @@
 				club_no = #{clubNo} and club_leader = #{clubLeader}
 	</update>
 	
+
 	<!--  상단 검색바 기능 -->
 	<select id="search" resultType="ClubDto" parameterType="String">
 	    select * from club
@@ -231,6 +228,133 @@
 			or  instr(club_sub_category, #{keyword}) > 0
         order by club_no asc        
        </select>
+
+ 		<resultMap type="ClubListVO" id="clubListVO">
+		<association property="clubMbtiPercentVO">
+			<result column="club_no" property="clubNo"/>
+			<result column="total" property="total"/>
+			<result column="enfj" property="enfj"/>
+			<result column="enfj_percent" property="enfjPercent"/>
+			<result column="esfp" property="esfp"/>
+			<result column="esfp_percent" property="esfpPercent"/>
+			<result column="isfp" property="isfp"/>
+			<result column="isfp_percent" property="isfpPercent"/>
+			<result column="estp" property="estp"/>
+			<result column="estp_percent" property="estpPercent"/>
+			<result column="istp" property="istp"/>
+			<result column="istp_percent" property="istpPercent"/>
+			<result column="estj" property="estj"/>
+			<result column="estj_percent" property="estjPercent"/>
+			<result column="esfj" property="esfj"/>
+			<result column="esfj_percent" property="esfjPercent"/>
+			<result column="isfj" property="isfj"/>
+			<result column="isfj_percent" property="isfjPercent"/>
+			<result column="enfp" property="enfp"/>
+			<result column="enfp_percent" property="enfpPercent"/>
+			<result column="istj" property="istj"/>
+			<result column="istj_percent" property="istjPercent"/>
+			<result column="infp" property="infp"/>
+			<result column="infp_percent" property="infpPercent"/>
+			<result column="entp" property="entp"/>
+			<result column="entp_percent" property="entpPercent"/>
+			<result column="infj" property="infj"/>
+			<result column="infj_percent" property="infjPercent"/>
+			<result column="intj" property="intj"/>
+			<result column="intj_percent" property="intjPercent"/>
+			<result column="intp" property="intp"/>
+			<result column="intp_percent" property="intpPercent"/>
+			<result column="entj" property="entj"/>
+			<result column="entj_percent" property="entjPercent"/>
+		</association>
+		
+		<association property="clubDto">
+			<result column="club_no" property="clubNo"/>
+			<result column="club_leader" property="clubLeader"/>
+			<result column="club_name" property="clubName"/>
+			<result column="club_summary" property="clubSummary"/>
+			<result column="club_main_category" property="clubMainCategory"/>
+			<result column="club_sub_category" property="clubSubCategory"/>
+			<result column="club_place" property="clubPlace"/>
+			<result column="club_join_question1" property="clubJoinQuestion1"/>
+			<result column="club_join_question2" property="clubJoinQuestion2"/>
+			<result column="club_join_question3" property="clubJoinQuestion3"/>
+			<result column="club_member_limit" property="clubMemberLimit"/>
+		</association>
+		<association property="clubProfileDto">
+			<result column="attach_no" property="attachNo"/>
+			<result column="club_no" property="clubNo"/>
+		</association>
+		
+		<association property="mbtiRankVO">
+			<result column="greatest_mbti" property="greatestMbti"/>
+			<result column="greatest_animal_no" property="greatestAnimalNo"/>
+			<result column="greatest_animal" property="greatestAnimal"/>
+			<result column="least_mbti" property="leastMbti"/>
+			<result column="least_animal_no" property="leastAnimalNo"/>
+			<result column="least_animal" property="leastAnimal"/>
+		</association>
+		
+		<association property="animalPhotoG">
+			<result column="greatest_attach_no" property="attachNo"/>
+		</association>
+		
+		<association property="animalPhotoL">
+			<result column="least_attach_no" property="attachNo"/>
+		</association>
+		
+	</resultMap>
+	
+	<select id="list" resultMap="clubListVO">
+		<bind name="mainCategoryExist" value="mainList != null and mainList.equals('')"/>
+		<bind name="subCategoryExist" value="subList != null and subList.equals('')"/>
+		<bind name="cityExist" value="city2 != null and city2.equals('')"/>
+		<bind name="mbtiExist" value="mbtiList != null and mbtiList.size() > 0"/>
+		SELECT 
+			clv.*,
+			mag.ANIMAL_NO GREATEST_animal_no,
+			mag.ANIMAL GREATEST_aniaml,
+			apg.ATTACH_NO GREATEST_attach_no,
+			mal.ANIMAL_NO LEAST_animal_no,
+			mal.ANIMAL LEAST_animal,
+			apl.ATTACH_NO LEAST_attach_no
+		FROM CLUB_LIST_VO clv
+		LEFT OUTER JOIN MBTI_ANIMAL mag
+		ON clv.GREATEST_MBTI = mag.MBTI 
+		LEFT OUTER JOIN ANIMAL_PHOTO apg 
+		ON mag.ANIMAL_NO = apg.ANIMAL_NO 
+		LEFT OUTER JOIN MBTI_ANIMAL mal
+		ON clv.LEAST_MBTI = mal.MBTI 
+		LEFT OUTER JOIN ANIMAL_PHOTO apl
+		ON mal.ANIMAL_NO = apl.ANIMAL_NO 
+		<where>
+			<!-- 메인 카테고리 -->
+			<if test="mainCategoryExist">
+				<![CDATA[
+				and instr(club_main_category, #{mainList}) > 0
+				]]>
+			</if>
+			<!-- 서브 카테고리 -->
+			<if test="subCategoryExist">
+				<![CDATA[
+				and instr(club_sub_category, #{mainList}) > 0
+				]]>
+			</if>
+			<!-- 도시 -->
+			<if test="cityExist">
+				<![CDATA[
+				and instr(club_place, #{city2}) > 0
+				]]>
+			</if>
+			<!-- mbti -->
+			<if test="mbtiExist">
+				and greatest_mbti in
+				<foreach collection="mbtiList" item="mbti" open="(" close=")" separator=",">
+					#{mbti}
+				</foreach>
+			</if>
+		</where>
+		ORDER BY total ASC, club_no DESC
+	</select> 
 	
 	
 </mapper>

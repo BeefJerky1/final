@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.ClubLikeDto;
+import com.kh.e3i1.vo.ClubComplexSearchVO;
 import com.kh.e3i1.vo.ClubDetailVO;
+import com.kh.e3i1.vo.ClubListVO;
 
 public interface ClubDao {
 
-	List<ClubDto> list();
+	List<ClubListVO> list(ClubComplexSearchVO clubComplexSearchVO);
 
 	int create(ClubDto clubDto);
 

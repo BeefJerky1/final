@@ -217,8 +217,84 @@
 		delete mbti_survey where survey_no = #{SurveyNo}
 	</delete>
 	
-	<!-- mbti 게시판 목록 -->
-	<select id="mbtiboardlist" resultType="mbtiBoardDto">
-		select * from mbti_board order by mbti_board_no asc
+		<!-- mbti 게시판 목록 -->
+	<select id="mbtiboardlist" resultType="mbtiBoardDto" parameterType="Map"> 	
+	select * from mbti_board order by ${column} ${order}
+	</select>	
+	
+		<!-- mbti 게시판 검색 -->
+	<select id="mbtiboardsearch" resultType="mbtiBoardDto" parameterType="AdminSearchVO"> 
+	<bind name="keywordExist" value="keyword!=null and type!=null and !keyword.equals('') and !type.equals('')" />
+	select * from mbti_board
+			<where>
+			<!-- 아이디: 유사한 항목  -->
+			<if test="keywordExist">
+				and instr(${type}, #{keyword})>0
+			</if>	
+			<if test="column!=null and order !=null">
+			order by ${column} ${order}
+			</if>		
+		</where>
+	</select>
+		<!-- mbti 게시판 게시글 숫자 -->
+	<select id="mbtiboardcount" resultType="int"> 
+	select count(*) from mbti_board
+	</select>
+	<!-- 동물 사진 목록 -->
+	<select id="mbtiPhotolist" resultType="animalPhotoDto">
+		select attach_no from animal_photo
+	</select>
+	<!-- 동물 사진 등록 -->
+		<insert id="mbtiPhotoinsert" parameterType="Map">
+		insert into animal_photo(
+			animal_no, attach_no
+		)
+		values(
+			#{animalNo}, #{attachNo}
+		)
+	</insert>
+		<!-- 동물 사진 조회 -->
+	<select id="mbtiPhotosearch" parameterType="Integer" resultType="Integer">
+		select attach_no from animal_photo where animal_no = #{animalNo}
+	</select>
+		<!-- 동물 사진 삭제 -->
+	<delete id="mbtiPhotodelete" parameterType="Integer">
+		delete animal_photo where attach_no = #{attachNo}
+	</delete>
+	<!-- mbti 동물 목록 + 동물 사진 목록 -->
+	<resultMap type="AdminMbtiAnimalListVO" id="AdminMbtiAnimalListVO">
+		<association property="animalPhotoDto">
+			<result column="animal_no" property="animalNo"/>
+			<result column="attach_no" property="attachNo"/>
+		</association>
+		<association property="mbtiAnimalDto">
+			<result column="animal_no" property="animalNo"/>
+			<result column="animal" property="animal"/>
+			<result column="mbti" property="mbti"/>
+		</association>
+	</resultMap>
+	<select id="mbtianimallist" resultMap="AdminMbtiAnimalListVO">
+        	select
+		M.animal_no,
+		M.animal,
+		M.mbti,
+		A.attach_no
+		from mbti_animal M 
+		left outer join animal_photo A
+		on M.animal_no = A.animal_no
+		order by M.animal_no
+	</select>
+	<!-- 동물 등록 -->
+	<insert id="mbtianimalinsert" parameterType="mbtiAnimalDto">
+		insert into mbti_animal (animal_no, animal, mbti)
+		values (#{animalNo},#{animal},#{mbti})
+	</insert>
+		<!-- 동물 삭제 -->
+	<insert id="mbtianimaldelete" parameterType="int">
+		delete mbti_animal where animal_no = #{animalNo}
+	</insert>
+	<!-- 동물 검색 -->
+	<select id="selectmbtianimal" resultType="int">
+		select animal_no from mbti_animal where animal_no = #{animalNo}
 	</select>
 </mapper>

@@ -268,11 +268,11 @@
 	<div class="modal" v-bind:class="isHidden" class="rounded">
 		<div class="modal-overlay" v-on:click="addHidden"></div>
 
-		<div class="modal-content mt-4" style="width:800px!important; position:absolute!important;">
+		<div class="modal-content mt-4" style="width:600px!important; height:450px!important; position:absolute!important;">
 		
 			<div class="container-fluid">
 				<div class="modal-header text-start">
-					<h1>소모임 가입 거절 메세지</h1>
+					<h3>소모임 가입 거절 메세지</h3>
 				</div>
 				<div class="text-start mt-2">
 					<p style="font-size: 10px">

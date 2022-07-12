@@ -11,7 +11,9 @@ import org.springframework.stereotype.Repository;
 import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.ClubLikeDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.vo.ClubComplexSearchVO;
 import com.kh.e3i1.vo.ClubDetailVO;
+import com.kh.e3i1.vo.ClubListVO;
 
 @Repository
 public class ClubDaoImpl implements ClubDao {
@@ -20,8 +22,8 @@ public class ClubDaoImpl implements ClubDao {
 	private SqlSession sqlSession;
 
 	@Override
-	public List<ClubDto> list() {
-		return sqlSession.selectList("club.list");
+	public List<ClubListVO> list(ClubComplexSearchVO clubComplexSearchVO) {
+		return sqlSession.selectList("club.list", clubComplexSearchVO);
 	}
 
 	

@@ -1,5 +1,6 @@
 package com.kh.e3i1.repository;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,13 +8,17 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.e3i1.entity.AnimalPhotoDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubDto;
+import com.kh.e3i1.entity.MbtiAnimalDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.vo.AdminMbtiAnimalListVO;
 import com.kh.e3i1.vo.AdminSearchVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
 
@@ -139,16 +144,59 @@ public class AdminDaoImpl implements AdminDao{
 	}
 	//mbti 게시판 목록
 	@Override
-	public List<MbtiBoardDto> mbtiBoardList() {
-		return sqlSession.selectList("admin.mbtiboardlist");
+	public List<MbtiBoardDto> mbtiBoardList(String column, String order) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("column", column);
+		param.put("order", order);
+		return sqlSession.selectList("admin.mbtiboardlist", param);
 	}
+	//소모임 게시글 목록
 	@Override
 	public List<ClubBoardDto> clubBoardList(int clubNo) {
 		return sqlSession.selectList("admin.clubboardlist", clubNo);
 	}
+	//소모임 댓글 목록
 	@Override
 	public List<ClubBoardReplyDto> clubReplyList(int clubNo) {
 		return sqlSession.selectList("admin.clubreplylist", clubNo);
+	}
+	//mbti 게시판 검색
+	@Override
+	public List<MbtiBoardDto> findBoard(AdminSearchVO searchVO) {
+		return sqlSession.selectList("admin.mbtiboardsearch",searchVO);			
+	}
+	//mbti 게시판 게시글 수 
+	@Override
+	public int mbtiBoardCount() {
+		return sqlSession.selectOne("admin.mbtiboardcount");
+	}
+	//mbti 동물 리스트
+	@Override
+	public List<AdminMbtiAnimalListVO> mbtiAnimalList() {
+		return sqlSession.selectList("admin.mbtianimallist");
+	}
+	//mbti 동물 사진 등록
+	@Override
+	public int insertPhoto(int attachNo , int animalNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("animalNo", animalNo);
+		param.put("attachNo", attachNo);
+		return sqlSession.insert("admin.mbtiPhotoinsert",param);
+	}
+	@Override
+	public int insertMbtiAnimal(MbtiAnimalDto mbtiAnimalDto) {
+		sqlSession.insert("admin.mbtianimalinsert",mbtiAnimalDto);
+		return mbtiAnimalDto.getAnimalNo();
+	}
+	@Override
+	public int mbtianimalDelete(int animalNo) {
+		sqlSession.delete("admin.mbtianimaldelete",animalNo);
+		Integer result = sqlSession.selectOne("admin.selectmbtianimal",animalNo);
+		if(result!=null) {
+			return 0;
+		}else {
+			return 1;
+		}
 	}
 
 

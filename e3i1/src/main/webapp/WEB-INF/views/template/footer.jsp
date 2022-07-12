@@ -6,6 +6,11 @@
  <!--footer-->
 <style>
 
+
+footer {
+position: relative!important;
+z-index:1;
+	}
 </style>
     <footer>
           <div class="container-fluid text-body footer mt-5 pt-5 wow fadeIn bg-secondary p-2 text-dark bg-opacity-10" data-wow-delay="0.1s">

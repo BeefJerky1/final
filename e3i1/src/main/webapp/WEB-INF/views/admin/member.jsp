@@ -112,7 +112,7 @@ li a:hover {
         <div class="collapse" id="mbti-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/mbtisurvey" class="link-light rounded">MBTI 설문</a></li>
-            <li><a href="#" class="link-light rounded">MBTI 동물</a></li>
+            <li><a href="${root}/admin/mbtianimal" class="link-light rounded">MBTI 동물</a></li>
           </ul>
         </div>
       </li>
@@ -152,7 +152,7 @@ li a:hover {
 							  </div>
 							<h5>정렬</h5>
 						<div class="col-lg-5 col-md-5 col-sm-5">
-							<select class="" v-model="column">
+							<select class="" v-model="column" v-on:change="memberList()">
 								<option value="member_no">회원번호</option>
 								<option value="member_nick">닉네임</option>
 								<option value="member_name">이름</option>

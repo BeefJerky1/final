@@ -6,8 +6,15 @@
 <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
 <style>
 .point {
-	font-size: 2.3em;
-	font-weight: bold;
+	font-size: 1.5em;
+	font-weight: 900;
+	color: #3E4684;
+}
+
+.point2 {
+	font-size: 3em;
+	font-weight: 900;
+	color: #3E4684;
 }
 
 .noticehead {
@@ -16,76 +23,42 @@
 }
 
 .noticetitle {
-	font-size: 1.0em;
-/* 	font-weight: bold; */
+	font-size: 1.1em;
+	font-weight: bold;
 }
 
 .noticecontent {
 	font-size: 0.9em;
 }
+
 .two {
 	float: left;
 	text-align: center;
 	width: 40%;
 }
+
+.btn {
+	margin-right: 0.3em;
+	margin-left: 0.3em;
+}
 </style>
 
-<div class="container ">
-	<div id="carouselExampleIndicators" class="carousel slide"
-		data-bs-ride="carousel">
-		<div class="carousel-indicators">
-			<button type="button" data-bs-target="#carouselExampleIndicators"
-				data-bs-slide-to="0" class="active" aria-current="true"
-				aria-label="Slide 1"></button>
-			<button type="button" data-bs-target="#carouselExampleIndicators"
-				data-bs-slide-to="1" aria-label="Slide 2"></button>
-			<button type="button" data-bs-target="#carouselExampleIndicators"
-				data-bs-slide-to="2" aria-label="Slide 3"></button>
-		</div>
-		<div class="carousel-inner">
-			<div class="carousel-item active">
-				<img src="${root }/image/banner01.png" class="d-block w-100"
-					alt="banner">
-			</div>
-			<div class="carousel-item">
-				<img src="${root }/image/banner02.png" class="d-block w-100"
-					alt="banner">
-			</div>
-			<div class="carousel-item">
-				<img src="${root }/image/banner03.png" class="d-block w-100"
-					alt="banner">
-			</div>
-		</div>
-		<button class="carousel-control-prev" type="button"
-			data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span> <span
-				class="visually-hidden">Previous</span>
-		</button>
-		<button class="carousel-control-next" type="button"
-			data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-			<span class="carousel-control-next-icon" aria-hidden="true"></span> <span
-				class="visually-hidden">Next</span>
-		</button>
-	</div>
-</div>
 
 <div id="app" class="container">
-	<div class="col-md-8 offset-md-2 mb-4 p-4 mt-4 text-dark bg-light rounded">
-	<div class="row text-center mb-3">
-			<h1 class="point">NOTICE</h1>
+	<div class="col-md-8 offset-md-2 mb-3 mt-2">
+		<div class="row text-center mb-3">
+			<h1 class="point2">NOTICE</h1>
 		</div>
-		<div class="row">
+	</div>
+	<div class="col-md-6 offset-md-3 mb-3">
+		<div class="text-center">
 			<table class="table table-border">
 				<tr>
-					<td class="left">
-						<span class="noticehead">
-							<c:if test="${noticeDto.noticeHead != null}">
+					<td class="left"><span class="noticehead"> <c:if
+								test="${noticeDto.noticeHead != null}">
 						[${noticeDto.noticeHead}]
 						</c:if>
-						</span>
-						<span class="noticetitle">
-							&nbsp;${noticeDto.noticeTitle}
-						</span>
+					</span> <span class="noticetitle"> &nbsp;${noticeDto.noticeTitle} </span>
 					</td>
 				</tr>
 
@@ -94,24 +67,69 @@
 				</tr>
 
 				<tr height="250">
-					<td valign="top" class="left noticecontent"><div>${noticeDto.noticeContent}</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td style="float: right;">
-					<a href="${pageContext.request.contextPath}/notice/edit?noticeNo=${noticeDto.noticeNo}"
-						class="btn btn-edit">수정</a>  <a
-						href="${pageContext.request.contextPath}/notice/delete/${noticeDto.noticeNo}"
-						class="btn btn-edit">삭제</a> <a
-						href="${pageContext.request.contextPath}/notice/list"
-						class="btn btn-outline-success">목록</a></td>
+					<td valign="top" class="left noticecontent"><div>
+							<br>${noticeDto.noticeContent}</div></td>
 				</tr>
 			</table>
+			<div class="mt-3 mb-4">
+				<a href="${pageContext.request.contextPath}/notice/list"
+					class="btn btn-edit">목록</a>
+					
+				<button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
+					data-bs-target="#exampleModal">수정</button>
+
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModal" tabindex="-1"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title point" id="exampleModalLabel">EDIT</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<form action="edit" method="post" enctype="multipart/form-data">
+									<div class="form-floating mb-3">
+										<input type="hidden" name="noticeNo"
+											value="${noticeDto.noticeNo}"> <select
+											name="noticeHead" class="form-select" id="floatingSelect">
+											<option value="${noticeDto.noticeHead}">${noticeDto.noticeHead}</option>
+											<option>이벤트</option>
+											<option>공지</option>
+											<option>긴급</option>
+										</select> <label for="floatingSelect">말머리</label>
+									</div>
+
+									<div class="form-floating mb-3">
+										<input type="text" class="form-control" name="noticeTitle"
+											value="${noticeDto.noticeTitle}" autocomplete="off" required>
+										<label for="floatingInput">제목</label>
+									</div>
+
+									<div class="form-floating mb-3">
+										<textarea class="form-control" id="floatingTextarea"
+											name="noticeContent" style="height: 250px">${noticeDto.noticeContent}</textarea>
+
+										<label for="floatingTextarea">내용</label>
+									</div>
+									<div class="col-md-8 offset-md-2 text-center">
+										<a href="detail?noticeNo=${noticeDto.noticeNo}"
+											class="btn btn-edit" data-bs-dismiss="modal">취소</a>
+										<button type="submit" class="btn btn-outline-success">등록</button>
+										</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a
+					href="${pageContext.request.contextPath}/notice/delete/${noticeDto.noticeNo}"
+					class="btn btn-outline-success">삭제</a>
+			</div>
 		</div>
 	</div>
 </div>
-
 <script src="https://unpkg.com/vue@next"></script>
 <!-- <script src="https://unpkg.com/vue@next/dist/vue.global.prod.js"></script> -->
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

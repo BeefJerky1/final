@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-	<c:set var="path" value="${pageContext.request.contextPath}"/>
+<c:set var="path" value="${pageContext.request.contextPath}" />
+<c:set var="memberNo" value="${login}"></c:set>
+<c:set var="memberAdmin" value="${auth == '관리자'}"></c:set>
+<c:set var="isLogin" value="${memberNo != null}"></c:set>
 	<style>
 	.imgfile1{
 		width:1000%;
@@ -338,7 +341,7 @@
         </div>
         </div>
        <div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5 ">
-       			<div v-if="this.clubMember==1" class="mt-3">
+       			<div v-if="UsingContents()" class="mt-3">
         			<button class="btn btn-secondary form-control " v-on:click="notAllowed()" v-if="cancel " style="border-radius:1em !important">cancel</button>
                    	<button class="btn btn-primary form-control " v-on:click="allowed()" v-if="write" style="border-radius:1em !important">write</button>
        			</div>
@@ -412,8 +415,8 @@
                 	//내 좋아요 확인
                 	boardLike:"",
 		            //세션
-		            memberNo:"${login}",
-		            memberAdmin:"${auth}",
+				   memberNo:"${login}",
+		           memberAdmin:"${auth}",
 		            //댓글 입력 정보
 		            boardContent:"",
 		            boardContent2:"",
@@ -566,6 +569,12 @@
     		        	});
             		}
                 },
+                UsingContents(){
+                	if(this.memberAdmin = '관리자')return true;
+                	if(this.isClubMember)return true;
+                	
+                	return false;
+                },
                 //더보기 버튼으로 게시글 추가
                 appendBoard(){
                 	//남은 게시글 수 확인
@@ -633,7 +642,10 @@
                 },
                 //상세 페이지로 이동
                 select: function(index) {
-                	if(this.clubMember!=1){
+                	if(this.isAdmin){
+                		const clubBoard = this.board[index];
+                    	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+clubBoard.clubBoardDto.clubBoardNo;
+                	}else if(this.clubMember!=1){
                 		window.alert("소모임 회원만 사용할 수 있는 컨텐츠입니다.")
                 		return;
                 	}
@@ -642,12 +654,16 @@
                 },
                 //인기 게시글로 이동
                 TopTen: function(index) {
-                	if(this.clubMember!=1){
+                	if(this.isAdmin){
+	                	const list = this.side[index];
+	                	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+list.clubBoardNo;            		
+                	}else if(this.clubMember!=1){
                 		window.alert("소모임 회원만 사용할 수 있는 컨텐츠입니다.")
                 		return;
                 	}
                 	const list = this.side[index];
-                	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+list.clubBoardNo;
+                	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+list.clubBoardNo;            		
+                	
                 },
                 //시간 바꾸기
                 elapsedText(date) {
