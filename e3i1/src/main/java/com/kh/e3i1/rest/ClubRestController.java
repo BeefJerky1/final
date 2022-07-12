@@ -57,9 +57,6 @@ public class ClubRestController {
 	public List<ClubListVO> searchList(
 			@RequestBody ClubComplexSearchVO clubComplexSearchVO
 			){
-		System.out.println(clubComplexSearchVO.getCity2());
-		System.out.println(clubComplexSearchVO.getMbtiList());
-		
 		return clubDao.searchList(clubComplexSearchVO);
 	}
 	

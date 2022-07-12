@@ -759,23 +759,18 @@ methods: {
 		
 		const clubComplexSearchVO = {};
 		if(this.mainList != null && this.mainList.length > 0){
-			console.log("main",this.mainList);
 			clubComplexSearchVO.mainList = this.mainList;
 		};
 		if(this.subList != null && this.subList.length > 0){
-			console.log(this.subList);
 			clubComplexSearchVO.subList = this.subList;
 		};
 		if(this.city2 != null && !this.city2 != ''){
-			console.log(this.city2);
 			clubComplexSearchVO.city2 = this.city2;
 		};
 		if(this.mbtiList != null && this.mbtiList.length > 0){
-			console.log(this.mbtiList);
 			clubComplexSearchVO.mbtiList = this.mbtiList;
 		};
 		
-		console.log(clubComplexSearchVO);
 		axios({
 			url: "${pageContext.request.contextPath}/rest/club/search",
 			method: "post",
