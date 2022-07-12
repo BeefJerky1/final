@@ -466,17 +466,29 @@
 
 
 /*** Footer ***/
+footer {
+z-index:1;
+	}
+
+.footer-second {
+	
+	font-weight : 600;
+}
+a {
+	text-decoration: none;
+
+}
 .footer .btn.btn-social {
     margin-right: 5px;
     color: #9B9B9B;
-    border: 1px solid #9B9B9B;
     border-radius: 38px;
     transition: .3s;
+    border : none;
+
 }
 
 .footer .btn.btn-social:hover {
-    color: var(--primary);
-    border-color: var(--light);
+    background-color: #514e85 !important;
 }
 
 .footer .btn.btn-link {
@@ -485,9 +497,10 @@
     padding: 0;
     text-align: left;
     color: #9B9B9B;
-    font-weight: normal;
+    font-weight: bold;
     text-transform: capitalize;
     transition: .3s;
+    text-decoration: none;
 }
 
 .footer .btn.btn-link::before {

@@ -21,4 +21,6 @@ public interface ClubDao {
 	int likeClub(ClubLikeDto clubLikeDto);
 	
 	public int editClub(ClubDto clubDto);
+
+	List<ClubDto> search(String keyword);
 }
