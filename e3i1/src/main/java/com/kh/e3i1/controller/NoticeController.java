@@ -36,7 +36,7 @@ public class NoticeController {
 				@RequestParam(required = false) String type,
 				@RequestParam(required = false) String keyword,
 				@RequestParam(required = false, defaultValue = "1") int p,
-				@RequestParam(required = false, defaultValue = "10") int s,
+				@RequestParam(required = false, defaultValue = "5") int s,
 				Model model
 			) {
 		

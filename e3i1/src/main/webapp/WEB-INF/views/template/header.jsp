@@ -114,13 +114,11 @@
 							<form class="d-flex">
 								<i class="fa-solid fa-magnifying-glass search-icon"></i> 
 								<input type="text" name="keyword" class="form-control me-2 input-box"
-									type="search" placeholder="소모임 검색하기" aria-label="Search"  v-model="keyword"  v-on:input="keyword = $event.target.value">
+									type="search" placeholder="소모임 검색하기" aria-label="Search"  v-model="keyword"  v-on:input="keyword = $event.target.value" autocomplete="off">
 							</form>
-												<li class="list-group-item" v-for="(club, index) in clubList"
-													v-bind:key="index">
-													<div v-on:click="selectKeyword(index);">
-														{{club.clubName}}, \#{{club.clubMainCategory}},  \#{{club.clubSubCategory}}</div>
-												</li>
+								<li class="list-group-item" v-for="(club, index) in clubList" v-bind:key="index">
+									<div v-on:click="selectKeyword(index);">{{club.clubName}}, \#{{club.clubMainCategory}},  \#{{club.clubSubCategory}}</div>
+								</li>
 						</c:otherwise>
 					</c:choose>
 
@@ -182,3 +180,4 @@
         });
         apps.mount("#apps");
     </script>
+	
