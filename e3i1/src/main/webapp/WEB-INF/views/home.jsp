@@ -3,13 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>     
     <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
-<head>
-    
-    <link rel="stylesheet" type="text/css" href="${root}/css/animate.css">
-    <link rel="stylesheet" type="text/css" href="${root}/css/lightbox.css">
-    <link rel="stylesheet" type="text/css" href="${root}/css/main.css">
-    <link rel="stylesheet" type="text/css" href="${root}/css/owl.css">
-</head>
+
 <style>
 a {
 		text-decoration: none;
@@ -171,7 +165,7 @@ a {
             </div>
     
     <!-- 소모임 보여주기 -->
-   		 <div class="col-md-6 col-lg-3 wow fadeInUp main-area club-list" data-wow-delay="0.3s" v-for="(club,index) in clubList" v-bind:key="index" @click="toDetailPage(index)">
+   		 <div class="col-md-6 col-lg-4 wow fadeInUp main-area club-list" data-wow-delay="0.3s" v-for="(club,index) in clubList" v-bind:key="index" @click="toDetailPage(index)">
                     <div class="service-item rounded overflow-hidden">
                         <img class="img-fluid" src="https://via.placeholder.com/250/69f/fff.png" alt="">
                         <div class="position-relative p-4 pt-0">
@@ -203,26 +197,25 @@ a {
            
            
     <!--  탑 버튼 -->
-    <a href="#" class="btn btn-lg btn-lg-square rounded-circle back-to-top"><i class="fa-solid fa-up-long"></i></a>
-
+ 
 </div>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="${root}/js/counter.js"></script>
-    <script src="${root}/js/easing.js"></script>
-    <script src="${root}/js/iso.js"></script>
-    <script src="${root}/js/lightbox.js"></script>
-    <script src="${root}/js/owl.js"></script>
-    <script src="${root}/js/waypoints.js"></script>
-    <script src="${root}/js/wow.js"></script>
+
 
     <!-- main Javascript -->
-    <script src="${root}/js/main.js"></script>
+
 </body>
-
-
+<script src="${root}/js/counter.js"></script>
+<script src="${root}/js/easing.js"></script>
+<script src="${root}/js/iso.js"></script>
+<script src="${root}/js/lightbox.js"></script>
+<script src="${root}/js/owl.js"></script>
+<script src="${root}/js/waypoints.js"></script>
+<script src="${root}/js/wow.js"></script>
+<script src="${root}/js/main.js"></script>
 <script src="https://unpkg.com/vue@next"></script>
   <script>
         const app = Vue.createApp({
