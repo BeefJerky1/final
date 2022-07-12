@@ -22,6 +22,18 @@
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" type="text/css" href="${root}/css/sidebars.css">
 <style>
+.card-img-top{
+	width:250px !important;
+	height:250px !important;
+}
+.fa-minus{
+	color:red;
+	cursor:pointer !important;
+}
+.fa-plus{
+	color:green;
+	cursor:pointer !important;
+}
 .question{
 	color:red;
 }
@@ -67,6 +79,7 @@ li a:hover {
 
 	<div id="app" class="container-fluid">
 		<div class="row">
+		<!-- 사이드바 -->
 			<div class="col-lg-2 col-md-2 col-sm-2 border">
 				<div class=" p-4">
 					<a href="${root}"><img class="logo-item"
@@ -115,7 +128,7 @@ li a:hover {
         <div class="collapse" id="mbti-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/mbtisurvey" class="link-light rounded">MBTI 설문</a></li>
-            <li><a href="#" class="link-light rounded">MBTI 동물</a></li>
+            <li><a href="${root}/admin/mbtianimal" class="link-light rounded">MBTI 동물</a></li>
           </ul>
         </div>
       </li>
@@ -134,97 +147,65 @@ li a:hover {
     </ul>
   </div>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-6">
-    	<div class="row mt-5">
-    		<div class="col-lg-9 col-md-9 col-sm-9 text-center mt-5">
-    		<h1>Mbti 설문</h1>
-    		</div>
+    <!-- 메인화면 -->
+    <div class="col-lg-8 col-md-8 col-sm-8 mt-5">
+    <div class="row mt-5 text-center">
+    	<div class="col-lg-12 col-md-12 col-sm-12">
+			<h1>mbti 동물 사진</h1>
     	</div>
-    	<div class="row">
-                <div v-for="(mbti, index ) in allMbtiSurvey" v-bind:key="index" >
-                    <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12  rounded mt-3 "style="border-radius:1em !important">
-                        <div v-if="!mbti.edit">
-                        <div class="row" >
-                            	<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-                                <span class="question">{{mbti.surveyNo}}.{{mbti.surveyQuestion}}</span>
-                                </div>
-                              	<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
-                                 <button class="btn btn-primary" v-on:click="changeEditMode(index)">수정</button>
-                                 <button class="btn btn-danger" v-on:click="deleteSurvey(index)">삭제</button>
-                                 </div>
-                        </div>
-                        <div class="row" >
-                        	    <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-                                <span>답안:{{mbti.surveyAnswer1}}</span>
-                                </div>
-                              	<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
-                                 </div>
-                        		<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-                                <span>답안:{{mbti.surveyAnswer2}}</span>
-                                </div>
-                              	<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
-                                 </div>
-                        	</div>
-                        </div>
-                        <div class="row" v-else>
-                        <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-                        <label>문제</label>
-                     	<textarea class="form-control " v-model="mbti.surveyQuestion" style="border-radius:1em !important"></textarea>
-                    	</div>
-                    	<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-                    	<label>답변1</label>
-                     	<textarea class="form-control " v-model="mbti.surveyAnswer1" style="border-radius:1em !important"></textarea>
-                    	</div>
-                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-                    	<label>답변2</label>
-                     	<textarea class="form-control " v-model="mbti.surveyAnswer2" style="border-radius:1em !important"></textarea>
-                    	</div>
-                    	<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
-                    	<button class="btn btn-primary "  v-on:click="editSurvey(index)">수정</button>
-                    	<button class="btn btn-secondary "  v-on:click="changeDisplayMode(index)">취소</button>
-                        </div>
-                    	 
-                        </div>
-                        </div>
-                    </div>
-                 </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4 mt-5">
-            <div v-if="this.survey" class="col-lg-9 col-md-9 col-sm-9  text-end mt-5">
-            <div class="mt-5">
-    			<button class="btn btn-success" v-on:click="insertMode()" >설문 추가</button>
-            </div>
+    	<div class="col-lg-12 col-md-12 col-sm-12 text-end">
+    	<div class="col-lg-5 col-md-5 col-sm-5 offset-9 mt-5">
+    		<button type="button" class=" btn btn-success" v-on:click="this.cancel=false" v-if=cancel>등록</button>
     		</div>
-    		<div v-else class="mt-5">
-    		</div>
-    		<div class="row mt-5">
-            <div class="col-lg-8 col-md-8 col-sm-8 offset-2 mt-5" v-if="this.insert==true">
-             <div class="col-lg-12 col-md-12 col-sm-12 mt-1">
-            <label>번호</label>
-            <input type="number" class="form-control" v-model="this.no">
-             </div>
-    		 <div class="col-lg-12 col-md-12 col-sm-12 mt-1">
-    		 <label>문제</label>
-             <textarea class="form-control update-reply" v-model="this.question" ></textarea>
-             </div>
-             <div class="col-lg-12 col-md-12 col-sm-12 mt-1 rounded">
-             <label>답변1</label>
-             <textarea class="form-control update-reply" v-model="this.answer1" ></textarea>
-             </div>
-             <div class="col-lg-12 col-md-12 col-sm-12 mt-1 rounded " >
-             <label>답변2</label>
-             <textarea class="form-control update-reply" v-model="this.answer2" ></textarea>
-    		 </div>
-    		 <div class="col-lg-12 col-md-12 col-sm-12 mt-1 rounded">
-    		 <button class="btn btn-primary form-control" v-on:click="insertSurvey()">등록</button>
-    		 </div>
-    		 <div class="col-lg-12 col-md-12 col-sm-12 mt-1 rounded">
-    		 <button class="btn btn-secondary form-control" v-on:click="displayMode()">취소</button>    		 
-    		 </div>
+    						<div v-if="cancel">
+    						</div>
+    						<div v-else>
+    						<div class="col-lg-5 col-md-5 col-sm-5 offset-9 mt-5">
+    						<div>
+    						<form class="form-floating">
+    						<input  class="form-control" type="number" v-model="animalNo" id="animalNo">
+    						<label for="animalNo">동물 번호</label>
+    						</form>
+    						</div>
+    						<div>
+    						<form class="form-floating">
+    						<input class="form-control" type="text" v-model="animal" id="animal">
+    						<label for="animal">동물</label>
+    						</form>
+    						</div>
+    						<div>
+    						<form class="form-floating">
+    						<input  class="form-control"type="text" v-model="mbti" id="mbti">
+    						<label for="mbit">mbti</label>
+    						</form>
+    						</div>
+    						<div>
+							<input class="form-control" type="file" accept="image/*" ref="photo" name="photo"/>
+    						</div>
+	    						<button type="button" class=" btn btn-success"  v-on:click="addAnimal()">등록</button>
+    							<button type="button" class=" btn btn-secondary" v-on:click="this.cancel=true">취소</button>
+    						</div>
+    						</div>
+    	</div> 
+    	<div class="col-lg-12 col-md-12 col-sm-12 mb-5" style="display: grid ;grid-template-columns:repeat(4,1fr);" class="text-center">
+			<div v-for="(animal, index) in mbtianimal">
+				<div class="card" style="width: 18rem;">
+					<div v-if="animal.animalPhotoDto.attachNo!=0">
+					<img class="card-img-top" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+animal.animalPhotoDto.attachNo" alt="Card image cap">
+					</div>
+					<div v-else>
+					<img class="card-img-top" src="https://via.placeholder.com/250/69f/fff.png" alt="Card image cap">
+					</div>
+  						<div class="card-body">
+    						<h5 class="card-title">{{animal.mbtiAnimalDto.animalNo}}.{{animal.mbtiAnimalDto.mbti}}</h5>
+    						<p class="card-text">{{animal.mbtiAnimalDto.animal}}</p>
+							<button type="button" class=" btn btn-danger"  v-on:click="deleteAnimal(index)">삭제</button>
+  						</div>
+				</div>
+			</div>    	
     	</div>
-    	<div v-else></div>
-            </div>
-    	</div>
+    </div>
+   	</div>
     </div>
 
     </div>
@@ -235,102 +216,87 @@ li a:hover {
     <script src="https://unpkg.com/vue@next"></script>
     <script src="${root}/js/sidebars.js"></script>
     <script>
+    function previewFile() {
+  	  var preview = document.querySelector('.preview');
+  	  var file = document.querySelector('input[type=file]').files[0];
+  	  var reader = new FileReader();
+
+  	  reader.addEventListener(
+  	    'load',
+  	    function () {
+  	      preview.src = reader.result;
+  	    },
+  	    false
+  	  );
+
+  	  if (file) {
+  	    reader.readAsDataURL(file);
+  	  }
+  }
+
         const app = Vue.createApp({
             data(){
                 return {
-                	allMbtiAnimals:{},
-                	insert:false,
-                	survey:true,
-                	
-                	//설문 등록
-                	no:"",
-                	question:"",
-                	answer1:"",
-                	answer2:"",
+                	mbtianimal:[],
+                	cancel:true,
+                	animal:"",
+                	animalNo:"",
+                	mbti:"",
                 };
             },
             computed:{
                 
             },
             methods:{
-				mbtisurveylist(){
+				mbtiAnimalList(){
 					axios({
 						url:"${pageContext.request.contextPath}/rest/admin/mbtianimal/",
 						method:"get",
 					}).then(resp=>{
-						this.allMbtiAnimals = resp.data
+						this.mbtianimal = resp.data
 					})
 				},
-		        //수정모드
-		        changeEditMode(index){
-					this.allMbtiSurvey[index].edit=true;
-		        },
-		        //수정모드 해제
-		        changeDisplayMode(index){
-		        	this.allMbtiSurvey[index].edit=false;
-		        },
-		        //추가모드
-		        insertMode(){
-		        	this.survey=false;
-					this.insert=true;
-		        },
-		        //추가모드 해제
-		        displayMode(){
-					this.insert=false;
-					this.survey=true;
-                	this.no = "";
-                	this.question="";
-                	this.answer1="";
-                	this.answer2="";
-		        },
-		        //설문 수정
-		        editSurvey(index){
-		        	const mbti = this.allMbtiSurvey[index];
-		        	if(mbti.surveyQuestion.length==0)return;
-		        	if(mbti.surveyAnswer1.length==0)return;
-		        	if(mbti.surveyAnswer2.length==0)return;
-		        	axios({
-		        		url:"${pageContext.request.contextPath}/rest/admin/mbtisurvey/",
-		        		method:"put",
-		        		data:{
-		        			surveyNo: mbti.surveyNo,
-		        			surveyQuestion: mbti.surveyQuestion,
-		        			surveyAnswer1:mbti.surveyAnswer1,
-		        			surveyAnswer2:mbti.surveyAnswer2,		        		
-		        		},
-		        	}).then(resp=>{
-		        		this.mbtisurveylist();
-		        	});
-		        },
-		        //설문 삭제
-		        deleteSurvey(index){
-		        	const mbti = this.allMbtiSurvey[index];
-		        	axios({
-		        		url:"${pageContext.request.contextPath}/rest/admin/mbtisurvey/"+mbti.surveyNo,
-		        		method:"delete",
-		        	}).then(resp=>{
-		        		this.mbtisurveylist();
-		        	});
-		        },
-		        //설문 추가
-		        insertSurvey(){
-		        	axios({
-		        		url:"${pageContext.request.contextPath}/rest/admin/mbtisurvey/",
+				addAnimal(){
+					let formData = new FormData();
+					const fileInput = this.$refs.photo
+					const fileData = fileInput.files[0];
+					
+					//동물번호 받기
+					
+					formData.append('file', fileData);
+					formData.append('animalNo', this.animalNo);
+					formData.append('animal', this.animal);
+					formData.append('mbti', this.mbti);
+					axios({
+		        		url:"${pageContext.request.contextPath}/rest/admin/mbtianimal",
 		        		method:"post",
-		        		data:{
-		        			surveyNo: this.no,
-		           			surveyQuestion: this.question,
-		        			surveyAnswer1:this.answer1,
-		        			surveyAnswer2:this.answer2,		
-		        		},
-		        	}).then(resp=>{
-		        		this.mbtisurveylist();
-		        		this.displayMode();
+		    			headers:{
+		    				"Content-Type" : "multipart/form-data",
+		    			},
+		    			data:formData,
+		        	})
+		        	.then(resp=>{
+		        		//완성 시 코드
+		        		window.confirm("사진 등록이 완료되었습니다!");
+		            	this.mbtiAnimalList();
 		        	});
-		        }
+				},
+				deleteAnimal(index){
+					const choice = window.confirm("정말 삭제하시겠습니까?\n삭제한 데이터는 복구되지 않습니다");
+					if(choice==false)return
+					const animal = this.mbtianimal[index];
+					console.log(animal)
+		        	axios({
+		        		url:"${pageContext.request.contextPath}/rest/admin/mbtianimal/"+animal.mbtiAnimalDto.animalNo,
+		        		method:"delete",
+		        	})
+		        	.then(resp=>{
+		        		this.mbtiAnimalList();
+		        	});
+				}
             },
             created(){
-            	this.mbtisurveylist();
+            	this.mbtiAnimalList();
             },
         });
         app.mount("#app");

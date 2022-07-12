@@ -116,7 +116,7 @@ li a:hover {
 								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 									<li><a href="${root}/admin/mbtisurvey"
 										class="link-light rounded">MBTI 설문</a></li>
-									<li><a href="#" class="link-light rounded">MBTI 동물</a></li>
+            <li><a href="${root}/admin/mbtianimal" class="link-light rounded">MBTI 동물</a></li>
 								</ul>
 							</div>
 						</li>
@@ -136,11 +136,13 @@ li a:hover {
 					</ul>
 				</div>
 			</div>
-			<div class="col-lg-9 col-md-9 col-sm-9">
+			<div class="col-lg-10 col-md-10 col-sm-10">
 					<div class="row text-center mb-3 mt-5">
+					
 						<h1>소모임 상세정보</h1>
 					</div>
 					<div class="row">
+					<div class="col-lg-8 col-md-8 col-sm-8 mt-2 mb-5">
 						<h3>소모임 멤버</h3>
 						<table class="table">
 							<thead class="table-dark">
@@ -174,8 +176,11 @@ li a:hover {
         더보기 ({{showMember}}/{{totalMember}})
     </button>
 					</div>
-					<div class="row">
+					</div>
+					<div class="row mt-5">
 						<h3>소모임 게시글</h3>
+					<div class="col-lg-8 col-md-8 col-sm-8 mt-2 mb-5">
+					
 						<table class="table">
 							<thead class="table-dark">
 								<tr>
@@ -204,8 +209,11 @@ li a:hover {
         더보기 ({{showBoard}}/{{totalBoard}})
     </button>
 					</div>
+						</div>
 					<div class="row mb-5">
 						<h3>소모임 댓글</h3>
+											<div class="col-lg-8 col-md-8 col-sm-8 mt-2 mb-5">
+						
 											<table class="table">
 							<thead class="table-dark">
 								<tr>
@@ -237,7 +245,8 @@ li a:hover {
 						style="border-radius: 1em !important">더보기
 						({{showReply}}/{{totalReply}})</button>
 				</div>
-					</div>						
+					</div>		
+					</div>				
 			</div>
 	</div>
 </div>

@@ -115,7 +115,7 @@ li a:hover {
         <div class="collapse" id="mbti-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/mbtisurvey" class="link-light rounded">MBTI 설문</a></li>
-            <li><a href="#" class="link-light rounded">MBTI 동물</a></li>
+            <li><a href="${root}/admin/mbtianimal" class="link-light rounded">MBTI 동물</a></li>
           </ul>
         </div>
       </li>
@@ -134,13 +134,23 @@ li a:hover {
     </ul>
   </div>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-6">
+    <div class="col-lg-8 col-md-8 col-sm-8">
     	<div class="row mt-5">
     		<div class="col-lg-9 col-md-9 col-sm-9 text-center mt-5">
     		<h1>Mbti 설문</h1>
     		</div>
     	</div>
     	<div class="row">
+    	<div class="col-lg-12 col-md-12 col-sm-12  mt-5">
+            <div v-if="this.survey" class="col-lg-12 col-md-12 col-sm-12  text-end mt-5">
+            <div class="mt-5">
+    			<button class="btn btn-success" v-on:click="insertMode() ">설문 추가</button>
+            </div>
+    		</div>
+    		<div v-else class="mt-5">
+    		</div>
+    	</div>
+    	</div>
                 <div v-for="(mbti, index ) in allMbtiSurvey" v-bind:key="index" >
                     <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12  rounded mt-3 "style="border-radius:1em !important">
                         <div v-if="!mbti.edit">
@@ -185,46 +195,38 @@ li a:hover {
                         </div>
                     	 
                         </div>
+                        
                         </div>
                     </div>
-                 </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4 mt-5">
-            <div v-if="this.survey" class="col-lg-9 col-md-9 col-sm-9  text-end mt-5">
-            <div class="mt-5">
-    			<button class="btn btn-success" v-on:click="insertMode()" >설문 추가</button>
-            </div>
-    		</div>
-    		<div v-else class="mt-5">
-    		</div>
-    		<div class="row mt-5">
-            <div class="col-lg-8 col-md-8 col-sm-8 offset-2 mt-5" v-if="this.insert==true">
-             <div class="col-lg-12 col-md-12 col-sm-12 mt-1">
+              <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 rounded mt-3" v-if="this.insert==true" style="border-radius:1em !important">
+              <h1>설문 추가</h1>
+                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
             <label>번호</label>
             <input type="number" class="form-control" v-model="this.no">
              </div>
-    		 <div class="col-lg-12 col-md-12 col-sm-12 mt-1">
+                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
     		 <label>문제</label>
              <textarea class="form-control update-reply" v-model="this.question" ></textarea>
              </div>
-             <div class="col-lg-12 col-md-12 col-sm-12 mt-1 rounded">
+                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
              <label>답변1</label>
              <textarea class="form-control update-reply" v-model="this.answer1" ></textarea>
              </div>
-             <div class="col-lg-12 col-md-12 col-sm-12 mt-1 rounded " >
+             <div class="row">
+                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
              <label>답변2</label>
              <textarea class="form-control update-reply" v-model="this.answer2" ></textarea>
     		 </div>
-    		 <div class="col-lg-12 col-md-12 col-sm-12 mt-1 rounded">
-    		 <button class="btn btn-primary form-control" v-on:click="insertSurvey()">등록</button>
+    		 <div class="col-lg-2 col-md-2 col-sm-2 mt-1">
+    		 <button class="btn btn-primary " v-on:click="insertSurvey()">등록</button>
+    		 <button class="btn btn-secondary " v-on:click="displayMode()">취소</button>    		 
     		 </div>
-    		 <div class="col-lg-12 col-md-12 col-sm-12 mt-1 rounded">
-    		 <button class="btn btn-secondary form-control" v-on:click="displayMode()">취소</button>    		 
     		 </div>
-    	</div>
-    	<div v-else></div>
+    		<div v-else>
+    		</div>
             </div>
-    	</div>
+                 </div>
+            </div>
     </div>
 
     </div>
@@ -273,6 +275,7 @@ li a:hover {
 		        insertMode(){
 		        	this.survey=false;
 					this.insert=true;
+		        
 		        },
 		        //추가모드 해제
 		        displayMode(){

@@ -1,26 +1,34 @@
 package com.kh.e3i1.rest;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.e3i1.entity.AnimalPhotoDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubDto;
+import com.kh.e3i1.entity.MbtiAnimalDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.repository.AdminDao;
 import com.kh.e3i1.repository.ClubMemberDao;
+import com.kh.e3i1.service.AdminService;
+import com.kh.e3i1.vo.AdminMbtiAnimalListVO;
 import com.kh.e3i1.vo.AdminSearchVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
 
@@ -34,6 +42,8 @@ public class AdminRestController {
 	private AdminDao adminDao;
 	@Autowired
 	private ClubMemberDao clubMemberDao;
+	@Autowired
+	private AdminService adminService;
 	//멤버 리스트
 	@GetMapping("/member/{column}/{order}")
 	public List<MemberDto> memberList(@PathVariable String column, @PathVariable String order){
@@ -120,8 +130,40 @@ public class AdminRestController {
 		return adminDao.deleteSurvey(surveyNo);
 	}
 	//mbti 게시 목록
-	@GetMapping("/mbtiboard")
-	public List<MbtiBoardDto> mbtiBoardList(){
-		return adminDao.mbtiBoardList();
+	@GetMapping("/mbtiboard/{column}/{order}")
+	public List<MbtiBoardDto> mbtiBoardList(@PathVariable String column, @PathVariable String order){
+		return adminDao.mbtiBoardList(column, order);
 	}
+	//mbti 검색
+	@PostMapping("/mbtiboard")
+	public List<MbtiBoardDto> findBoard(@RequestBody AdminSearchVO searchVO) {
+		return adminDao.findBoard(searchVO);
+	}
+	//총 mbti 게시글 수
+	@GetMapping("/mbtiboardcount")
+	public int mbtiBoardCount(){
+		return adminDao.mbtiBoardCount();
+	}
+	//등록
+	@PostMapping("/mbtianimal")
+	public int insert(
+			@ModelAttribute MbtiAnimalDto mbtiAnimalDto, 
+			@RequestParam MultipartFile file
+			)throws IllegalStateException, IOException {
+		return adminService.insertPhoto(mbtiAnimalDto , file);
+	}	
+	//mbti 동물 종류 리스트
+	@GetMapping("/mbtianimal")
+	public List<AdminMbtiAnimalListVO> mbtiAnimalList() {
+		return adminDao.mbtiAnimalList();
+	}
+	//mbti 동물 삭제
+	@DeleteMapping("/mbtianimal/{animalNo}")
+	public int mbtiAnimalDelete(@PathVariable int animalNo) {
+		return adminDao.mbtianimalDelete(animalNo);
+	}
+
+	
+	
+	
 }
