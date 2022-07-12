@@ -23,7 +23,9 @@ import com.kh.e3i1.repository.AttachmentDao;
 import com.kh.e3i1.repository.ClubDao;
 import com.kh.e3i1.repository.ClubMemberDao;
 import com.kh.e3i1.service.ClubService;
+import com.kh.e3i1.vo.ClubComplexSearchVO;
 import com.kh.e3i1.vo.ClubDetailVO;
+import com.kh.e3i1.vo.ClubListVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
 
 @CrossOrigin(
@@ -46,8 +48,10 @@ public class ClubRestController {
 	private ClubMemberDao clubMemberDao;
 	
 	@GetMapping("/")
-	public List<ClubDto> list(){
-		return clubDao.list();
+	public List<ClubListVO> list(
+			@ModelAttribute ClubComplexSearchVO clubComplexSearchVO
+			){
+		return clubDao.list(clubComplexSearchVO);
 	}
 	
 	// 소모임 생성
