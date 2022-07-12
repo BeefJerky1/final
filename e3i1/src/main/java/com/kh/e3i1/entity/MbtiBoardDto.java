@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class MbtiBoardDto {
 	
 	private int mbtiBoardNo;
-	private int 	memberNo;
+	private int memberNo;
 	private String mbtiBoardTitle; 
 	private String mbtiBoardContent;
 	private Date mbtiBoardTime;

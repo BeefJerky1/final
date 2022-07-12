@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.e3i1.entity.ClubBoardLikeDto;
 import com.kh.e3i1.entity.ClubBoardReplyDto;
-import com.kh.e3i1.entity.ClubReportDto;
+import com.kh.e3i1.entity.ClubBoardReportDto;
+import com.kh.e3i1.entity.ClubReplyReportDto;
 
 @Repository 
 public class ClubReportDaoImpl implements ClubReportDao{
@@ -16,11 +17,11 @@ public class ClubReportDaoImpl implements ClubReportDao{
 	
 	
 	@Override //게시글 신고
-	public int reportBoard(ClubReportDto clubReportDto) {
+	public int reportBoard(ClubBoardReportDto clubBoardReportDto) {
 		int clubReportNo = sqlSession.selectOne("clubreport.sequence");
-		clubReportDto.setClubReportNo(clubReportNo);
-		sqlSession.insert("clubreport.board", clubReportDto);
-		ClubReportDto clubreportDto1 = sqlSession.selectOne("clubreport.info", clubReportDto.getClubReportNo());
+		clubBoardReportDto.setClubReportNo(clubReportNo);
+		sqlSession.insert("clubreport.board", clubBoardReportDto);
+		ClubBoardReportDto clubreportDto1 = sqlSession.selectOne("clubreport.boardInfo", clubBoardReportDto.getClubReportNo());
 		if(clubreportDto1 ==null) {
 			return 0;
 		}else {
@@ -28,12 +29,12 @@ public class ClubReportDaoImpl implements ClubReportDao{
 		}
 	}
 	@Override //댓글 신고
-	public int reportReply(ClubReportDto clubReportDto) {
+	public int reportReply(ClubReplyReportDto clubReplyReportDto) {
 		int clubReportNo = sqlSession.selectOne("clubreport.sequence");
-		clubReportDto.setClubReportNo(clubReportNo);
-		this.calculateReplyCount(clubReportDto.getClubReportTarget());
-		sqlSession.insert("clubreport.reply", clubReportDto);
-		ClubReportDto clubreportDto1 = sqlSession.selectOne("clubreport.info", clubReportDto.getClubReportNo());
+		clubReplyReportDto.setClubReportNo(clubReportNo);
+		this.calculateReplyCount(clubReplyReportDto.getClubReportTarget());
+		sqlSession.insert("clubreport.reply", clubReplyReportDto);
+		ClubReplyReportDto clubreportDto1 = sqlSession.selectOne("clubreport.replyInfo", clubReplyReportDto.getClubReportNo());
 		if(clubreportDto1 ==null) {
 			return 0;
 		}else {
@@ -45,11 +46,23 @@ public class ClubReportDaoImpl implements ClubReportDao{
 		sqlSession.update("clubboardreply.calculateReportCount",replyNo);	
 	}
 	@Override
-	public int findReport(int clubReportTarget, int clubReportReporter) {
-		ClubReportDto clubReportDto = new ClubReportDto();
-		clubReportDto.setClubReportReporter(clubReportReporter);
-		clubReportDto.setClubReportTarget(clubReportTarget);
-		Integer clubReportNo = sqlSession.selectOne("clubreport.find", clubReportDto);
+	public int findBoardReport(int clubReportTarget, int clubReportReporter) {
+		ClubBoardReportDto clubBoardReportDto = new ClubBoardReportDto();
+		clubBoardReportDto.setClubReportReporter(clubReportReporter);
+		clubBoardReportDto.setClubReportTarget(clubReportTarget);
+		Integer clubReportNo = sqlSession.selectOne("clubreport.boardFind", clubBoardReportDto);
+		if(clubReportNo==null) {
+			return 0;
+		}else {
+			return 1;
+		}
+	}
+	@Override
+	public int findReplyReport(int clubReportTarget, int clubReportReporter) {
+		ClubReplyReportDto clubReplyReportDto = new ClubReplyReportDto();
+		clubReplyReportDto.setClubReportReporter(clubReportReporter);
+		clubReplyReportDto.setClubReportTarget(clubReportTarget);
+		Integer clubReportNo = sqlSession.selectOne("clubreport.replyFind", clubReplyReportDto);
 		if(clubReportNo==null) {
 			return 0;
 		}else {

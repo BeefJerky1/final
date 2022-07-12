@@ -222,7 +222,7 @@
                              <a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/detail?clubNo='+clubList.clubDto.clubNo">
 								소모임 홈
 							</a>
-							<a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/board/'+clubList.clubDto.clubNo">
+							<a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/board?clubNo='+clubList.clubDto.clubNo">
 								소모임 게시판
 							</a>
 							<a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/chat?clubNo='+clubList.clubDto.clubNo">

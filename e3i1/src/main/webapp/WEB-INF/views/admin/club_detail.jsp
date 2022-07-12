@@ -26,34 +26,30 @@
 	background-color: white;
 	color: black;
 }
-
+.red{
+	color:red;
+}
 .info {
 	height: 59px;
 }
-
 li button {
 	color: black !important;
 }
-
 li button:hover {
 	color: white !important;
 	background-color: #3E4684 !important
 }
-
 .container-fluid {
 	padding-left: 0px !important;
 }
-
 li a {
 	background-color: white !important;
 	color: black !important;
 }
-
 li a:hover {
 	background-color: #3E4684 !important;
 	color: white !important;
 }
-
 .logo-item {
 	width: 100% !important;
 }
@@ -120,7 +116,7 @@ li a:hover {
 								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 									<li><a href="${root}/admin/mbtisurvey"
 										class="link-light rounded">MBTI 설문</a></li>
-									<li><a href="#" class="link-light rounded">MBTI 동물</a></li>
+            <li><a href="${root}/admin/mbtianimal" class="link-light rounded">MBTI 동물</a></li>
 								</ul>
 							</div>
 						</li>
@@ -140,87 +136,121 @@ li a:hover {
 					</ul>
 				</div>
 			</div>
-			<div class="col-lg-9 col-md-9 col-sm-9">
-				<div class="col-md-8 mb-5 p-4 text-dark  rounded">
-					<form action="clubInformation" method="post">
-						<div class="col-md-6 offset-md-3">
-							<div class="row text-center mt-3 mb-5">
-								<div class="row text-center mb-3 mt-5">
-									<h1>소모임 수정</h1>
-								</div>
-								<div class="form-floating mb-3">
-								<input type="hidden" name="clubNo"value="${clubDto.clubNo}">
-                                    <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    name="clubName"
-                                    autocomplete="off"
-                                    value="${clubDto.clubName}"
-                                    > 
-                                    <label for="floatingInput">Name</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    name="clubLeader"
-                                    autocomplete="off"
-                                    value="${clubDto.clubLeader}"
-                                    > 
-                                    <label for="floatingInput">leader</label>
-                                </div>
-                            <div class="mt-2 text-start">
-							<label>관심사</label>
-							<div class="row">
-								<div class="col">
-									<select name="clubMainCategory" class="form-control rounded" @change="addSubCategoryList" >
-										<option value="${clubDto.clubMainCategory}">${clubDto.clubMainCategory}</option>
-										<option v-for="(category1,index) in mainCategoryList" v-bind:key="index" :value="category1.categoryContent">{{category1.categoryContent}}</option>
-									</select>
-								</div>
-								<div class="col">
-									<select name="clubSubCategory" class="form-control rounded" >
-										<option value="${clubDto.clubSubCategory}">${clubDto.clubSubCategory}</option>
-										<option v-for="(category2,index) in subCategoryList" v-bind:key="index" :value="category2.categoryContent">{{category2.categoryContent}}</option>
-									</select>
-								</div>
-							</div>
+			<div class="col-lg-10 col-md-10 col-sm-10">
+					<div class="row text-center mb-3 mt-5">
+					
+						<h1>소모임 상세정보</h1>
+					</div>
+					<div class="row">
+					<div class="col-lg-8 col-md-8 col-sm-8 mt-2 mb-5">
+						<h3>소모임 멤버</h3>
+						<table class="table">
+							<thead class="table-dark">
+								<tr>
+									<th>가입 신청일</th>
+									<th>회원 번호</th>
+									<th>성별</th>
+									<th>MBTI</th>
+									<th>관심1</th>
+									<th>관심2</th>
+									<th>관심3</th>
+									<th>동물</th>
+									<th>닉네임</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(member1 , index) in member">
+									<td>{{member1.clubMemberDto.clubMemberDate}}</td>
+									<td>{{member1.clubMemberDto.memberNo}}</td>
+									<td>{{member1.memberDto.memberGender}}</td>
+									<td>{{member1.memberDto.memberMbti}}</td>
+									<td>{{member1.memberDto.memberInterest1}}</td>
+									<td>{{member1.memberDto.memberInterest2}}</td>
+									<td>{{member1.memberDto.memberInterest3}}</td>
+									<td>{{member1.memberDto.memberAnimal}}</td>
+									<td>{{member1.memberDto.memberNick}}</td>
+								</tr>
+							</tbody>
+						</table>
+							<button type="button" v-on:click="appendMember()" :disabled="this.memberdataFull == true" class="form-control btn-outline-primary " style="border-radius:1em !important">
+        더보기 ({{showMember}}/{{totalMember}})
+    </button>
+					</div>
+					</div>
+					<div class="row mt-5">
+						<h3>소모임 게시글</h3>
+					<div class="col-lg-8 col-md-8 col-sm-8 mt-2 mb-5">
+					
+						<table class="table">
+							<thead class="table-dark">
+								<tr>
+									<th>게시글 번호</th>
+									<th>댓글수</th>
+									<th>좋아요수</th>
+									<th>조회수</th>
+									<th>신고수</th>
+									<th>작성시간</th>
+									<th>작성자</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(clubboard , index) in board">
+									<td>{{clubboard.clubBoardNo}}</td>
+									<td>{{clubboard.clubBoardCount}}</td>
+									<td>{{clubboard.clubBoardLike}}</td>
+									<td>{{clubboard.clubBoardReadcount}}</td>
+									<td>{{clubboard.clubBoardReportcount}}</td>
+									<td>{{clubboard.clubBoardTime}}</td>
+									<td>{{clubboard.clubBoardWriter}}</td>
+								</tr>
+							</tbody>
+						</table>
+	<button type="button" v-on:click="appendBoard()" :disabled="this.boarddataFull == true" class="form-control btn-outline-primary " style="border-radius:1em !important">
+        더보기 ({{showBoard}}/{{totalBoard}})
+    </button>
+					</div>
 						</div>
-						<div class="mt-2 text-start">
-							<label>지역</label>
-							<div class="row">
-								<div class="col">
-									<select class="form-control rounded" @change="addCityList" v-model="address1No">
-										<option value="">시/도를 선택해주세요</option>
-										<option v-for="(address1, index) in address1List" v-bind:key="index" :value="address1.address1No" >{{address1.province}}</option>
-									</select>
-								</div>
-								<div class="col">
-									<select name="clubPlace" class="form-control rounded" >
-										<option value="${clubDto.clubPlace}">${clubDto.clubPlace}</option>
-										<option v-for="(address2, index) in address2List" v-bind:key="index" :value="address2.city">{{address2.city}}</option>
-									</select>
-								</div>
-							</div>
-						</div>
-						<div class="text-start mt-2">
-							<label>소모임 소개</label>
-							<textarea name="clubSummary" class="form-control rounded">${clubDto.clubSummary}</textarea>
-						</div>
-						<div class="text-start mt-2">
-							<label>인원</label>
-							<input type="number" name="clubMemberLimit" class="form-control rounded" value="${clubDto.clubMemberLimit}">
-						</div>
-							</div>
-					<button type="submit" class="btn btn-outline-success mt-4 form-control">수정하기</button>
-						</div>
-					</form>
+					<div class="row mb-5">
+						<h3>소모임 댓글</h3>
+											<div class="col-lg-8 col-md-8 col-sm-8 mt-2 mb-5">
+						
+											<table class="table">
+							<thead class="table-dark">
+								<tr>
+									<th>게시글 번호</th>
+									<th>댓글 번호</th>
+									<th>좋아요수</th>
+									<th>신고수</th>
+									<th>작성시간</th>
+									<th>작성자</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(boardreply , index) in reply">
+									<td>{{boardreply.clubBoardNo}}</td>
+									<td>{{boardreply.replyNo}}</td>
+									<td>{{boardreply.clubReplyLike}}</td>
+									<td>{{boardreply.clubReplyReportcount}}</td>
+									<td>{{boardreply.clubReplyTime}}</td>
+									<td>{{boardreply.clubReplyWriter}}</td>
+								</tr>
+							</tbody>
+						</table>
+						
+						
+									<div class="mt-2 rounded" style="border-radius: 1em !important">
+					<button type="button" v-on:click="appendReply()"
+						:disabled="this.replydataFull == true"
+						class="btn btn-outline-primary form-control"
+						style="border-radius: 1em !important">더보기
+						({{showReply}}/{{totalReply}})</button>
 				</div>
-
+					</div>		
+					</div>				
 			</div>
-
-		</div>
 	</div>
+</div>
+
 
 	<!-- vue js도 lazy loading을 사용한다 -->
 	<script
@@ -234,66 +264,202 @@ li a:hover {
         const app = Vue.createApp({
             data(){
                 return {
-                	mainCategoryList:{},
-                	subCategoryList:{},
-            		address1List: [],
-            		address2List: [],
-            		// 시/도 번호
-            		address1No : "",
-            		// 시/군/구 값
-            		city: "",	
-            		
+     				//소모임 멤버
+                	memberAll:{}, //전체 멤버
+                    member:[], //보여지는 멤버
+                    totalMember:0, //전체 멤버
+                    showMember:5, //보여주는 멤버 수
+                    memberLeft:0,//남은 멤버 수
+                    memberdataFull:false,
+     				
+     				//게시글
+                    boardAll:[], //전체 게시글
+                    board:[], //보여지는 게시글
+                    totalBoard:0, //전체 게시글
+                    showBoard:5, //보여주는 게시글 수
+                    boardLeft:0,//남은 게시글 수
+                    boarddataFull:false,
+                    
+                    //댓글
+     	           replyAll:[], //전체 댓글
+                   reply:[], //보여지는 댓글
+                   totalReply:0, //전체 댓글
+                   showReply:5, //보여주는 댓글 수
+                   replyLeft:0,//남은 댓글 수
+                   replydataFull:false,
                 };
             },
             computed:{
-                
+            	clubNo(){
+            		const href = window.location.href;
+            		const url = new URL(href);
+            		return url.searchParams.get("clubNo");
+            	},
             },
             methods:{
-            	callList(){
-            		// 카테고리 - 대분류
+            	clubMemberList(){
             		axios({
-            			url:"${pageContext.request.contextPath}/rest/category_n_address/category1",
+            			url:"${pageContext.request.contextPath}/rest/admin/clubmember/"+this.clubNo,
             			method:"get",
-            		}).then((resp) => {
-            			this.mainCategoryList =resp.data;
-            		})	
-            		
-            		// 시/도 
-            		axios({
-            			url:"${pageContext.request.contextPath}/rest/category_n_address/address1",
-            			method:"get",
-            		}).then((resp) => {
-            			this.address1List = resp.data;
-            		})	
+            		}).then(resp=>{
+						let data = []
+						for(var i = 0; i<this.showMember;i++){
+// 							console.log(i)
+							data.push(resp.data[i])
+						}
+						this.memberAll = resp.data,
+						this.member = data,
+						this.totalMember = this.memberAll.length
+						
+						//총 게시글 수가 보이는 게시글 수(5)보다 작으면
+						if(this.totalMember < this.showMember){
+// 							this.showReply = this.totalReply; //보이는 수를 전체 게시글수로 변경
+							this.member = this.memberAll;	//게시글에 게시글 전체를 넣는다.
+	                		this.memberdataFull=true;	//버튼은 disable
+						}else if(this.totalMember>this.showMember){ 
+	                		this.memberdataFull=false; //버튼은 disable
+						}else if(this.totalMember==this.showMember){//전체 게시글 수와 보이는 게시글 수가 동일하면
+							this.memberdataFull=true;	//버튼은 disable
+						}
+            		})
             	},
-            	// 시/군/구 추가
-            	addCityList(){
-            		if(this.address1No == ""){
-            			this.address2List = [];
-            			return;
-            		}
-            		// 시/군/구
+            	appendMember(){
+                	//남은 게시글 수 확인
+                	this.memberLeft = this.totalBoard- this.showBoard;
+                	//게시글 수가 5개 이하라면 전체 게시글 수를 showboard에 넣는다.
+                	if(this.memberLeft < 5){
+						this.showMember = this.totalMember;
+						this.member = this.memberAll;
+						this.memberLeft = this.totalMember- this.showMember;
+	                	this.clubMemberList();
+                	}else 
+                	//게시글 수가 5개 이상이면 showBoard +5에 데이터 추가
+                	if(this.memberLeft >= 5){
+                		this.showMember +=5
+                		this.memberLeft = this.totalMember- this.showMember;
+                	let data =[]
+                	for(var i=0; i<this.showMember; i++){
+                		data.push(this.memberAll[i])
+                	}
+                	this.member = data
+                	this.clubMemberList();
+                	//남은 게시글 수가 0개라면 버튼 클릭 X
+                	}else if(this.memberLeft==0){
+                		this.memberdataFull=true;
+                		
+                	}
+                	
+                },
+            	clubBoardList(){
             		axios({
-            			url:"${pageContext.request.contextPath}/rest/category_n_address/address2/"+this.address1No,
+            			url:"${pageContext.request.contextPath}/rest/admin/clubboard/"+this.clubNo,
             			method:"get",
-            		}).then((resp) => {
-            			this.address2List = [];
-            			this.address2List = resp.data;
-            		})		
+            		}).then(resp=>{
+						let data = []
+						for(var i = 0; i<this.showBoard;i++){
+// 							console.log(i)
+							data.push(resp.data[i])
+						}
+						this.boardAll = resp.data,
+						this.board = data,
+						this.totalBoard = this.boardAll.length
+						
+						//총 게시글 수가 보이는 게시글 수(5)보다 작으면
+						if(this.totalBoard < this.showBoard){
+// 							this.showReply = this.totalReply; //보이는 수를 전체 게시글수로 변경
+							this.board = this.boardAll;	//게시글에 게시글 전체를 넣는다.
+	                		this.boarddataFull=true;	//버튼은 disable
+						}else if(this.totalBoard>this.showBoard){ 
+	                		this.boarddataFull=false; //버튼은 disable
+						}else if(this.totalBoard==this.showBoard){//전체 게시글 수와 보이는 게시글 수가 동일하면
+							this.boarddataFull=true;	//버튼은 disable
+						}
+            		})
             	},
-            	// 카테고리 소분류 추가
-            	addSubCategoryList(){
-            		// 카테고리 - 분류
-            		axios({
-            			url:"${pageContext.request.contextPath}/rest/category_n_address/category2/"+this.clubMainCategory,
+            	appendBoard(){
+                	//남은 게시글 수 확인
+                	this.boardLeft = this.totalBoard- this.showBoard;
+                	//게시글 수가 5개 이하라면 전체 게시글 수를 showboard에 넣는다.
+                	if(this.boardLeft < 5){
+						this.showBoard = this.totalBoard;
+						this.board = this.boardAll;
+						this.boardLeft = this.totalBoard- this.showBoard;
+	                	this.clubBoardList();
+                	}else 
+                	//게시글 수가 5개 이상이면 showBoard +5에 데이터 추가
+                	if(this.boardLeft >= 5){
+                		this.showBoard +=5
+                		this.boardLeft = this.totalBoard- this.showBoard;
+                	let data =[]
+                	for(var i=0; i<this.showBoard; i++){
+                		data.push(this.boardAll[i])
+                	}
+                	this.board = data
+                	this.loadClubBoardList();
+                	//남은 게시글 수가 0개라면 버튼 클릭 X
+                	}else if(this.boardLeft==0){
+                		this.boarddataFull=true;
+                		
+                	}
+                	
+                },
+                clubReplyList(){
+                	axios({
+                		url:"${pageContext.request.contextPath}/rest/admin/clubreply/"+this.clubNo,
             			method:"get",
-            		}).then((resp) => {
-            			this.subCategoryList =resp.data;
-            		})	
-            	},
+                	}).then(resp=>{
+                		let data = []
+						for(var i = 0; i<this.showReply;i++){
+// 							console.log(i)
+							data.push(resp.data[i])
+						}
+						this.replyAll = resp.data, //데이터 전부를 전체 댓글에 넣는다.
+						this.reply = data, //보여지는 댓글 수만큼만 reply에 넣는다.
+						this.totalReply = this.replyAll.length
+						
+						//총 게시글 수가 보이는 게시글 수(5)보다 작으면
+						if(this.totalReply < this.showReply){
+// 							this.showReply = this.totalReply; //보이는 수를 전체 게시글수로 변경
+							this.reply = this.replyAll;	//게시글에 게시글 전체를 넣는다.
+	                		this.replydataFull=true;	//버튼은 disable
+						}else if(this.totalReply>this.showReply){ 
+	                		this.replydataFull=false; //버튼은 disable
+						}else if(this.totalReply==this.showReply){//전체 게시글 수와 보이는 게시글 수가 동일하면
+							this.replydataFull=true;	//버튼은 disable
+						}
+                	})
+                },
+                appendReply(){
+                	//남은 게시글 수 확인
+                	this.replyLeft = this.totalReply- this.showReply;
+                	//게시글 수가 5개 이하라면 전체 게시글 수를 showboard에 넣는다.
+                	if(this.replyLeft < 5){
+						this.showReply = this.totalReply;
+						this.reply = this.replyAll;
+						this.replyLeft = this.totalReply- this.showReply;
+	                	this.clubReplyList();
+                	}else 
+                	//게시글 수가 5개 이상이면 showBoard +5에 데이터 추가
+                	if(this.replyLeft >= 5){
+                		this.showReply +=5
+                		this.replyLeft = this.totalReply- this.showReply;
+                	let data =[]
+                	for(var i=0; i<this.showReply; i++){
+                		data.push(this.replyAll[i])
+                	}
+                	this.reply = data
+                	//남은 게시글 수가 0개라면 버튼 클릭 X
+                	}else if(this.replyLeft==0){
+                		this.replydataFull=true;
+                		
+                	} 	
+                },
+            	
             },
             created(){
-            	this.callList();
+				this.clubMemberList();
+				this.clubBoardList();
+				this.clubReplyList();
             },
         });
         app.mount("#app");

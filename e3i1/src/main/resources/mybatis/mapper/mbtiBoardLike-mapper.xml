@@ -22,7 +22,7 @@
 <mapper namespace="mbtiBoardLike">
 
     <select id="likeCount" resultType="Integer" parameterType="MbtiBoardLikeDto">
-		select count(it_like) from mbti_board_like where member_no = #{memberNo} and mbti_board_no = #{mbtiBoardNo}
+		select count(it_like) from mbti_board_like where mbti_board_no = #{mbtiBoardNo} and it_like = 1;
 	</select>
 	
 	<insert id="likeInsert" parameterType="MbtiBoardLikeDto">
@@ -38,20 +38,17 @@
 		select * from mbti_board_like where mbti_board_no = #{mbtiBoardNo}
 	</select>
 	
+	
 	<update id="likeUpdate" parameterType="MbtiBoardLikeDto">
-		update mbti_board_like
-		set <include refid="cal"></include>
+		update mbti_board_like 
+		set it_like = 1
 		where member_no = #{memberNo} and mbti_board_no = #{mbtiBoardNo}
 	</update>
 	
-	<sql id="cal">
-		<if test="count == 1">
-			it_like = 0
-		</if> 
-		
-		<if test="count == 0">
-			it_like = it_like + 1 
-		</if>
-	</sql>
+	<update id="likeDelete" parameterType="MbtiBoardLikeDto">
+		update mbti_board_like 
+		set it_like = 0
+		where member_no = #{memberNo} and mbti_board_no = #{mbtiBoardNo}
+	</update>
 
 </mapper>

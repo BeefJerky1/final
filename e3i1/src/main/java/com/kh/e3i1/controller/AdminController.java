@@ -53,9 +53,19 @@ public class AdminController {
 	public String memberChart() {
 		return "admin/member_chart";
 	}
+	@GetMapping("/member_search")
+	public String memberSearch() {
+		return "admin/member_search";
+	}
 	@GetMapping("/club")
 	public String club() {
 		return "admin/club";
+	}
+	@GetMapping("/club_update")
+	public String clubUpdate(@RequestParam int clubNo, Model model) {
+		ClubDto clubDto = adminDao.oneClub(clubNo);
+		model.addAttribute("clubDto", clubDto);
+		return "admin/club_update";
 	}
 	@GetMapping("/club_detail")
 	public String clubDetail(@RequestParam int clubNo, Model model) {
@@ -81,5 +91,9 @@ public class AdminController {
 	@GetMapping("/mbtisurvey")
 	public String MbtiSurvey() {
 		return "admin/mbtisurvey";
+	}
+	@GetMapping("/mbtianimal")
+	public String MbtiAnimal() {
+		return "admin/mbtianimal";
 	}
 }

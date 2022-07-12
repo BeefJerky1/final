@@ -40,7 +40,14 @@ public class MbtiBoardRestController {
 		if(endBlock > lastPage) {
 			endBlock = lastPage;
 		}
+		System.out.println("p=" + p);
+		System.out.println("s=" + s);
+		System.out.println("lastPage = " + lastPage);
+		System.out.println("endBlock = " + endBlock);
+		System.out.println("startBlock = " + startBlock);
 		
-		return mbtiBoardDao.list(type, keyword, lastPage, blockSize);
+		System.out.println(mbtiBoardDao.list(type, keyword, p, s).size());
+		
+		return mbtiBoardDao.list(type, keyword, p, s);
 	}
 }

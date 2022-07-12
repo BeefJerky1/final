@@ -112,7 +112,7 @@ li a:hover {
         <div class="collapse" id="mbti-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/mbtisurvey" class="link-light rounded">MBTI 설문</a></li>
-            <li><a href="#" class="link-light rounded">MBTI 동물</a></li>
+            <li><a href="${root}/admin/mbtianimal" class="link-light rounded">MBTI 동물</a></li>
           </ul>
         </div>
       </li>
@@ -134,23 +134,41 @@ li a:hover {
 			<div class="col-lg-9 col-md-9 col-sm-9">
 				<div class="row">
 					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4">
-						<h1>회원 목록 (전체 회원 수)</h1>
+						<h1>회원 목록 (총: {{count}}명)</h1>
 					</div>
-					<div class="col-lg-4 col-md-4 col-sm-4  p-4">
-						<select class="form-select" v-model="orderType"
-							v-on:change="changeList($event)"
-							style="border-radius: 1em !important">
-							<option value="memberNoAsc">회원번호(오름차순)</option>
-							<option value="memberNoDesc">회원번호(내림차순)</option>
-							<option value="memberReportCountAsc">회원신고(오름차순)</option>
-							<option value="memberReportCountDesc">회원신고(내림차순)</option>
-							<option value="memberNickAsc">회원닉네임(오름차순)</option>
-							<option value="memberNickDesc">회원닉네임(내림차순)</option>
-							<option value="memberBirthAsc">회원생일(오름차순)</option>
-							<option value="memberBirthDesc">회원생일(내림차순)</option>
-							<option value="memberLogindateAsc">마지막 로그인(오름차순)</option>
-							<option value="memberLogindateDesc">마지막 로그인(내림차순)</option>
-						</select>
+					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4 text-start">
+						<div class="row">
+						<h5>검색</h5>
+							<div class="col-lg-5 col-md-5 col-sm-5">
+							       <select class=""v-model="type">
+           							 	<option value="">종류</option>
+							            <option value="member_no">회원번호</option>
+							            <option value="member_email">이메일</option>
+							            <option value="member_nick">닉네임</option>
+							            <option value="member_name">이름</option>
+							            <option value="member_phone">전화번호</option>
+							        </select>
+							        <input type="text" v-model="keyword" class="" v-on:input="keyword=$event.target.value" placeholder="검색어 입력">	             
+							  </div>
+							<h5>정렬</h5>
+						<div class="col-lg-5 col-md-5 col-sm-5">
+							<select class="" v-model="column" v-on:change="memberList()">
+								<option value="member_no">회원번호</option>
+								<option value="member_nick">닉네임</option>
+								<option value="member_name">이름</option>
+								<option value="member_email">이메일</option>							
+								<option value="member_logindate">로그인 날짜</option>
+							</select>
+							<select class="" v-model="order" v-on:change="memberList()">
+								<option value="asc">오름차순</option>
+								<option value="desc">내림차순</option>				
+							</select>
+							<button type="button" class="btn btn-primary " v-on:click="search()">조회</button>
+							<button type="button" class="btn btn-success " v-on:click="reset()">초기화</button>
+						</div>
+							
+							</div>
+						</div>
 					</div>
 					<div class="col-lg-12 col-md-12 col-sm-12">
 						<table class="table text-center">
@@ -191,13 +209,12 @@ li a:hover {
 							</tbody>
 						</table>
 					</div>
-				</div>
 <button type="button" v-on:click="append()" :disabled="this.dataFull == true" class="form-control btn-outline-primary " style="border-radius:1em !important">
         더보기 ({{showMember}}/{{totalMember}})
     </button>
+				</div>
 			</div>
 		</div>
-	</div>
 
 	<!-- vue js도 lazy loading을 사용한다 -->
 	<script
@@ -219,16 +236,26 @@ li a:hover {
             data(){
                 return {
                 	deleteResult:"",//삭제 결과
-    				orderType:"memberNoAsc",//정렬 방식
+//     				orderType:"memberNoAsc",//정렬 방식
     				editMode:false,
     				
     				//더보기
     				allMember:{},//전체 리스트
     				member:{}, //보여지는 리스트
     	            totalMember:0, //전체 멤버
-                    showMember:5, //보여주는 멤버 수
+                    showMember:10, //보여주는 멤버 수
                     MemberLeft:0,//남은 멤버 수
                     dataFull:false,
+                    
+                    //검색
+                    keyword:"", 
+                    type:"",
+                    column:"member_no",
+                    order:"asc",
+                    
+                    //총 회원수
+                    count:"",
+                
                 };
             },
             computed:{
@@ -237,26 +264,26 @@ li a:hover {
             methods:{
             	//멤버 전체 조회
 				memberList(){
-					axios({
-						url:"${pageContext.request.contextPath}/rest/admin/member/"+this.orderType,
-						method:"get",
-					}).then(resp=>{
-						let data = []
-						for(var i = 0; i<this.showMember;i++){
-// 							console.log(i)
-							data.push(resp.data[i])
-						}
-						this.allMember = resp.data,
-						this.member = data,
-						this.totalMember = this.allMember.length
-						if(this.totalMember < this.showMember){
-							this.showMember = this.totalMember;
-							this.member = this.allMember;
-	                		this.dataFull=true;
-						}else if(this.totalMember==this.showMember){
-	                		this.dataFull=true;
-						}
-					});
+            			axios({
+    						url:"${pageContext.request.contextPath}/rest/admin/member/"+this.column+"/"+this.order,
+    						method:"get",
+    					}).then(resp=>{
+    						let data = []
+    						for(var i = 0; i<this.showMember;i++){
+    							data.push(resp.data[i])
+    						}
+    						this.allMember = resp.data,
+    						this.member = data,
+    						this.totalMember = this.allMember.length
+    						if(this.totalMember < this.showMember){
+    							this.showMember = this.totalMember;
+    							this.member = this.allMember;
+    	                		this.dataFull=true;
+    						}else if(this.totalMember==this.showMember){
+    	                		this.dataFull=true;
+    						}
+    					});
+			
 				},
 				append(){
                 	this.memberLeft = this.totalMember- this.showMember;
@@ -266,7 +293,6 @@ li a:hover {
 						this.memberLeft = this.totalMember- this.showMember;
 	                	this.memberList();
                 	}else 
-                	//게시글 수가 5개 이상이면 showBoard +5에 데이터 추가
                 	if(this.memberLeft >= 5){
                 		this.showMember +=5
                 		this.memberLeft = this.totalMember- this.showMember;
@@ -306,29 +332,6 @@ li a:hover {
                 	  return;
                 	}
                 },
-                changeList(event) {
-                	axios({
-                		url:"${pageContext.request.contextPath}/rest/admin/member/"+event.target.value,
-		        		method:"get",
-                	}).then(resp=>{
-            			let data = []
-						for(var i = 0; i<this.showMember;i++){
-// 							console.log(i)
-							data.push(resp.data[i])
-						}
-						this.allMember = resp.data,
-						this.member = data,
-						this.totalMember = this.allMember.length
-						if(this.totalMember < this.showMember){
-							this.showMember = this.totalMember;
-							this.member = this.allMember;
-	                		this.dataFull=true;
-						}else if(this.totalMember==this.showMember){
-	                		this.dataFull=true;
-						}
-                	})
-                    console.log(event.target.value)
-                },
                 //시간 바꾸기
                 elapsedText(date) {
                 	return dateformat.elapsedText(new Date(date));
@@ -337,10 +340,57 @@ li a:hover {
 		        convertTime(time){
                 	return moment(time).format("MM/DD");   //월 일
 		        },
+		        //검색
+                search(){
+           			axios({
+						url:"${pageContext.request.contextPath}/rest/admin/member/",
+						method:"post",
+						data:{
+							order:this.order,
+							column:this.column,
+							keyword:this.keyword,
+							type:this.type,
+						}
+					}).then(resp=>{
+						let data = []
+						for(var i = 0; i<this.showMember;i++){
+							data.push(resp.data[i])
+						}
+						this.allMember = resp.data,
+						this.member = data,
+						this.totalMember = this.allMember.length
+						
+						if(this.totalMember < this.showMember){
+// 							this.showReply = this.totalReply; //보이는 수를 전체 게시글수로 변경
+							this.member = this.allMember;	//게시글에 게시글 전체를 넣는다.
+	                		this.dataFull=true;	//버튼은 disable
+						}else if(this.totalMember>this.showMember){ 
+	                		this.dataFull=false; //버튼은 disable
+						}else if(this.totalMember==this.showMember){//전체 게시글 수와 보이는 게시글 수가 동일하면
+							this.dataFull=true;	//버튼은 disable
+						}
+					});
+                },
+                reset(){
+                	this.order="asc";
+                	this.column="member_no";
+                	this.type="";
+                	this.keyword="";
+                	this.memberList();
+                },
+                memberCount(){
+                	axios({
+                		url:"${pageContext.request.contextPath}/rest/admin/membercount",
+                		method:"get",
+                	}).then(resp=>{
+                		this.count =resp.data
+                	})
+                },
 		       
             },
             created(){
             	this.memberList();
+            	this.memberCount();
             },
         });
         app.mount("#app");

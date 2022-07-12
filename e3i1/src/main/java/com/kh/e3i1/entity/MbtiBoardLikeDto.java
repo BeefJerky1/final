@@ -11,7 +11,6 @@ public class MbtiBoardLikeDto {
 	private int memberNo;
 	private int mbtiBoardNo;
 	private int itLike;
-	private int count;
 	
 
 }

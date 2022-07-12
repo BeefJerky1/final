@@ -49,16 +49,6 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 		return mbtiBoardNo;
 	}
 	
-	// 투표하기
-	
-	@Override
-	public MbtiBoardVoteDto vote(MbtiBoardVoteDto mbtiBoardVoteDto) {
-		int voteChoiceNo = sqlSession.selectOne("mbtiBoardVote.sequence");
-		mbtiBoardVoteDto.setVoteChoiceNo(voteChoiceNo);
-		
-		sqlSession.insert("mbtiBoardVote.vote", mbtiBoardVoteDto);
-		return sqlSession.selectOne("mbtiBoardVote.one", mbtiBoardVoteDto);
-	}
 
 	// 게시판 글 삭제하기
 	
@@ -107,6 +97,17 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 		return sqlSession.selectList("mbtiBoard.mbtiboardList2", param);
 	}
 
+	// 투표하기
+	
+	@Override
+	public MbtiBoardVoteDto vote(MbtiBoardVoteDto mbtiBoardVoteDto) {
+		int voteChoiceNo = sqlSession.selectOne("mbtiBoardVote.sequence");
+		mbtiBoardVoteDto.setVoteChoiceNo(voteChoiceNo);
+		
+		sqlSession.insert("mbtiBoardVote.vote", mbtiBoardVoteDto);
+		return mbtiBoardVoteDto;
+	}
+	
 	// 투표 공감 개수 구하기
 	@Override
 	public int voteCount(int mbtiBoardNo) {
@@ -119,6 +120,18 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 	public int voteCountTotal(int mbtiBoardNo) {
 		
 		return sqlSession.selectOne("mbtiBoardVote.voteCountTotal", mbtiBoardNo);
+	}
+
+	// 투표 유무 확인
+	@Override
+	public Integer itVoteinfo(MbtiBoardVoteDto mbtiBoardVoteDto) {
+		return sqlSession.selectOne("mbtiBoardVote.itVoteInfo", mbtiBoardVoteDto);
+	}
+	// 투표 취소
+	@Override
+	public void voteDelete(MbtiBoardVoteDto mbtiBoardVoteDto) {
+		sqlSession.delete("mbtiBoardVote.voteDelete", mbtiBoardVoteDto);
+		
 	}
 
 

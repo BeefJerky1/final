@@ -51,5 +51,13 @@
  		          where mbti_board_no= #{mbtiBoardNo}
  		</select>
  		
+	<select id="itVoteInfo" resultType="Integer" parameterType="MbtiBoardLikeDto">
+		select vote_choice from mbti_board_vote where member_no = #{memberNo} and mbti_board_no = #{mbtiBoardNo}
+	</select>
+	
+	<delete id="voteDelete" parameterType="MbtiBoardLikeDto">
+	        delete from mbti_board_vote where member_no = #{memberNo} and mbti_board_no = #{mbtiBoardNo}
+	</delete>
+ 		
 
 </mapper>

@@ -63,8 +63,8 @@ public class ClubController {
 	
 	
 	// 소모임 게시판 목록
-	@GetMapping("/board/{clubNo}")
-	public String clubBoard(@PathVariable int clubNo ) {
+	@GetMapping("/board")
+	public String clubBoard(@RequestParam int clubNo ) {
 //		clubBoardDao.list(clubNo);
 		return "club/board";
 	}

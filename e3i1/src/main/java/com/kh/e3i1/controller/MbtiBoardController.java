@@ -112,27 +112,24 @@ public class MbtiBoardController {
 		MbtiMemberListVO mbtiMemberListVO = mbtiBoardDao.read(mbtiBoardNo);
 		model.addAttribute("mbtiMemberListVO", mbtiMemberListVO);
 		
-		
-		// 좋아요 기능 
 		MbtiBoardLikeDto mbtiBoardLikeDto = new MbtiBoardLikeDto();
-		mbtiBoardLikeDto.setMemberNo(mbtiMemberListVO.getMbtiBoardDto().getMemberNo());
-		mbtiBoardLikeDto.setMbtiBoardNo(mbtiBoardNo);
-		
-		int itLike = 0; 
-		
-		int check = mbtiBoardLikeDao.likeCount(mbtiBoardLikeDto);
+		Integer itLike = mbtiBoardLikeDao.ItLikeInfo(mbtiBoardLikeDto);
 		//memberNo와 boardNo를 이용하여 itLike를 count하는 구문
 		
-		if(check == 0) { // count가 0일 경우 like insert
+		if(itLike == null) {//최초
 			mbtiBoardLikeDao.likeInsert(mbtiBoardLikeDto);
 		}
-		else if (check ==1) { // count가 1일 경우 like 정보 불러오기
-			itLike = mbtiBoardLikeDao.ItLikeInfo(mbtiBoardLikeDto);
+		else if(itLike == 0) {//취소된 상태이면 다시 +1 해주기
+			mbtiBoardLikeDao.likeUpdate(mbtiBoardLikeDto);
+		}
+		else if(itLike == 1) {// 좋아요 된 상태이면 -1 해주기
+			mbtiBoardLikeDao.likeDelete(mbtiBoardLikeDto);
 		}
 		
 		mbtiBoardLikeDto.setItLike(itLike);
 		model.addAttribute("itLike", itLike);
 		model.addAttribute("mbtiBoardLikeDto", mbtiBoardLikeDto);
+		
 		
 		return "mbtiBoard/detail";
 	}

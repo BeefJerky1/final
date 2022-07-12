@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubReplyLikeDto;
-import com.kh.e3i1.entity.ClubReportDto;
+import com.kh.e3i1.entity.ClubReplyReportDto;
 import com.kh.e3i1.repository.ClubBoardReplyDao;
 import com.kh.e3i1.repository.ClubReplyLikeDao;
 import com.kh.e3i1.repository.ClubReportDao;
@@ -40,9 +40,6 @@ public class ClubBoardReplyRestController {
 	@PostMapping("/")
 	public ClubBoardReplyDto insert(
 			@ApiIgnore HttpSession session, @RequestBody ClubBoardReplyDto clubBoardReplyDto) {
-//		int replyWriter = (Integer)session.getAttribute("login");
-//		int replyWriter = 3;
-//		clubBoardReplyDto.setClubReplyWriter(replyWriter);
 		return clubBoardReplyDao.insert(clubBoardReplyDto);
 	}
 	
@@ -71,8 +68,8 @@ public class ClubBoardReplyRestController {
 		return clubBoardReplyDao.reportInfo(replyNo);
 	}
 	@PostMapping("/report")
-	public int reportReply(@ApiIgnore HttpSession session, @RequestBody ClubReportDto clubReportDto) {
-		return clubReportDao.reportReply(clubReportDto);
+	public int reportReply(@ApiIgnore HttpSession session, @RequestBody ClubReplyReportDto clubReplyReportDto) {
+		return clubReportDao.reportReply(clubReplyReportDto);
 	}
 }
 

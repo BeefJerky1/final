@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-	<c:set var="path" value="${pageContext.request.contextPath}"/>
+<c:set var="path" value="${pageContext.request.contextPath}" />
+<c:set var="memberNo" value="${login}"></c:set>
+<c:set var="memberAdmin" value="${auth == '관리자'}"></c:set>
+<c:set var="isLogin" value="${memberNo != null}"></c:set>
 	<style>
 	.imgfile1{
 		width:1000%;
@@ -238,7 +241,9 @@
                         </div>
                         <div class="row mx-auto" v-on:click="select(index)" >
                        		<div class="row px-5 " v-if="clubboard.clubBoardDto.clubBoardReportcount>2">
-                       		<pre class="text-start blind">신고로 블라인드 처리되었습니다.</pre>
+                       		<pre class="text-start blind">
+신고가 접수된 게시물입니다.                     		
+                       		</pre>
                         	</div>
                         	<div  class="row px-5 text-over-cut	 mx-auto" v-else>
                             <pre class="text-start">{{clubboard.clubBoardDto.clubBoardContent}}</pre>
@@ -336,9 +341,11 @@
         </div>
         </div>
        <div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5 ">
-       			<div v-if="isMember" class="mt-3">
+       			<div v-if="UsingContents()" class="mt-3">
         			<button class="btn btn-secondary form-control " v-on:click="notAllowed()" v-if="cancel " style="border-radius:1em !important">cancel</button>
                    	<button class="btn btn-primary form-control " v-on:click="allowed()" v-if="write" style="border-radius:1em !important">write</button>
+       			</div>
+       			<div v-else>
        			</div>
                 <div class="border border-opacity-10 text-dark mt-2 p-4 col-lg-12 col-md-12 col-sm-12 right-side" style="border-radius:1em !important">
                     <div class="row">   
@@ -408,15 +415,15 @@
                 	//내 좋아요 확인
                 	boardLike:"",
 		            //세션
-		            memberNo:"${login}",
-		            memberAdmin:"${auth}",
+				   memberNo:"${login}",
+		           memberAdmin:"${auth}",
 		            //댓글 입력 정보
 		            boardContent:"",
 		            boardContent2:"",
 					//게시글 등록/취소 버튼
 					cancel:false,
 					write:true,
-                    clubNo:"19",
+//                     clubNo:"21",
                     //더보기
                     boardAll:[], //전체 게시글
                     board:[], //보여지는 게시글
@@ -430,6 +437,7 @@
                     //소모임 정보
                    	clubList:[],
 					mbtiList:[],
+					clubMember:[],
                    isLike:false,
                     //멤버 프로필: 모달
                     Mprofile:null,
@@ -448,6 +456,14 @@
  		        isAdmin(){
  		        	return this.isMember && this.memberAdmin == "관리자";
  		        },
+ 		        isClubMember(){
+ 		        	return this.clubMember ==1;
+ 		        },
+ 		   		clubNo(){
+ 					const href = window.location.href;
+ 					const url = new URL(href);
+ 					return url.searchParams.get("clubNo");
+ 				},
             },
             methods:{
             	//leftside
@@ -486,7 +502,7 @@
             	//main
             	//게시글을 입력하지 않으면 게시글 등록버튼 비활성화
             	clubBoardContentIsEmpty(){
-            		return this.boardContent.length==0;
+            		return this.boardContent.length==0;     		
             	},
             	//게시글 목록 출력
                 loadClubBoardList(){
@@ -509,13 +525,18 @@
 						this.board = data,
 						this.totalBoard = this.boardAll.length
 						
+						//총 게시글 수가 보이는 게시글 수(5)보다 작으면
 						if(this.totalBoard < this.showBoard){
-							this.showBoard = this.totalBoard;
-							this.board = this.boardAll;
-	                		this.dataFull=true;
-						}else if(this.totalBoard==this.showBoard){
-	                		this.dataFull=true;
+// 							this.showReply = this.totalReply; //보이는 수를 전체 게시글수로 변경
+							this.board = this.boardAll;	//게시글에 게시글 전체를 넣는다.
+	                		this.dataFull=true;	//버튼은 disable
+						}else if(this.totalBoard>this.showBoard){ 
+	                		this.dataFull=false; //버튼은 disable
+						}else if(this.totalBoard==this.showBoard){//전체 게시글 수와 보이는 게시글 수가 동일하면
+							this.dataFull=true;	//버튼은 disable
 						}
+						
+						
 		        	});
             		}else{
                         axios({
@@ -535,15 +556,24 @@
     						this.board = data,
     						this.totalBoard = this.boardAll.length
     						
+    						//총 게시글 수가 보이는 게시글 수(5)보다 작으면
     						if(this.totalBoard < this.showBoard){
-    							this.showBoard = this.totalBoard;
-    							this.board = this.boardAll;
-    	                		this.dataFull=true;
-    						}else if(this.totalBoard==this.showBoard){
-    	                		this.dataFull=true;
+//     							this.showReply = this.totalReply; //보이는 수를 전체 게시글수로 변경
+    							this.board = this.boardAll;	//게시글에 게시글 전체를 넣는다.
+    	                		this.dataFull=true;	//버튼은 disable
+    						}else if(this.totalBoard>this.showBoard){ 
+    	                		this.dataFull=false; //버튼은 disable
+    						}else if(this.totalBoard==this.showBoard){//전체 게시글 수와 보이는 게시글 수가 동일하면
+    							this.dataFull=true;	//버튼은 disable
     						}
     		        	});
             		}
+                },
+                UsingContents(){
+                	if(this.memberAdmin = '관리자')return true;
+                	if(this.isClubMember)return true;
+                	
+                	return false;
                 },
                 //더보기 버튼으로 게시글 추가
                 appendBoard(){
@@ -612,8 +642,11 @@
                 },
                 //상세 페이지로 이동
                 select: function(index) {
-                	if(this.memberNo==''){
-                		window.alert("로그인하여야 사용할 수 있는 컨텐츠입니다.")
+                	if(this.isAdmin){
+                		const clubBoard = this.board[index];
+                    	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+clubBoard.clubBoardDto.clubBoardNo;
+                	}else if(this.clubMember!=1){
+                		window.alert("소모임 회원만 사용할 수 있는 컨텐츠입니다.")
                 		return;
                 	}
                 	const clubBoard = this.board[index];
@@ -621,12 +654,16 @@
                 },
                 //인기 게시글로 이동
                 TopTen: function(index) {
-                	if(this.memberNo==''){
-                		window.alert("로그인하여야 사용할 수 있는 컨텐츠입니다.")
+                	if(this.isAdmin){
+	                	const list = this.side[index];
+	                	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+list.clubBoardNo;            		
+                	}else if(this.clubMember!=1){
+                		window.alert("소모임 회원만 사용할 수 있는 컨텐츠입니다.")
                 		return;
                 	}
                 	const list = this.side[index];
-                	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+list.clubBoardNo;
+                	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+list.clubBoardNo;            		
+                	
                 },
                 //시간 바꾸기
                 elapsedText(date) {
@@ -671,12 +708,22 @@
                 		 
 
             	},
+            	//클럽 멤버 불러오기
+            	clubMemberCheck(){
+            		axios({
+            			url:"${pageContext.request.contextPath}/rest/clubboard/member/"+this.clubNo+"/"+this.memberNo,
+            			method:"get",
+            		}).then(resp=>{
+            			this.clubMember=resp.data
+            		})
+            	},
             	
             },
             created(){
             	this.loadClubBoardList();
             	this.TopTenList();
             	this.loadClubInfo();
+            	this.clubMemberCheck(); 
             	
             },
             mounted(){

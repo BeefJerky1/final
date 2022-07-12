@@ -250,7 +250,7 @@ a {
 				url : "${pageContext.request.contextPath}/rest/mbtiBoard/",
 				type : "get",
 				data : {
-					"page" : page,
+					"p" : page,
 				},
 				dataType : "html",
 				success : function(resp) {
@@ -259,7 +259,12 @@ a {
 					//게시판 마지막에 불러온 데이터를 모양 갖춰서 출력
 					//템플릿에 저장된 구문을 불러와서 게시판 마지막에 추가
 					var json = JSON.parse(resp);
-
+					if(json.length == 0){
+						$(window).off("scroll");
+						return;
+					}
+					
+					console.log("length = "+json.length);
 					for (var i = 0; i < json.length; i++) {
 						var template = $("#card-template").html();
 						template = template.replace("{{mbtiBoardNo}}",

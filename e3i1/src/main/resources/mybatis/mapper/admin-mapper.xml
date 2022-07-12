@@ -3,25 +3,29 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="admin">
-<!-- 	<select id="memberlist" resultType="memberDto"> -->
-<!-- 		select * from member -->
-<!-- 	</select> -->
 	
-		<!-- 멤버 정렬 -->
-	<select id="memberlist" resultType="memberDto" parameterType="String"> 
-	select * from member order by 
-	<choose>
-		<when test="orderType == 'memberNoAsc'">member_no asc</when>
-		<when test="orderType == 'memberNoDesc'">member_no desc</when>
-		<when test="orderType == 'memberReportCountAsc'">member_report_count asc</when>
-		<when test="orderType == 'memberReportCountDesc'">member_report_count desc</when>
-		<when test="orderType == 'memberNickAsc'">member_nick asc</when>
-		<when test="orderType == 'memberNickDesc'">member_nick desc</when>
-		<when test="orderType == 'memberBirthAsc'">member_birth asc</when>
-		<when test="orderType == 'memberBirthDesc'">member_birth desc</when>
-		<when test="orderType == 'memberLogindateAsc'">member_logindate asc</when>
-		<when test="orderType == 'memberLogindateDesc'">member_logindate desc</when>
-	</choose>
+	<!-- 멤버 숫자 -->
+	<select id="memberCount" resultType="int"> 
+	select count(*) from  member
+	</select>
+	<!-- 멤버 목록 -->
+	<select id="memberlist" resultType="memberDto" parameterType="Map"> 	
+	select * from member order by ${column} ${order}
+	</select>	
+	<!-- 멤버 검색 -->
+	<select id="membersearch" resultType="memberDto" parameterType="AdminSearchVO"> 
+	<bind name="keywordExist" value="keyword!=null and type!=null and !keyword.equals('') and !type.equals('')" />
+	
+	select * from member
+			<where>
+			<!-- 아이디: 유사한 항목  -->
+			<if test="keywordExist">
+				and instr(${type}, #{keyword})>0
+			</if>	
+			<if test="column!=null and order !=null">
+			order by ${column} ${order}
+			</if>		
+		</where>
 	</select>
 	<!-- 회원 삭제 -->
 	<delete id="deleteMember" parameterType="int">
@@ -45,24 +49,46 @@
 	<select id="oneMember" resultType="MemberDto" parameterType="int">
 		select * from member where member_No = #{memberNo}
 	</select>
-	
-	<!-- 소모임 정렬 -->
-	<select id="clublist" resultType="clubDto" parameterType="map"> 
-	select * from club 
-			order by
-	<choose>
-		<when test="orderType == 'clubNameAsc'">club_name asc</when>
-		<when test="orderType == 'clubNameDesc'">club_name desc</when>
-		<when test="orderType == 'clubNoAsc'">club_no asc</when>
-		<when test="orderType == 'clubNoDesc'">club_no desc</when>
-		<when test="orderType == 'clubMainCategoryAsc'">club_main_category asc</when>
-		<when test="orderType == 'clubMainCategoryDesc'">club_main_category desc</when>
-		<when test="orderType == 'clubSubCategoryAsc'">club_sub_category asc</when>
-		<when test="orderType == 'clubSubCategoryDesc'">club_sub_category desc</when>
-		<when test="orderType == 'clubMemberLimitAsc'">club_member_limit asc</when>
-		<when test="orderType == 'clubMemberLimitDesc'">club_member_limit desc</when>
-	</choose>
+	<!-- 회원 검색 -->
+	<select id="findMember" resultType="memberDto" parameterType="AdminSearchVO">
+	<!-- 		- bind를 사용하면 변수를 만들 수 있다. -->
+		<bind name="keywordExist" value="keyword!=null and type!=null and !keyword.equals('') and !type.equals('')" />
+		<!-- 전체 검색 -->
+		select * from member
+		<where>
+			<!-- 아이디: 유사한 항목  -->
+			<if test="keywordExist">
+				and instr(member_no, #{keyword})>0
+			</if>	
+			<if test="column!=null and order !=null">
+			order by ${column} ${order}
+			</if>		
+		</where>
 	</select>
+	<!-- 소모임 숫자 -->
+	<select id="clubCount" resultType="int"> 
+	select count(*) from  club
+	</select>
+	<!-- 소모임 목록 -->
+	<select id="clublist" resultType="clubDto" parameterType="Map"> 	
+	select * from club order by ${column} ${order}
+	</select>	
+	<!-- 소모임 검색 -->
+	<select id="clubsearch" resultType="clubDto" parameterType="AdminSearchVO"> 
+	<bind name="keywordExist" value="keyword!=null and type!=null and !keyword.equals('') and !type.equals('')" />
+	select * from club
+			<where>
+			<!-- 아이디: 유사한 항목  -->
+			<if test="keywordExist">
+				and instr(${type}, #{keyword})>0
+			</if>	
+			<if test="column!=null and order !=null">
+			order by ${column} ${order}
+			</if>		
+		</where>
+	</select>
+		<!-- 소모임 검색 -->
+		
 		<!-- 소모임 삭제 -->
 	<delete id="deleteClub" parameterType="int">
 		delete club where club_no = #{clubNo}
@@ -83,6 +109,85 @@
 			where
 				club_no = #{clubNo}
 	</update>
+	<resultMap type="AdminClubVO" id="AdminClubVO">
+		<association property="clubMemberDto">
+			<result column="club_member_no" property="clubMemberNo"/>			
+			<result column="club_no" property="clubNo"/>			
+			<result column="member_no" property="memberNo"/>			
+			<result column="club_member_date" property="clubMemberDate"/>			
+			<result column="club_member_grade" property="clubMemberGrade"/>			
+			<result column="club_member_answer1" property="clubMemberAnswer1"/>			
+			<result column="club_member_answer2" property="clubMemberAnswer2"/>			
+			<result column="club_member_answer3" property="clubMemberAnswer3"/>			
+			<result column="club_member_permission" property="clubMemberPermission"/>			
+			<result column="club_member_refuse_msg" property="clubMemberRefuseMsg"/>			
+		</association>
+		<association property="clubDto">
+			<result column="club_no" property="clubNo"/>
+			<result column="club_leader" property="clubLeader"/>
+			<result column="club_name" property="clubName"/>
+			<result column="club_summary" property="clubSummary"/>
+			<result column="club_main_category" property="clubMainCategory"/>
+			<result column="club_sub_category" property="clubSubCategory"/>
+			<result column="club_place" property="clubPlace"/>
+			<result column="club_join_question1" property="clubJoinQuestion1"/>
+			<result column="club_join_question2" property="clubJoinQuestion2"/>
+			<result column="club_join_question3" property="clubJoinQuestion3"/>
+			<result column="club_member_limit" property="clubMemberLimit"/>
+		</association>
+		<association property="memberDto">
+			<result column="member_no" property="memberNo"/>
+			<result column="member_email" property="memberEmail"/>
+			<result column="member_nick" property="memberNick"/>
+			<result column="member_gender" property="memberGender"/>
+			<result column="member_phone" property="memberPhone"/>
+			<result column="member_birth" property="memberBirth"/>
+			<result column="member_name" property="memberName"/>
+			<result column="member_mbti" property="memberMbti"/>
+			<result column="member_animal" property="memberAnimal"/>
+			<result column="member_interest1" property="memberInterest1"/>
+			<result column="member_interest2" property="memberInterest2"/>
+			<result column="member_interest3" property="memberInterest3"/>
+			<result column="member_place1" property="memberPlace1"/>
+			<result column="member_place2" property="memberPlace2"/>
+			<result column="member_place3" property="memberPlace3"/>
+			<result column="member_admin" property="memberAdmin"/>
+			<result column="member_report_count" property="memberReportCount"/>
+			<result column="member_club_count" property="memberClubCount"/>
+			<result column="member_sns_id" property="memberSnsId"/>
+			<result column="member_logindate" property="memberLogindate"/>
+		</association>
+	</resultMap>
+	<select id="clubMemberList" resultMap="AdminClubVO">
+	 SELECT
+			C.*,
+			cm.*,
+			m.MEMBER_GENDER,
+			m.MEMBER_MBTI,
+			m.MEMBER_ANIMAL,
+			m.MEMBER_INTEREST1,
+			m.MEMBER_INTEREST2,
+			m.MEMBER_INTEREST3,
+			m.MEMBER_PLACE1,
+			m.MEMBER_PLACE2,
+			m.MEMBER_PLACE3,
+			m.MEMBER_SNS_ID,
+			m.MEMBER_NICK,
+			m.MEMBER_BIRTH 
+		FROM 
+			club_member cm 
+		LEFT OUTER JOIN MEMBER m 
+		ON cm.MEMBER_NO = m.MEMBER_NO 
+		LEFT OUTER JOIN CLUB C
+		ON cm.CLUB_NO = C.CLUB_NO
+		WHERE CM.club_no = #{clubNo} and cm.club_member_permission =1
+	</select>
+	<select id="clubboardlist" resultType="clubBoardDto" parameterType="int">
+		select * from club_board where club_no= #{clubNo}
+	</select>
+	<select id="clubreplylist" resultType="clubBoardReplyDto" parameterType="int">
+		select * from club_board_reply where club_no= #{clubNo}
+	</select>
 	<!-- mbti 설문 목록 -->
 	<select id="mbtisurveylist" resultType="mbtiSurveyDto">
 		select * from mbti_survey order by survey_no asc
@@ -96,19 +201,100 @@
 			where 
 				survey_no = #{surveyNo}
 	</update>
-	<!-- 상세 -->
+	<!-- mbti 설문 상세 -->
 	<select id="oneSurvey" resultType="mbtiSurveyDto" parameterType="int">
 		select * from mbti_survey where survey_no = #{surveyNo}
 	</select>
-	<!-- 등록 -->
+	<!--mbti 설문 등록 -->
 	<insert id="insert" parameterType="mbtiSurveyDto">
 		insert into mbti_survey
 			(survey_no, survey_question, survey_answer1, survey_answer2) 
 			values
 			(#{surveyNo}, #{surveyQuestion}, #{surveyAnswer1}, #{surveyAnswer2})
 	</insert>
-	<!-- 삭제 -->
+	<!--mbti 설문 삭제 -->
 	<delete id="deleteSurvey" parameterType="int">
 		delete mbti_survey where survey_no = #{SurveyNo}
 	</delete>
+	
+		<!-- mbti 게시판 목록 -->
+	<select id="mbtiboardlist" resultType="mbtiBoardDto" parameterType="Map"> 	
+	select * from mbti_board order by ${column} ${order}
+	</select>	
+	
+		<!-- mbti 게시판 검색 -->
+	<select id="mbtiboardsearch" resultType="mbtiBoardDto" parameterType="AdminSearchVO"> 
+	<bind name="keywordExist" value="keyword!=null and type!=null and !keyword.equals('') and !type.equals('')" />
+	select * from mbti_board
+			<where>
+			<!-- 아이디: 유사한 항목  -->
+			<if test="keywordExist">
+				and instr(${type}, #{keyword})>0
+			</if>	
+			<if test="column!=null and order !=null">
+			order by ${column} ${order}
+			</if>		
+		</where>
+	</select>
+		<!-- mbti 게시판 게시글 숫자 -->
+	<select id="mbtiboardcount" resultType="int"> 
+	select count(*) from mbti_board
+	</select>
+	<!-- 동물 사진 목록 -->
+	<select id="mbtiPhotolist" resultType="animalPhotoDto">
+		select attach_no from animal_photo
+	</select>
+	<!-- 동물 사진 등록 -->
+		<insert id="mbtiPhotoinsert" parameterType="Map">
+		insert into animal_photo(
+			animal_no, attach_no
+		)
+		values(
+			#{animalNo}, #{attachNo}
+		)
+	</insert>
+		<!-- 동물 사진 조회 -->
+	<select id="mbtiPhotosearch" parameterType="Integer" resultType="Integer">
+		select attach_no from animal_photo where animal_no = #{animalNo}
+	</select>
+		<!-- 동물 사진 삭제 -->
+	<delete id="mbtiPhotodelete" parameterType="Integer">
+		delete animal_photo where attach_no = #{attachNo}
+	</delete>
+	<!-- mbti 동물 목록 + 동물 사진 목록 -->
+	<resultMap type="AdminMbtiAnimalListVO" id="AdminMbtiAnimalListVO">
+		<association property="animalPhotoDto">
+			<result column="animal_no" property="animalNo"/>
+			<result column="attach_no" property="attachNo"/>
+		</association>
+		<association property="mbtiAnimalDto">
+			<result column="animal_no" property="animalNo"/>
+			<result column="animal" property="animal"/>
+			<result column="mbti" property="mbti"/>
+		</association>
+	</resultMap>
+	<select id="mbtianimallist" resultMap="AdminMbtiAnimalListVO">
+        	select
+		M.animal_no,
+		M.animal,
+		M.mbti,
+		A.attach_no
+		from mbti_animal M 
+		left outer join animal_photo A
+		on M.animal_no = A.animal_no
+		order by M.animal_no
+	</select>
+	<!-- 동물 등록 -->
+	<insert id="mbtianimalinsert" parameterType="mbtiAnimalDto">
+		insert into mbti_animal (animal_no, animal, mbti)
+		values (#{animalNo},#{animal},#{mbti})
+	</insert>
+		<!-- 동물 삭제 -->
+	<insert id="mbtianimaldelete" parameterType="int">
+		delete mbti_animal where animal_no = #{animalNo}
+	</insert>
+	<!-- 동물 검색 -->
+	<select id="selectmbtianimal" resultType="int">
+		select animal_no from mbti_animal where animal_no = #{animalNo}
+	</select>
 </mapper>

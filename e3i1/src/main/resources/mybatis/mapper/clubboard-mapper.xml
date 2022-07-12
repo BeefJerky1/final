@@ -46,7 +46,7 @@
 	<update id="calculateReportCount" parameterType="int">
 	  	update club_board
 		set club_board_reportcount = (
-		select count(*) from club_report where club_report_target = #{clubBoardNo}
+		select count(*) from club_board_report where club_report_target = #{clubBoardNo}
 		)
 		where club_board_no = #{clubBoardNo}
 	</update>
@@ -96,11 +96,10 @@
 			<result column="attach_no" property="attachNo"/>
 		</association>
 		
-		<association property ="clubReportDto">
+		<association property ="clubBoardReportDto">
 			<result column="club_report_no" property="clubReportNo"/>
 			<result column="club_no" property="clubNo"/>
 			<result column="club_report_target" property="clubReportTarget"/>
-			<result column="club_report_type" property="clubReportType"/>	
 			<result column="club_report_writer" property="clubReportWriter"/>
 			<result column="club_report_reporter" property="clubReportReporter"/>
 			<result column="club_report_time" property="clubReportTime"/>
@@ -198,7 +197,7 @@ left outer join member M
    on C.club_board_writer = M.member_no 
 left outer join member_profile P 
    on C.club_board_writer = P.member_no
- left outer join (select * from club_report where club_report_reporter = #{memberNo})R
+ left outer join (select * from club_board_report where club_report_reporter = #{memberNo})R
     on C.club_board_no = R. club_report_target
 <!-- left outer join club_report R -->
 <!--    on C.club_board_no = R. club_report_target -->

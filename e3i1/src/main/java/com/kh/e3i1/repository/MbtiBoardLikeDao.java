@@ -8,12 +8,14 @@ public interface MbtiBoardLikeDao {
 	
 	int likeCount(MbtiBoardLikeDto mbtiBoardLikeDto);
 	
-	int ItLikeInfo(MbtiBoardLikeDto mbtiBoardLikeDto);
+	Integer ItLikeInfo(MbtiBoardLikeDto mbtiBoardLikeDto);
 	
 	void likeInsert(MbtiBoardLikeDto mbtiBoardLikeDto);
-	MbtiBoardLikeDto likeUpdate(MbtiBoardLikeDto mbtiBoardLikeDto);
 
 	List<MbtiBoardLikeDto> list(int mbtiBoardNo);
+
+	void likeUpdate(MbtiBoardLikeDto mbtiBoardLikeDto);
+	void likeDelete(MbtiBoardLikeDto mbtiBoardLikeDto);
 }
 
 
