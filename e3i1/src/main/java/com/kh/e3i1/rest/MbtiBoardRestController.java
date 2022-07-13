@@ -35,7 +35,7 @@ public class MbtiBoardRestController {
 		int lastPage = (count + s -1) / s;
 		
 		int blockSize = 5; // 블록 크기
-		int endBlock = (p +blockSize - 1) / blockSize * blockSize;
+		int endBlock = (p +blockSize - 1) / blockSize * blockSize; 
 		int startBlock = endBlock - (blockSize - 1);
 		if(endBlock > lastPage) {
 			endBlock = lastPage;

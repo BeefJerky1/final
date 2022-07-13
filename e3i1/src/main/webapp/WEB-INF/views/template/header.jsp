@@ -47,8 +47,6 @@
 	url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@100;300&display=swap')
 	;
 </style>
-<body>
-
 	<!--  Vue, axios, bootstrap script, lodash -->
 	
 	<!-- jquery -->
@@ -64,6 +62,8 @@
 		crossorigin="anonymous">
 		
 	</script>
+<body>
+
 
 	<!-- nav bar -->
 	<header>
@@ -169,7 +169,7 @@
 			</div>
 		</nav>
 	</header>
- <script>
+<!-- 	<script>
         const apps = Vue.createApp({
             data(){
                 return {
@@ -213,5 +213,4 @@
             },
         });
         apps.mount("#apps");
-    </script>
-	
+ </script> -->

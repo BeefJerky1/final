@@ -28,6 +28,6 @@ public class HomeRestController {
 
 	@GetMapping("/")
 	public List<ClubListVO> list(){
-		return clubDao.list();
+		return clubDao.list(1);
 	}
 }

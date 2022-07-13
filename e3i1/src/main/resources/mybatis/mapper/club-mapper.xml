@@ -305,24 +305,28 @@
 	</resultMap>
 	
 	<select id="list" resultMap="clubListVO">
-		SELECT 
-			clv.*,
-			mag.ANIMAL_NO GREATEST_animal_no,
-			mag.ANIMAL GREATEST_aniaml,
-			apg.ATTACH_NO GREATEST_attach_no,
-			mal.ANIMAL_NO LEAST_animal_no,
-			mal.ANIMAL LEAST_animal,
-			apl.ATTACH_NO LEAST_attach_no
-		FROM CLUB_LIST_VO clv
-		LEFT OUTER JOIN MBTI_ANIMAL mag
-		ON clv.GREATEST_MBTI = mag.MBTI 
-		LEFT OUTER JOIN ANIMAL_PHOTO apg 
-		ON mag.ANIMAL_NO = apg.ANIMAL_NO 
-		LEFT OUTER JOIN MBTI_ANIMAL mal
-		ON clv.LEAST_MBTI = mal.MBTI 
-		LEFT OUTER JOIN ANIMAL_PHOTO apl
-		ON mal.ANIMAL_NO = apl.ANIMAL_NO 
-		ORDER BY total ASC, club_no DESC
+		select * from (
+	            select rownum rn, TMP.* from (
+						SELECT 
+							clv.*,
+							mag.ANIMAL_NO GREATEST_animal_no,
+							mag.ANIMAL GREATEST_aniaml,
+							apg.ATTACH_NO GREATEST_attach_no,
+							mal.ANIMAL_NO LEAST_animal_no,
+							mal.ANIMAL LEAST_animal,
+							apl.ATTACH_NO LEAST_attach_no
+						FROM CLUB_LIST_VO clv
+						LEFT OUTER JOIN MBTI_ANIMAL mag
+						ON clv.GREATEST_MBTI = mag.MBTI 
+						LEFT OUTER JOIN ANIMAL_PHOTO apg 
+						ON mag.ANIMAL_NO = apg.ANIMAL_NO 
+						LEFT OUTER JOIN MBTI_ANIMAL mal
+						ON clv.LEAST_MBTI = mal.MBTI 
+						LEFT OUTER JOIN ANIMAL_PHOTO apl
+						ON mal.ANIMAL_NO = apl.ANIMAL_NO 
+						ORDER BY total ASC, club_no DESC
+			         )TMP
+	      ) where rn between ((#{page}-1) * 9 + 1) and (#{page} * 9)
 	</select>
 	
 	<select id="searchList" resultMap="clubListVO">
@@ -330,23 +334,25 @@
 		<bind name="subCategoryExist" value="subList != null and !subList.equals('')"/>
 		<bind name="cityExist" value="city2 != null and !city2.equals('')"/>
 		<bind name="mbtiExist" value="mbtiList != null and mbtiList.size() > 0"/>
-		SELECT 
-			clv.*,
-			mag.ANIMAL_NO GREATEST_animal_no,
-			mag.ANIMAL GREATEST_aniaml,
-			apg.ATTACH_NO GREATEST_attach_no,
-			mal.ANIMAL_NO LEAST_animal_no,
-			mal.ANIMAL LEAST_animal,
-			apl.ATTACH_NO LEAST_attach_no
-		FROM CLUB_LIST_VO clv
-		LEFT OUTER JOIN MBTI_ANIMAL mag
-		ON clv.GREATEST_MBTI = mag.MBTI 
-		LEFT OUTER JOIN ANIMAL_PHOTO apg 
-		ON mag.ANIMAL_NO = apg.ANIMAL_NO 
-		LEFT OUTER JOIN MBTI_ANIMAL mal
-		ON clv.LEAST_MBTI = mal.MBTI 
-		LEFT OUTER JOIN ANIMAL_PHOTO apl
-		ON mal.ANIMAL_NO = apl.ANIMAL_NO 
+			select * from (
+		            select rownum rn, TMP.* from (
+						SELECT 
+							clv.*,
+							mag.ANIMAL_NO GREATEST_animal_no,
+							mag.ANIMAL GREATEST_aniaml,
+							apg.ATTACH_NO GREATEST_attach_no,
+							mal.ANIMAL_NO LEAST_animal_no,
+							mal.ANIMAL LEAST_animal,
+							apl.ATTACH_NO LEAST_attach_no
+						FROM CLUB_LIST_VO clv
+						LEFT OUTER JOIN MBTI_ANIMAL mag
+						ON clv.GREATEST_MBTI = mag.MBTI 
+						LEFT OUTER JOIN ANIMAL_PHOTO apg 
+						ON mag.ANIMAL_NO = apg.ANIMAL_NO 
+						LEFT OUTER JOIN MBTI_ANIMAL mal
+						ON clv.LEAST_MBTI = mal.MBTI 
+						LEFT OUTER JOIN ANIMAL_PHOTO apl
+						ON mal.ANIMAL_NO = apl.ANIMAL_NO 
 		<where>
 			<!-- 메인 카테고리 -->
 			<if test="mainCategoryExist">
@@ -375,7 +381,8 @@
 			</if>
 		</where>
 		ORDER BY total ASC, club_no DESC
+		)TMP
+		     ) where rn between ((#{page}-1) * 9 + 1) and (#{page} * 9)
 	</select> 
-	
 	
 </mapper>

@@ -70,6 +70,10 @@ public class MemberController {
 	
 	@PostMapping("/join")
 	public String join(@ModelAttribute MemberDto memberDto) throws Exception {
+		System.out.println(memberDto.getMemberAnimal());
+		System.out.println(memberDto.getMemberInterest1());
+		System.out.println(memberDto.getMemberInterest2());
+		System.out.println(memberDto.getMemberInterest3());
 		memberDao.join(memberDto);
 		
 		return "redirect:/member/join_success";
