@@ -6,6 +6,12 @@
 <c:set var="memberAdmin" value="${auth == '관리자'}"></c:set>
 <c:set var="isLogin" value="${memberNo != null}"></c:set>
 <style>
+	body{
+	background-color:#F6F6F6 !important;
+	}
+	.shadow{
+	background-color:white !important;
+	}
 .imgfile1 {
 	width: 1000%;
 }
@@ -26,11 +32,6 @@ ul {
 	border-radius: 70%;
 	overflow: hidden;
 }
-
-.position-sticky {
-	position: sticky;
-}
-
 ul {
 	padding-left: 0px !important;
 }
@@ -112,7 +113,23 @@ textarea {
 img {
 	border-radius: 50%;
 }
-
+.left-side{
+height:100%;
+position:sticky;
+top:10%
+}
+.right-side{
+height:100%;
+position:sticky;
+top:10%
+}
+@media screen and (max-width: 576px ) {
+.left-side{
+position:relative;
+}
+.right-side{
+position:relative;
+}
 .profile {
 	width: 80px;
 	height: 80px;
@@ -131,7 +148,7 @@ img {
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div id="app" class="container-fluid">
 	<div class="row">
-		<div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5">
+		<div class="col-lg-3 col-md-3 col-sm-3 mt-5 left-side">
 			<div
 				class="border text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side rounded shadow"
 				style="border-radius: 1em !important">
@@ -547,7 +564,7 @@ img {
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5">
+		<div class="col-lg-3 col-md-3 col-sm-3 right-side mt-5">
 			<div
 				class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 right-side  rounded shadow"
 				style="border-radius: 1em !important">

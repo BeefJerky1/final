@@ -6,8 +6,14 @@
 <c:set var="memberAdmin" value="${auth}"></c:set>
 <c:set var="isLogin" value="${memberNo != null}"></c:set>
 	<style>
+	body{
+	background-color:#F6F6F6 !important;
+	}
 	.imgfile1{
 		width:1000%;
+	}
+	.white{
+	background-color:white !important; 
 	}
 	ul{
 	padding-left:0!important;
@@ -38,7 +44,24 @@ border-color:#3E4684 !important;
 background-color:#2f3564 !important;
 border-color:#2f3564 !important;
 }
-
+.left-side{
+height:100%;
+position:sticky;
+top:10%
+}
+.right-side{
+height:100%;
+position:sticky;
+top:10%
+}
+@media screen and (max-width: 576px ) {
+.left-side{
+position:relative;
+}
+.right-side{
+position:relative;
+}
+      }
 	.blind{
 	color:red;
 	}
@@ -76,28 +99,21 @@ border-color:#2f3564 !important;
 	div{
 	border-radius:"20% !important";
 	}
-    .position {
-        width: 41.4% !important;
-        position: fixed;
-        background-color: rgba(255, 255, 255, 0.9);
-    }
-    .body {
-        padding-top: 85px;
-    }
     .profile{
 		border-radius:50%;    
     }
     .asdf{
     	border-radius: "2rem !important";
     }
+    
 
 	</style>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
     <div id="app" class="container-fluid">
         <div class="row all">
-             <div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5 left-side">
-             <div class="border text-dark mt-3 p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 rounded shadow" style="border-radius:1em !important">
+             <div class="col-lg-3 col-md-3 col-sm-3 mt-5 left-side "	>
+             <div class="border text-dark mt-3 p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 rounded shadow white" style="border-radius:1em !important">
                  <div class="row ">
 							<div class="col-md-2 align-self-center ">
 								<i class="fa-solid fa-house-chimney fa-2x"
@@ -224,7 +240,7 @@ border-color:#2f3564 !important;
                 </div>
                 <div v-if="cancel">
 
-                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end rounded mt-3 shadow"  style="border-radius:1em !important">
+                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end rounded mt-3 shadow white"  style="border-radius:1em !important">
                         <textarea class="form-control " v-model="boardContent" placeholder="무슨 일이 일어나고 있나요?" style="border-radius:1em !important"></textarea>
                           <div class="mt-2 text-start">
 							<label>이미지 넣기</label> 
@@ -238,7 +254,7 @@ border-color:#2f3564 !important;
                 <div  class="text-dark col-lg-12 col-md-12 col-sm-12">
 
                 <div v-for="(clubboard, index ) in board" v-bind:key="index" >
-                    <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 hover rounded shadow mt-3 "style="border-radius:1em !important">
+                    <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 hover rounded shadow white mt-3 "style="border-radius:1em !important">
                         <div class="row" >
                             <div class="col-lg-2 col-md-2 col-sm-2 align-end top">
                             <div v-if="clubboard.memberProfileDto.attachNo==0">
@@ -355,21 +371,21 @@ border-color:#2f3564 !important;
     </div>
             </div>
             <div class=" mt-3">
-                 <button type="button" v-on:click="appendBoard()" :disabled="this.dataFull==true" class="form-control btn-primary shadow" style="border-radius:1em !important">
+                 <button type="button" v-on:click="appendBoard()" :disabled="this.dataFull==true" class="form-control btn-primary shadow " style="border-radius:1em !important">
         더보기 ({{showBoard}}/{{totalBoard}})
     </button>
 
             
         </div>
         </div>
-       <div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5 ">
+       <div class="col-lg-3 col-md-3 col-sm-3  right-side mt-5 ">
        			<div v-if="this.clubMember==1 || this.memberAdmin =='관리자'" class="mt-3">
         			<button class="btn btn-secondary form-control shadow" v-on:click="notAllowed()" v-if="cancel " style="border-radius:1em !important">cancel</button>
                    	<button class="btn btn-primary form-control shadow" v-on:click="allowed()" v-if="write" style="border-radius:1em !important">write</button>
        			</div>
        			<div v-else>
        			</div>
-                <div class="border border-opacity-10 text-dark mt-2 p-4 col-lg-12 col-md-12 col-sm-12 right-side shadow" style="border-radius:1em !important">
+                <div class="border border-opacity-10 text-dark mt-2 p-4 col-lg-12 col-md-12 col-sm-12 shadow white" style="border-radius:1em !important">
                     <div class="row">   
                     	<div class="col-lg-12 col-md-12 col-sm-12">
                     	

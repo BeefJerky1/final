@@ -68,13 +68,7 @@ public class AdminDaoImpl implements AdminDao{
 	//회원 검색
 	@Override
 	public List<MemberDto> findMember(AdminSearchVO searchVO) {
-		List<MemberDto> list = sqlSession.selectList("admin.findMember", searchVO);
-		if(list.isEmpty()) {
-//			throw new CannotFindException();
-			return null;
-		}else {
-			return list;			
-		}
+		return sqlSession.selectList("admin.membersearch", searchVO);
 	}
 	//소모임 수
 	@Override
