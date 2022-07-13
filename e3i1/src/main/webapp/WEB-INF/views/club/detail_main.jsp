@@ -463,7 +463,7 @@ created() {
 	this.existLike();
 	
 	axios({
-		url: "${pageContext.request.contextPath}/rest/club/"+this.clubNo,
+		url: "${pageContext.request.contextPath}/rest/club/detail/"+this.clubNo,
 		method: "get",
 	}).then((resp) => {
 		this.clubList = resp.data;

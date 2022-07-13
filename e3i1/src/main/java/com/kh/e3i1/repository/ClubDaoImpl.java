@@ -23,8 +23,8 @@ public class ClubDaoImpl implements ClubDao {
 	
 	// 소모임 전체목록
 	@Override
-	public List<ClubListVO> list() {
-		return sqlSession.selectList("club.list");
+	public List<ClubListVO> list(int page) {
+		return sqlSession.selectList("club.list", page);
 	}
 	
 	// 소모임 검색목록
@@ -101,6 +101,11 @@ public class ClubDaoImpl implements ClubDao {
 	public List<ClubDto> search(String keyword) {
 		
 		return sqlSession.selectList("club.search", keyword);
+	}
+
+	@Override
+	public int count() {
+		return sqlSession.selectOne("club.count");
 	}
 	
 }

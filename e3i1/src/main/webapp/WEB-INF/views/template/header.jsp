@@ -47,8 +47,6 @@
 	url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@100;300&display=swap')
 	;
 </style>
-<body>
-
 	<!--  Vue, axios, bootstrap script, lodash -->
 	
 	<!-- jquery -->
@@ -64,6 +62,8 @@
 		crossorigin="anonymous">
 		
 	</script>
+<body>
+
 
 	<!-- nav bar -->
 	<header>
@@ -117,7 +117,7 @@
 									type="search" placeholder="소모임 검색하기" aria-label="Search"  v-model="keyword"  v-on:input="keyword = $event.target.value" autocomplete="off">
 							</form>
 								<li class="list-group-item" v-for="(club, index) in clubList" v-bind:key="index">
-									<div v-on:click="selectKeyword(index);">{{club.clubName}}, \#{{club.clubMainCategory}},  \#{{club.clubSubCategory}}</div>
+									<%-- <div v-on:click="selectKeyword(index);">{{club.clubName}}, \#{{club.clubMainCategory}},  \#{{club.clubSubCategory}}</div> --%>
 								</li>
 						</c:otherwise>
 					</c:choose>
@@ -138,7 +138,7 @@
 			</div>
 		</nav>
 	</header>
- <script>
+<!-- 	<script>
         const apps = Vue.createApp({
             data(){
                 return {
@@ -179,5 +179,4 @@
             },
         });
         apps.mount("#apps");
-    </script>
-	
+ </script> -->

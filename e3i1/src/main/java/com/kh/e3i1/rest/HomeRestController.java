@@ -26,8 +26,8 @@ public class HomeRestController {
 		return clubDao.search(keyword);
 	}
 	
-	@GetMapping("/")
-	public List<ClubListVO> list(){
-		return clubDao.list();
-	}
+//	@GetMapping("/")
+//	public List<ClubListVO> list(){
+//		return clubDao.list();
+//	}
 }

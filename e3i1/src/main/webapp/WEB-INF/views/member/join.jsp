@@ -452,33 +452,32 @@ i{
 					style="float: right;">다음</button>
 			</div>
 		</div>
-</div>
 
-<!-- 6번째 페이지 -->
-<div class="container w500 m30 page">
-	<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
-		<input type="hidden" name="memberAnimal" v-model="memberAnimal">
-		<input type="hidden" name="memberInterst1" v-model="interest[0]" :value="interest[0]">
-		<input type="hidden" name="memberInterst2" v-model="interest[1]" :value="interest[1]">
-		<input type="hidden" name="memberInterst3" v-model="interest[2]" :value="interest[2]">
-		<div class="row">
-			<div class="card">
-				<div class="card-img">
-					<img src="#">
+		<!-- 7번째 페이지 -->
+		<div class="container w500 m30 page">
+			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
+				<input type="hidden" name="memberAnimal" :value="memberAnimal">
+				<input type="hidden" name="memberInterest1" :value="interest[0]">
+				<input type="hidden" name="memberInterest2" :value="interest[1]">
+				<input type="hidden" name="memberInterest3" :value="interest[2]">
+				<div class="row">
+					<div class="card">
+						<div class="card-img">
+							<img src="#">
+						</div>
+						<div class="card-title">{{memberAnimal}}</div>
+					</div>
 				</div>
-				<div class="card-title">{{memberAnimal}}</div>
+				<div class="row">
+					<button type="submit" class="btn btn-outline-success" style="width: 30%;">가입하기</button>
+				</div>
+		
+				<div class="row center">
+					<button type="button" class="btn btn-prev" style="display: none;">이전</button>
+					<button type="button" class="btn btn-next" style="display: none;">다음</button>
+				</div>
 			</div>
 		</div>
-		<div class="row">
-			<button type="submit" class="btn btn-outline-success" style="width: 30%;">가입하기</button>
-		</div>
-
-		<div class="row center">
-			<button type="button" class="btn btn-prev" style="display: none;">이전</button>
-			<button type="button" class="btn btn-next" style="display: none;">다음</button>
-		</div>
-	</div>
-</div>
 </form>
 </div>
 
@@ -509,8 +508,6 @@ i{
 
 			if (index == 5) {
 				$(".answer").each(function() {
-					console.log($(this).text());
-
 					if ($(this).text() == 'E') {
 						count1++;
 					} else if ($(this).text() == 'N') {
@@ -565,7 +562,6 @@ i{
 		// 이전 버튼을 누르면 이전 페이지가 나오도록 구현
 		$(".btn-prev").not(":first").click(function() {
 			move(--index);
-			console.log(index);
 		});
 
 		var mbti;

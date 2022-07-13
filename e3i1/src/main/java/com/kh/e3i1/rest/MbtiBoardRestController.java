@@ -31,11 +31,11 @@ public class MbtiBoardRestController {
 		
 		boolean search = type != null && keyword != null;
 		
-		int count = mbtiBoardDao.count(type, keyword);
-		int lastPage = (count + s -1) / s;
+		int count = mbtiBoardDao.count(type, keyword); // 10
+		int lastPage = (count + s -1) / s; // 10
 		
 		int blockSize = 5; // 블록 크기
-		int endBlock = (p +blockSize - 1) / blockSize * blockSize;
+		int endBlock = (p +blockSize - 1) / blockSize * blockSize; 
 		int startBlock = endBlock - (blockSize - 1);
 		if(endBlock > lastPage) {
 			endBlock = lastPage;

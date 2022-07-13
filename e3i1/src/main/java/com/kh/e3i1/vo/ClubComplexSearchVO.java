@@ -13,4 +13,5 @@ public class ClubComplexSearchVO {
 	private String subList;
 	private String city2;
 	private List<String> mbtiList;
+	private int page;
 }
