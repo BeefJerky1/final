@@ -5,10 +5,15 @@
 <c:set var="memberNo" value="${login}"></c:set>
 <c:set var="memberAdmin" value="${auth}"></c:set>
 <c:set var="isLogin" value="${memberNo != null}"></c:set>
-
 	<style>
+	body{
+	background-color:#F6F6F6 !important;
+	}
 	.imgfile1{
 		width:1000%;
+	}
+	.white{
+	background-color:white !important; 
 	}
 	ul{
 	padding-left:0!important;
@@ -29,8 +34,34 @@
 	text-align: center;
 }
 .right-side{
-	background-color:#F7F7F7;
+	;
 }
+.btn-primary{
+background-color:#3E4684 !important;
+border-color:#3E4684 !important;
+}
+.btn-primary:hover{
+background-color:#2f3564 !important;
+border-color:#2f3564 !important;
+}
+.left-side{
+height:100%;
+position:sticky;
+top:10%
+}
+.right-side{
+height:100%;
+position:sticky;
+top:10%
+}
+@media screen and (max-width: 576px ) {
+.left-side{
+position:relative;
+}
+.right-side{
+position:relative;
+}
+      }
 	.blind{
 	color:red;
 	}
@@ -49,7 +80,9 @@
 	}
 	.red{color:red;}
 	.time{opacity:0.5; font-size:0.8em}
-   .hover:hover{background-color: #F7F7F7;cursor: pointer;}
+   .hover:hover{
+   background-color: #F7F7F7;
+   cursor: pointer;}
     .text-over-cut pre {
 		  display: block;
 		  /* width: 350px; */
@@ -61,34 +94,28 @@
     .main {
         padding-left: 0 !important; 
         padding-right: 0 !important;
+        
     }
 	div{
 	border-radius:"20% !important";
 	}
-    .position {
-        width: 41.4% !important;
-        position: fixed;
-        background-color: rgba(255, 255, 255, 0.9);
-    }
-    .body {
-        padding-top: 85px;
-    }
     .profile{
 		border-radius:50%;    
     }
     .asdf{
     	border-radius: "2rem !important";
     }
+    
 
 	</style>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
     <div id="app" class="container-fluid">
         <div class="row all">
-             <div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5 left-side">
-             <div class="border text-dark mt-3 p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 rounded" style="border-radius:1em !important">
-                 <div class="row">
-							<div class="col-md-2 align-self-center">
+             <div class="col-lg-3 col-md-3 col-sm-3 mt-5 left-side "	>
+             <div class="border text-dark mt-3 p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 rounded shadow white" style="border-radius:1em !important">
+                 <div class="row ">
+							<div class="col-md-2 align-self-center ">
 								<i class="fa-solid fa-house-chimney fa-2x"
 									style="color: lightgray;"></i>
 							</div>
@@ -113,8 +140,14 @@
 					
 						<div class="row">
 							<div class="col-md-2" width="10px" height="10px">
-								<img src="https://via.placeholder.com/250/69f/fff.png"
-									class="profile">
+<!-- 								<img src="https://via.placeholder.com/250/69f/fff.png" -->
+<!-- 									class="profile"> -->
+<!-- 							<div v-if="clubList.memberProfileDto==null"> -->
+                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"> 
+<!--                             </div> -->
+<!--                             <div v-else> -->
+<!--                          		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+clubList.memberProfileDto.attachNo">                              -->
+<!--                          	</div> -->
 							</div>
 							<div class="col-md-8 offset-md-2 row align-self-center">
 								<div class="col-md-3">
@@ -207,7 +240,7 @@
                 </div>
                 <div v-if="cancel">
 
-                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end rounded mt-3 "  style="border-radius:1em !important">
+                    <div class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end rounded mt-3 shadow white"  style="border-radius:1em !important">
                         <textarea class="form-control " v-model="boardContent" placeholder="무슨 일이 일어나고 있나요?" style="border-radius:1em !important"></textarea>
                           <div class="mt-2 text-start">
 							<label>이미지 넣기</label> 
@@ -221,10 +254,15 @@
                 <div  class="text-dark col-lg-12 col-md-12 col-sm-12">
 
                 <div v-for="(clubboard, index ) in board" v-bind:key="index" >
-                    <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 hover rounded mt-3 "style="border-radius:1em !important">
+                    <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 hover rounded shadow white mt-3 "style="border-radius:1em !important">
                         <div class="row" >
                             <div class="col-lg-2 col-md-2 col-sm-2 align-end top">
-                                <a><img src="https://placeimg.com/70/70/animals" class="profile mx-auto d-block"></a>
+                            <div v-if="clubboard.memberProfileDto.attachNo==0">
+                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+clubboard.animalPhotoDto.attachNo"> 
+                            </div>
+                            <div v-else>
+                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+clubboard.memberProfileDto.attachNo">                             
+                         	</div>
                             </div>
                             <div class="col-lg-8 col-md-8 col-sm-8 align-start top">
                                 <span data-bs-toggle="modal" data-bs-target="#exampleModal" v-on:click="modal(index)">
@@ -333,21 +371,21 @@
     </div>
             </div>
             <div class=" mt-3">
-                 <button type="button" v-on:click="appendBoard()" :disabled="this.dataFull == true" class="form-control btn-outline-primary " style="border-radius:1em !important">
+                 <button type="button" v-on:click="appendBoard()" :disabled="this.dataFull==true" class="form-control btn-primary shadow " style="border-radius:1em !important">
         더보기 ({{showBoard}}/{{totalBoard}})
     </button>
 
             
         </div>
         </div>
-       <div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5 ">
+       <div class="col-lg-3 col-md-3 col-sm-3  right-side mt-5 ">
        			<div v-if="this.clubMember==1 || this.memberAdmin =='관리자'" class="mt-3">
-        			<button class="btn btn-secondary form-control " v-on:click="notAllowed()" v-if="cancel " style="border-radius:1em !important">cancel</button>
-                   	<button class="btn btn-primary form-control " v-on:click="allowed()" v-if="write" style="border-radius:1em !important">write</button>
+        			<button class="btn btn-secondary form-control shadow" v-on:click="notAllowed()" v-if="cancel " style="border-radius:1em !important">cancel</button>
+                   	<button class="btn btn-primary form-control shadow" v-on:click="allowed()" v-if="write" style="border-radius:1em !important">write</button>
        			</div>
        			<div v-else>
        			</div>
-                <div class="border border-opacity-10 text-dark mt-2 p-4 col-lg-12 col-md-12 col-sm-12 right-side" style="border-radius:1em !important">
+                <div class="border border-opacity-10 text-dark mt-2 p-4 col-lg-12 col-md-12 col-sm-12 shadow white" style="border-radius:1em !important">
                     <div class="row">   
                     	<div class="col-lg-12 col-md-12 col-sm-12">
                     	

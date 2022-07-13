@@ -63,7 +63,7 @@ li a:hover {
 <body>
 
 	<div id="app" class="container-fluid">
-		<div class="row">
+		<div class="row mb-5">
 			<div class="col-lg-2 col-md-2 col-sm-2 border">
 				<div class=" p-4">
 					<a href="${root}"><img class="logo-item"
@@ -138,49 +138,59 @@ li a:hover {
 					</div>
 					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4 text-start">
 						<div class="row">
-						<h5>검색</h5>
-							<div class="col-lg-5 col-md-5 col-sm-5">
-							       <select class=""v-model="type">
-           							 	<option value="">종류</option>
-							            <option value="member_no">회원번호</option>
-							            <option value="member_email">이메일</option>
-							            <option value="member_nick">닉네임</option>
-							            <option value="member_name">이름</option>
-							            <option value="member_phone">전화번호</option>
-							        </select>
-							        <input type="text" v-model="keyword" class="" v-on:input="keyword=$event.target.value" placeholder="검색어 입력">	             
+							<div class="col-lg-4 col-md-4 col-sm-4">
+							<h5>검색</h5>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="memberNo" id="memberNo" placeholder="번호" >	
+									<label for="memberNo">번호</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="memberEmail" id="memberEmail" placeholder="이메일" >	
+									<label for="memberEmail">이메일</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="memberNick" id="memberNick"  placeholder="닉네임">	
+									<label for="memberNick">닉네임</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="memberName" id="memberName"  placeholder="이름">	
+									<label for="memberName">이름</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="memberPhone" id="memberPhone"  placeholder="전화번호">	
+									<label for="memberPhone">전화번호</label>
+							</form>          
 							  </div>
+						<div class="col-lg-4 col-md-4 col-sm-4">
 							<h5>정렬</h5>
-						<div class="col-lg-5 col-md-5 col-sm-5">
-							<select class="" v-model="column" v-on:change="memberList()">
+							<select class="form-control" v-model="column" v-on:change="memberList()">
 								<option value="member_no">회원번호</option>
 								<option value="member_nick">닉네임</option>
 								<option value="member_name">이름</option>
 								<option value="member_email">이메일</option>							
 								<option value="member_logindate">로그인 날짜</option>
 							</select>
-							<select class="" v-model="order" v-on:change="memberList()">
+							<select class="form-control mb-5" v-model="order" v-on:change="memberList()">
 								<option value="asc">오름차순</option>
 								<option value="desc">내림차순</option>				
 							</select>
-							<button type="button" class="btn btn-primary " v-on:click="search()">조회</button>
-							<button type="button" class="btn btn-success " v-on:click="reset()">초기화</button>
+							<button type="button" class="btn btn-primary form-control" v-on:click="search()">조회</button>
+							<button type="button" class="btn btn-success form-control" v-on:click="reset()">초기화</button>
 						</div>
-							
-							</div>
+						 </div>
 						</div>
 					</div>
 					<div class="col-lg-12 col-md-12 col-sm-12">
-						<table class="table text-center">
+						<table class="table text-center mb-5">
 							<thead class="table-dark">
 								<tr>
 									<!--   						<th></th> -->
 									<th>번호</th>
 									<th>이메일</th>
 									<th>닉네임</th>
+									<th>이름</th>
 									<th>성별</th>
 									<th>생일</th>
-									<!--   						<th>관심분야</th> -->
 									<th>소모임</th>
 									<th>신고</th>
 									<th>마지막 로그인</th>
@@ -193,6 +203,7 @@ li a:hover {
 									<td>{{member1.memberNo}}</td>
 									<td>{{member1.memberEmail}}</td>
 									<td>{{member1.memberNick}}</td>
+									<td>{{member1.memberName}}</td>
 									<td>{{member1.memberGender}}</td>
 									<td>{{convertTime(member1.memberBirth)}}</td>
 									<!--   					<td>{{member.memberInterest1}}</td> -->
@@ -212,6 +223,7 @@ li a:hover {
 <button type="button" v-on:click="append()" :disabled="this.dataFull == true" class="form-control btn-outline-primary " style="border-radius:1em !important">
         더보기 ({{showMember}}/{{totalMember}})
     </button>
+    <br><br><br><br><br><br><br><br><br><br><br>
 				</div>
 			</div>
 		</div>
@@ -248,8 +260,11 @@ li a:hover {
                     dataFull:false,
                     
                     //검색
-                    keyword:"", 
-                    type:"",
+                    memberEmail:"",
+                    memberName:"",
+                    memberPhone:"",
+                    memberNick:"",
+                    memberNo:"", 
                     column:"member_no",
                     order:"asc",
                     
@@ -346,10 +361,13 @@ li a:hover {
 						url:"${pageContext.request.contextPath}/rest/admin/member/",
 						method:"post",
 						data:{
-							order:this.order,
+							memberEmail:this.memberEmail,
+			                memberName:this.memberName,
+			                memberPhone:this.memberPhone,
+			                memberNick:this.memberNick,
+			                memberNo:this.memberNo, 
 							column:this.column,
-							keyword:this.keyword,
-							type:this.type,
+							order:this.order,
 						}
 					}).then(resp=>{
 						let data = []
@@ -374,8 +392,11 @@ li a:hover {
                 reset(){
                 	this.order="asc";
                 	this.column="member_no";
-                	this.type="";
-                	this.keyword="";
+                	this.memberEmail ="",
+	                this.memberName ="",
+	               	this.memberPhone ="",
+	                this.memberNick ="",
+	                this.memberNo ="", 
                 	this.memberList();
                 },
                 memberCount(){

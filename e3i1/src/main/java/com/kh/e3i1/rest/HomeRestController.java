@@ -25,7 +25,7 @@ public class HomeRestController {
 	public List<ClubDto> search(@PathVariable String keyword) {
 		return clubDao.search(keyword);
 	}
-	
+
 	@GetMapping("/")
 	public List<ClubListVO> list(){
 		return clubDao.list();

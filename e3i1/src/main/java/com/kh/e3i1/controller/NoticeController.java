@@ -36,7 +36,7 @@ public class NoticeController {
 				@RequestParam(required = false) String type,
 				@RequestParam(required = false) String keyword,
 				@RequestParam(required = false, defaultValue = "1") int p,
-				@RequestParam(required = false, defaultValue = "5") int s,
+				@RequestParam(required = false, defaultValue = "6") int s,
 				Model model
 			) {
 		
@@ -49,7 +49,7 @@ public class NoticeController {
 		int count = noticeDao.count(type, keyword);
 		int lastPage = (count + s - 1) / s;
 		
-		int blockSize = 10;
+		int blockSize = 6;
 		int endBlock = (p + blockSize - 1) / blockSize * blockSize;
 		int startBlock = endBlock - (blockSize - 1);
 		if(endBlock > lastPage){

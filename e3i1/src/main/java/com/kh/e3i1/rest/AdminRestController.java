@@ -51,7 +51,7 @@ public class AdminRestController {
 		return adminDao.memberList(column, order);
 	}
 	//검색
-	@PostMapping("/member/")
+	@PostMapping("/member")
 	public List<MemberDto> memberSearch(@RequestBody AdminSearchVO searchVO){
 		return adminDao.memberSearch(searchVO);
 	}
@@ -70,11 +70,11 @@ public class AdminRestController {
 	public MemberDto oneMember(@PathVariable int memberNo){
 		return adminDao.oneMember(memberNo);
 	}
-	//멤버 검색
-	@PostMapping("/membersearch")
-	public List<MemberDto> findMember(@RequestBody AdminSearchVO searchVO) {
-		return adminDao.findMember(searchVO);
-	}
+//	//멤버 검색
+//	@PostMapping("/membersearch")
+//	public List<MemberDto> findMember(@RequestBody AdminSearchVO searchVO) {
+//		return adminDao.findMember(searchVO);
+//	}
 	//총 소모임수
 	@GetMapping("/clubcount")
 	public int clubCount(){

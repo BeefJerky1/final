@@ -1,24 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="root" value="${pageContext.request.contextPath}"></c:set>
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/modal.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/club.css">
 <style>
-.hash-tag {
-	font-size: 12px;
-	color: #686666;
-	background-color: #E9E9E9;
-	padding: 0px 0px;
-	text-align: center;
-}
 
-.profile {
-	width: 80px;
-	height: 80px;
-	border-radius: 70%;
-	overflow: hidden;
-}
 </style>
 
 <div id="app" class="container-fluid">
@@ -27,73 +18,53 @@
 
 		<!-- 왼쪽 사이드바 -->
 		<div class="col-md-3">
-			<div class="card shadow">
-
+			<div class="card shadow" style="margin-left: 1em;">
 				<div class="card-body">
-
 					<div class="card-title">
 						<div class="row">
-							<div class="col-md-2 align-self-center">
-							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="44"
-                            height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <polyline points="5 12 3 12 12 3 21 12 19 12" />
-                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-                        </svg>
-							</div>
-							<div class="col-md-8 align-self-center" v-if="clubList.clubDto != null">
-								<h4 style="margin: 0px;">{{clubList.clubDto.clubName}}</h4>
-							</div>
-							<div class="col-md-2 align-self-center">
-								<div class="row" @click="likeClub">
-									<i class="fa-solid fa-heart" style="color: red;" v-if="isLike"></i>
-									<i class="fa-regular fa-heart" style="color: red;" v-if="!isLike"></i>
-								</div>
-								<div class="row mt-2">
-									<i class="fa-solid fa-bullhorn"></i>
-								</div>
+							<div class="col-md-2 align-self-center"></div>
+							<div class="text-center" v-if="clubList.clubDto != null">
+								<a
+									:href="'${pageContext.request.contextPath}/club/detail?clubNo='+clubList.clubDto.clubNo">
+									<i class="fa-solid fa-house"></i>
+								</a> <span class="boldfont">&nbsp;&nbsp;{{clubList.clubDto.clubName}}&nbsp;&nbsp;</span>
+								<span @click="likeClub"> <i class="fa-solid fa-heart"
+									style="color: red;" v-if="isLike"></i> <i
+									class="fa-regular fa-heart" style="color: red;" v-if="!isLike"></i>&nbsp;
+								</span> <i class="fa-solid fa-circle-exclamation"></i>
 							</div>
 						</div>
 					</div>
 					<hr>
+					<div class="col-md-4 align-self-center"></div>
 
 					<div class="card-title">
+						<div class="row text-center my-2"
+							v-if="clubList.memberDto != null">
+							<span><i class="fa-solid fa-crown" style="color: #f6e58d;"></i></span>
+							<span class="boldfontS">{{clubList.memberDto.memberNick}}</span>
+						</div>
 						<div class="row">
-							<div class="col-md-2" width="10px" height="10px">
-								<img src="https://via.placeholder.com/250/69f/fff.png" class="profile" v-if="clubList.memberProfileDto == null" >
-								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo" class="profile" v-if="clubList.memberProfileDto != null">
+							<div class="col-md-4" width="16px" height="16px"
+								style="margin-left: 0.8em; margin-top: 0.45em;">
+								<img src="${root }/image/mbti/거북이(ISTP).png" class="profile"
+									v-if="clubList.memberProfileDto == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo"
+									class="profile" v-if="clubList.memberProfileDto != null">
 							</div>
-							<div class="col-md-8 offset-md-2 row align-self-center">
-								<div class="col-md-3">
-									<i class="fa-solid fa-crown fa-2x" style="color: #f6e58d"></i>
-								</div>
-								<div class="col-md-9 align-self-center"
-									v-if="clubList.memberDto != null">
-									<h6 style="margin: 0px;">{{clubList.memberDto.memberNick}}</h6>
-								</div>
+							<div class="col-md-7 text-right" v-if="clubList.clubDto != null"
+								width="10px" height="10px">
+								<div class="hash-tag text-center">\#{{clubList.clubDto.clubMainCategory}}</div>
+								<div class="hash-tag text-center">\#{{clubList.clubDto.clubSubCategory}}</div>
+								<div class="hash-tag text-center">\#{{clubList.clubDto.clubPlace}}</div>
 							</div>
 						</div>
 
-						<div class="row mt-4" v-if="clubList.clubDto != null">
-							<div class="col-md-4">
-								<div class="hash-tag">
-									<span>\#{{clubList.clubDto.clubMainCategory}}</span>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="hash-tag">
-									<span>\#{{clubList.clubDto.clubSubCategory}}</span>
-								</div>
-							</div>
-						</div>
-						<div class="row mt-4" v-if="clubList.clubMbtiPercent != null">
-							<div class="col-md-2">
-								<i class="fa-solid fa-user-group"></i>
-							</div>
-							<div class="col-md-10">{{clubList.clubMbtiPercent.total}} /
-								{{clubList.clubDto.clubMemberLimit}}</div>
+						<div class="text-right mt-2 boldfontSright"
+							v-if="clubList.clubMbtiPercent != null">
+							<span class="col-md-10"><i class="fa-solid fa-user-group"
+								style="margin-right: 0.5em;"></i>{{clubList.clubMbtiPercent.total}}
+								/ {{clubList.clubDto.clubMemberLimit}}</span>
 						</div>
 					</div>
 				</div>
@@ -101,61 +72,32 @@
 				<div class="card-body">
 					<div class="card-title">
 
-						<div class="col row">
-							<div class="col-md-2">
-								<i class="fa-solid fa-ranking-star"></i>
-							</div>
-							<div class="col-md-10" style="padding:0px">
-								<h4 style="font-weight: bold">우리 소모임 MBTI 순위</h4>
-							</div>
+						<div class="text-center mb-3">
+							<span class="boldfontS">소모임 멤버 MBTI TOP 3 <i
+								class="fa-solid fa-ranking-star"></i></span>
 						</div>
 
 						<!-- v-for index를 []안에 사용할 방법을 찾으면 v-for로 반복할 예정 너무 복잡해지면 그냥 이대로 사용 -->
-						<div class="row mt-4" v-if="mbtiList[0] != null">
-							<div class="col-md-4">
-								<img src="https://via.placeholder.com/250/69f/fff.png" class="profile">
+						<div class="row">
+							<div class="col-md-4 text-center" v-if="mbtiList[0] != null">
+								<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684">
+								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[0].memberMbti}}</p>
+								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[0].mbtiPercent}}%</p>
 							</div>
-							<div class="col-md-8 align-self-center">
-								<div>
-									<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[0].memberMbti}}</h4>
-								</div>
-								<div>
-									<p style="margin: 0px 0px;">{{mbtiList[0].mbtiPercent}}%</p>
-								</div>
+							<div class="col-md-4 text-center" v-if="mbtiList[1] != null">
+								<img src="${root }/image/mbti/물개(ESFP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684">
+								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[1].memberMbti}}</p>
+								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[1].mbtiPercent}}%</p>
 							</div>
-						</div>
-
-						<div class="row mt-4" v-if="mbtiList[1] != null">
-							<div class="col-md-4">
-								<img src="https://via.placeholder.com/250/69f/fff.png"
-									class="profile">
-							</div>
-							<div class="col-md-8 align-self-center">
-								<div>
-									<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[1].memberMbti}}</h4>
-								</div>
-								<div>
-									<p style="margin: 0px 0px;">{{mbtiList[1].mbtiPercent}}%</p>
-								</div>
+							<div class="col-md-4 text-center" v-if="mbtiList[2] != null">
+								<img src="${root }/image/mbti/원숭이(ESTP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684">
+								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[2].memberMbti}}</p>
+								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[2].mbtiPercent}}%</p>
 							</div>
 						</div>
-
-						<div class="row mt-4" v-if="mbtiList[2] != null">
-							<div class="col-md-4">
-								<img src="https://via.placeholder.com/250/69f/fff.png"
-									class="profile">
-							</div>
-							<div class="col-md-8 align-self-center">
-								<div>
-									<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[2].memberMbti}}</h4>
-								</div>
-								<div>
-									<p style="margin: 0px 0px;">{{mbtiList[2].mbtiPercent}}%</p>
-								</div>
-							</div>
-						</div>
-
-
 					</div>
 				</div>
 			</div>
@@ -163,89 +105,62 @@
 
 
 		<!-- 중앙 -->
-		<div class="col-md-6">
+		<div class="col-md-6 mb-5">
 			<div class="card shadow">
-				<img src="https://via.placeholder.com/250/69f/fff.png" class="card-img-top" style="width: 100%; height: 350px;" v-if="clubList.clubProfileDto == null">
-				<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"  style="width: 100%; height: 350px;" class="card-img-top" v-if="clubList.clubProfileDto != null">
+				<img src="https://via.placeholder.com/200/69f/fff.png"
+					class="card-img-top" style="width: 100%; height: 250px;"
+					v-if="clubList.clubProfileDto == null"> <img
+					:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"
+					style="width: 100%; height: 250px;" class="card-img-top"
+					v-if="clubList.clubProfileDto != null">
 				<div class="card-body">
 					<div class="card-title">
-						<h4 style="font-weight: bold">소모임 소개</h4>
+						<i class="fa-solid fa-comment"></i> <span class="boldfont">&nbsp;소모임
+							소개</span>
 					</div>
-					<div class="card-text" v-if="clubList.clubDto != null">
-						<h5>{{clubList.clubDto.clubSummary}}</h5>
-					</div>
+					<div class="card-text boldfontS" v-if="clubList.clubDto != null">
+						{{clubList.clubDto.clubSummary}}</div>
 				</div>
 
 				<div class="card-body mt-4">
-					<div class="card-title mt-4">
-						<h4 style="font-weight: bold">우리 소모임 MBTI</h4>
+					<div class="card-title mt-4 mb-2">
+						<span class="boldfont"><i class="fa-solid fa-users"></i>&nbsp;우리
+							소모임 MBTI</span>
 					</div>
 
-
-					<!-- 배치 및 디자인은 머리가 복잡하거나 생각하기 싫을 때 할 예정 -->
-					<div v-if="mbtiList != null" v-for="(mbti, index) in mbtiList" :key="index">
-					<div class="card mt-3">
-						<div class="card-img-top">
-							<img src="https://via.placeholder.com/250/69f/fff.png" style="width:100px; height:100px; border:1px solid black">
-						</div>
-						<div class="card-body">
+					<div v-if="mbtiList != null" v-for="(mbti, index) in mbtiList"
+						:key="index">
+						<div class="col-md-1 text-center">
+							<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"
+								style="width: 50px; height: 50px; border: 1.5px solid #3E4684;">
 							<div>
-								<h4 style="margin: 0px 0px; font-weight: bold;">{{mbti.memberMbti}}</h4>
+								<span class="boldfont">{{mbti.memberMbti}}</span>
 							</div>
 							<div>
-								<p style="margin: 0px 0px;">{{mbti.mbtiPercent}}%</p>
+								<span class="boldfontSS">{{mbti.mbtiPercent}}%</span>
 							</div>
 						</div>
 					</div>
-					</div>
-					
-					
 				</div>
 			</div>
 		</div>
 
-		
+
 		<!-- 오른쪽 사이드바 -->
-		<!-- 배치 및 디자인은 머리가 복잡하거나 생각하기 싫을 때 할 예정 -->
 		<div class="col-md-3">
-			<button class="btn-create shadow" v-on:click="removeHidden">소모임 가입하기</button>
-				
-			<div class="accordion mt-2">
-				<div class="accordion-item shadow"  v-if="clubList.clubDto != null">
-                      <h2 class="accordion-header" id="headingOne">
-                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                          	소모임
-                         </button>
-                      </h2>
-					<div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                          <div class="accordion-body">
-                             <a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/detail?clubNo='+clubList.clubDto.clubNo">
-								소모임 홈
-							</a>
-							<a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/board?clubNo='+clubList.clubDto.clubNo">
-								소모임 게시판
-							</a>
-							<a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/chat?clubNo='+clubList.clubDto.clubNo">
-								소모임 채팅방
-							</a>
-                         </div>
-                     </div>
-                 </div>
-				
-				<div class="accordion-item" v-if="leaderJudge">
-                      <h2 class="accordion-header" id="headingTwo">
-                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                          	소모임 관리
-                         </button>
-                      </h2>
-					<div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                          <div class="accordion-body">
-                             <a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/edit?clubNo='+clubList.clubDto.clubNo">소모임 정보변경</a>
-                             <a class="dropdown-item" :href="'${pageContext.request.contextPath}/club/member_management?clubNo='+clubList.clubDto.clubNo">소모임 회원관리</a>
-                         </div>
-                     </div>
-                 </div>
+			<button class="btn-create shadow" v-on:click="removeHidden">소모임
+				가입 신청</button>
+			<div class="list-group mt-2" v-if="clubList.clubDto != null">
+				<a class="list-group-item list-group-item-action disabled boldfontS" style="color:#3E4684;">소모임</a>
+				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/board?clubNo='+clubList.clubDto.clubNo">게시판</a> 
+				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/chat?clubNo='+clubList.clubDto.clubNo">채팅</a> 
 			</div>
+			<div class="list-group mt-2" v-if="leaderJudge">
+				<a class="list-group-item list-group-item-action disabled boldfontS" style="color:#3E4684;">관리</a>
+				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/member_management?clubNo='+clubList.clubDto.clubNo">멤버 관리</a> 
+				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/edit?clubNo='+clubList.clubDto.clubNo">소모임 관리</a>  
+			</div>
+
 		</div>
 
 	</div>
@@ -264,50 +179,47 @@
 			<div class="container-fluid">
 				<div class="modal-header">
 					<div class="text-start col-md-12" v-if="clubList.clubDto != null">
-						<h2>소모임 가입하기</h2>
+						<span class="boldfontL">소모임 가입 신청</span>
 					</div>
 				</div>
 
 				<div class="modal-body">
 
 					<div class="text-start">
-						<h4>가입 질문</h4>
-						<p style="font-size: 10px">
+						<p class="boldfontSSS">
 							*소모임 성격과 맞지 않는 답변 시 가입이 거절 될 수 있습니다.<br> *답변은 성심성의껏 작성해주세요.
 						</p>
 					</div>
-					<div class="mt-2" v-if="clubList.clubDto.clubJoinQuestion1 != null">
-						<div class="text-start">
-							<h6>Q1.{{clubList.clubDto.clubJoinQuestion1}}</h6>
-						</div>
+					<div class="mt-3" v-if="clubList.clubDto.clubJoinQuestion1 != null">
+						<div class="text-start boldfontS">
+							Q1.&nbsp;{{clubList.clubDto.clubJoinQuestion1}}</div>
 						<div class="mt-2">
-							<input type="text" class="form-control"
+							<input type="text" class="form-control fontS"
 								v-model="clubMemberAnswer1">
 						</div>
 					</div>
 
 					<div class="mt-4" v-if="clubList.clubDto.clubJoinQuestion2 != null">
-						<div class="row text-start">
-							<h6>Q2.{{clubList.clubDto.clubJoinQuestion2}}</h6>
-						</div>
+						<div class="text-start boldfontS">
+							Q2.&nbsp;{{clubList.clubDto.clubJoinQuestion2}}</div>
 						<div class="mt-2">
-							<input type="text" class="form-control"
+							<input type="text" class="form-control fontS"
 								v-model="clubMemberAnswer2">
 						</div>
 					</div>
 
 					<div class="mt-4" v-if="clubList.clubDto.clubJoinQuestion3 != null">
-						<div class="row text-start">
-							<h6>Q3.{{clubList.clubDto.clubJoinQuestion3}}</h6>
-						</div>
+						<div class="text-start boldfontS">
+							Q3.&nbsp;{{clubList.clubDto.clubJoinQuestion3}}</div>
 						<div class="mt-2">
-							<input type="text" class="form-control"
+							<input type="text" class="form-control fontS"
 								v-model="clubMemberAnswer3">
 						</div>
 					</div>
 
 					<div class="mt-2">
-						<p class="text-start" style="color: red; font-size: 10px;">*답변 시 회원님의 소중한 개인정보가 유출되지 않도록 주의해주시기 바랍니다.</p>
+						<p class="text-start" style="color: red; font-size: 10px;">*답변
+							시 회원님의 소중한 개인정보가 유출되지 않도록 주의해주시기 바랍니다.</p>
 					</div>
 
 					<div class="row mt-4">
@@ -315,7 +227,8 @@
 							<button type="button" class="btn-cancel" @click="addHidden">돌아가기</button>
 						</div>
 						<div class="col">
-							<button type="submit" class="btn-create" @click="insertClubMember">가입하기</button>
+							<button type="submit" class="btn-create"
+								@click="insertClubMember">가입하기</button>
 						</div>
 					</div>
 				</div>

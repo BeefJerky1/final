@@ -137,39 +137,48 @@ li a:hover {
 						<h1>mbti 게시판 목록 (총:{{count}}개 )</h1>
 					</div>
 					<div class="col-lg-12 col-md-12 col-sm-12 p-4 text-start">
+						<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4 text-start">
 						<div class="row">
-						<h5>검색</h5>
-							<div class="col-lg-5 col-md-5 col-sm-5 ">
-							       <select class=""v-model="type">
-           							 <option value="">종류</option>
-									<option value="mbti_board_no">번호</option>
-									<option value="member_no">작성자 번호</option>
-									<option value="mbti_board_title">제목</option>
-									<option value="mbti_board_time">작성 시간</option>							
-									<option value="mbti_board_reply_count">댓글수</option>
-							        </select>
-							        <input type="text" v-model="keyword" class="" v-on:input="keyword=$event.target.value" placeholder="검색어 입력">	             
+							<div class="col-lg-4 col-md-4 col-sm-4">
+							<h5>검색</h5>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="memberNo" id="memberNo" placeholder="회원번호" >	
+									<label for="memberNo">회원번호</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="mbtiBoardNo" id="mbtiBoardNo" placeholder="게시글번호" >	
+									<label for="mbtiBoardNo">게시글번호</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="mbtiBoardTitle" id="mbtiBoardTitle"  placeholder="제목">	
+									<label for="mbtiBoardTitle">제목</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="mbtiBoardContent" id="mbtiBoardContent"  placeholder="내용">	
+									<label for="mbtiBoardContent">내용</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="mbtiBoardReplyCount" id="mbtiBoardReplyCount"  placeholder="조회수">	
+									<label for="mbtiBoardReplyCount">댓글수</label>
+							</form>          
 							  </div>
+						<div class="col-lg-4 col-md-4 col-sm-4">
 							<h5>정렬</h5>
-						<div class="col-lg-5 col-md-5 col-sm-5">
-							<select class="" v-model="column" v-on:change="mbtiBoardList()">
-								<option value="mbti_board_no">번호</option>
-								<option value="member_no">작성자 번호</option>
+							<select class="form-control" v-model="column" v-on:change="mbtiBoardList()">
+								<option value="member_no">회원번호</option>
+								<option value="mbti_board_no">게시글번호</option>
 								<option value="mbti_board_title">제목</option>
-								<option value="mbti_board_vote1">투표1</option>
-								<option value="mbti_board_vote2">투표2</option>
-								<option value="mbti_board_time">작성 시간</option>							
 								<option value="mbti_board_reply_count">댓글수</option>
 							</select>
-							<select class="" v-model="order" v-on:change="mbtiBoardList()">
+							<select class="form-control mb-5" v-model="order" v-on:change="mbtiBoardList()">
 								<option value="asc">오름차순</option>
 								<option value="desc">내림차순</option>				
 							</select>
-							<button type="button" class="btn btn-primary " v-on:click="search()">조회</button>
-							<button type="button" class="btn btn-success " v-on:click="reset()">초기화</button>
+							<button type="button" class="btn btn-primary form-control" v-on:click="search()">조회</button>
+							<button type="button" class="btn btn-success form-control" v-on:click="reset()">초기화</button>
 						</div>
-							
-							</div>
+						 </div>
+						</div>
 						</div>	
 					<div class="col-lg-12 col-md-12 col-sm-12">
 						<table class="table text-center">
@@ -237,11 +246,12 @@ li a:hover {
                     dataFull:false,
     				
                     //검색
-                    keyword:"", 
-                    type:"",
                     column:"mbti_board_no",
                     order:"asc",
-    				
+                    mbtiBoardNo:'',
+                    mbtiBoardContent:"",
+                    mbtiBoardReplyCount:"",
+                    mbtiBoardTitle:"",
     				
                 };
             },
@@ -320,8 +330,10 @@ li a:hover {
 							data:{
 								order:this.order,
 								column:this.column,
-								keyword:this.keyword,
-								type:this.type,
+							    mbtiBoardNo:this.mbtiBoardNo,
+				                mbtiBoardContent: this.mbtiBoardContent,
+				                mbtiBoardReplyCount:this.mbtiBoardReplyCount,
+				                mbtiBoardTitle:this.mbtiBoardTitle,
 							}
 						}).then(resp=>{
     						let data = []
@@ -349,8 +361,10 @@ li a:hover {
 	             reset(){
 	                	this.order="asc";
 	                	this.column="mbti_board_no";
-	                	this.type="";
-	                	this.keyword="";
+	                	this.mbtiBoardNo = "";
+		               	this.mbtiBoardContent= "";
+		               	this.mbtiBoardReplyCount= "";
+		                this.mbtiBoardTitle= "";
 	                	this.mbtiBoardList();
 	               },
 	               mbtiBoardCount(){
