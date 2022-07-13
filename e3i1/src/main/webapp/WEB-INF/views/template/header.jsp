@@ -52,7 +52,7 @@
 	<!--  Vue, axios, bootstrap script, lodash -->
 	
 	<!-- jquery -->
- 	 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+ 	 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   
 	<script src="${root}/js/main.js"></script>
 	<script src="https://unpkg.com/vue@next"></script>
@@ -70,8 +70,8 @@
 
 		<nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-weight:600;">
 			<div class="container-fluid" id="apps">
-				<a href="${root}" class="logo-item"><img
-					src="${root }/image/LOGO.png" width="100px"></a>
+				<a href="${root}/" class="logo-item"><img
+					src="${root }/image/LOGO.png" width="300px"></a>
 				<button class="navbar-toggler" type="button"
 					data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 					aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -83,6 +83,11 @@
 					<c:choose>
 						<c:when test="${isLogin}">
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+							
+							<li class="nav-item">
+								<a href="${root}" class="logo-item">
+								<img src="${root }/image/LOGO.png" style="width:100px;"></a></li>
+						
 								<li class="nav-item"><a class="nav-link"
 									href="${root}/club/">소모임</a></li>
 								<li class="nav-item"><a class="nav-link"
@@ -90,7 +95,8 @@
 
 								<li class="nav-item"><a class="nav-link"
 									href="${root}/notice/list">NOTICE</a></li>
-
+							
+							
 								<li class="nav-item"><a class="nav-link"
 									href="${root}/member/mypage">MYPAGE</a></li>
 							</ul>
@@ -102,7 +108,13 @@
 							</form>
 						</c:when>
 						<c:otherwise>
+						
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+							
+							<li class="nav-item">
+								<a href="${root}" class="logo-item">
+								<img src="${root }/image/LOGO.png" style="width:100px;"></a></li>
+								
 								<li class="nav-item"><a class="nav-link"
 									href="${root}/club/">소모임</a></li>
 								<li class="nav-item"><a class="nav-link"
@@ -114,13 +126,11 @@
 							<form class="d-flex">
 								<i class="fa-solid fa-magnifying-glass search-icon"></i> 
 								<input type="text" name="keyword" class="form-control me-2 input-box"
-									type="search" placeholder="소모임 검색하기" aria-label="Search"  v-model="keyword"  v-on:input="keyword = $event.target.value">
+									type="search" placeholder="소모임 검색하기" aria-label="Search"  v-model="keyword"  v-on:input="keyword = $event.target.value" autocomplete="off">
 							</form>
-												<li class="list-group-item" v-for="(club, index) in clubList"
-													v-bind:key="index">
-													<div v-on:click="selectKeyword(index);">
-														{{club.clubName}}, \#{{club.clubMainCategory}},  \#{{club.clubSubCategory}}</div>
-												</li>
+								<li class="list-group-item" v-for="(club, index) in clubList" v-bind:key="index">
+									<div v-on:click="selectKeyword(index);">{{club.clubName}}, \#{{club.clubMainCategory}},  \#{{club.clubSubCategory}}</div>
+								</li>
 						</c:otherwise>
 					</c:choose>
 
@@ -182,3 +192,4 @@
         });
         apps.mount("#apps");
     </script>
+	

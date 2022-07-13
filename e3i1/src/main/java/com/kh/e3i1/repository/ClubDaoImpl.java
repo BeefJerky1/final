@@ -20,10 +20,17 @@ public class ClubDaoImpl implements ClubDao {
 	
 	@Autowired
 	private SqlSession sqlSession;
-
+	
+	// 소모임 전체목록
 	@Override
-	public List<ClubListVO> list(ClubComplexSearchVO clubComplexSearchVO) {
-		return sqlSession.selectList("club.list", clubComplexSearchVO);
+	public List<ClubListVO> list() {
+		return sqlSession.selectList("club.list");
+	}
+	
+	// 소모임 검색목록
+	@Override
+	public List<ClubListVO> searchList(ClubComplexSearchVO clubComplexSearchVO) {
+		return sqlSession.selectList("club.searchList", clubComplexSearchVO);
 	}
 
 	

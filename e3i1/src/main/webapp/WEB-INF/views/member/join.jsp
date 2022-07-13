@@ -33,6 +33,9 @@
 	font-size: 1.0em;
 }
 
+input[type="checkbox"]{
+	display:none;
+}
 
 i{
 	color: #3E4684;
@@ -455,6 +458,9 @@ i{
 <div class="container w500 m30 page">
 	<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
 		<input type="hidden" name="memberAnimal" v-model="memberAnimal">
+		<input type="hidden" name="memberInterst1" v-model="interest[0]" :value="interest[0]">
+		<input type="hidden" name="memberInterst2" v-model="interest[1]" :value="interest[1]">
+		<input type="hidden" name="memberInterst3" v-model="interest[2]" :value="interest[2]">
 		<div class="row">
 			<div class="card">
 				<div class="card-img">
@@ -464,8 +470,7 @@ i{
 			</div>
 		</div>
 		<div class="row">
-			<button type="submit" class="btn btn-outline-success"
-				style="width: 30%;">가입하기</button>
+			<button type="submit" class="btn btn-outline-success" style="width: 30%;">가입하기</button>
 		</div>
 
 		<div class="row center">
@@ -645,13 +650,14 @@ data() {
 		interest:[],
 	};
 },
-computed: {
-	// 체크박스 갯수제한 3개를 걸 때 이부분에서 계산하면 될 듯 
-	// - 알림창을 여기서 만들면 성능저하가 되기 때문에 계산된 값을 반환해서 메소드에서 알림을 띄워야 한다. 
-},
+computed: {},
 methods: {
 	// checkbox 
 	isChecked(value){
+		// 체크박스 갯수제한
+		if(this.interest.length > 3){
+			this.interest?.shift();
+		}
 		return this.interest?.includes(value);
 	},
 	
