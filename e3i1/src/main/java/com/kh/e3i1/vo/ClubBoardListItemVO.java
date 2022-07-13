@@ -2,10 +2,12 @@ package com.kh.e3i1.vo;
 
 import java.util.List;
 
+import com.kh.e3i1.entity.AnimalPhotoDto;
 import com.kh.e3i1.entity.ClubBoardAttachDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardLikeDto;
 import com.kh.e3i1.entity.ClubBoardReportDto;
+import com.kh.e3i1.entity.MbtiAnimalDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.entity.MemberProfileDto;
 
@@ -22,5 +24,6 @@ public class ClubBoardListItemVO {
 	private MemberProfileDto memberProfileDto;
 	private ClubBoardLikeDto clubBoardLikeDto;
 	private ClubBoardReportDto clubBoardReportDto;
-
+	private MbtiAnimalDto mbtiAnimalDto;
+	private AnimalPhotoDto animalPhotoDto;
 }

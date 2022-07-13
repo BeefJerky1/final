@@ -102,10 +102,4 @@ public class ClubDaoImpl implements ClubDao {
 		
 		return sqlSession.selectList("club.search", keyword);
 	}
-
-	@Override
-	public int count() {
-		return sqlSession.selectOne("club.count");
-	}
-	
 }

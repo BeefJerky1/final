@@ -17,6 +17,23 @@
 
 }
 
+  .list-group-item{
+      cursor: pointer;
+  }
+  .list-group-item:hover {
+      background-color: #f3dba5;
+      border:none;
+  }
+.interest {
+	
+	background-color : #e8e9ea;
+	padding : 0.2em;
+	border-radius : 0.5em;
+	font-size: 12px;
+	margin : 0.1em;
+	
+}
+
 .btn-outline-success {
     background-color: #3E4684;
     border: 1px solid #3E4684;
@@ -60,6 +77,17 @@
     color: #9aa0a6;
 
 }
+.innerBox  {
+	border : none;
+	width: 300px;
+    height: 40px;
+    border-radius: 2em !important;
+	position : absolute !important;
+	right: 0px;
+	top: 50px;
+	padding-right : 30px;
+
+}
 
 .input-box {
     width: 200px;
@@ -69,6 +97,7 @@
     padding-left: 40px;
     padding-right: 40px;
     font-size: 15px;
+    position : relative !important;
 }
 
 

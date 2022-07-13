@@ -138,35 +138,51 @@ li a:hover {
 					</div>
 					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4 text-start">
 						<div class="row">
-						<h5>검색</h5>
-							<div class="col-lg-5 col-md-5 col-sm-5">
-							       <select class=""v-model="type">
-           							 	<option value="">종류</option>
-							            <option value="club_no">소모임 번호</option>
-							            <option value="club_name">이름</option>
-							            <option value="club_leader">리더</option>
-							            <option value="club_main_category">대분류</option>
-							            <option value="club_sub_category">소분류</option>
-							        </select>
-							        <input type="text" v-model="keyword" class="" v-on:input="keyword=$event.target.value" placeholder="검색어 입력">	             
+							<div class="col-lg-4 col-md-4 col-sm-4">
+							<h5>검색</h5>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="clubNo" id="clubNo" placeholder="번호" >	
+									<label for="clubNo">번호</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="clubName" id="clubName" placeholder="이름" >	
+									<label for="clubName">이름</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="clubLeader" id="clubLeader"  placeholder="리더">	
+									<label for="clubLeader">리더</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="clubMainCategory" id="clubMainCategory"  placeholder="대분류">	
+									<label for="clubMainCategory">대분류</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="clubSubCategory" id="clubSubCategory"  placeholder="소분류">	
+									<label for="clubSubCategory">소분류</label>
+							</form>   
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="clubPlace" id="clubPlace"  placeholder="지역">	
+									<label for="clubPlace">지역</label>
+							</form>          
 							  </div>
+						<div class="col-lg-4 col-md-4 col-sm-4">
 							<h5>정렬</h5>
-						<div class="col-lg-5 col-md-5 col-sm-5">
-							<select class="" v-model="column" v-on:change="clubList()">
+							<select class="form-control" v-model="column" v-on:change="clubList()">
 								<option value="club_no">소모임 번호</option>
 								<option value="club_name">이름</option>
 								<option value="club_leader">리더</option>
 								<option value="club_main_category">대분류</option>							
 								<option value="club_sub_category">소분류</option>
+								<option value="club_place">지역</option>
 							</select>
-							<select class="" v-model="order" v-on:change="clubList()">
+							<select class="form-control" v-model="order" v-on:change="clubList()">
 								<option value="asc">오름차순</option>
 								<option value="desc">내림차순</option>				
 							</select>
-							<button type="button" class="btn btn-primary " v-on:click="search()">조회</button>
-							<button type="button" class="btn btn-success " v-on:click="reset()">초기화</button>
+							<button type="button" class="btn btn-primary form-control" v-on:click="search()">조회</button>
+							<button type="button" class="btn btn-success form-control" v-on:click="reset()">초기화</button>
 						</div>
-							
+						 </div>
 							</div>
 						</div>	
 					<div class="col-lg-12 col-md-12 col-sm-12">
@@ -215,9 +231,8 @@ li a:hover {
         </button>
 				</div>
 			</div>
-  	
+  	<br><br><br><br><br><br><br><br><br><br><br>
   </div>
-    </div>
 
     <!-- vue js도 lazy loading을 사용한다 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -239,8 +254,12 @@ li a:hover {
                     dataFull:false,
     				
                     //검색
-                    keyword:"", 
-                    type:"",
+                    clubNo:"",
+					clubLeader:"",
+					clubName:"",
+					clubMainCategory:"",
+					clubSubCategory:"",
+					clubPlace:"",
                     column:"club_no",
                     order:"asc",
                     
@@ -333,8 +352,12 @@ li a:hover {
 						data:{
 							order:this.order,
 							column:this.column,
-							keyword:this.keyword,
-							type:this.type,
+							clubNo:this.clubNo,
+							clubLeader:this.clubLeader,
+							clubName:this.clubName,
+							clubMainCategory:this.clubMainCategory,
+							clubSubCategory:this.clubSubCategory,
+							clubPlace:this.clubPlace,
 						}
 					}).then(resp=>{
 						let data = []
@@ -362,8 +385,12 @@ li a:hover {
                 reset(){
                 	this.order="asc";
                 	this.column="club_no";
-                	this.type="";
-                	this.keyword="";
+                	this.clubNo="",
+                	this.clubLeader="",
+                	this.clubName="",
+                	this.clubMainCategory="",
+                	this.clubSubCategory="",
+                	this.clubPlace="",
                 	this.clubList();
                 },
                 clubCount(){

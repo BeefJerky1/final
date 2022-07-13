@@ -25,6 +25,4 @@ public interface ClubDao {
 	public int editClub(ClubDto clubDto);
 
 	List<ClubDto> search(String keyword);
-
-	int count();
 }
