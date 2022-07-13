@@ -21,17 +21,16 @@ public class MbtiBoardRestController {
 	
 	@GetMapping("/")
 	public List<MbtiMemberListVO> list(
-			@RequestParam(required = false) String type,
 			@RequestParam(required = false) String keyword,
 			@RequestParam(required = false, defaultValue = "1") int p,
 			@RequestParam(required = false, defaultValue = "5") int s
 			) {
 
-		List<MbtiMemberListVO> list = mbtiBoardDao.list(type, keyword, p, s);
+		List<MbtiMemberListVO> list = mbtiBoardDao.list(keyword, p, s);
 		
-		boolean search = type != null && keyword != null;
+		boolean search = keyword != null;
 		
-		int count = mbtiBoardDao.count(type, keyword);
+		int count = mbtiBoardDao.count( keyword);
 		int lastPage = (count + s -1) / s;
 		
 		int blockSize = 5; // 블록 크기
@@ -46,8 +45,8 @@ public class MbtiBoardRestController {
 		System.out.println("endBlock = " + endBlock);
 		System.out.println("startBlock = " + startBlock);
 		
-		System.out.println(mbtiBoardDao.list(type, keyword, p, s).size());
+		System.out.println(mbtiBoardDao.list(keyword, p, s).size());
 		
-		return mbtiBoardDao.list(type, keyword, p, s);
+		return mbtiBoardDao.list(keyword, p, s);
 	}
 }
