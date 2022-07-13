@@ -8,11 +8,9 @@
 <style>
 </style>
 
-
-
 <div id="app" class="container-fluid">
 	<div class="row mt-4 p-2">
-		<div class="col-md-8 offset-md-2 mb-5 p-2 text-dark rounded">
+		<div class="col-md-8 offset-md-2 mb-5">
 			<form action="login" method="post">
 				<input type="hidden" name="referer" value="${referer}">
 				<div class="row text-center mt-2 mb-4">
@@ -71,25 +69,5 @@
 		</div>
 	</div>
 </div>
-
-<script>
-        const app = Vue.createApp({
-            data(){
-                return {
-                	
-                };
-            },
-            computed:{
-                
-            },
-            methods:{
-                
-            },
-            watch:{
-                
-            },
-        });
-        app.mount("#app");
- </script>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

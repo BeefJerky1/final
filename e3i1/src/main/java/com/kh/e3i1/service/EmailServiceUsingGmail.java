@@ -62,7 +62,7 @@ public class EmailServiceUsingGmail implements EmailService {
 		MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
 		
 		helper.setTo(findDto.getMemberEmail());
-		helper.setSubject("[SISO] 비밀번호 재설정 메일입니다");
+		helper.setSubject("[SISO] 비밀번호 재설정 메일입니다!");
 		
 		int certNumber = r.nextInt(1000000);
 		String certString = f.format(certNumber);
@@ -75,7 +75,7 @@ public class EmailServiceUsingGmail implements EmailService {
 												.toUriString();
 		String content = 
 				"<a href='"+returnUri+"'>"
-					+ "비밀번호를 재설정하시려면 여기를 누르세요"
+					+ "링크를 클릭해서 비밀번호를 재설정하세요!"
 			+ "</a>";
 		helper.setText(content, true);
 		

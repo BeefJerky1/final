@@ -10,6 +10,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+
+.point2 {
+	font-size: 3em;
+	font-weight: 900;
+	color: #3E4684;
+}
 .tagtitle {
 	font-weight: 900;
 	font-size: 1.0em;
@@ -125,8 +131,8 @@ i {
 		<div class="container-fluid">
 			<div>
 				<div class="row text-center">
-					<img src="${root }/image/mypagedummy.png"
-						style="width: 1700px; height: 250px;" />
+					<img src="${root }/image/mypage.png"
+						style="width: 1700px; height: 240px;" />
 				</div>
 
 				<div class="row mt-4">
@@ -510,7 +516,7 @@ i {
 												소모임을 운영하고 있는 회원은<br> 소모임을 폐쇄한 뒤 탈퇴 회원탈퇴가 가능합니다!<br><br>
 												탈퇴를 원하시면 비밀번호를 입력하세요.
 											</p>
-											<div class="form-floating mb-3">
+											<div class="form-floating mb-3 mt-4">
 												<input type="password" class="form-control" name="memberPw"
 													autocomplete="off" required>
 												<label for="floatingInput">비밀번호 입력</label>
