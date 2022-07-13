@@ -38,4 +38,6 @@ public interface MbtiBoardDao {
 
 	void voteDelete(MbtiBoardVoteDto mbtiBoardVoteDto);
 
+	List<MbtiMemberListVO> bestMbtiBoard();
+
 }

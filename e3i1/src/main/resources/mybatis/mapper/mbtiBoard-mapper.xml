@@ -158,4 +158,17 @@
  	</select>
 		
 		
+	<!-- main에서 사용할 best 3 게시글 -->
+	
+		<select id="bestMbtiBoard" resultMap="mbtiboardMap">
+		 select * from (
+		    select rownum RN, TMP.* from (
+		            select m.member_animal, m.member_mbti, C.mbti_board_no, c.mbti_board_reply_count, c.mbti_board_title
+		            	from mbti_board C
+		           	 	inner join member M on M.member_no = C.member_no
+		            order by c.mbti_board_reply_count desc           
+		        ) TMP
+		) where RN between 1 and 3
+	</select>
+		
 </mapper>
