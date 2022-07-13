@@ -70,26 +70,25 @@ a {
 }
 
 .noticetitle {
-	font-size: 1.5em;
+	font-size: 1.2em;
 	font-weight: 900;
-	padding-top: 4px;
+	padding-top: 5px;
 	padding-bottom: 4px;
 }
 
 .noticetitle:hover {
 	color: #3E4684;
-	font-size: 1.5em;
+	font-size: 1.2em;
 	font-weight: 900;
-	padding-top: 4px;
+	padding-top: 5px;
 	padding-bottom: 4px;
-	font-size: 1.5em;
 }
 
 .noticehead {
-	font-size: 1.1em;
+	font-size: 0.9em;
 	font-weight: 900;
 	color: #3E4684;
-	padding-top: 4px;
+	padding-top: 5px;
 	padding-bottom: 4px;
 	margin-left: 2em;
 }
