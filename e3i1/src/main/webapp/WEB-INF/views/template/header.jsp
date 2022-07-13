@@ -70,8 +70,8 @@
 
 		<nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-weight:600;">
 			<div class="container-fluid" id="apps">
-				<a href="${root}/" class="logo-item"><img
-					src="${root }/image/LOGO.png" width="300px"></a>
+			<%-- 	<a href="${root}/" class="logo-item"><img
+					src="${root }/image/LOGO.png" width="300px"></a> --%>
 				<button class="navbar-toggler" type="button"
 					data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 					aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -107,7 +107,7 @@
 									type="search" placeholder="소모임 검색하기" aria-label="Search"  v-model="keyword"  v-on:input="keyword = $event.target.value" autocomplete="off">
 							</form>
 							
-				<div class="row innerBox">
+			<%-- 	<div class="row innerBox">
 		                    <li class="list-group-item" v-for="(club, index) in clubList" v-bind:key="index">
 		                        <div v-on:click="selectKeyword(index);">
 		                           {{club.clubName}} 
@@ -115,7 +115,7 @@
 		                           <span class="interest"> \#{{club.clubSubCategory}}</span>
 		                        </div>
 		                    </li>
-		        </div>
+		        </div> --%>
 		        
 						</c:when>
 						<c:otherwise>

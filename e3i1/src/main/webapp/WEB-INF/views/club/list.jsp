@@ -88,16 +88,22 @@ input[type=checkbox] {
 	border-width: 0.25em;
 }
 
-.sub-label {
-	background-color: lightgray;
-	color: white;
+.hash-tag{
+	background-color: #E9E9E9;
+	color: #3E4684;
+	border-radius: 15px;
+	font-size: 1em;
+	font-weight: 900;
+	margin: 0.5em;
+	padding: 0.15em;
+	transform: scale(1);
+	transition: transform 0.1s ease-in-out;
 }
-
-.sub-label:hover {
+.hash-tag:hover{
+	transform: scale(1.3);
 	background-color: gray;
-	color: white;
+	color:white;
 }
-
 .checkedSub {
 	background-color: gray;
 	color: white;
@@ -155,15 +161,11 @@ input[type=checkbox] {
 						<hr>
 						<span class="text-center" v-if="isNull">상위 카테고리를 선택해주세요</span>
 						<div class="row">
-							<div class="col mt-4 mb-2" style="padding: 0px 60px;"
-								v-for="(sub, index) in subCategory" :key="index">
-								<label class="sub-label" :for="'sub'+index"
-									:class="checkedSub(sub.categoryContent)">
-									<div class="text-center">
-										<h6>\#{{sub.categoryContent}}</h6>
+							<div class="col mt-4 mb-2 text-center" v-for="(sub, index) in subCategory" :key="index">
+								<label :for="'sub'+index">
+										<span :class="checkedSub(sub.categoryContent)" class="hash-tag text-center">\#{{sub.categoryContent}}</span>
 										<input :id="'sub'+index" name="subCategory" type="radio"
 											v-model="subList" :value="sub.categoryContent">
-									</div>
 								</label>
 							</div>
 						</div>
@@ -858,14 +860,12 @@ methods: {
 		};
 		
 		if(this.mainList.length > 0 || this.subList.length > 0 || this.city2 != '' || this.mbtiList.length > 0){
+			console.log(clubComplexSearchVO);
 			axios({
 				url: "${pageContext.request.contextPath}/rest/club/search",
 				method: "post",
 				data:clubComplexSearchVO, 
 			}).then((resp) => {
-				if(resp.data.length == 0){
-					return;
-				}
 				if(this.page == 1) {
 					this.clubList = resp.data;
 				}
