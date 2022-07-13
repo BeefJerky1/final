@@ -5,210 +5,389 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
+<head>
+      <!-- Slich Slider -->
+      
+      <link rel="stylesheet" type="text/css" href="${root}/css/slick.css">
+      <link rel="stylesheet" type="text/css" href="${root}/css/slick-theme.css">
+      <link rel="stylesheet" type="text/css" href="${root}/css/slick-theme.css">
+      <link rel="stylesheet" type="text/css" href="${root}/css/icofont.min.css">
+      <link rel="stylesheet" type="text/css" href="${root}/css/materialdesignicons.min.css">
+      <link rel="stylesheet" type="text/css" href="${root}/css/mbtiboard.css">
+      
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
 <style>
-a {
-	text-decoration: none;
-	color: #686666;
+.search-icon {
+    position: relative;
+    left: 2em;
+    top: 1.2em !important;
+    color: #9aa0a6;
 }
 
-.mbti-board:hover {
-	transform: scale(1.02);
-	color: #686666;
-	font-size: 12px;
+.colorChange {
+	color : red !important;
 }
-
-.modal-form {
-	display: block;
-	width: 100%;
-	padding: 0.375rem 0.75rem;
-	margin: 0.3rem 0.1rem;
-	font-size: 1rem;
-	font-weight: 400;
-	line-height: 1.5;
-	color: #212529;
-	background-color: #fff;
-	background-clip: padding-box;
-	border: 1px solid #ced4da;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	border-radius: 1rem !important;
-	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-}
-
-.input-box {
-	width: auto;
-	height: 40px;
-	border-radius: 24px;
-	background-color: white;
-	padding-left: 40px;
-	padding-right: 40px;
-	font-size: 15px;
-	border: 1px solid #ced4da;
-}
-
-.input-box:focus {
-	outline: 1px solid #3E4684 !important;
-}
-
-.interest {
-	background-color: #E9E9E9;
-}
-
-.like-btn {
-	float : right !important;
-	margin-right: 0.4rem;
-}
-
-
-/* .card {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(50%,-50%);
-
-} */
 </style>
+<script type="text/javascript">
 
+$(function(){
+	
+	// 내용 글자수 카운트
+	
+	$(".reviewC").on("input", function(){
+		
+		var size = $(this).val().length;
+		
+		var target = $(".leg").children(".count2");
+		target.text(size);
+		
+		if(size > 100){
 
-<div class="container ">
-	<div id="carouselExampleIndicators" class="carousel slide"
-		data-bs-ride="carousel">
-		<div class="carousel-indicators">
-			<button type="button" data-bs-target="#carouselExampleIndicators"
-				data-bs-slide-to="0" class="active" aria-current="true"
-				aria-label="Slide 1"></button>
-			<button type="button" data-bs-target="#carouselExampleIndicators"
-				data-bs-slide-to="1" aria-label="Slide 2"></button>
-			<button type="button" data-bs-target="#carouselExampleIndicators"
-				data-bs-slide-to="2" aria-label="Slide 3"></button>
-		</div>
-		<div class="carousel-inner">
-			<div class="carousel-item active">
-				<img src="${root }/image/banner01.png" class="d-block w-100"
-					alt="banner">
-			</div>
-			<div class="carousel-item">
-				<img src="${root }/image/banner02.png" class="d-block w-100"
-					alt="banner">
-			</div>
-			<div class="carousel-item">
-				<img src="${root }/image/banner03.png" class="d-block w-100"
-					alt="banner">
-			</div>
-		</div>
-		<button class="carousel-control-prev" type="button"
-			data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span> <span
-				class="visually-hidden">Previous</span>
-		</button>
-		<button class="carousel-control-next" type="button"
-			data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-			<span class="carousel-control-next-icon" aria-hidden="true"></span> <span
-				class="visually-hidden">Next</span>
-		</button>
-	</div>
-</div>
+			target.addClass('colorChange');
+			$(".writeButton").off('click');
+			
+		}
+		else {
+			target.css("color", "white");
+		}
+		
+		if (size>100) {
+			$(".writeButton").click(function(e){
+				e.preventDefault();
+			});
+		}
+		
+	});
+});
 
+</script>
 
+<body>
 
-<div class="container " style="float: none; margin: 0 auto;">
+   <body class="bg-light">
+      <div class="web-none d-flex align-items-center px-3 pt-3">
+      
+      <!--  반응형 디자인 추가 -->
+         <img src="${root}/image/LOGO.png" class="img-fluid logo-mobile">
 
-	<div class="row mt-3" style="float: none; margin: 100 auto;">
-		<div class="col" style="float: none; margin: 0 auto;">
-			<a href="write" class="btn btn-outline-success button-write"
-				data-bs-toggle="modal" data-bs-target="#exampleModal">글 작성하기</a>
-			<!-- 검색창 -->
-			<form action="list" method="get">
-				<select name="type" class="input-box input-box">
-					<option value="mbti_board_title">제목</option>
-					<option value="mbti_board_content">내용</option>
-					<option value="member_mbti">MBTI</option>
-				</select> <input type="search" name="keyword" placeholder="검색어 입력" required
-					class="input-box">
-
-			</form>
-		</div>
-	</div>
-
-	<!-- write modal  -->
-
-	<!-- Modal -->
-	<form action="write" method="post">
-		<div class="modal fade" id="exampleModal" tabindex="-1"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">게시글 작성하기</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<div class="row">
-							<input type="text" name="mbtiBoardTitle" class="modal-form"
-								placeholder="제목">
-							<textarea name="mbtiBoardContent" class="modal-form" rows="4"></textarea>
-
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-edit" data-bs-dismiss="modal">취소</button>
-						<button type="submit" class="btn btn-outline-success">작성하기</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
-
-	<div class="container mainPage">
-			<c:forEach var="mbtiMemberListVO" items="${list }">
-
-				<a
-					href="detail?mbtiBoardNo=${mbtiMemberListVO.mbtiBoardDto.mbtiBoardNo}">
-
-					<div class="mbti-board" id="mbti-board">
-						<div class="row mt-2 main " style="float: none; margin: 0 auto;">
-							<div class="card" style="width: 50rem;">
-								<div class="card-body">
-									<span><h5 class="card-title ">
-											<i class="fa-solid fa-q me-2"></i>${mbtiMemberListVO.mbtiBoardDto.mbtiBoardTitle }</h5></span>
-									<span class="like-btn"><i class="fa-solid fa-heart fa-2x"  style="color:#f96666;"></i></span>
-									<p class="card-text">${mbtiMemberListVO.mbtiBoardDto.mbtiBoardContent }</p>
-
-									<div class="col">
-										<span><img src="${root }/image/mbti/강아지(ENFP).png"
-											class="d-block" style="width: 3rem;" alt="profile"></span> <span
-											class="interest me-1 ">${mbtiMemberListVO.memberDto.memberInterest1 }
-										</span> <span class="interest me-1">${mbtiMemberListVO.memberDto.memberInterest2}</span>
-										<span class="interest me-1 ">${mbtiMemberListVO.memberDto.memberInterest3 }</span>
-									</div>
-
-									<div class="col">
-
-										<span> ${mbtiMemberListVO.memberDto.memberAnimal } </span> <span><i
-											class="fa-solid fa-message"></i></span> <span>${mbtiMemberListVO.mbtiBoardDto.mbtiBoardReplyCount}</span>
-									</div>
-									<div class="col">
-										<span class="me-2 time"><fmt:formatDate
-												value="${mbtiMemberListVO.mbtiBoardDto.mbtiBoardTime}"
-												pattern="yyyy-MM-dd hh-mm" /></span>
-									</div>
-								</div>
-							</div>
-
-						</div>
-					</div>
-
-
-
-				</a>
+         <button class="ms-auto btn  ln-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+         <span class="material-icons">menu</span>
+         </button>
+      </div>
+      
+      <div class="py-4">
+         <div class="container">
+            <div class="row position-relative">
+            
+               <!-- Main Content -->
+               <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
+                  <div class="main-content">
+                     <div class="mb-4 d-flex align-items-center">
+                        <div class="d-flex align-items-center">
+                           <p class="ms-2 mb-0 fw-bold text-body fs-6">MBTI Community  <i class="fa-solid fa-heart fx-2" style="color:#ffa8c9;"></i></p>
+                        </div>
+                     </div>
+                     
+                     <!--  글 작성 모달 -->
+                       <div class="input-group shadow-sm mb-3 rounded-4 overflow-hidden py-2 bg-white" data-bs-toggle="modal" data-bs-target="#postModal">
+                           <span class="input-group-text material-icons border-0 bg-white text-primary" style="color: #514e85 !important;">account_circle</span>
+                           <input type="text" class="form-control border-0 fw-light ps-1" placeholder="새로운 글을 작성해 보세요.">
+                           <a href="#" class="text-decoration-none input-group-text bg-white border-0 material-icons text-primary" style="color: #514e85 !important;">add_circle</a>
+                        </div>
+                     
+                    <!--  정렬 버튼 구간 -->
+             	 <ul class=" top-osahan-nav-tab nav nav-pills justify-content-center nav-justified mb-4 shadow-sm rounded-4 overflow-hidden bg-white mt-4" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                           <button class="p-3 nav-link  active nav-area" id="pills-feed-tab" data-bs-toggle="pill" data-bs-target="#pills-feed" type="button" role="tab" aria-controls="pills-feed" aria-selected="true">new!</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                           <button class="p-3 nav-link nav-area" id="pills-people-tab" data-bs-toggle="pill" data-bs-target="#pills-people" type="button" role="tab" aria-controls="pills-people" aria-selected="false">좋아요순</button>
+                        </li>
+                        <li class="nav-item" role="entation">
+                           <button class="p-3 nav-link nav-area" id="pills-trending-tab" data-bs-toggle="pill" data-bs-target="#pills-trending" type="button" role="tab" aria-controls="pills-trending" aria-selected="false">투표순</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                           <button class="p-3 nav-link nav-area" id="pills-mentions-tab" data-bs-toggle="pill" data-bs-target="#pills-mentions" type="button" role="tab" aria-controls="pills-mentions" aria-selected="false">댓글순</button>
+                        </li>
+                     </ul>
+                     
+                     <!-- mbti 게시글 부분 -->
+           			 <c:forEach var="mbtiMemberListVO" items="${list }">
+                     <a href="detail?mbtiBoardNo=${mbtiMemberListVO.mbtiBoardDto.mbtiBoardNo}">
+                     <div class="bg-white rounded-4 shadow-sm profile mb-2"  id="mbti-board">
+                        <div class="d-flex align-items-center px-3 pt-3">
+                        
+                        <!-- 프로필 이미지 들어가는 공간! -->
+                           <img src="${root}/image/mbti/강아지(ENFP).png" class="img-fluid rounded-circle" alt="profile-img">
+                           <div class="ms-3">
+                              <h6 class="mb-0 d-flex align-items-start text-body fs-6 fw-bold">${mbtiMemberListVO.mbtiBoardDto.mbtiBoardTitle }<span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon"  style="background-color:#514e85 !important;">done</span></h6>
+                              <p class="text-muted mb-0">${mbtiMemberListVO.memberDto.memberAnimal }</p>
+                           </div>
+                           <div class="ms-auto btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                              <input type="checkbox" class="btn-check" id="btncheck1">
+                           </div>
+                        </div>
+                        <div class="p-3 " style="color : #6c757d !important;">
+                           <p class="mb-2 fs-6">${mbtiMemberListVO.mbtiBoardDto.mbtiBoardContent }</p>
+                           <p class="mb-2 fs-8 mbti-board-area">
+                              <span class="time"><fmt:formatDate value="${mbtiMemberListVO.mbtiBoardDto.mbtiBoardTime}" pattern="yyyy-MM-dd hh-mm" /></span></p>
+                           <p class="mb-2 fs-8 mbti-board-area">
+                           <span class="interest">${mbtiMemberListVO.memberDto.memberInterest1 }</span>
+                           <span class="interest">${mbtiMemberListVO.memberDto.memberInterest2 }</span>
+                           <span class="interest">${mbtiMemberListVO.memberDto.memberInterest3}</span>
+                           </p>
+                           
+                           <div class="d-flex followers">
+                              <div>
+                                 <p class="mb-0"><i class="fa-solid fa-heart fx-2" style="color:#ffa8c9;"></i>LIKE 
+                                 <span class="text-muted mbti-board-area">좋아요 숫자</span></p>
+                              </div>
+                              <div class="ms-5 ps-5">
+                                 <div class="d-flex">
+                                 <a href="#" class="text-muted text-decoration-none d-flex align-items-start fw-light"><span class="material-icons md-20 me-2" style="color:#f3dba5 !Important;">chat_bubble_outline</span>
+                                 <span class= "mbti-board-area">${mbtiMemberListVO.mbtiBoardDto.mbtiBoardReplyCount}</span></a>
+	                                 </div>
+	                              </div>
+	                           </div>
+	                        </div>
+                    	 </div>
+                       </a>
 			</c:forEach>
+                     
+                   
+                     <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-feed" role="tabpanel" aria-labelledby="pills-feed-tab">
+                           <!-- Follow People -->
+                           <div class="ms-1">
+                              <!-- Feeds -->
+                              <div class="feeds">
 
-	</div>
-</div>
+                
+                              </div>
+                           </div>
+                        </div>
+           
+                     </div>
+                  </div>
+                  
+               </main>
+               <aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-6 col-12">
+                  <div class="p-2 bg-light offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample">
+                     <div class="sidebar-nav mb-3">
+                        <div class="pb-4">
+                           <a href="${root}/" class="text-decoration-none">
+                           <img src="${root}/image/LOGO.png" class="img-fluid logo" alt="brand-logo">
+                           </a>
+                        </div>
+                        <ul class="navbar-nav justify-content-end flex-grow-1">
+  
+                           <li class="nav-item">
+                              <a href="profile.html" class="nav-link active"><span class="material-icons me-3">house</span> <span>Feed</span></a>
+                           </li>
+                           
+                        </ul>
+                     </div>
+                  </div>
+                  <!-- Sidebar -->
+                  <div class="ps-0 m-none fix-sidebar">
+                     <div class="sidebar-nav mb-3">
+                        <div class="pb-4 mb-4">
+                           <a href="${root}/" class="text-decoration-none">
+                           <img src="${root}/image/LOGO.png" class="img-fluid logo" alt="brand-logo">
+                           </a>
+                        </div>
+                        <ul class="navbar-nav justify-content-end flex-grow-1">
+
+                           <li class="nav-item">
+                              <a href="${root}/mbtiBoard/list" class="nav-link active" style="color: #514e85 !important;"><span class="material-icons me-3">house</span> <span>MBTI Home</span></a>
+                           </li>
+
+                           
+							<form action="list" method="get">
+                           	<li class="nav-item input-group mb-4 shadow-sm rounded-4 overflow-hidden py-2 bg-white">
+                              <span class="input-group-text material-icons border-0 bg-white text-primary "  style="color:#f3dba5 !important; ">search</span>
+                              <input type="text" name="keyword" class="form-control border-0 fw-light ps-1" placeholder="제목 또는 내용 검색">
+                           </li>
+							</form>
+                        </ul>
+                        
+                        <!--  MBTI 활동 순위 보여주기 -->
+                        
+                          <div class="bg-white rounded-4 overflow-hidden shadow-sm account-follow mb-4">
+                              <h6 class="fw-bold text-body p-3 mb-0 border-bottom">지금 가장 활발히 활동 중!</h6>
+                              <!-- Account Item -->
+                              <a href="profile.html" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item">
+                                 <img src="${root}/image/mbti/고양이(INTP).png" class="img-fluid rounded-circle me-3" alt="profile-img">
+                                 <div>
+                                    <p class="fw-bold mb-0 pe-3 d-flex align-items-center">새침한 고양이 <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon" style="background-color:#514e85 !important;">done</span></p>
+                                    <div class="text-muted fw-light">
+                                       <p class="mb-1 mbti-rank" >INTP</p>
+                                       <span class="text-muted d-flex align-items-center small">50%</span>
+                                    </div>
+                                 </div>
+                                 <div class="ms-auto">
+                                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                                       <input type="checkbox" class="btn-check" id="btncheck7">
+                                    </div>
+                                 </div>
+                              </a>
+                              <!-- Account Item -->
+                              <a href="profile.html" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item">
+                                 <img src="${root}/image/mbti/돌고래(ENFJ).png" class="img-fluid rounded-circle me-3" alt="profile-img">
+                                 <div>
+                                    <p class="fw-bold mb-0 pe-3 d-flex align-items-center">사교적인 돌고래 <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon" style="background-color:#514e85 !important;">done</span></p>
+                                    <div class="text-muted fw-light">
+                                       <p class="mb-1 mbti-rank"  >ENFJ</p>
+                                       <span class="text-muted d-flex align-items-center small">30%</span>
+                                    </div>
+                                 </div>
+                                 <div class="ms-auto">
+                                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                                       <input type="checkbox" class="btn-check" id="btncheck8">
+                                    </div>
+                                 </div>
+                              </a>
+                              <!-- Account Item -->
+                              <a href="profile.html" class="p-3 d-flex text-dark text-decoration-none account-item">
+                                 <img src="${root}/image/mbti/호랑이(INTJ).png" class="img-fluid rounded-circle me-3" alt="profile-img">
+                                 <div>
+                                    <p class="fw-bold mb-0 pe-3 d-flex align-items-center">전략가 호랑이<span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon" style="background-color:#514e85 !important;">done</span></p>
+                                    <div class="text-muted fw-light">
+                                       <p class="mb-1 mbti-rank" >INTJ</p>
+                                       <span class="text-muted d-flex align-items-center small">20%</span>
+                                    </div>
+                                 </div>
+                                 <div class="ms-auto">
+                                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                                       <input type="checkbox" class="btn-check" id="btncheck9">
+                                    </div>
+                                 </div>
+                              </a>
+                           </div>
+                     </div>
+                  </div>
+               </aside>
+               <aside class="col col-xl-3 order-xl-3 col-lg-6 order-lg-3 col-md-6 col-sm-6 col-12">
+                  <div class="fix-sidebar">
+                     <div class="side-trend lg-none">
+                     
+                        <!--검색 버튼 구간-->
+                        <div class="sticky-sidebar2 mb-3">
+
+                           
+                           <div class="bg-white rounded-4 overflow-hidden shadow-sm mb-4">
+                              <h5 class="fw-bold text-body p-3 mb-0 border-bottom">MBTI별 궁합은 어떨까?</h5>
+                              <!-- Trending Item -->
+                              <a href="tags.html" class="p-3 border-bottom d-flex align-items-center text-dark text-decoration-none">
+                                 <div class="center-block">
+                                    <h6 class="center-block fw-bold ml-4 mb-3 pe-3" style="text-align:center; font-size:16px;">연애 궁합 BEST 3 <i class="fa-solid fa-cloud" style="color:#d6f5ff;"></i></h6>
+                                 <img src="${root}/image/couple.png" width="200px;" class="img-fluid rounded-4 center-block m-4 " alt="couple">
+                                 </div>
+                              </a>
+                              <!-- Trending Item -->
+                                 <div>
+                                    <div class="text-muted fw-light d-flex align-items-center">
+                                    <p class="fw-bold m-3 mt-4 mb-0 pe-3 interest">#찰떡궁합 #아마도 환상의 짝꿍</p>
+                                    </div>
+                                    <small class="fw-bold m-3 mb-2 pe-3 text-dark" style="color:black !important;">
+                                    	1위. ENFP <i class="fa-solid fa-heart" style="color:#ffa8c9;"></i> INTJ (서로에게 필요한 존재) </small><br/>
+                                    <small class="fw-bold m-3 mb-2 pe-3 text-dark" style="color:black !important;">	
+                                    	2위. ISTP <i class="fa-solid fa-heart" style="color:#ffa8c9;"></i> ESFJ (혼자만의 시간은 꼭 필요)</small><br/>
+                                    	<small class="fw-bold m-3  mb-2 pe-3 text-dark" style="color:black !important;">
+                                    	3위. ENFJ <i class="fa-solid fa-heart" style="color:#ffa8c9;"></i> INFP (충분한 감정 교류 가능!)
+                                    </small>
+                                 </div>
+                                
+                                
+                                <div class="bg-white rounded-4 overflow-hidden shadow-sm mb-4">
+                              <h5 class="fw-bold text-body p-3 mb-0 border-bottom"></h5>
+                              <a href="tags.html" class="p-3 border-bottom d-flex align-items-center text-dark text-decoration-none">
+                                 <div class="center-block">
+                                    <h6 class="center-block fw-bold mb-3 pe-3" style="text-align:center; font-size:16px;">우정 궁합 BEST 3 <i class="fa-solid fa-umbrella-beach" style="color:#00ce7c;"></i></h6>
+                                 <img src="${root}/image/friend.png" width="200px;" class="m-4 img-fluid rounded-4 center-block " alt="couple">
+                                 </div>
+                              </a>
+                              
+                                <div class="mb-4">
+                                    <div class="text-muted fw-light d-flex align-items-center">
+                                    <p class="fw-bold m-3 mt-4 mb-0 pe-3 interest">#깐부 #우리 우정 영원히</p>
+                                    </div>
+                                    <div>
+                                    <small class="fw-bold m-3 mb-2 pe-3 text-dark" style="color:black !important;">
+                                    	1위. ESTJ <i class="fa-solid fa-plus" style="color:#ffa8c9;"></i> INTP (쿨하고 의리있다!) </small><br/>
+                                    <small class="fw-bold m-3 mb-2 pe-3 text-dark" style="color:black !important;">	
+                                    	2위. INTJ <i class="fa-solid fa-plus" style="color:#ffa8c9;"></i> ENTP (분명 취미가 비슷할듯)</small><br/>
+                                    	<small class="fw-bold m-3  mb-2 pe-3 text-dark" style="color:black !important;">
+                                    	3위. INTP <i class="fa-solid fa-plus" style="color:#ffa8c9;"></i> ENFJ (반대가 끌리는 이유...)
+                                    </small><BR>
+                                    </div>
+                                 </div>
+                                 
+
+						           </div>
+						   </div>
+                        </div>
+                     </div>
+                  </div>
+               </aside>
+            </div>
+         </div>
+      </div>
+      
 
 
+     
+      <!-- 글 작성 모달 -->
+     	<form action="write" method="post">
+      <div class="modal fade" id="postModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 p-4 border-0 bg-light">
+               <div class="modal-header d-flex align-items-center justify-content-start border-0 p-0 mb-3">
+                  <a href="#" class="text-muted text-decoration-none material-icons" data-bs-dismiss="modal">arrow_back_ios_new</a>
+                  <h5 class="modal-title text-muted ms-3 ln-0" id="staticBackdropLabel"><span class="material-icons md-32">account_circle</span></h5>
+               </div>
+               
+               <!-- 제목 작성 -->
+            <div class="modal-body p-0 mb-3">
+                <div class="form-floating">
+                   <input type="text" class="form-control rounded-5 border-0 shadow-sm" name="mbtiBoardTitle" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 50px">
+                   <label for="floatingTextarea2" class="h6 text-muted mb-0">제목을 작성하세요.</label>
+                </div>
+             </div>
+             	<!-- 내용 작성 -->
+               <div class="modal-body p-0 mb-3">
+                  <div class="form-floating">
+                     <textarea class="reviewC form-control rounded-5 border-0 shadow-sm" name="mbtiBoardContent" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px"></textarea>
+                     <label for="floatingTextarea2" class="h6 text-muted mb-0">내용을 작성하세요.</label>
+                  </div>
+               </div>
+
+               <div class="modal-footer justify-content-start px-1 py-1 bg-white shadow-sm rounded-5">
+                  <div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
+                     <span class="leg">
+                    	<span class="text-muted count2" >0</span> 
+                    	/
+                    	<span class="text-muted total">100</span> 
+                     </span>
+                  </div>
+                  <div class="ms-auto m-0">
+                  	<button type="submit" class="writeButton btn btn-primary fw-bold px-3 py-2 fs-6 mb-0 d-flex align-items-center" style="border-radius : 1em; background-color: #514e85; border:none; font-size: 14px !important;">작성!</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+     </form>
+
+ 
+
+
+
+
+
+
+</body>
 
 
 <!-- 
@@ -218,123 +397,9 @@ a {
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/vue@next"></script>
 <script src="${root}/js/time.js"></script>
+<script src="${root}/js/mbtiboard.js"></script>
+<script src="${root}/js/slick.min.js"></script>
 
-<script type="text/Javascript">
-	var loading = false;
-	var scrollPage = 1;
-
-	$(document).ready(
-			function() {
-				surveyList(scrollPage);
-
-				// Scroll
-				$(window).scroll(
-						function() {
-							var scrollNow = $(window).scrollTop();
-
-							if (scrollNow + $(window).height() + 100 >= $(
-									'.mainPage').height()) {
-								surveyList(scrollPage);
-							}
-							
-						})
-
-			})
-
-	function surveyList(page) {
-
-		if (!loading) {
-			loading = true;
-			$.ajax({
-				url : "${pageContext.request.contextPath}/rest/mbtiBoard/",
-				type : "get",
-				data : {
-					"p" : page,
-				},
-				dataType : "html",
-				success : function(resp) {
-					//resp는 목록이 담긴 JSON
-					//JSON에는 디자인이 없고 데이터만 있다
-					//게시판 마지막에 불러온 데이터를 모양 갖춰서 출력
-					//템플릿에 저장된 구문을 불러와서 게시판 마지막에 추가
-					var json = JSON.parse(resp);
-					if(json.length == 0){
-						$(window).off("scroll");
-						return;
-					}
-					
-					console.log("length = "+json.length);
-					for (var i = 0; i < json.length; i++) {
-						var template = $("#card-template").html();
-						template = template.replace("{{mbtiBoardNo}}",
-								json[i].mbtiBoardDto.mbtiBoardNo);
-						template = template.replace("{{mbtiBoardTitle}}",
-								json[i].mbtiBoardDto.mbtiBoardTitle);
-						template = template.replace("{{mbtiBoardContent}}",
-								json[i].mbtiBoardDto.mbtiBoardContent);
-						template = template.replace("{{memberInterest1}}",
-								json[i].memberDto.memberInterest1);
-						template = template.replace("{{memberInterest2}}",
-								json[i].memberDto.memberInterest2);
-						template = template.replace("{{memberInterest3}}",
-								json[i].memberDto.memberInterest3);
-						template = template.replace("{{memberAnimal}}",
-								json[i].memberDto.memberAnimal);
-						template = template.replace("{{mbtiBoardReplyCount}}",
-								json[i].mbtiBoardDto.mbtiBoardReplyCount);
-						template = template.replace("{{mbtiBoardTime}}",
-								json[i].mbtiBoardDto.mbtiBoardTime);
-
-						$(".mainPage").append(template);
-					}
-					loading = false;
-					scrollPage += 1;
-
-
-
-				}
-			})
-		}
-	}
-</script>
-
-
-
-
-<template id="card-template">
-	<a href="detail?mbtiBoardNo={{mbtiBoardNo}}">
-			<div class="container mbti-board" id="mbti-board">
-				<div class="row mt-2 main " style="float: none; margin: 0 auto;">
-					<div class="card" style="width: 50rem;">
-					<div class="card-body">
-						<span><h5 class="card-title ">
-								<i class="fa-solid fa-q me-2"></i>{{mbtiBoardTitle}}
-							</h5></span>
-
-						<p class="card-text">{{mbtiBoardContent}}</p>
-
-						<div class="col">
-							<span><img src="${root}/image/mbti/강아지(ENFP).png"
-								class="d-block" style="width: 3rem;" alt="profile"></span> <span
-								class="interest me-1 ">{{memberInterest1}} </span> <span
-								class="interest me-1">{{memberInterest2}}</span> <span
-								class="interest me-1 ">{{memberInterest3}}</span>
-						</div>
-
-						<div class="col">
-
-							<span> {{memberAnimal}} </span> <span><i
-								class="fa-solid fa-message"></i></span> <span>{{mbtiBoardReplyCount}}</span>
-						</div>
-						<div class="col">
-							<span class="me-2 time">{{mbtiBoardTime}}</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</a>
-</template>
 
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

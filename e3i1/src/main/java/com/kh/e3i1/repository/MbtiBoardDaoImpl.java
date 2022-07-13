@@ -75,18 +75,16 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 	}
 
 	@Override
-	public int count(String type, String keyword) {
+	public int count(String keyword) {
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("type", type);
 		param.put("keyword", keyword);
 		
 		return sqlSession.selectOne("mbtiBoard.count", param);
 	}
 
 	@Override
-	public List<MbtiMemberListVO> list(String type, String keyword, int page, int size) {
+	public List<MbtiMemberListVO> list(String keyword, int page, int size) {
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("type", type);
 		param.put("keyword", keyword);
 		
 		int end = page * size;
