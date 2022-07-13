@@ -95,6 +95,15 @@
 			<result column="member_no" property="memberNo"/>
 			<result column="attach_no" property="attachNo"/>
 		</association>
+		<association property="animalPhotoDto">
+			<result column="동물사진번호" property="attachNo"/>
+			<result column="animal_no" property="animalNo"/>
+		</association>
+		<association property="mbtiAnimalDto">
+			<result column="동물번호" property="animalNo"/>
+			<result column="animal" property="animal"/>
+			<result column="mbti" property="mbti"/>
+		</association>
 		<association property ="clubReplyReportDto">
 			<result column="club_report_no" property="clubReportNo"/>
 			<result column="club_no" property="clubNo"/>
@@ -131,6 +140,8 @@
        M.member_sns_id,
        M.member_logindate,
        P.attach_no  as 프로필사진번호,
+       B.animal_no as 동물번호,
+       A.attach_no as 동물사진번호,
        L.club_reply_like_no,
        L.like_check,
        L.like_member_no,
@@ -144,6 +155,10 @@ left outer join (select * from club_reply_like where like_member_no = #{likeMemb
    on C.reply_no = L.reply_no
 left outer join (select * from club_reply_report where club_report_reporter = #{likeMemberNo}) R
    on C.reply_no = R.club_report_target
+left outer join mbti_animal  B
+    on M.member_mbti = B.mbti
+left outer join animal_photo A
+ on B.animal_no = A.animal_no
 where C.club_board_no =#{clubBoardNo} order by C.reply_no desc
 	</select>
 	<select id="boardlist" resultType="clubBoardReplyDto" parameterType="int">
