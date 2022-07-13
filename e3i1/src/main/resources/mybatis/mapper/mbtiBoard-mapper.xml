@@ -88,8 +88,11 @@
 			select rownum rn, TMP.* from (
 				select * from mbti_board B
       		join member M on B.member_no = M.member_no
-    	<if test ="type != null and keyword !=null">
-	 		<![CDATA[where instr(${type}, #{keyword}) > 0]]>
+    	<if test ="keyword !=null">
+	 		<![CDATA[
+	 		where instr(mbti_board_title, #{keyword}) > 0
+	 		or instr(mbti_board_content, #{keyword}) > 0
+	 		]]>
 	 		</if>
 		) TMP
 			) where rn between  #{begin} and #{end}
@@ -144,11 +147,14 @@
 			where mbti_board_no = #{mbtiBoardNo}
 		</update>
 		
- 	<select id="count" parameterType="Map" resultType="int">
+ 	<select id="count" parameterType="String" resultType="int">
  		select count(*) from mbti_board
- 		<if test="type != null and keyword != null">
- 		<![CDATA[where instr(${type}, #{keyword}) > 0]]>
- 		</if>
+ 		<if test="keyword != null">
+ 		<![CDATA[
+	 		where instr(mbti_board_title, #{keyword}) > 0
+	 		or instr(mbti_board_content, #{keyword}) > 0
+	 		]]>
+	 	</if>
  	</select>
 		
 		

@@ -20,10 +20,17 @@ public class ClubDaoImpl implements ClubDao {
 	
 	@Autowired
 	private SqlSession sqlSession;
-
+	
+	// 소모임 전체목록
 	@Override
-	public List<ClubListVO> list(ClubComplexSearchVO clubComplexSearchVO) {
-		return sqlSession.selectList("club.list", clubComplexSearchVO);
+	public List<ClubListVO> list() {
+		return sqlSession.selectList("club.list");
+	}
+	
+	// 소모임 검색목록
+	@Override
+	public List<ClubListVO> searchList(ClubComplexSearchVO clubComplexSearchVO) {
+		return sqlSession.selectList("club.searchList", clubComplexSearchVO);
 	}
 
 	
@@ -87,6 +94,13 @@ public class ClubDaoImpl implements ClubDao {
 	public int editClub(ClubDto clubDto) {
 		// sql에서 소모임장 여부도 같이 판단
 		return sqlSession.update("club.edit",clubDto);
+	}
+
+	// 상단 검색바 기능
+	@Override
+	public List<ClubDto> search(String keyword) {
+		
+		return sqlSession.selectList("club.search", keyword);
 	}
 	
 }

@@ -47,11 +47,17 @@ public class ClubRestController {
 	@Autowired
 	private ClubMemberDao clubMemberDao;
 	
+	// 소모임 목록 
 	@GetMapping("/")
-	public List<ClubListVO> list(
-			@ModelAttribute ClubComplexSearchVO clubComplexSearchVO
+	public List<ClubListVO> list(){
+		return clubDao.list();
+	}
+	// 소모임 검색
+	@PostMapping("/search")
+	public List<ClubListVO> searchList(
+			@RequestBody ClubComplexSearchVO clubComplexSearchVO
 			){
-		return clubDao.list(clubComplexSearchVO);
+		return clubDao.searchList(clubComplexSearchVO);
 	}
 	
 	// 소모임 생성
@@ -60,7 +66,6 @@ public class ClubRestController {
 			@ModelAttribute ClubDto clubDto, 
 			@RequestParam MultipartFile clubProfile
 			) throws IllegalStateException, IOException {
-		System.out.println(clubDto.getClubLeader());
 		return clubService.createClub(clubDto, clubProfile);
 	}
 	

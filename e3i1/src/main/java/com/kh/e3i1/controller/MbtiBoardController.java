@@ -63,19 +63,18 @@ public class MbtiBoardController {
 	// 게시판 목록 구현
 			@GetMapping("/list")
 			public String list(
-					@RequestParam(required = false) String type,
 					@RequestParam(required = false) String keyword,
 					@RequestParam(required = false, defaultValue = "1") int p,
 					@RequestParam(required = false, defaultValue = "5") int s,
 					Model model){
 			
-				List<MbtiMemberListVO> list = mbtiBoardDao.list(type, keyword, p, s);
+				List<MbtiMemberListVO> list = mbtiBoardDao.list(keyword, p, s);
 				model.addAttribute("list", list);
 				
-				boolean search = type != null && keyword != null;
+				boolean search = keyword != null;
 				model.addAttribute("search", search);
 				
-				int count = mbtiBoardDao.count(type, keyword);
+				int count = mbtiBoardDao.count(keyword);
 				int lastPage = (count + s -1) / s;
 				
 				int blockSize = 5; // 블록 크기
@@ -88,7 +87,6 @@ public class MbtiBoardController {
 				model.addAttribute("page", p);
 				model.addAttribute("s", s);
 				model.addAttribute("keyword", keyword);
-				model.addAttribute("type", type);
 				model.addAttribute("startBlock", startBlock);
 				model.addAttribute("endBlock", endBlock);
 				model.addAttribute("lastPage", lastPage);

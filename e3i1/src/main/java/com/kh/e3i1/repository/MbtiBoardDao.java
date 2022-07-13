@@ -22,9 +22,9 @@ public interface MbtiBoardDao {
 	boolean edit(MbtiBoardDto mbtiBoardDto);
 
 
-	int count(String type, String keyword);
+	int count(String type);
 
-	List<MbtiMemberListVO> list(String type, String keyword, int page, int size);
+	List<MbtiMemberListVO> list(String type, int page, int size);
 
 	List<MbtiMemberListVO> list(String type, String keyword);
 

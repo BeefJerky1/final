@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.e3i1.entity.AnimalPhotoDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubDto;
@@ -28,9 +27,11 @@ import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.repository.AdminDao;
 import com.kh.e3i1.repository.ClubMemberDao;
 import com.kh.e3i1.service.AdminService;
+import com.kh.e3i1.vo.AdminClubSearchVO;
 import com.kh.e3i1.vo.AdminMbtiAnimalListVO;
 import com.kh.e3i1.vo.AdminSearchVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
+import com.kh.e3i1.vo.ClubStatisticVO;
 
 @CrossOrigin(
 		origins = {"http://127.0.0.1:5500"}
@@ -50,7 +51,7 @@ public class AdminRestController {
 		return adminDao.memberList(column, order);
 	}
 	//검색
-	@PostMapping("/member/")
+	@PostMapping("/member")
 	public List<MemberDto> memberSearch(@RequestBody AdminSearchVO searchVO){
 		return adminDao.memberSearch(searchVO);
 	}
@@ -69,11 +70,11 @@ public class AdminRestController {
 	public MemberDto oneMember(@PathVariable int memberNo){
 		return adminDao.oneMember(memberNo);
 	}
-	//멤버 검색
-	@PostMapping("/membersearch")
-	public List<MemberDto> findMember(@RequestBody AdminSearchVO searchVO) {
-		return adminDao.findMember(searchVO);
-	}
+//	//멤버 검색
+//	@PostMapping("/membersearch")
+//	public List<MemberDto> findMember(@RequestBody AdminSearchVO searchVO) {
+//		return adminDao.findMember(searchVO);
+//	}
 	//총 소모임수
 	@GetMapping("/clubcount")
 	public int clubCount(){
@@ -90,9 +91,19 @@ public class AdminRestController {
 		return adminDao.clubMemberList(clubNo);
 	}
 	//소모임 게시글 리스트
-	@GetMapping("/clubboard/{clubNo}")
-	public List<ClubBoardDto> clubBoardList(@PathVariable int clubNo){
-		return adminDao.clubBoardList(clubNo);
+	@GetMapping("/clubboard/{column}/{order}/{clubNo}")
+	public List<ClubBoardDto> clubBoardList(@PathVariable String column, @PathVariable String order, @PathVariable int clubNo){
+		return adminDao.clubBoardList(column, order,clubNo);
+	}
+	//소모임 게시글 검색
+	@PostMapping("/clubboard/")
+	public List<ClubBoardDto> clubBoardSearch(@RequestBody AdminClubSearchVO searchVO){
+		return adminDao.clubBoardSearch(searchVO);
+	}
+	//소모임 게시글 통계
+	@GetMapping("/clubboardstat/{clubNo}")
+	public List<ClubStatisticVO> stat(@PathVariable int clubNo) {
+		return adminDao.clubBoardStat(clubNo);
 	}
 	//소모임 댓글 리스트
 	@GetMapping("/clubreply/{clubNo}")

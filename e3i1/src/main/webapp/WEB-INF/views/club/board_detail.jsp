@@ -6,10 +6,18 @@
 <c:set var="memberAdmin" value="${auth == '관리자'}"></c:set>
 <c:set var="isLogin" value="${memberNo != null}"></c:set>
 <style>
+	body{
+	background-color:#F6F6F6 !important;
+	}
+	.shadow{
+	background-color:white !important;
+	}
 .imgfile1 {
 	width: 1000%;
 }
+.side-contents:hover{
 
+}
 ul {
 	padding-left: 0 !important;
 }
@@ -24,11 +32,6 @@ ul {
 	border-radius: 70%;
 	overflow: hidden;
 }
-
-.position-sticky {
-	position: sticky;
-}
-
 ul {
 	padding-left: 0px !important;
 }
@@ -68,9 +71,17 @@ ul {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-
+.btn-primary{
+background-color:#3E4684 !important;
+border-color:#3E4684 !important;
+}
+.btn-primary:hover{
+background-color:#2f3564 !important;
+border-color:#2f3564 !important;
+}
 .click:hover {
 	cursor: pointer;
+		border-color:#3E4684 !important;
 }
 
 .redBig:hover {
@@ -102,7 +113,23 @@ textarea {
 img {
 	border-radius: 50%;
 }
-
+.left-side{
+height:100%;
+position:sticky;
+top:10%
+}
+.right-side{
+height:100%;
+position:sticky;
+top:10%
+}
+@media screen and (max-width: 576px ) {
+.left-side{
+position:relative;
+}
+.right-side{
+position:relative;
+}
 .profile {
 	width: 80px;
 	height: 80px;
@@ -121,9 +148,9 @@ img {
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div id="app" class="container-fluid">
 	<div class="row">
-		<div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5">
+		<div class="col-lg-3 col-md-3 col-sm-3 mt-5 left-side">
 			<div
-				class="border text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side rounded"
+				class="border text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side rounded shadow"
 				style="border-radius: 1em !important">
 				<div class="row">
 					<div class="col-md-2 align-self-center">
@@ -150,8 +177,8 @@ img {
 
 				<div class="row">
 					<div class="col-md-2" width="10px" height="10px">
-						<img src="https://via.placeholder.com/250/69f/fff.png"
-							class="profile">
+                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"> 
+
 					</div>
 					<div class="col-md-8 offset-md-2 row align-self-center">
 						<div class="col-md-3">
@@ -248,14 +275,18 @@ img {
 				class="border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 rounded"
 				style="border-radius: 1em !important"></div>
 			<div
-				class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 rounded"
+				class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 rounded shadow"
 				style="border-radius: 1em !important">
 				<div class="row">
 					<div>
 						<div class="row" v-if="board!=null">
 							<div class="col-lg-2 col-md-2 col-sm-2 align-end top">
-								<a><img src="https://placeimg.com/50/50/animals"
-									class="profile mx-auto d-block"></a>
+								<div v-if="board.memberProfileDto.attachNo==0">
+                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+board.animalPhotoDto.attachNo"> 
+	                            </div>
+	                            <div v-else>
+	                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+board.memberProfileDto.attachNo">                             
+	                         	</div>
 							</div>
 							<div class="col-lg-8 col-md-8 col-sm-8 align-start ">
 								{{board.memberDto.memberNick}}<br> <span>{{board.memberDto.memberInterest1}}</span>,
@@ -327,7 +358,7 @@ img {
 									</div>
 								</div>
 							</div>
-							<div class="container row mt-5 rounded"
+							<div class="container row mt-5 rounded "
 								style="border-radius: 1em !important">
 								<div class="col-lg-2 col-md-2 col-sm-2 text-center">
 									<i class="fa-regular fa-comment"></i>
@@ -392,13 +423,13 @@ img {
 			</div>
 			<!-- 댓글 등록 -->
 			<div
-				class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 rounded mt-2"
+				class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 rounded mt-2 shadow"
 				style="border-radius: 1em !important">
-				<div v-if="this.clubMember==1">
+				<div v-if="this.clubMember==1 || this.memberAdmin =='관리자'">
 					<div class="text-end">
-						<textarea class="form-control reply" v-model="replyContent"
+						<textarea class="form-control reply " v-model="replyContent"
 							placeholder="내 댓글을 등록합니다" style="border-radius: 1em !important"></textarea>
-						<button class="btn btn-primary" v-on:click="addReply"
+						<button class="btn btn-primary shadow" v-on:click="addReply"
 							style="border-radius: 1em !important">댓글 등록</button>
 					</div>
 				</div>
@@ -409,13 +440,17 @@ img {
 			<!-- 댓글 목록 -->
 			<div class="text-dark col-lg-12 col-md-12 col-sm-12 ">
 				<div
-					class="border border-opacity-10 col-lg-12 col-md-12 col-sm-12 p-2 rounded mt-2"
+					class="border border-opacity-10 col-lg-12 col-md-12 col-sm-12 p-2 rounded mt-2 shadow"
 					v-for="(reply, index) in reply" v-bind:key="index"
 					style="border-radius: 1em !important">
 					<div class="row p-4">
 						<div class="col-lg-2 col-md-2 col-sm-2 ">
-							<a><img src="https://placeimg.com/50/50/animals"
-								class=" mx-auto d-block"></a>
+							<div v-if="reply.memberProfileDto.attachNo==0">
+                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+reply.animalPhotoDto.attachNo"> 
+                            </div>
+                            <div v-else>
+                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+reply.memberProfileDto.attachNo">                             
+                         	</div>
 						</div>
 						<div class="col-lg-8 col-md-8 col-sm-8 align-start">
 							{{reply.memberDto.memberNick}}</div>
@@ -496,11 +531,11 @@ img {
 										<div class="mt-3">
 											<label class="label-control"><b>신고 분류</b></label> <select
 												class="form-select" v-model="clubReportCategory">
-												<option value="한국">한국</option>
-												<option value="미국">미국</option>
-												<option value="북한">북한</option>
-												<option value="중국">중국</option>
-												<option value="일본">일본</option>
+												<option value="영리목적/홍보">영리목적/홍보</option>
+												<option value="불법정보">불법정보</option>
+												<option value="욕실/인신공격">욕실/인신공격</option>
+												<option value="개인정보노출">개인정보노출</option>
+												<option value="음란성/선정성">음란성/선정성</option>
 												<option value="기타">기타</option>
 											</select>
 										</div>
@@ -523,15 +558,15 @@ img {
 				<div class="mt-2 rounded" style="border-radius: 1em !important">
 					<button type="button" v-on:click="appendReply()"
 						:disabled="this.dataFull == true"
-						class="btn btn-outline-primary form-control"
+						class="btn btn-primary form-control shadow"
 						style="border-radius: 1em !important">더보기
 						({{showReply}}/{{totalReply}})</button>
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-3 col-md-3 col-sm-3 position-sticky mt-5">
+		<div class="col-lg-3 col-md-3 col-sm-3 right-side mt-5">
 			<div
-				class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 right-side  rounded"
+				class="border border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 right-side  rounded shadow"
 				style="border-radius: 1em !important">
 				<div class="row">
 					<select class="form-control" v-model="orderType"
@@ -547,7 +582,7 @@ img {
 						<div v-if="this.side!=null">
 						<div v-for="(side, index ) in side" v-bind:key="index">
 							<div v-if="this.orderType=='clubBoardNoDesc'" class="row">
-								<div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7">
+								<div class="text-dark p-1 col-lg-7 col-md-7 col-sm-7 side-contents">
 									<span v-on:click="TopTen(index)" class="click">{{1+index}}.
 										{{side.clubBoardContent}}</span>
 								</div>
@@ -610,11 +645,11 @@ img {
 						<div class="mt-3">
 							<label class="label-control"><b>신고 분류</b></label> <select
 								class="form-select" v-model="clubReportCategory">
-								<option value="한국">한국</option>
-								<option value="미국">미국</option>
-								<option value="북한">북한</option>
-								<option value="중국">중국</option>
-								<option value="일본">일본</option>
+								<option value="영리목적/홍보">영리목적/홍보</option>
+								<option value="불법정보">불법정보</option>
+								<option value="욕실/인신공격">욕실/인신공격</option>
+								<option value="개인정보노출">개인정보노출</option>
+								<option value="음란성/선정성">음란성/선정성</option>
 								<option value="기타">기타</option>
 							</select>
 						</div>
@@ -810,7 +845,7 @@ img {
 		    		//2.현재 사용자가 작성자라면 통과
 		    		if(this.memberNo==boardWriter)return true;
 		    		//3.현재 사용자가 소모임 리더일때
-		    		if(this.memberNo==this.clubList.clubDto.clubLeader)return true;
+// 		    		if(this.memberNo==this.clubList.clubDto.clubLeader)return true;
 		    		//나머지 차단
 		    		return false;
 		    	},

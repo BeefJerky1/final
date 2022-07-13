@@ -181,82 +181,82 @@ input[type=checkbox]{
 		<div class="col card-body text-center">
 		
 			<label for="enfp" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ENFP')}" src="${pageContext.request.contextPath}/image/mbti/강아지(ENFP).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('ENFP')}" src="${pageContext.request.contextPath}/image/mbti/강아지(ENFP).png">
 			</label>	
 			<input id="enfp" type="checkbox" value="ENFP" v-model="mbtiList">
 			
 			<label for="istp" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ISTP')}" src="${pageContext.request.contextPath}/image/mbti/거북이(ISTP).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('ISTP')}" src="${pageContext.request.contextPath}/image/mbti/거북이(ISTP).png">
 			</label>	
 			<input id="istp" type="checkbox" value="ISTP" v-model="mbtiList">
 			
 			<label for="intp" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('INTP')}" src="${pageContext.request.contextPath}/image/mbti/고양이(INTP).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('INTP')}" src="${pageContext.request.contextPath}/image/mbti/고양이(INTP).png">
 			</label>	
 			<input id="intp" type="checkbox" value="INTP" v-model="mbtiList">
 			
 			<label for="estj" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ESTJ')}" src="${pageContext.request.contextPath}/image/mbti/늑대(ESTJ).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('ESTJ')}" src="${pageContext.request.contextPath}/image/mbti/늑대(ESTJ).png">
 			</label>	
 			<input id="estj" type="checkbox" value="ESTJ" v-model="mbtiList">
 			
 			<label for="enfj" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ENFJ')}" src="${pageContext.request.contextPath}/image/mbti/돌고래(ENFJ).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('ENFJ')}" src="${pageContext.request.contextPath}/image/mbti/돌고래(ENFJ).png">
 			</label>	
 			<input id="enfj" type="checkbox" value="ENFJ" v-model="mbtiList">
 			
 			<label for="esfp" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ESFP')}" src="${pageContext.request.contextPath}/image/mbti/물개(ESFP).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('ESFP')}" src="${pageContext.request.contextPath}/image/mbti/물개(ESFP).png">
 			</label>	
 			<input id="esfp" type="checkbox" value="ESFP" v-model="mbtiList">
 			
 			<label for="infj" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('INFJ')}" src="${pageContext.request.contextPath}/image/mbti/백조(INFJ).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('INFJ')}" src="${pageContext.request.contextPath}/image/mbti/백조(INFJ).png">
 			</label>	
 			<input id="infj" type="checkbox" value="INFJ" v-model="mbtiList">
 			
 			<label for="entj" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ENTJ')}" src="${pageContext.request.contextPath}/image/mbti/사자(ENTJ).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('ENTJ')}" src="${pageContext.request.contextPath}/image/mbti/사자(ENTJ).png">
 			</label>	
 			<input id="entj" type="checkbox" value="ENTJ" v-model="mbtiList">
 			
 			<label for="istj" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ISTJ')}" src="${pageContext.request.contextPath}/image/mbti/양(ISTJ).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('ISTJ')}" src="${pageContext.request.contextPath}/image/mbti/양(ISTJ).png">
 			</label>	
 			<input id="istj" type="checkbox" value="ISTJ" v-model="mbtiList">
 			
 			<label for="entp" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ENTP')}" src="${pageContext.request.contextPath}/image/mbti/여우(ENTP).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('ENTP')}" src="${pageContext.request.contextPath}/image/mbti/여우(ENTP).png">
 			</label>	
 			<input id="entp" type="checkbox" value="ENTP" v-model="mbtiList">
 			
 			<label for="estp" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ESTP')}" src="${pageContext.request.contextPath}/image/mbti/원숭이(ESTP).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('ESTP')}" src="${pageContext.request.contextPath}/image/mbti/원숭이(ESTP).png">
 			</label>	
 			<input id="estp" type="checkbox" value="ESTP" v-model="mbtiList">
 			
 			<label for="infp" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('INFP')}" src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('INFP')}" src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png">
 			</label>	
 			<input id="infp" type="checkbox" value="INFP" v-model="mbtiList">
 			
 			<label for="esfj" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ESFJ')}" src="${pageContext.request.contextPath}/image/mbti/코알라(ESFJ).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('ESFJ')}" src="${pageContext.request.contextPath}/image/mbti/코알라(ESFJ).png">
 			</label>	
 			<input id="esfj" type="checkbox" value="ESFJ" v-model="mbtiList">
 			
 			<label for="isfp" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ESFJ')}" src="${pageContext.request.contextPath}/image/mbti/판다(ISFP).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('ESFJ')}" src="${pageContext.request.contextPath}/image/mbti/판다(ISFP).png">
 			</label>	
 			<input id="isfp" type="checkbox" value="ISFP" v-model="mbtiList">
 			
 			<label for="isfj" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('ISFJ')}" src="${pageContext.request.contextPath}/image/mbti/펭귄(ISFJ).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('ISFJ')}" src="${pageContext.request.contextPath}/image/mbti/펭귄(ISFJ).png">
 			</label>	
 			<input id="isfj" type="checkbox" value="ISFJ" v-model="mbtiList">
 			
 			<label for="intj" style="margin:10px">
-				<img class="mbti-photo3" :class="{'checkedMbti':checkedMbti('INTJ')}" src="${pageContext.request.contextPath}/image/mbti/호랑이(INTJ).png">
+				<img class="mbti-photo3 shadow" :class="{'checkedMbti':checkedMbti('INTJ')}" src="${pageContext.request.contextPath}/image/mbti/호랑이(INTJ).png">
 			</label>	
 			<input id="intj" type="checkbox" value="INTJ" v-model="mbtiList">
 		</div>
@@ -271,6 +271,14 @@ input[type=checkbox]{
 	</div>
 	
 	<div class="row mt-4">
+		<div class="text-center" v-if="clubList.length == 0">
+			<div>
+				<h2>해당하는 소모임이 아직 없숭이다...</h2>
+			</div>
+			<div class="mt-4">
+				<img src="${pageContext.request.contextPath}/image/mbti/원숭이(ESTP).png" style="width:200px; height:200px;">
+			</div>
+		</div>
 		<div style="padding:30px"class="col-md-3" v-for="(club,index) in clubList" v-bind:key="index">
 			<div class="card club-card shadow" @click="toDetailPage(index)">
 				<img src="https://via.placeholder.com/250/69f/fff.png" style="width:100%; height:300px;" class="card-img-top" v-if="!isClubProfile(index)">
@@ -737,38 +745,48 @@ methods: {
 		})	
 	},
 	
-	searchClubList(){
+	clubAllList(){
 		axios({
 			url: "${pageContext.request.contextPath}/rest/club/",
 			method: "get",
-			data:{
-				mainList : this.mainList,
-				subList : this.subList,
-				city2 : this.city2,
-				mbtiList : this.mbtiList,
-			},
 		}).then((resp) => {
-			this.clubList = [];
-			this.clubList.push(...resp.data);
+			this.clubList = resp.data;
+		}) 
+	},
+	
+	// 검색
+	searchClubList(){
+		
+		const clubComplexSearchVO = {};
+		if(this.mainList != null && this.mainList.length > 0){
+			clubComplexSearchVO.mainList = this.mainList;
+		};
+		if(this.subList != null && this.subList.length > 0){
+			clubComplexSearchVO.subList = this.subList;
+		};
+		if(this.city2 != null && !this.city2 != ''){
+			clubComplexSearchVO.city2 = this.city2;
+		};
+		if(this.mbtiList != null && this.mbtiList.length > 0){
+			clubComplexSearchVO.mbtiList = this.mbtiList;
+		};
+		
+		axios({
+			url: "${pageContext.request.contextPath}/rest/club/search",
+			method: "post",
+			data:clubComplexSearchVO, 
+		}).then((resp) => {
+			this.clubList = resp.data;
 		})
 	},
-
 },
 watch:{
 	// 스크롤 이벤트 여기서 걸 예정이고 
 	// 스크롤 이벤트는 디바운스로 처리해야한다.
 },
 created() {
-	
 	 this.searchList();
-	
-	 axios({
-			url: "${pageContext.request.contextPath}/rest/club/",
-			method: "get",
-		}).then((resp) => {
-			this.clubList.push(...resp.data);
-	}) 
-	
+	 this.clubAllList();
 	},
 });
 app.mount("#app");

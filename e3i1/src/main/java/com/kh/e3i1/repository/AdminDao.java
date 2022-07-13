@@ -13,9 +13,11 @@ import com.kh.e3i1.entity.MbtiAnimalDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.vo.AdminClubSearchVO;
 import com.kh.e3i1.vo.AdminMbtiAnimalListVO;
 import com.kh.e3i1.vo.AdminSearchVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
+import com.kh.e3i1.vo.ClubStatisticVO;
 
 public interface AdminDao {
 	//멤버 목록
@@ -47,7 +49,11 @@ public interface AdminDao {
 	//소모임 멤버 목록
 	List<ClubMemberListVO> clubMemberList(int clubNo);
 	//소모임 게시글 목록
-	List<ClubBoardDto> clubBoardList(int clubNo);
+	List<ClubBoardDto> clubBoardList(String column, String order, int clubNo);
+	//소모임 게시글 검색
+	List<ClubBoardDto> clubBoardSearch(AdminClubSearchVO searchVO);
+	//소모임 게시판 통계
+	List<ClubStatisticVO> clubBoardStat(int clubNo);
 	//소모임 댓글 목록
 	List<ClubBoardReplyDto> clubReplyList(int clubNo);
 	//mbti 설문 목록

@@ -10,7 +10,9 @@ import com.kh.e3i1.vo.ClubListVO;
 
 public interface ClubDao {
 
-	List<ClubListVO> list(ClubComplexSearchVO clubComplexSearchVO);
+	List<ClubListVO> list();
+	
+	List<ClubListVO> searchList(ClubComplexSearchVO clubComplexSearchVO);
 
 	int create(ClubDto clubDto);
 
@@ -21,4 +23,6 @@ public interface ClubDao {
 	int likeClub(ClubLikeDto clubLikeDto);
 	
 	public int editClub(ClubDto clubDto);
+
+	List<ClubDto> search(String keyword);
 }
