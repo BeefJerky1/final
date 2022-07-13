@@ -194,7 +194,7 @@
 						<div class="text-start boldfontS">
 							Q1.&nbsp;{{clubList.clubDto.clubJoinQuestion1}}</div>
 						<div class="mt-2">
-							<input type="text" class="form-control"
+							<input type="text" class="form-control fontS"
 								v-model="clubMemberAnswer1">
 						</div>
 					</div>
@@ -203,7 +203,7 @@
 						<div class="text-start boldfontS">
 							Q2.&nbsp;{{clubList.clubDto.clubJoinQuestion2}}</div>
 						<div class="mt-2">
-							<input type="text" class="form-control"
+							<input type="text" class="form-control fontS"
 								v-model="clubMemberAnswer2">
 						</div>
 					</div>
@@ -212,7 +212,7 @@
 						<div class="text-start boldfontS">
 							Q3.&nbsp;{{clubList.clubDto.clubJoinQuestion3}}</div>
 						<div class="mt-2">
-							<input type="text" class="form-control"
+							<input type="text" class="form-control fontS"
 								v-model="clubMemberAnswer3">
 						</div>
 					</div>

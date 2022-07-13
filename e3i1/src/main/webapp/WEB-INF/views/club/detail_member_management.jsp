@@ -211,7 +211,7 @@
 					</p>
 				</div>		
 				<div class="text-start mt-2">
-					<textarea class="form-control rounded" v-model="clubMemberRefuseMsg"></textarea>
+					<textarea class="form-control rounded fontS" v-model="clubMemberRefuseMsg"></textarea>
 				</div>
 						
 				<div class="row mt-4">
