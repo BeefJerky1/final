@@ -101,11 +101,22 @@
 									href="${root}/member/mypage">MYPAGE</a></li>
 							</ul>
 								
-								<form class="d-flex">
-								<i class="fa-solid fa-magnifying-glass search-icon"></i> <input
-									type="text" name="keyword" class="form-control me-2 input-box"
-									type="search" placeholder="소모임 검색하기" aria-label="Search">
+								<form class="d-flex" action="club/detail" method="get" >
+								<i class="fa-solid fa-magnifying-glass search-icon"></i> 
+								<input type="text"  class="form-control me-2 input-box"
+									type="search" placeholder="소모임 검색하기" aria-label="Search"  v-model="keyword"  v-on:input="keyword = $event.target.value" autocomplete="off">
 							</form>
+							
+				<div class="row innerBox">
+		                    <li class="list-group-item" v-for="(club, index) in clubList" v-bind:key="index">
+		                        <div v-on:click="selectKeyword(index);">
+		                           {{club.clubName}} 
+		                           <span class="interest">\#{{club.clubMainCategory}}</span> 
+		                           <span class="interest"> \#{{club.clubSubCategory}}</span>
+		                        </div>
+		                    </li>
+		        </div>
+		        
 						</c:when>
 						<c:otherwise>
 						
@@ -123,14 +134,22 @@
 								<li class="nav-item"><a class="nav-link"
 									href="${root}/notice/list">NOTICE</a></li>
 							</ul>
-							<form class="d-flex">
+							<form class="d-flex" action="club/detail" method="get" >
 								<i class="fa-solid fa-magnifying-glass search-icon"></i> 
-								<input type="text" name="keyword" class="form-control me-2 input-box"
+								<input type="text"  class="form-control me-2 input-box"
 									type="search" placeholder="소모임 검색하기" aria-label="Search"  v-model="keyword"  v-on:input="keyword = $event.target.value" autocomplete="off">
 							</form>
-								<li class="list-group-item" v-for="(club, index) in clubList" v-bind:key="index">
-									<div v-on:click="selectKeyword(index);">{{club.clubName}}, \#{{club.clubMainCategory}},  \#{{club.clubSubCategory}}</div>
-								</li>
+							
+				<div class="row innerBox">
+		                    <li class="list-group-item" v-for="(club, index) in clubList" v-bind:key="index">
+		                        <div v-on:click="selectKeyword(index);">
+		                           {{club.clubName}} 
+		                           <span class="interest">\#{{club.clubMainCategory}}</span> 
+		                           <span class="interest"> \#{{club.clubSubCategory}}</span>
+		                        </div>
+		                    </li>
+		        </div>
+
 						</c:otherwise>
 					</c:choose>
 
@@ -158,6 +177,8 @@
                     keyword:"",
                     clubList:[],
                     click:false,
+                    clubNo:"",
+                    
                 };
             },
             computed:{
@@ -167,6 +188,7 @@
                 selectKeyword(index){
                     this.click = true;
                     this.keyword = this.clubList[index].clubName || this.clubList[index].clubMainCategory || this.clubList[index].clubSubCategory;
+                     window.location.href = 'http://localhost:8080/e3i1/club/detail?clubNo='+this.clubList[index].clubNo;
                     this.clubList = [];
                 },
             },

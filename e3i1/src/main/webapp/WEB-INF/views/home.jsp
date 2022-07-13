@@ -181,13 +181,11 @@ a {
                     </div>
                 </div>
              
-             
              <div class="main-area text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 600px;">
                 <h6 class="second-title">mbti community</h6>
                 <h1 class="mb-4 main-title">MBTI TALK TALK TALK! <i class="fa-solid fa-comment-dots" style="color:#f7d68a"></i></h1>
             </div>
     
-    <!-- mbti 게시글 보여주기 -->
              
      
                 
@@ -196,7 +194,6 @@ a {
            <!--  mbti 게시판 글 보여주기 -->
            
            
-    <!--  탑 버튼 -->
  
 </div>
 

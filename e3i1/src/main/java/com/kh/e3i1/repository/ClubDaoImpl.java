@@ -102,5 +102,7 @@ public class ClubDaoImpl implements ClubDao {
 		
 		return sqlSession.selectList("club.search", keyword);
 	}
+	// 상단 검색바 기능
+
 	
 }

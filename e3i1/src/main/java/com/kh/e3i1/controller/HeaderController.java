@@ -17,16 +17,29 @@ import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubListVO;
 
 @Controller
-public class HomeController {
+@RequestMapping("/template")
+public class HeaderController {
 	
 	@Autowired
 	private ClubDao clubDao;
 	
-	@RequestMapping("/")
-	public String home() {
-		return "home";
+	
+	@GetMapping("/club/detail")
+	public String detail(@RequestParam int clubNo, Model model) {
+		ClubDetailVO clubDetailVO = clubDao.detail(clubNo);
+		model.addAttribute("clubDetailVO", clubDetailVO);
+		
+		return "club/detail";
+		
+	}
+	
+	@PostMapping("/club/detail/{clubNo}")
+	public String detail2(@PathVariable int clubNo, Model model) {
+		
+		ClubDetailVO clubDetailVO = clubDao.detail(clubNo);
+		model.addAttribute("clubDetailVO", clubDetailVO);
+		
+		return "club/detail";
 	}
 	
 }
-	
-
