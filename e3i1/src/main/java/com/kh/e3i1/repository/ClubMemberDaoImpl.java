@@ -61,7 +61,13 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 		return sqlSession.selectOne("clubMember.one",param);
 	}
 	
-	// 소모임회원 조회
+	// 소모임 신청 회원 조회
+	@Override
+	public List<ClubMemberListVO> selectPermission(int clubNo) {
+		return sqlSession.selectList("clubMember.clubMemberPermissionList",clubNo);
+	}
+	
+	// 소모임 회원 조회
 	@Override
 	public List<ClubMemberListVO> select(int clubNo) {
 		return sqlSession.selectList("clubMember.clubMemberList",clubNo);

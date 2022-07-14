@@ -108,9 +108,15 @@
 			<result column="member_sns_id" property="memberSnsId"/>
 			<result column="member_logindate" property="memberLogindate"/>
 		</association>
+		
+		<association property="memberProfileDto">
+			<result column="member_no" property="memberNo"/>
+			<result column="attach_no" property="attachNo"/>
+		</association>
 	</resultMap>
 	
-	<select id="clubMemberList" resultMap="clubMemberListVO">
+	<!-- 소모임 신청 회원 리스트 -->
+	<select id="clubMemberPermissionList" resultMap="clubMemberListVO">
 		SELECT 
 			cm.*,
 			m.MEMBER_GENDER,
@@ -130,6 +136,33 @@
 		LEFT OUTER JOIN MEMBER m 
 		ON cm.MEMBER_NO = m.MEMBER_NO 
 		WHERE club_no = #{clubNo}
+	</select>
+	
+	<!-- 소모임 회원 리스트 -->
+	<select id="clubMemberList" resultMap="clubMemberListVO">
+		SELECT 
+			cm.*,
+			m.MEMBER_GENDER,
+			m.MEMBER_MBTI,
+			m.MEMBER_ANIMAL,
+			m.MEMBER_INTEREST1,
+			m.MEMBER_INTEREST2,
+			m.MEMBER_INTEREST3,
+			m.MEMBER_PLACE1,
+			m.MEMBER_PLACE2,
+			m.MEMBER_PLACE3,
+			m.MEMBER_SNS_ID,
+			m.MEMBER_NICK,
+			m.MEMBER_BIRTH, 
+			mp.MEMBER_NO,
+			mp.ATTACH_NO 
+		FROM 
+			club_member cm 
+		LEFT OUTER JOIN MEMBER m 
+		ON cm.MEMBER_NO = m.MEMBER_NO 
+		LEFT OUTER JOIN MEMBER_PROFILE mp 
+		ON m.MEMBER_NO = mp.MEMBER_NO 
+		WHERE club_no = #{clubNo} AND cm.CLUB_MEMBER_PERMISSION = 1
 	</select>
 	
 	<!-- 소모임 가입 승인 -->

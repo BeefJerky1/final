@@ -385,9 +385,9 @@ created() {
 		this.clubList = resp.data;
 	})
 	
-	// 소모임 회원 정보
+	// 소모임 신청 회원 정보
 	axios({
-		url: "${pageContext.request.contextPath}/rest/club/member/"+this.clubNo,
+		url: "${pageContext.request.contextPath}/rest/club/member_permission/"+this.clubNo,
 		method: "get",
 	}).then((resp) => {
 		this.clubMemberList = resp.data;
