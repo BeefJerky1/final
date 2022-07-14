@@ -13,6 +13,7 @@ import com.kh.e3i1.entity.ClubLikeDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.vo.ClubComplexSearchVO;
 import com.kh.e3i1.vo.ClubDetailVO;
+import com.kh.e3i1.vo.ClubLikeVO;
 import com.kh.e3i1.vo.ClubListVO;
 
 @Repository
@@ -104,5 +105,11 @@ public class ClubDaoImpl implements ClubDao {
 	public List<ClubDto> search(String keyword) {
 		
 		return sqlSession.selectList("club.search", keyword);
+	}
+
+	// main 리스트 출력 기능
+	@Override
+	public List<ClubLikeVO> bestClub() {
+		return sqlSession.selectList("club.bestClubList");
 	}
 }

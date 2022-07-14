@@ -132,6 +132,12 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 		
 	}
 
+	// 메인 페이지 best3 출력 기능
+	@Override
+	public List<MbtiMemberListVO> bestMbtiBoard() {
+		return sqlSession.selectList("mbtiBoard.bestMbtiBoard");
+	}
+
 
 
 }

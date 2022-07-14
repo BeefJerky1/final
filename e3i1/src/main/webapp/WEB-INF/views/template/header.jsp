@@ -169,7 +169,7 @@
 			</div>
 		</nav>
 	</header>
-<!-- 	<script>
+<%-- 	<script> 
         const apps = Vue.createApp({
             data(){
                 return {
@@ -213,4 +213,4 @@
             },
         });
         apps.mount("#apps");
- </script> -->
+ </script>  --%>

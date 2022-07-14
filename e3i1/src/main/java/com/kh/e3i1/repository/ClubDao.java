@@ -6,6 +6,7 @@ import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.ClubLikeDto;
 import com.kh.e3i1.vo.ClubComplexSearchVO;
 import com.kh.e3i1.vo.ClubDetailVO;
+import com.kh.e3i1.vo.ClubLikeVO;
 import com.kh.e3i1.vo.ClubListVO;
 
 public interface ClubDao {
@@ -25,4 +26,6 @@ public interface ClubDao {
 	public int editClub(ClubDto clubDto);
 
 	List<ClubDto> search(String keyword);
+
+	List<ClubLikeVO> bestClub();
 }
