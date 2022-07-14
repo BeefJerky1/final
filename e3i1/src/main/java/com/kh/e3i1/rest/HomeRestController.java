@@ -28,6 +28,7 @@ public class HomeRestController {
 
 	@GetMapping("/")
 	public List<ClubListVO> list(){
-		return clubDao.list(1);
+		String orderType = "total ASC, clv.club_no DESC";
+		return clubDao.list(1, orderType);
 	}
 }

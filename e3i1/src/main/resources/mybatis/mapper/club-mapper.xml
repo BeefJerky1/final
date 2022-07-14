@@ -292,6 +292,7 @@
 			<result column="least_mbti" property="leastMbti"/>
 			<result column="least_animal_no" property="leastAnimalNo"/>
 			<result column="least_animal" property="leastAnimal"/>
+			<result column="like_count" property="likeCount"/>
 		</association>
 		
 		<association property="animalPhotoG">
@@ -314,7 +315,8 @@
 							apg.ATTACH_NO GREATEST_attach_no,
 							mal.ANIMAL_NO LEAST_animal_no,
 							mal.ANIMAL LEAST_animal,
-							apl.ATTACH_NO LEAST_attach_no
+							apl.ATTACH_NO LEAST_attach_no,
+							clc.like_count
 						FROM CLUB_LIST_VO clv
 						LEFT OUTER JOIN MBTI_ANIMAL mag
 						ON clv.GREATEST_MBTI = mag.MBTI 
@@ -324,7 +326,10 @@
 						ON clv.LEAST_MBTI = mal.MBTI 
 						LEFT OUTER JOIN ANIMAL_PHOTO apl
 						ON mal.ANIMAL_NO = apl.ANIMAL_NO 
-						ORDER BY total ASC, club_no DESC
+						LEFT OUTER JOIN (SELECT c.club_no, count(cl.CLUB_LIKE_NO) like_count FROM club c LEFT OUTER JOIN CLUB_LIKE cl ON c.CLUB_NO = cl.CLUB_NO GROUP BY c.club_no) clc
+						ON clv.club_no = clc.club_no
+						ORDER BY 
+						${orderType}
 			         )TMP
 	      ) where rn between ((#{page}-1) * 9 + 1) and (#{page} * 9)
 	</select>
@@ -343,7 +348,8 @@
 							apg.ATTACH_NO GREATEST_attach_no,
 							mal.ANIMAL_NO LEAST_animal_no,
 							mal.ANIMAL LEAST_animal,
-							apl.ATTACH_NO LEAST_attach_no
+							apl.ATTACH_NO LEAST_attach_no,
+							clc.like_count
 						FROM CLUB_LIST_VO clv
 						LEFT OUTER JOIN MBTI_ANIMAL mag
 						ON clv.GREATEST_MBTI = mag.MBTI 
@@ -352,7 +358,9 @@
 						LEFT OUTER JOIN MBTI_ANIMAL mal
 						ON clv.LEAST_MBTI = mal.MBTI 
 						LEFT OUTER JOIN ANIMAL_PHOTO apl
-						ON mal.ANIMAL_NO = apl.ANIMAL_NO 
+						ON mal.ANIMAL_NO = apl.ANIMAL_NO
+						LEFT OUTER JOIN (SELECT c.club_no, count(cl.CLUB_LIKE_NO) like_count FROM club c LEFT OUTER JOIN CLUB_LIKE cl ON c.CLUB_NO = cl.CLUB_NO GROUP BY c.club_no) clc
+						ON clv.club_no = clc.club_no 
 		<where>
 			<!-- 메인 카테고리 -->
 			<if test="mainCategoryExist">
@@ -380,7 +388,7 @@
 				</foreach>
 			</if>
 		</where>
-		ORDER BY total ASC, club_no DESC
+		ORDER BY ${orderType}
 		)TMP
 		     ) where rn between ((#{page}-1) * 9 + 1) and (#{page} * 9)
 	</select> 

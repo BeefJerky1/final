@@ -21,4 +21,6 @@ public class MbtiRankVO {
 	private String leastMbti;
 	private int leastAnimalNo;
 	private String leastAnimal;
+	
+	private int likeCount;
 }

@@ -60,7 +60,7 @@
 			ma.ANIMAL_NO = ap.ANIMAL_NO 
 		WHERE cm.club_no = #{clubNo} AND m.MEMBER_MBTI IS NOT NULL AND cm.club_member_permission = 1 
 		GROUP BY cm.CLUB_NO, m.MEMBER_MBTI, ma.ANIMAL_NO, ma.ANIMAL, ap.ATTACH_NO 
-		ORDER BY mbti_percent DESC
+		ORDER BY mbti_percent DESC, member_mbti desc
 	</select>
 	
 </mapper>

@@ -48,11 +48,12 @@ public class ClubRestController {
 	private ClubMemberDao clubMemberDao;
 	
 	// 소모임 목록 
-	@GetMapping("/{page}")
+	@GetMapping("/{page}/{orderType}")
 	public List<ClubListVO> list(
-			@PathVariable int page
+			@PathVariable int page,
+			@PathVariable String orderType
 			){
-		return clubDao.list(page);
+		return clubDao.list(page, orderType);
 	}
 	
 	// 소모임 검색

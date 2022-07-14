@@ -47,9 +47,8 @@
 						<div class="row">
 							<div class="col-md-4" width="16px" height="16px"
 								style="margin-left: 0.8em; margin-top: 0.45em;">
-								<img src="${root }/image/mbti/거북이(ISTP).png" class="profile"
-									v-if="clubList.memberProfileDto == null"> <img
-									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo"
+								<img src="${root }/image/mbti/거북이(ISTP).png" class="profile" v-if="clubList.memberProfileDto == null"> 
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo"
 									class="profile" v-if="clubList.memberProfileDto != null">
 							</div>
 							<div class="col-md-7 text-right" v-if="clubList.clubDto != null"
@@ -80,20 +79,23 @@
 						<!-- v-for index를 []안에 사용할 방법을 찾으면 v-for로 반복할 예정 너무 복잡해지면 그냥 이대로 사용 -->
 						<div class="row">
 							<div class="col-md-4 text-center" v-if="mbtiList[0] != null">
-								<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"
-									style="border: 1.5px solid #3E4684">
+								<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[0].attachNo == null">
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[0].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[0].attachNo != null">
 								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[0].memberMbti}}</p>
 								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[0].mbtiPercent}}%</p>
 							</div>
 							<div class="col-md-4 text-center" v-if="mbtiList[1] != null">
-								<img src="${root }/image/mbti/물개(ESFP).png" class="mbtitop"
-									style="border: 1.5px solid #3E4684">
+								<img src="${root }/image/mbti/물개(ESFP).png" class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[1].attachNo == null">
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[1].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[1].attachNo != null">
 								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[1].memberMbti}}</p>
 								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[1].mbtiPercent}}%</p>
 							</div>
 							<div class="col-md-4 text-center" v-if="mbtiList[2] != null">
-								<img src="${root }/image/mbti/원숭이(ESTP).png" class="mbtitop"
-									style="border: 1.5px solid #3E4684">
+								<img src="${root }/image/mbti/원숭이(ESTP).png" class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[2].attachNo == null">
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[2].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[2].attachNo != null">
 								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[2].memberMbti}}</p>
 								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[2].mbtiPercent}}%</p>
 							</div>
@@ -108,10 +110,9 @@
 		<div class="col-md-6 mb-5">
 			<div class="card shadow">
 				<img src="https://via.placeholder.com/200/69f/fff.png"
-					class="card-img-top" style="width: 100%; height: 250px;"
-					v-if="clubList.clubProfileDto == null"> <img
-					:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"
-					style="width: 100%; height: 250px;" class="card-img-top"
+					class="card-img-top" style="width: 100%; height: 300px;" v-if="clubList.clubProfileDto == null"> 
+					<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"
+					style="width: 100%; height: 300px;" class="card-img-top"
 					v-if="clubList.clubProfileDto != null">
 				<div class="card-body">
 					<div class="card-title">
@@ -124,21 +125,35 @@
 
 				<div class="card-body mt-4">
 					<div class="card-title mt-4 mb-2">
-						<span class="boldfont"><i class="fa-solid fa-users"></i>&nbsp;우리
-							소모임 MBTI</span>
+						<span class="boldfont"><i class="fa-solid fa-mars-and-venus"></i>&nbsp;우리 소모임 MBTI</span>
 					</div>
 
-					<div v-if="mbtiList != null" v-for="(mbti, index) in mbtiList"
-						:key="index">
-						<div class="col-md-1 text-center">
-							<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"
-								style="width: 50px; height: 50px; border: 1.5px solid #3E4684;">
-							<div>
-								<span class="boldfont">{{mbti.memberMbti}}</span>
-							</div>
-							<div>
-								<span class="boldfontSS">{{mbti.mbtiPercent}}%</span>
-							</div>
+					<div class="row mt-4">
+					<div class="col text-center" v-if="mbtiList != null" v-for="(mbti, index) in mbtiList" :key="index">
+						<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="mbtiList[index].attachNo == null">
+							<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[index].attachNo"
+								class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="mbtiList[index].attachNo != null">
+						<div>
+							<span class="boldfont">{{mbti.memberMbti}}</span>
+						</div>
+						<div>
+							<span class="boldfontSS">{{mbti.mbtiPercent}}%</span>
+						</div>
+					</div>
+					</div>
+				</div>
+				
+				<div class="card-body mt-4">
+					<div class="card-title mt-4 mb-2">
+						<span class="boldfont">
+							<i class="fa-solid fa-users"></i>
+							&nbsp; 우리 소모임 회원
+						</span>
+					</div>
+					
+					<div class="row mt-4">
+						<div class="col text-center">
+							회원들
 						</div>
 					</div>
 				</div>
@@ -252,6 +267,7 @@ data() {
 		// 소모임 상세에 필요한 정보(소모임, 소모임좋아요, mbti, 소모임프로필)
 		clubList:[],
 		mbtiList:[],
+		clubMemberList:[],
 		
 		clubMemberAnswer1:"",
 		clubMemberAnswer2:"",
@@ -370,11 +386,30 @@ methods: {
 		});
 	},
 	
+	clubMemberList(){
+		// 소모임 회원 정보
+		axios({
+			url: "${pageContext.request.contextPath}/rest/club/member/"+this.clubNo,
+			method: "get",
+		}).then((resp) => {
+			this.clubMemberList = resp.data;
+		});
+	},
+	
 },
 
 created() {
 	this.existLike();
 	
+	// 소모임 회원 정보
+	axios({
+		url: "${pageContext.request.contextPath}/rest/club/member/"+this.clubNo,
+		method: "get",
+	}).then((resp) => {
+		this.clubMemberList = resp.data;
+	});
+	
+	// 소모임 상세 정보
 	axios({
 		url: "${pageContext.request.contextPath}/rest/club/detail/"+this.clubNo,
 		method: "get",

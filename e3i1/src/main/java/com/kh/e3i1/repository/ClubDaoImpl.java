@@ -23,8 +23,11 @@ public class ClubDaoImpl implements ClubDao {
 	
 	// 소모임 전체목록
 	@Override
-	public List<ClubListVO> list(int page) {
-		return sqlSession.selectList("club.list", page);
+	public List<ClubListVO> list(int page, String orderType) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("page", page);
+		param.put("orderType", orderType);
+		return sqlSession.selectList("club.list", param);
 	}
 	
 	// 소모임 검색목록
