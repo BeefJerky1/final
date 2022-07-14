@@ -14,4 +14,5 @@ public class ClubComplexSearchVO {
 	private String city2;
 	private List<String> mbtiList;
 	private int page;
+	private String orderType;
 }

@@ -506,7 +506,7 @@ position:relative;
             	//소모임 정보 로드
             	loadClubInfo(){
             		axios({
-            			url: "${pageContext.request.contextPath}/rest/club/"+this.clubNo,
+            			url: "${pageContext.request.contextPath}/rest/club/detail/"+this.clubNo,
             			method: "get",
             		}).then((resp) => {
             			this.clubList = resp.data;

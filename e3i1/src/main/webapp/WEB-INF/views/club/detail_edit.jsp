@@ -58,9 +58,8 @@
 						<div class="row">
 							<div class="col-md-4" width="16px" height="16px"
 								style="margin-left: 0.8em; margin-top: 0.45em;">
-								<img src="${root }/image/mbti/거북이(ISTP).png" class="profile"
-									v-if="clubList.memberProfileDto == null"> <img
-									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo"
+								<img src="${root }/image/mbti/거북이(ISTP).png" class="profile" v-if="clubList.memberProfileDto == null"> 
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo"
 									class="profile" v-if="clubList.memberProfileDto != null">
 							</div>
 							<div class="col-md-7 text-right" v-if="clubList.clubDto != null"
@@ -91,20 +90,23 @@
 						<!-- v-for index를 []안에 사용할 방법을 찾으면 v-for로 반복할 예정 너무 복잡해지면 그냥 이대로 사용 -->
 						<div class="row">
 							<div class="col-md-4 text-center" v-if="mbtiList[0] != null">
-								<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"
-									style="border: 1.5px solid #3E4684">
+								<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[0].attachNo == null">
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[0].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[0].attachNo != null">
 								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[0].memberMbti}}</p>
 								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[0].mbtiPercent}}%</p>
 							</div>
 							<div class="col-md-4 text-center" v-if="mbtiList[1] != null">
-								<img src="${root }/image/mbti/물개(ESFP).png" class="mbtitop"
-									style="border: 1.5px solid #3E4684">
+								<img src="${root }/image/mbti/물개(ESFP).png" class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[1].attachNo == null">
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[1].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[1].attachNo != null">
 								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[1].memberMbti}}</p>
 								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[1].mbtiPercent}}%</p>
 							</div>
 							<div class="col-md-4 text-center" v-if="mbtiList[2] != null">
-								<img src="${root }/image/mbti/원숭이(ESTP).png" class="mbtitop"
-									style="border: 1.5px solid #3E4684">
+								<img src="${root }/image/mbti/원숭이(ESTP).png" class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[2].attachNo == null">
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[2].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[2].attachNo != null">
 								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[2].memberMbti}}</p>
 								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[2].mbtiPercent}}%</p>
 							</div>
@@ -179,6 +181,7 @@
 
 		</div>
 
+</div>
 </div>
 
 
@@ -386,7 +389,7 @@ created() {
 	this.existLike();
 	
 	axios({
-		url: "${pageContext.request.contextPath}/rest/club/"+this.clubNo,
+		url: "${pageContext.request.contextPath}/rest/club/detail/"+this.clubNo,
 		method: "get",
 	}).then((resp) => {
 		this.clubList = resp.data;

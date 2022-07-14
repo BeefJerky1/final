@@ -11,7 +11,7 @@ import com.kh.e3i1.vo.ClubListVO;
 
 public interface ClubDao {
 
-	List<ClubListVO> list(int page);
+	List<ClubListVO> list(int page, String orderType);
 	
 	List<ClubListVO> searchList(ClubComplexSearchVO clubComplexSearchVO);
 

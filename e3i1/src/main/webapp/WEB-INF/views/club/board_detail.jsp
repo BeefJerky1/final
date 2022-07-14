@@ -765,7 +765,7 @@ position:relative;
             	loadClubInfo(){
             		if(this.board!=null){
             		axios({
-            			url: "${pageContext.request.contextPath}/rest/club/"+this.board.clubBoardDto.clubNo,
+            			url: "${pageContext.request.contextPath}/rest/club/detail/"+this.board.clubBoardDto.clubNo,
             			method: "get",
             		}).then((resp) => {
             			this.clubList = resp.data;
