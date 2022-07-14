@@ -9,8 +9,9 @@ public interface ClubMemberDao {
 	void insertClubLeader(int clubNo, int memberNo);
 	int insert(ClubMemberDto clubMemberDto);
 	ClubMemberDto one(int clubNo, int memberNo);
+	List<ClubMemberListVO> selectPermission(int clubNo);
 	List<ClubMemberListVO> select(int clubNo);
-	public int approveClub(int clubMemberNo);
+	int approveClub(int clubMemberNo);
 	int refuseClub(ClubMemberDto clubMemberDto);
 	
 	//소모임 멤버확인용

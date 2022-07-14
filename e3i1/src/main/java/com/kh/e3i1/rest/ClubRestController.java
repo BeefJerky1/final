@@ -85,6 +85,12 @@ public class ClubRestController {
 		return clubMemberDao.select(clubNo);
 	}
 	
+	// 소모임 신청 회원 전체목록
+	@GetMapping("/member_permission/{clubNo}")
+	public List<ClubMemberListVO> memberPermissionList(@PathVariable int clubNo){
+		return clubMemberDao.selectPermission(clubNo);
+	}
+	
 	// 소모임 가입 신청
 	@PostMapping("/member")
 	public int insertClubMember(@RequestBody ClubMemberDto clubMemberDto) {

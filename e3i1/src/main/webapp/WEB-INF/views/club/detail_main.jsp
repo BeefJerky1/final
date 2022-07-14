@@ -24,12 +24,10 @@
 						<div class="row">
 							<div class="col-md-2 align-self-center"></div>
 							<div class="text-center" v-if="clubList.clubDto != null">
-								<a
-									:href="'${pageContext.request.contextPath}/club/detail?clubNo='+clubList.clubDto.clubNo">
+								<a :href="'${pageContext.request.contextPath}/club/detail?clubNo='+clubList.clubDto.clubNo">
 									<i class="fa-solid fa-house"></i>
 								</a> <span class="boldfont">&nbsp;&nbsp;{{clubList.clubDto.clubName}}&nbsp;&nbsp;</span>
-								<span @click="likeClub"> <i class="fa-solid fa-heart"
-									style="color: red;" v-if="isLike"></i> <i
+								<span @click="likeClub"> <i class="fa-solid fa-heart" style="color: red;" v-if="isLike"></i> <i
 									class="fa-regular fa-heart" style="color: red;" v-if="!isLike"></i>&nbsp;
 								</span> <i class="fa-solid fa-circle-exclamation"></i>
 							</div>
@@ -386,7 +384,7 @@ methods: {
 		});
 	},
 	
-	clubMemberList(){
+	/* clubMemberList(){
 		// 소모임 회원 정보
 		axios({
 			url: "${pageContext.request.contextPath}/rest/club/member/"+this.clubNo,
@@ -394,7 +392,7 @@ methods: {
 		}).then((resp) => {
 			this.clubMemberList = resp.data;
 		});
-	},
+	}, */
 	
 },
 
