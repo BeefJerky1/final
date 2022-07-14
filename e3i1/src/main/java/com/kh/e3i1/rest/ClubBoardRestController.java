@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.e3i1.entity.ClubBoardAttachDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardLikeDto;
 import com.kh.e3i1.entity.ClubBoardReportDto;
@@ -72,7 +73,17 @@ public class ClubBoardRestController {
 	//삭제
 	@DeleteMapping("/{clubBoardNo}")
 	public void delete(@PathVariable int clubBoardNo) {
-		clubBoardDao.delete(clubBoardNo);
+		//게시글 사진 확인
+		List<ClubBoardAttachDto> list = clubBoardDao.getAttachNo(clubBoardNo);
+		if(list!=null) {
+			for(ClubBoardAttachDto dto:list) {
+				 boolean success = clubBoardDao.deleteAttachNo(dto.getAttachNo());
+				 if(success) {
+					 clubBoardDao.delete(clubBoardNo);
+					 
+				 }
+			}
+		}
 	}
 	//상세 보기
 	@GetMapping("/detail/{clubBoardNo}/memberNo/{memberNo}")
@@ -81,9 +92,22 @@ public class ClubBoardRestController {
 	}
 	
 	//수정
-	@PutMapping("/")
-	public ClubBoardDto edit(@RequestBody ClubBoardDto clubBoardDto) {
-		return clubBoardDao.edit(clubBoardDto);
+	@PostMapping("/editBoard")
+	public ClubBoardDto edit(
+			@ModelAttribute ClubBoardDto clubBoardDto , 
+			@RequestParam(required=false) List<MultipartFile> files
+			) throws IllegalStateException, IOException {
+		return clubBoardService.editClubBoard(clubBoardDto, files);
+	}
+	//게시글 사진번호 가져오기
+	@GetMapping("/attach/{clubBoardNo}")
+	public List<ClubBoardAttachDto> getAttachNo(@PathVariable int clubBoardNo){
+		return clubBoardDao.getAttachNo(clubBoardNo);
+	}
+	//게시글 사진 삭제
+	@DeleteMapping("/attach/{attachNo}")
+	public boolean deleteAttachNo(@PathVariable int attachNo){
+		return clubBoardDao.deleteAttachNo(attachNo);
 	}
 	//좋아요 확인
 	@GetMapping("/likecheck/{clubBoardNo}/{likeMemberNo}")

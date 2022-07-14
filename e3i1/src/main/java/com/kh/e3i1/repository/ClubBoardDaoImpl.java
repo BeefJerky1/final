@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kh.e3i1.entity.ClubBoardAttachDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
 import com.kh.e3i1.vo.ClubMemberProfileVO;
@@ -133,6 +134,18 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	@Override
 	public ClubMemberProfileVO memberProfile(int memberNo) {
 		return sqlSession.selectOne("clubboard.memberprofile", memberNo);
+	}
+	
+	//게시글 사진번호 가져오기
+	@Override
+	public List<ClubBoardAttachDto> getAttachNo(int clubBoardNo) {
+		return sqlSession.selectList("clubboard.getattachno", clubBoardNo);
+	}
+
+	@Override
+	public boolean deleteAttachNo(int attachNo) {
+	 int count =  sqlSession.delete("clubboard.deleteattachno", attachNo);
+	 return count>0;
 	}
 	
 

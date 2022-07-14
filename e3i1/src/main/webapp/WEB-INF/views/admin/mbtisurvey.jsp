@@ -198,7 +198,7 @@ li a:hover {
                         
                         </div>
                     </div>
-              <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 rounded mt-3" v-if="this.insert==true" style="border-radius:1em !important">
+              <div class=" bottom border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 rounded mt-3" v-if="this.insert==true" style="border-radius:1em !important">
               <h1>설문 추가</h1>
                     	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
             <label>번호</label>
@@ -273,6 +273,7 @@ li a:hover {
 		        },
 		        //추가모드
 		        insertMode(){
+		        	window.scrollTo( 0, ".bottom");
 		        	this.survey=false;
 					this.insert=true;
 		        

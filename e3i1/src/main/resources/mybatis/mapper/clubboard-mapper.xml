@@ -53,7 +53,14 @@
 	<select id="clubboardno" resultType="clubBoardDto" parameterType="int">
 		select club_board_no from club_board where club_no = #{club_no}
 	</select>
-	
+	<!-- 게시글 사진 정보 가져오기 -->
+	<select id="getattachno" resultType="clubBoardAttachDto" parameterType="int">
+		select * from club_board_attach where club_board_no = #{clubBoardNo}
+	</select>
+	<!-- 게시글 사진 삭제 -->
+	<delete id="deleteattachno" parameterType="int">
+		delete attachment where attach_no= #{attachNo}
+	</delete>
 	<resultMap type="ClubBoardListItemVO" id="clubBoardListItem">
 		<association property="clubBoardDto">
 			<result column="club_board_no" property="clubBoardNo"/>

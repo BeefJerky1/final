@@ -6,6 +6,17 @@
 <c:set var="memberAdmin" value="${auth == '관리자'}"></c:set>
 <c:set var="isLogin" value="${memberNo != null}"></c:set>
 <style>
+.deletePicture:hover{
+  animation: left-right 0.2s infinite ease-in-out alternate;
+}
+@keyframes left-right{
+  from{
+    transform: translateX(+10px);
+  }
+  to{
+    transform: translateX(-10px);
+  }
+}
 	body{
 	background-color:#F6F6F6 !important;
 	}
@@ -25,7 +36,9 @@ ul {
 .imgfile2 {
 	width: 500%
 }
-
+.editFile{
+	width:500%;
+}
 .profile {
 	width: 80px;
 	height: 80px;
@@ -149,6 +162,7 @@ position:relative;
 <div id="app" class="container-fluid">
 	<div class="row">
 		<div class="col-lg-3 col-md-3 col-sm-3 mt-5 left-side">
+				<!-- 소모임 정보 출력 -->
 			<div
 				class="border text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side rounded shadow"
 				style="border-radius: 1em !important">
@@ -177,7 +191,7 @@ position:relative;
 
 				<div class="row">
 					<div class="col-md-2" width="10px" height="10px">
-                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"> 
+<!--                          		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+clubList.clubProfileDto.attachNo">  -->
 
 					</div>
 					<div class="col-md-8 offset-md-2 row align-self-center">
@@ -281,6 +295,7 @@ position:relative;
 					<div>
 						<div class="row" v-if="board!=null">
 							<div class="col-lg-2 col-md-2 col-sm-2 align-end top">
+								<!-- 프로필 사진 출력 -->
 								<div v-if="board.memberProfileDto.attachNo==0">
                          		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+board.animalPhotoDto.attachNo"> 
 	                            </div>
@@ -345,11 +360,15 @@ position:relative;
 										<ul
 											style="display: grid; grid-template-columns: repeat(2, 1fr);">
 											<li v-for="(attach , index) in board.attach"
-												style="width: 20%; display: inline"><img
+												style="width: 20%; display: inline">
+												<img
 												v-if="board.attach.length ==1"
 												class="imgfile1  rounded mx-auto d-block"
 												:src="'http://localhost:8080/e3i1/attachment/download?attachNo='+attach.attachNo"
-												style="border-radius: 1em !important"> <img
+												style="border-radius: 1em !important"
+												>
+												
+												<img
 												v-else-if="board.attach.length >=2"
 												class="imgfile2  rounded mx-auto d-block"
 												:src="'http://localhost:8080/e3i1/attachment/download?attachNo='+attach.attachNo"
@@ -395,20 +414,44 @@ position:relative;
 								</div>
 								<div class="col-lg-2 col-md-2 col-sm-2 text-center">
 								</div>
+								<!--  수정 가능한 자 (작성자)-->
 								<div v-if="isBoardEditAvailable(board)"
 									class="col-lg-2 col-md-2 col-sm-2 text-center">
 									<i class="fa-solid fa-pen-to-square"
 										v-on:click="changeEditMode()"></i>
 								</div>
+								<!--  삭제 가능한 자 ( 관리자, 소모임 관리자, 작성자) -->
 								<div v-if="isBoardDeleteAvailable(board)"
 									class="col-lg-2 col-md-2 col-sm-2 text-center">
 									<i class="fa-solid fa-trash" v-on:click="deleteBoard()"></i>
 								</div>
 							</div>
 						</div>
+						
+						<!-- 게시글 수정 -->
 						<div v-else class="align-end">
 							<textarea class="form-control update"
-								v-model="board.clubBoardDto.clubBoardContent"></textarea>
+								v-model="board.clubBoardDto.clubBoardContent" ></textarea>
+								<div class="row">
+								<!--  사진 파일 출력/ 클릭하면 삭제 -->
+								<ul style="display: grid; grid-template-columns: repeat(2, 1fr);">
+											<li v-for="(attach , index) in attachNo"
+												style="width: 20%; display: inline">
+												<img
+												v-if="board.attach.length ==1"
+												class="editFile  rounded mx-auto d-block deletePicture"
+												:src="'http://localhost:8080/e3i1/attachment/download?attachNo='+attach.attachNo"
+												style="border-radius: 1em !important"
+												v-on:click="deletePicture(index)">
+												
+												<img
+												v-else-if="board.attach.length >=2"
+												class="editFile  rounded mx-auto d-block deletePicture"
+												:src="'http://localhost:8080/e3i1/attachment/download?attachNo='+attach.attachNo"
+												style="border-radius: 1em !important" v-on:click="deletePicture(index)"></li>
+								</ul>
+								</div>
+							<input class="form-control" type="file" name="attach" accept="image/*" ref="clubBoardAttach" name="clubBoardAttach"  multiple/>
 							<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 								<button class="btn btn-secondary"
 									v-on:click="changeDisplayMode()"
@@ -503,6 +546,7 @@ position:relative;
 							</div>
 						</div>
 					</div>
+					<!--  댓글 수정 -->
 					<div v-else class="p-4">
 						<textarea class="form-control update-reply"
 							v-model="reply.clubBoardReplyDto.clubReplyContent"
@@ -695,6 +739,9 @@ position:relative;
                    //게시글
 		           board:null,//상세
 		           like:"",//게시글 좋아요
+		           //게시글 수정
+		           boardContent:"",
+		           attachNo:null,
 				   //댓글		           
 		           BoardReplyList:[],//댓글 목록
 		           replyContent:"",//댓글 내용
@@ -834,7 +881,7 @@ position:relative;
                 		method:"delete",
                 	})
                 	.then(resp=>{
-                    	window.location.href='http://localhost:8080/e3i1/club/board/'+this.board.clubBoardDto.clubNo;
+                    	window.location.href='http://localhost:8080/e3i1/club/board?clubNo='+this.board.clubBoardDto.clubNo;
                 	});
                 },
  		    	//삭제 가능자 
@@ -859,21 +906,53 @@ position:relative;
 		    	},
               	//게시글 수정
                 editBoard(){
-		        	if(this.board.clubBoardDto.clubBoardContent.length==0)return;
+		    		let formData = new FormData();
+            		const files = this.$refs.clubBoardAttach.files;
+            	    for (let i = 0; i < files.length; i++) { 
+            	        formData.append("files", files[i]); // 반복문을 활용하여 파일들을 formData 객체에 추가한다
+            	     }
+            	    formData.append('clubBoardNo', this.clubBoardNo);
+            		formData.append('clubNo', this.clubList.clubDto.clubNo);
+            		formData.append('clubBoardContent', this.board.clubBoardDto.clubBoardContent);
+            		formData.append('clubBoardWriter', this.memberNo);
 		        	axios({
-		        		url:"${pageContext.request.contextPath}/rest/clubboard/",
-		        		method:"put",
-		        		data:{
-		        			clubBoardNo: this.board.clubBoardDto.clubBoardNo,
-		        			clubBoardContent: this.board.clubBoardDto.clubBoardContent,
-		        		},
+		        		url:"${pageContext.request.contextPath}/rest/clubboard/editBoard",
+		        		method:"post",
+		        		headers:{
+		    				"Content-Type" : "multipart/form-data",
+		    			},
+		    			data:formData,
 		        	}).then(resp=>{
 		        		this.loadContent();
 		        	});
 		        },
+		        //사진 삭제
+		        deletePicture(index){
+		        	const choice = window.confirm("정말 삭제하시겠습니까?");
+					if(choice==false)return
+		        	const attach = this.attachNo[index];
+		        	axios({
+		        		url:"${pageContext.request.contextPath}/rest/clubboard/attach/"+attach.attachNo,
+		        		method:"delete",
+		        	}).then(resp=>{
+		        		window.alert("삭제되었습니다.")
+		        		this.changeEditMode();
+		        	})
+	
+		        },
 		        //수정모드
 		        changeEditMode(){
 		        	this.board.edit=true;
+		        	//게시글 사진번호 가져오기
+		        	let uri = window.location.search.substring(1); 
+                    let params = new URLSearchParams(uri);
+                    const clubBoardNo = params.get("clubBoardNo");
+	          		axios({
+            			url:"${pageContext.request.contextPath}/rest/clubboard/attach/"+clubBoardNo,
+            			method:"get",
+            		}).then(resp=>{
+            			this.attachNo=resp.data
+            		})
 		        },
 		        //수정모드 해제
 		        changeDisplayMode(){
