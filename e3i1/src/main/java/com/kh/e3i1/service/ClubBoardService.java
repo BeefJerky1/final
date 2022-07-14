@@ -13,4 +13,6 @@ public interface ClubBoardService {
 
 	ClubBoardDto insert(ClubBoardDto clubBoardDto, MultipartFile clubBoardAttach) throws IllegalStateException, IOException;
 
+	ClubBoardDto editClubBoard(ClubBoardDto clubBoardDto, List<MultipartFile> files)throws IllegalStateException, IOException;
+
 }

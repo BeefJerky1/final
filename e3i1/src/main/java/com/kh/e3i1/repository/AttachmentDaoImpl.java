@@ -2,6 +2,7 @@ package com.kh.e3i1.repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -16,7 +17,7 @@ import com.kh.e3i1.entity.AttachmentDto;
 public class AttachmentDaoImpl implements AttachmentDao {
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	private File directory = new File(System.getProperty("user.home")+"/upload");
 	public AttachmentDaoImpl() {
 		directory.mkdirs();
@@ -65,5 +66,6 @@ public class AttachmentDaoImpl implements AttachmentDao {
 		}
 		return success;
 	}
+
 	
 }

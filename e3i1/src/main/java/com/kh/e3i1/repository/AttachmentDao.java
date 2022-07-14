@@ -1,6 +1,7 @@
 package com.kh.e3i1.repository;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,4 +19,5 @@ public interface AttachmentDao {
 	public int delete(int attachNo);
 	
 	public int edit(MultipartFile attachment, int attachNo) throws IllegalStateException, IOException;
+
 }

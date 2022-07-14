@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kh.e3i1.entity.ClubBoardAttachDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardLikeDto;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
@@ -38,6 +39,12 @@ public interface ClubBoardDao {
 	void calculateReplyCount(int clubNo);
 
 	void calculateLikeCount(int clubNo);
+
+	//게시글 사진번호 가져오기
+	List<ClubBoardAttachDto> getAttachNo(int clubBoardNo);
+	
+	//게시글 사진 삭제
+	boolean deleteAttachNo(int attachNo);
 
 
 

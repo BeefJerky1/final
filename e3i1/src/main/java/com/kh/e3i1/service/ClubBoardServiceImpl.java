@@ -6,9 +6,11 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.e3i1.entity.ClubBoardDto;
+import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.repository.AttachmentDao;
 import com.kh.e3i1.repository.ClubBoardAttachDao;
 import com.kh.e3i1.repository.ClubBoardDao;
@@ -56,5 +58,24 @@ public class ClubBoardServiceImpl implements ClubBoardService{
 		
 		return clubBoardDto;
 	}
+	@Transactional
+	@Override
+	public ClubBoardDto editClubBoard(ClubBoardDto clubBoardDto, List<MultipartFile>  files) throws IllegalStateException, IOException {
+		
+		if(files==null) {			
+			clubBoardDao.edit(clubBoardDto);
+		}else {
+			clubBoardDao.edit(clubBoardDto);
+			for(MultipartFile attach: files) {
+				
+				int attachNo = attachmentDao.save(attach);
+				clubBoardAttachDao.insert(attachNo, clubBoardDto.getClubBoardNo(),clubBoardDto.getClubNo());
+			}
+		}
+		
+		return clubBoardDto;
+	}
+	//게시글 삭제
+	
 
 }

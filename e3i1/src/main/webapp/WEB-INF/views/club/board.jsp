@@ -70,7 +70,7 @@ position:relative;
 }
 	.click{
 	 display: block; 
-  	width: 200px;        
+  	width: 80%;        
   	white-space: nowrap; 
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -233,6 +233,7 @@ position:relative;
             </div>
             </div>
             <div class="col-lg-5 col-md-5 col-sm-5 main">
+            
                 <div class="border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 text-end">
 <!--                     <a href="http://localhost:8080/e3i1/club/board/1"> -->
 <!--                         <h4><b>홈</b></h4> -->
@@ -244,13 +245,31 @@ position:relative;
                         <textarea class="form-control " v-model="boardContent" placeholder="무슨 일이 일어나고 있나요?" style="border-radius:1em !important"></textarea>
                           <div class="mt-2 text-start">
 							<label>이미지 넣기</label> 
-							<input class="form-control" type="file" name="attach" accept="image/*" ref="clubBoardAttach" name="clubBoardAttach"  multiple/>
+							<input class="form-control" type="file" name="attach" accept="image/*" ref="clubBoardAttach" name="clubBoardAttach"  multiple v-on:change="checkFileSize()"/>
 						</div>  
                         <button class="btn btn-primary mt-3 " v-on:click="addBoard" :disabled="clubBoardContentIsEmpty()== true" style="border-radius:1em !important" v-if="cancel ">등록하기</button>
                     </div>
  
                 </div>
-                <!-- 게시글 목록 출력 -->
+             	<div v-else class="shadow">
+             	<!--  정렬 버튼 구간 -->
+             	 <ul class=" top-osahan-nav-tab nav nav-pills justify-content-center nav-justified mb-4 shadow-sm rounded-4 overflow-hidden bg-white mt-4" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                           <button class="p-3 nav-link  active nav-area" id="pills-feed-tab" data-bs-toggle="pill" data-bs-target="#pills-feed" type="button" role="tab" aria-controls="pills-feed" aria-selected="true">new!</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                           <button class="p-3 nav-link nav-area" id="pills-people-tab" data-bs-toggle="pill" data-bs-target="#pills-people" type="button" role="tab" aria-controls="pills-people" aria-selected="false">좋아요순</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                           <button class="p-3 nav-link nav-area" id="pills-mentions-tab" data-bs-toggle="pill" data-bs-target="#pills-mentions" type="button" role="tab" aria-controls="pills-mentions" aria-selected="false">댓글순</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                           <button class="p-3 nav-link nav-area" id="pills-mentions-tab" data-bs-toggle="pill" data-bs-target="#pills-mentions" type="button" role="tab" aria-controls="pills-mentions" aria-selected="false">사진</button>
+                        </li>
+                     </ul>
+             	</div>
+                   
+                    <!-- 게시글 목록 출력 -->    
                 <div  class="text-dark col-lg-12 col-md-12 col-sm-12">
 
                 <div v-for="(clubboard, index ) in board" v-bind:key="index" >
@@ -635,6 +654,7 @@ position:relative;
                 },
                 //글쓰기
                 allowed(){
+                	window.scrollTo(0,0)
                 	this.cancel = true;
                 	this.write = false;
                 },
@@ -643,6 +663,13 @@ position:relative;
                    	this.cancel= false;
 					this.write = true;
 					this.boardContent = "";
+                },
+                //파일 크기 확인
+                checkFileSize(){
+                	if (this.$refs.clubBoardAttach.files.size > (20 * 1024 * 1024)) {
+                        alert("파일 사이즈가 20mb 를 넘습니다.");
+                        return
+                    }
                 },
                 //게시글 등록
                 addBoard(){
