@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.vo.MemberComplexSearchVO;
+import com.kh.e3i1.vo.MemberDetailVO;
 
 @Repository
 public class MemberDaoImpl implements MemberDao{
@@ -21,12 +22,14 @@ public class MemberDaoImpl implements MemberDao{
 	
 	//회원가입
 	@Override
-	public void join(MemberDto memberDto) {
+	public int join(MemberDto memberDto) {
 		String rawPassword = memberDto.getMemberPw();
 		String encryptPassword = passwordEncoder.encode(rawPassword);
-		memberDto.setMemberPw(encryptPassword);
-		memberDto.setMemberNo(sqlSession.selectOne("member.sequence"));
+		//memberDto.setMemberPw(encryptPassword);
+		int memberNo = sqlSession.selectOne("member.sequence");
+		memberDto.setMemberNo(memberNo);
 		sqlSession.insert("member.join", memberDto);
+		return memberNo;
 	}
 	
 	//로그인
@@ -132,5 +135,10 @@ public class MemberDaoImpl implements MemberDao{
 			int count = sqlSession.update("member.changeInformation", memberDto);
 			return count > 0;
 		}
+	}
+
+	@Override
+	public MemberDetailVO mypageMember(int memberNo) {
+		return sqlSession.selectOne("member.mypageMember",memberNo);
 	}
 }

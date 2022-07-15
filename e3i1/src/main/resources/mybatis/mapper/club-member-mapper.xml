@@ -73,6 +73,7 @@
 	</select>
 	
 	<resultMap type="ClubMemberListVO" id="clubMemberListVO">
+	
 		<association property="clubMemberDto">
 			<result column="club_member_no" property="clubMemberNo"/>			
 			<result column="club_no" property="clubNo"/>			

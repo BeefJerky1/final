@@ -161,9 +161,9 @@ select{
 							style="width: 12rem; border-radius: 30px;"
 							v-for="(main, index) in mainCategory" :key="index">
 							<label :for="'main'+index">
-								<div class="card-body m-1" style="padding: 15px 0px;">
-									<h6 class="card-title text-center tagtitle">
-										<span class="maincolor">\# {{main.categoryContent}} <i
+								<div class="card-body m-1 align-self-center" style="padding: 15px 0px;">
+									<h6 class="card-title text-center tagtitle align-self-center" style="margin:0px;">
+										<span class="maincolor align-self-center">\# {{main.categoryContent}} <i
 											class="fa-solid fa-person-running" class="coloricon"
 											v-if="main.categoryNo == 1"></i> <i
 											class="fa-brands fa-instagram-square"

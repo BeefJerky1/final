@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +15,7 @@ import com.kh.e3i1.entity.Address1Dto;
 import com.kh.e3i1.entity.Address2Dto;
 import com.kh.e3i1.entity.CategoryDto;
 import com.kh.e3i1.repository.CategoryNAddressDao;
+import com.kh.e3i1.vo.AnimalPhotoVO;
 import com.kh.e3i1.vo.MbtiRankVO;
 
 @CrossOrigin(
@@ -49,10 +52,16 @@ public class CategoryAndAddressRestController {
 		return categoryNAddressDao.addressList2(address1No);
 	}
 	
-	// mbti별 동물 
+//	// mbti별 동물  
+//	@GetMapping("/animal/{mbti}")
+//	public String animal(@PathVariable String mbti) {
+//		return categoryNAddressDao.animal(mbti);
+//	}
+	
+	// mbti별 동물 사진 
 	@GetMapping("/animal/{mbti}")
-	public String animal(@PathVariable String mbti) {
-		return categoryNAddressDao.animal(mbti);
+	public AnimalPhotoVO animal(@PathVariable String mbti) {
+		return categoryNAddressDao.animalPhoto(mbti);
 	}
 	
 	// mbti 랭킹

@@ -4,11 +4,12 @@ import java.util.List;
 
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.vo.MemberComplexSearchVO;
+import com.kh.e3i1.vo.MemberDetailVO;
 
 public interface MemberDao {
 	
 	// 회원가입
-	void join(MemberDto memberDto);
+	int join(MemberDto memberDto);
 	
 	// 로그인
 	MemberDto login(String memberEmail, String memberPw);
@@ -37,5 +38,7 @@ public interface MemberDao {
 	
 	// 회원 조회용 list 구문 추가
 	List<MemberDto> list();
+
+	MemberDetailVO mypageMember(int memberNo);
 	
 }

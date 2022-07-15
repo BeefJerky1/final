@@ -30,5 +30,7 @@ public class MemberDto {
 	private int memberClubCount;
 	private String memberSnsId;
 	private Date memberLogindate;
+	
+	private int attachNo;
 }
 

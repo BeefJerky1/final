@@ -20,6 +20,4 @@ public class ClubBoardReplyDto {
 	private Date clubReplyTime;
 	private int clubReplyLike;
 	private int clubReplyReportcount;
-	
-	
 }

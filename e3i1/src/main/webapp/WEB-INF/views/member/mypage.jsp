@@ -139,8 +139,8 @@ i {
 					<div class="col-md-3">
 						<div class="col-md-3 profile">
 							<div class="profileimg text-center mt-3 mb-2">
-								<img src="${root }/image/mbti/거북이(ISTP).png"
-									style="border-radius: 50%; width: 140px; height: 140px;" />
+								<img src="${root }/image/mbti/거북이(ISTP).png" style="border-radius: 50%; width: 140px; height: 140px;" v-if="memberList.memberProfileDto == null" />
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberList.memberProfileDto.attachNo" style="border-radius: 50%; width: 140px; height: 140px;" v-if="memberList.memberProfileDto != null"/>
 							</div>
 							<div class="ml-5 text-center mb-3">
 								<span class="profileNick"><i class="fa-solid fa-user"></i>&nbsp;${memberDto.memberNick}</span>
@@ -475,6 +475,9 @@ i {
 													</div>
 												</div>
 											</div>
+											<input type="hidden" name="memberInterest1" value="${memberDto.memberInterest1}">
+											<input type="hidden" name="memberInterest2" value="${memberDto.memberInterest2}">
+											<input type="hidden" name="memberInterest3" value="${memberDto.memberInterest3}">
 											<button type="submit" class="btn btn-outline-success mt-4">수정하기</button>
 										</div>
 									</div>
@@ -563,6 +566,9 @@ data() {
 		city2: "${memberDto.memberPlace2}",		
 		city3: "${memberDto.memberPlace3}",		
 		
+		memberList:[],
+		memberNo : ${login},
+		
 	};
 },
 computed: {
@@ -620,14 +626,22 @@ methods: {
 	},
 },
 created() {
-	// 시/도 
-	axios({
+		// 시/도 
+		axios({
 			url:"${pageContext.request.contextPath}/rest/category_n_address/address1",
 			method:"get",
 		}).then((resp) => {
 			this.address1List1.push(...resp.data);
 			this.address1List2.push(...resp.data);
 			this.address1List3.push(...resp.data);
+		})	
+	
+		// 회원 정보
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/member/"+this.memberNo,
+			method:"get",
+		}).then((resp) => {
+			this.memberList = resp.data;
 		})	
 	},
 });
