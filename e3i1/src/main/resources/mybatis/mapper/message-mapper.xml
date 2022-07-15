@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+		
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="message">
+	<resultMap type="MessageVO" id="messageVOlist">
+		<association property="memberDto">
+			<result column="member_no" property="memberNo"/>
+			<result column="member_email" property="memberEmail"/>
+			<result column="member_pw" property="memberPw"/>
+			<result column="member_nick" property="memberNick"/>
+			<result column="member_gender" property="memberGender"/>
+			<result column="member_mbti" property="memberMbti"/>
+			<result column="member_animal" property="memberAnimal"/>
+			<result column="member_interest1" property="memberInterest1"/>
+			<result column="member_interest2" property="memberInterest2"/>
+			<result column="member_interest3" property="memberInterest3"/>
+			<result column="member_place1" property="memberPlace1"/>
+			<result column="member_place2" property="memberPlace2"/>
+			<result column="member_place3" property="memberPlace3"/>
+			<result column="member_admin" property="memberAdmin"/>
+			<result column="member_report_count" property="memberReportCount"/>
+			<result column="member_club_count" property="memberClubCount"/>
+			<result column="member_sns_id" property="memberSnsId"/>
+			<result column="member_logindate" property="memberLogindate"/>
+			<result column="member_birth" property="memberBirth"/>
+			<result column="member_name" property="memberName"/>
+		</association>
+			<association property ="messageDto">
+			<result column="message_no" property="messageNo"/>
+			<result column="message_writer" property="messageWriter"/>
+			<result column="message_receiver" property="messageReceiver"/>
+			<result column="message_title" property="messageTitle"/>
+			<result column="message_content" property="messageContent"/>
+			<result column="message_readcount" property="messageReadcount"/>
+			<result column="message_send_time" property="messageSendTime"/>
+			<result column="message_receive_time" property="messageReceiveTime"/>
+		</association>
+	</resultMap>
+	<!-- 시퀀스 생성 -->
+	<select id="sequence" resultType="int" >
+		select message_seq.nextval from dual
+	</select>
+	<!-- 메세지 생성 -->
+	<insert id="sendmessage" parameterType="messageDto">
+		insert into message(
+		message_no, message_writer, message_receiver, 
+		message_title, message_content, message_readcount, 
+		message_send_time, message_receive_time
+		)
+		values(
+		#{messageNo}, #{messageWriter}, #{messageReceiver}, 
+		#{messageTitle}, #{messageContent}, 0,
+		sysdate, null
+		)
+	</insert>
+	<select id="info" parameterType="int" resultType="messageDto">
+		select * from message where message_no = #{messageNo}
+	</select>
+	<delete id="deletemessage" parameterType="int">
+		delete message where message_no = #{messageNo}
+	</delete>
+	<update id="readcount" parameterType="int">
+		update message set message_readcount = message_readcount +1 where message_no = #{messageNo}
+	</update>
+	<update id="readtime" parameterType="int">
+		update message set message_receive_time = sysdate where message_no = #{messageNo}
+	</update>
+	<select id="messagereceived" resultMap="messageVOlist" parameterType="int">
+		select 
+		M.*, 
+        S.member_nick
+		from 
+		message M
+		left outer join Member R
+		on M.message_receiver = R.member_no
+		 left outer join Member S
+        on M.message_writer = S.member_no
+        where message_receiver = #{messageReceiver}
+		order by message_send_time desc
+	</select>
+	<select id="messagesent" resultMap="messageVOlist" parameterType="int">
+ 		select 
+		M.*, 
+		R.member_nick
+		from 
+		message M
+		left outer join Member R
+		on M.message_receiver = R.member_no
+		 left outer join Member S
+        on M.message_writer = S.member_no
+        where message_writer = #{messageWriter}
+		order by message_send_time desc
+	</select>
+	
+	<!-- 받은 메세지 디테일 -->
+	<select id="messagedetail" resultMap="messageVOlist">
+       select 
+       	M.message_no,
+        M.message_writer,
+        M.message_receiver,
+		M. message_title,
+        M.message_content,
+        M.message_send_time,
+        M.message_receive_time,
+        S.member_nick
+		from 
+		message M
+		left outer join Member R
+		on M.message_receiver = R.member_no
+        left outer join Member S
+        on M.message_writer = S.member_no
+ 		where message_no = #{messageNo}
+	</select>
+	
+		<!-- 받은 메세지 디테일 -->
+	<select id="messagesentdetail" resultMap="messageVOlist">
+       select 
+        M.message_no,
+        M.message_writer,
+        M.message_receiver,
+		M.message_title,
+        M.message_content,
+        M.message_send_time,
+        M.message_receive_time,
+        R.member_nick
+		from 
+		message M
+		left outer join Member R
+		on M.message_receiver = R.member_no
+        left outer join Member S
+        on M.message_writer = S.member_no
+ 		where message_no = #{messageNo}
+	</select>
+</mapper>
