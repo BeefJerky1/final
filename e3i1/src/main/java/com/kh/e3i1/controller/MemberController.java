@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.e3i1.entity.CertDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
@@ -31,6 +30,8 @@ import com.kh.e3i1.repository.CertDao;
 import com.kh.e3i1.repository.MbtiSurveyDao;
 import com.kh.e3i1.repository.MemberDao;
 import com.kh.e3i1.service.EmailService;
+import com.kh.e3i1.service.MemberService;
+import com.kh.e3i1.vo.AnimalPhotoVO;
 //import com.kh.e3i1.service.MemberService;
 
 @Controller
@@ -59,6 +60,9 @@ public class MemberController {
 	@Autowired
 	private CertDao certDao;
 	
+	@Autowired
+	private MemberService memberService;
+	
 	// 회원가입
 	@GetMapping("/join")
 	public String join(Model model) {
@@ -69,12 +73,11 @@ public class MemberController {
 	}
 	
 	@PostMapping("/join")
-	public String join(@ModelAttribute MemberDto memberDto) throws Exception {
-		System.out.println(memberDto.getMemberAnimal());
-		System.out.println(memberDto.getMemberInterest1());
-		System.out.println(memberDto.getMemberInterest2());
-		System.out.println(memberDto.getMemberInterest3());
-		memberDao.join(memberDto);
+	public String join(
+			@ModelAttribute MemberDto memberDto
+			) throws Exception {
+		System.out.println(memberDto.getAttachNo());
+		memberService.MemberJoin(memberDto);
 		
 		return "redirect:/member/join_success";
 	}
@@ -319,9 +322,13 @@ public class MemberController {
 	}
 	
 	@PostMapping("/information")
-	public String information(HttpSession session, @ModelAttribute MemberDto memberDto, @RequestParam MultipartFile memberProfile) {
-		String memberEmail = (String) session.getAttribute("login");
-		memberDto.setMemberEmail(memberEmail);
+	public String information(HttpSession session, @ModelAttribute MemberDto memberDto) {
+		int memberNo = (Integer) session.getAttribute("login");
+		MemberDto existMember = memberDao.info(memberNo);
+		memberDto.setMemberEmail(existMember.getMemberEmail());
+		System.out.println(memberDto.getMemberPw());
+		memberDto.setMemberPw(existMember.getMemberPw());
+		System.out.println(memberDto.getMemberPw());
 		
 		boolean success = memberDao.changeInformation(memberDto);
 		if(success) {

@@ -5,41 +5,41 @@
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/member.css">
 <style>
-.tagtitle {
-	font-weight: 900;
-	font-size: 1.0em;
-}
-
-.tagtext {
-	font-weight: 500;
-	font-size: 0.85em;
-}
-
-.card {
-	border-width: 0.25em;
-}
-.card:hover{
-	border-color: #3E4684;
-	border-width: 0.25em;
-}
-.checked{
-	border-color: #3E4684;
-	border-width: 0.25em;
-}
-
-.maincolor {
-	color: #3E4684;
-	font-weight: 900;
-	font-size: 1.0em;
-}
-
-input[type="checkbox"]{
-	display:none;
-}
-
-i{
-	color: #3E4684;
-}
+	.tagtitle {
+		font-weight: 900;
+		font-size: 1.0em;
+	}
+	
+	.tagtext {
+		font-weight: 500;
+		font-size: 0.85em;
+	}
+	
+	.card {
+		border-width: 0.25em;
+	}
+	.card:hover{
+		border-color: #3E4684;
+		border-width: 0.25em;
+	}
+	.checked{
+		border-color: #3E4684;
+		border-width: 0.25em;
+	}
+	
+	.maincolor {
+		color: #3E4684;
+		font-weight: 900;
+		font-size: 1.0em;
+	}
+	
+	input[type="checkbox"]{
+		display:none;
+	}
+	
+	i{
+		color: #3E4684;
+	}
 </style>
 
 
@@ -456,24 +456,28 @@ i{
 		<!-- 7번째 페이지 -->
 		<div class="container w500 m30 page">
 			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
-				<input type="hidden" name="memberAnimal" :value="memberAnimal">
+				<input type="hidden" name="memberAnimal" :value="memberAnimal.mbtiAnimalDto.animal" v-if="memberAnimal.mbtiAnimalDto != null">
 				<input type="hidden" name="memberInterest1" :value="interest[0]">
 				<input type="hidden" name="memberInterest2" :value="interest[1]">
 				<input type="hidden" name="memberInterest3" :value="interest[2]">
+				<input type="hidden" name="attachNo" :value="memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null">
 				<div class="row">
-					<div class="card">
-						<div class="card-img">
-							<img src="#">
+					<div class="card" v-if="memberAnimal != null">
+						<div class="card-img text-center">
+							<img src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png" v-if="memberAnimal.attachmentDto == null">  
+							<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null">
 						</div>
-						<div class="card-title">{{memberAnimal}}</div>
+						<h3 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.animal}}</h3> 
 					</div>
 				</div>
-				<div class="row">
-					<button type="submit" class="btn btn-outline-success" style="width: 30%;">가입하기</button>
+				<div class="row mt-4">
+					<div class="col-md-12 text-center">
+						<button type="submit" class="btn btn-outline-success" style="width: 30%;">가입하기</button>
+					</div>
 				</div>
 		
-				<div class="row center">
-					<button type="button" class="btn btn-prev" style="display: none;">이전</button>
+				<div class="row">
+					<button type="button" class="btn btn-prev">이전</button>
 					<button type="button" class="btn btn-next" style="display: none;">다음</button>
 				</div>
 			</div>
@@ -641,7 +645,7 @@ data() {
 		city3: "",		
 		
 		// mbti별 동물 
-		memberAnimal: "",
+		memberAnimal: [],
 		
 		interest:[],
 	};

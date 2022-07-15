@@ -101,5 +101,104 @@
  	<update id="minusClubCount" parameterType="int">
  		update member set member_club_count = member_club_count - 1 where member_no  = #{memberNo}
  	</update>
+ 	
+ 	<!-- 회원 마이페이지 정보 -->
+ 	<resultMap type="MemberDetailVO" id="memberDetailVO">
+ 		
+ 		<association property="memberDto">
+			<result column="member_no" property="memberNo"/>
+			<result column="member_email" property="memberEmail"/>
+			<result column="member_nick" property="memberNick"/>
+			<result column="member_gender" property="memberGender"/>
+			<result column="member_phone" property="memberPhone"/>
+			<result column="member_birth" property="memberBirth"/>
+			<result column="member_name" property="memberName"/>
+			<result column="member_mbti" property="memberMbti"/>
+			<result column="member_animal" property="memberAnimal"/>
+			<result column="member_interest1" property="memberInterest1"/>
+			<result column="member_interest2" property="memberInterest2"/>
+			<result column="member_interest3" property="memberInterest3"/>
+			<result column="member_place1" property="memberPlace1"/>
+			<result column="member_place2" property="memberPlace2"/>
+			<result column="member_place3" property="memberPlace3"/>
+			<result column="member_admin" property="memberAdmin"/>
+			<result column="member_report_count" property="memberReportCount"/>
+			<result column="member_club_count" property="memberClubCount"/>
+			<result column="member_sns_id" property="memberSnsId"/>
+			<result column="member_logindate" property="memberLogindate"/>
+		</association>
+		
+		<association property="memberProfileDto">
+			<result column="member_no2" property="memberNo"/>
+			<result column="attach_no2" property="attachNo"/>
+		</association>
+		
+		<association property="clubDto">
+			<result column="club_no" property="clubNo"/>
+			<result column="club_leader" property="clubLeader"/>
+			<result column="club_name" property="clubName"/>
+			<result column="club_summary" property="clubSummary"/>
+			<result column="club_main_category" property="clubMainCategory"/>
+			<result column="club_sub_category" property="clubSubCategory"/>
+			<result column="club_place" property="clubPlace"/>
+			<result column="club_join_question1" property="clubJoinQuestion1"/>
+			<result column="club_join_question2" property="clubJoinQuestion2"/>
+			<result column="club_join_question3" property="clubJoinQuestion3"/>
+			<result column="club_member_limit" property="clubMemberLimit"/>
+			
+			<result column="club_member_count" property="clubMemberCount"/>
+		</association>
+		
+		<association property="clubLikeDto">
+			<result column="club_like_no" property="clubLikeNo"/>
+			<result column="club_no" property="clubNo"/>
+			<result column="member_no" property="memberNo"/>
+		</association>
+		
+		<association property="clubMemberDto">
+			<result column="club_member_no" property="clubMemberNo"/>			
+			<result column="club_no" property="clubNo"/>			
+			<result column="member_no" property="memberNo"/>			
+			<result column="club_member_date" property="clubMemberDate"/>			
+			<result column="club_member_grade" property="clubMemberGrade"/>			
+			<result column="club_member_answer1" property="clubMemberAnswer1"/>			
+			<result column="club_member_answer2" property="clubMemberAnswer2"/>			
+			<result column="club_member_answer3" property="clubMemberAnswer3"/>			
+			<result column="club_member_permission" property="clubMemberPermission"/>			
+			<result column="club_member_refuse_msg" property="clubMemberRefuseMsg"/>			
+		</association>
+		
+ 		
+ 	</resultMap>
+
+	<select id="mypageMember" resultMap="memberDetailVO">
+		SELECT 
+			m.MEMBER_NO, 
+			m.MEMBER_EMAIL, 
+			m.MEMBER_NICK,
+			m.MEMBER_GENDER,
+			m.MEMBER_PHONE,
+			m.MEMBER_BIRTH,
+			m.MEMBER_NAME,
+			m.MEMBER_MBTI,
+			m.MEMBER_ANIMAL,
+			m.MEMBER_INTEREST1,
+			m.MEMBER_INTEREST2,
+			m.MEMBER_INTEREST3,
+			m.MEMBER_PLACE1,
+			m.MEMBER_PLACE2,
+			m.MEMBER_PLACE3,
+			m.MEMBER_ADMIN,
+			m.MEMBER_REPORT_COUNT,
+			m.MEMBER_CLUB_COUNT,
+			m.MEMBER_SNS_ID,
+			m.MEMBER_LOGINDATE,
+			mp.MEMBER_NO member_no2,
+			mp.ATTACH_NO attach_no2
+		FROM MEMBER m
+		LEFT OUTER JOIN MEMBER_PROFILE mp 
+			ON m.MEMBER_NO = mp.MEMBER_NO 
+		WHERE m.member_no = #{memberNo}
+	</select>
 	
 </mapper> 

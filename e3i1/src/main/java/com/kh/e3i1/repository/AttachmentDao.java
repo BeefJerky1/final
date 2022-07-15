@@ -7,6 +7,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.e3i1.entity.AttachmentDto;
+import com.kh.e3i1.vo.AnimalPhotoVO;
 
 
 public interface AttachmentDao {
@@ -20,4 +21,5 @@ public interface AttachmentDao {
 	
 	public int edit(MultipartFile attachment, int attachNo) throws IllegalStateException, IOException;
 
+	int basic(AnimalPhotoVO animalPhotoVO) throws IllegalStateException, IOException; 
 }

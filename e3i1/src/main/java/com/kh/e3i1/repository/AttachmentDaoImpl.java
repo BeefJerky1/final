@@ -2,7 +2,6 @@ package com.kh.e3i1.repository;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.e3i1.entity.AttachmentDto;
+import com.kh.e3i1.vo.AnimalPhotoVO;
 
 @Repository
 public class AttachmentDaoImpl implements AttachmentDao {
@@ -65,6 +65,25 @@ public class AttachmentDaoImpl implements AttachmentDao {
 			this.delete(attachNo);
 		}
 		return success;
+	}
+	
+	@Override
+	public int basic(AnimalPhotoVO animalPhotoVO) throws IllegalStateException, IOException {
+		int attachNo = sqlSession.selectOne("attachment.sequence");
+		
+		MultipartFile attachment = null;
+		
+		File target = new File(directory, animalPhotoVO.getAttachmentDto().getAttachUploadname());
+		attachment.transferTo(target); // 저장
+		
+		sqlSession.insert("attachment.insert",AttachmentDto.builder()
+											.attachNo(attachNo)
+											.attachUploadname(animalPhotoVO.getAttachmentDto().getAttachUploadname())
+											.type(animalPhotoVO.getAttachmentDto().getType())
+											.attachSize(animalPhotoVO.getAttachmentDto().getAttachSize())
+										.build());
+		
+		return attachNo;
 	}
 
 	

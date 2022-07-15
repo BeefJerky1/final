@@ -141,13 +141,13 @@
 							</form>
 							
 				<div class="row innerBox">
-		                    <li class="list-group-item" v-for="(club, index) in clubList" v-bind:key="index">
+		                   <%--  <li class="list-group-item" v-for="(club, index) in clubList" v-bind:key="index">
 		                        <div v-on:click="selectKeyword(index);">
 		                           {{club.clubName}} 
 		                           <span class="interest">\#{{club.clubMainCategory}}</span> 
 		                           <span class="interest"> \#{{club.clubSubCategory}}</span>
 		                        </div>
-		                    </li>
+		                    </li> --%>
 		        </div>
 
 						</c:otherwise>
