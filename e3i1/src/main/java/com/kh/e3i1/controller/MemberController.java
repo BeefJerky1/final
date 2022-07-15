@@ -331,4 +331,8 @@ public class MemberController {
 			return "redirect:information?error";
 		}
 	}
+	@GetMapping("/message")
+	public String message() {
+		return "member/message";
+	}
 }

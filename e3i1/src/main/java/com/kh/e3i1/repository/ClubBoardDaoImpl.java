@@ -107,7 +107,7 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	
 	//리스트 조회
 	@Override
-	public List<ClubBoardListItemVO> listAll(int clubNo, int likeMemberNo){
+	public List<ClubBoardListItemVO> listAll(int clubNo, int likeMemberNo , String column, String order){
 			List<ClubBoardDto> list = sqlSession.selectList("clubboard.clubboardno", clubNo);
 			for(ClubBoardDto clubBoardDto:list) {
 				this.calculateReplyCount(clubBoardDto.getClubBoardNo());
@@ -117,6 +117,8 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("clubNo", clubNo);
 			param.put("likeMemberNo", likeMemberNo);
+			param.put("column",column);
+			param.put("order", order);
 			List<ClubBoardListItemVO> list1=  sqlSession.selectList("clubboard.clubBoardTotalList", param);
 			return list1;		
 	}

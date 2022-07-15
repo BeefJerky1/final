@@ -133,7 +133,6 @@ li a:hover {
     </div>
     </div>
     <div class="col-md-9">
-    	
     </div>
     </div>
 
@@ -146,7 +145,6 @@ li a:hover {
         const app = Vue.createApp({
             data(){
                 return {
-    				
                 };
             },
             computed:{

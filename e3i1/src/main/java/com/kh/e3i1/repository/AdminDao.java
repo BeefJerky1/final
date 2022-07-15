@@ -78,6 +78,7 @@ public interface AdminDao {
 	int insertMbtiAnimal(MbtiAnimalDto mbtiAnimalDto);
 	//동물 삭제
 	int mbtianimalDelete(int animalNo);
+	
 
 
 

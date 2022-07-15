@@ -28,7 +28,7 @@ public interface ClubBoardDao {
 
 	List<ClubBoardListItemVO> clubBoardListItem(int clubNo);
 
-	List<ClubBoardListItemVO> listAll(int clubNo, int likeMemberNo);
+	List<ClubBoardListItemVO> listAll(int clubNo, int likeMemberNo, String column, String order);
 
 	ClubBoardDto readcount(int clubBoardNo);
 
