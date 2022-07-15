@@ -128,6 +128,11 @@
 			<result column="club_board_no" property="clubBoardNo"/>
 			<result column="like_check" property="likeCheck"/>
 		</association>
+		<association property="blockedDto">
+			<result column="blocked_no" property="blockedNo"/>
+			<result column="blocked_target" property="blockedTarget"/>
+			<result column="blocked_user" property="blockedUser"/>
+		</association>
 		<collection javaType="java.util.List" ofType="ClubBoardAttachDto" property="attach" select="subListQuery1" column="club_board_no">
 			<result column="club_board_no" property="clubBoardNo"/>
 			<result column="club_no" property="clubNo"/>
@@ -138,7 +143,7 @@
 	</resultMap>
 	
 	<select id="clubBoardTotalList" resultMap="clubBoardListItem" parameterType="Map">
-   select
+        select
 	   C.club_board_no,
 	   C.club_board_count,
 	   C.club_board_like,
@@ -178,7 +183,11 @@ left outer join mbti_animal  B
     on M.member_mbti = B.mbti
 left outer join animal_photo A
  on B.animal_no = A.animal_no
-where C.club_no = #{clubNo} order by ${column} ${order}
+left outer join blocked K
+  on M.member_no = K.blocked_target
+where club_board_writer not in (select blocked_target from blocked where blocked_user = #{likeMemberNo})
+ and club_board_writer not in (select blocked_user from blocked where blocked_target = #{likeMemberNo})
+ and C.club_no = #{clubNo} order by ${column} ${order}
 	</select>
 	<!-- 단일조회 restContoller-->
 	<select id="oneRest" resultMap="clubBoardListItem" parameterType="Map">

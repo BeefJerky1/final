@@ -358,10 +358,14 @@ position:relative;
 		            <span>{{Mprofile.memberDto.memberGender}}/</span><span>{{elapsedText(Mprofile.memberDto.memberBirth)}}/</span> <span>{{Mprofile.memberDto.memberPlace1}}</span>           
                 </div>
                 <div class="row mt-5">
-                <div class="col-lg-6col-md-6 col-sm-6">
-                	<button class="btn btn-outline-danger form-control">신고하기</button>
+                <div v-if="Mprofile.memberDto.memberNo ==this.memberNo">
                 </div>
-                <div class="col-lg-6col-md-6 col-sm-6">
+                <div class="col-lg-6col-md-6 col-sm-6" v-else>
+                	<button class="btn btn-outline-danger form-control" v-on:click="blocked()" data-bs-dismiss="modal">차단하기</button>
+                </div>
+                <div v-if="Mprofile.memberDto.memberNo ==this.memberNo">
+                </div>
+                <div class="col-lg-6col-md-6 col-sm-6" v-else>
                 	<button class="btn btn-outline-warning form-control" data-bs-toggle="modal" data-bs-target="#postModal" >메세지</button>
                 </div>
                 </div>
@@ -529,8 +533,8 @@ position:relative;
                 	boardLike:"",
 		            //세션
 		            memberAdmin:"${auth}",	
-// 		           Admin:"${auth}",
-				   memberNo:"${login}",
+// 		            Admin:"${auth}",
+				    memberNo:"${login}",
 		            //댓글 입력 정보
 		            boardContent:"",
 		            boardContent2:"",
@@ -555,7 +559,7 @@ position:relative;
                    	clubList:[],
 					mbtiList:[],
 					clubMember:"",
-                   isLike:false,
+                    isLike:false,
                     //멤버 프로필: 모달
                     Mprofile:null,
                     True:1,
@@ -564,6 +568,8 @@ position:relative;
                     messageTitle:"",
                     messageContent:"",
                     sendMessageResult:"",
+                    //차단
+                    blockedResult:"",
                 };
             },
             //computed : data를 기반으로 하여 실시간 계산이 필요한 경우 작성한다.
@@ -870,6 +876,25 @@ position:relative;
  					})
  					
  				},
+ 				blocked(){
+					const choice = window.confirm("정말 차단하시겠습니까?\n차단한 상대의 게시물은 보이지 않습니다.");
+					if(choice==false)return
+ 					const blockedTarget = this.Mprofile.memberDto.memberNo;
+ 					axios({
+ 						url:"${pageContext.request.contextPath}/rest/mypage/block",
+ 						method:"post",
+ 						data:{
+ 							blockedTarget:blockedTarget,
+ 							blockedUser:this.memberNo,
+ 						}
+ 					}).then(resp=>{
+ 						this.blockedResult=resp.data
+ 						if(this.blockedResult ==1){
+ 							window.alert("차단되었습니다. 차단해제는 마이페이지에서 가능합니다");
+ 						}
+ 						this.loadClubBoardList();
+ 					})
+ 				}
             	
             },
             created(){
