@@ -183,8 +183,8 @@ left outer join mbti_animal  B
     on M.member_mbti = B.mbti
 left outer join animal_photo A
  on B.animal_no = A.animal_no
-left outer join blocked K
-  on M.member_no = K.blocked_target
+left outer join (select * from blocked where blocked_user = #{likeMemberNo})K
+  on C.club_board_writer = K.blocked_target
 where club_board_writer not in (select blocked_target from blocked where blocked_user = #{likeMemberNo})
  and club_board_writer not in (select blocked_user from blocked where blocked_target = #{likeMemberNo})
  and C.club_no = #{clubNo} order by ${column} ${order}
@@ -217,28 +217,17 @@ where club_board_writer not in (select blocked_target from blocked where blocked
        B.animal_no as 동물번호,
        A.attach_no as 동물사진번호,
        R.club_report_reporter
-<!--        A.attach_no as 게시글사진번호 -->
-<!--        R.club_report_reporter -->
-<!--        L.club_board_like_no, -->
-<!--        L.like_check, -->
-<!--        L.like_member_no -->
 from club_board C 
 left outer join member M 
    on C.club_board_writer = M.member_no 
 left outer join member_profile P 
    on C.club_board_writer = P.member_no
- left outer join (select * from club_board_report where club_report_reporter = #{memberNo})R
+left outer join (select * from club_board_report where club_report_reporter = #{memberNo})R
     on C.club_board_no = R. club_report_target
-    left outer join mbti_animal  B
+left outer join mbti_animal  B
     on M.member_mbti = B.mbti
 left outer join animal_photo A
  on B.animal_no = A.animal_no
-<!-- left outer join club_report R -->
-<!--    on C.club_board_no = R. club_report_target -->
-<!-- left outer join club_board_like L -->
-<!--    on C.club_board_No = L.club_board_no  -->
-<!--  left outer join club_board_attach A  -->
-<!--    on C.club_board_No = A.club_board_no  -->
 where C.club_board_No = #{clubBoardNo} 
 	</select>
 		<!-- 단일조회 controller -->
@@ -296,9 +285,10 @@ where C.club_board_No = #{clubBoardNo}
 	</select>
 	<!-- 게시글 정렬 -->
 	<select id="board-side" resultType="clubBoardDto" parameterType="Map"> 
-	select * from (
-    select rownum rn, TMP.* from (
-     select * FROM (select * from club_board where club_board_time >= TO_CHAR(SYSDATE-7,'YYYYMMDD' )) where club_no = #{clubNo} order by 
+   select * from (
+    select rownum rn, TMP.* from ( select * from club_board C left outer join (select * from blocked where blocked_user = #{memberNo})K
+  on C.club_board_writer = K.blocked_target where club_board_time >= TO_CHAR(SYSDATE-7,'YYYYMMDD' ) and club_board_writer not in (select blocked_target from blocked where blocked_user =#{memberNo})
+ and club_board_writer not in (select blocked_user from blocked where blocked_target = #{memberNo}) and club_no = 19 order by
 	<choose>
 		<when test="orderType == 'clubBoardLikeAsc'">club_board_like asc</when>
 		<when test="orderType == 'clubBoardLikeDesc'">club_board_like desc</when>
@@ -309,9 +299,9 @@ where C.club_board_No = #{clubBoardNo}
 		<when test="orderType == 'clubBoardReadcountAsc'">club_board_readcount asc</when>
 		<when test="orderType == 'clubBoardReadcountDesc'">club_board_readcount desc</when>
 	</choose>
-	)
-    TMP ) 
-    where rn between  1 and 10
+		)
+	    TMP ) 
+	    where rn between  1 and 10
 	</select>
 		<!-- 조회수 증가 -->
 	<update id="readcount" parameterType="int">

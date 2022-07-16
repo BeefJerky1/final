@@ -242,17 +242,33 @@
 	<!-- 조회 -->
 	<select id="blockedlist" resultMap="blockedVOlist" parameterType="int">
 		select 
-		M.member_nick,
-		B.*
+		B.*,
+        Y.member_nick
 		from 
-		Member M
-		left outer join blocked B
-		on M.member_no = B.blocked_user
-        where member_no = #{blockedUser}
-		order by member_nick desc 
+		Blocked B
+		left outer join Member Y
+		on B. blocked_target = Y.member_no
+        left outer join Member M
+        on B.blocked_user = M.member_no
+        where M.member_no = #{blockedUser}
+        order by blocked_no
 	</select>
 	<!-- 단일조회 -->
+	<select id="blockedtargetinfo" resultMap="blockedVOlist" parameterType="int">
+		select 
+		*
+		from 
+		Blocked B
+		left outer join Member Y
+		on B. blocked_target = Y.member_no
+        where B.blocked_no = #{blockedNo}
+	</select>
+	<!-- 차단해제 -->
+	<delete id="deleteblocktarget" parameterType="int">
+	delete blocked where blocked_no = #{blockedNo}
+	</delete>
+	<!-- 확인용 -->
 	<select id="info" resultType="blockedDto" parameterType="int">
-		select * from blocked where blocked_no= #{blockedNo}
+		select * from blocked where blocked_no = #{blockedNo}
 	</select>
 </mapper> 

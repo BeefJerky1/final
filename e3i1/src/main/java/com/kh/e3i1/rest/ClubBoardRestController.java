@@ -34,6 +34,7 @@ import com.kh.e3i1.repository.ClubReportDao;
 import com.kh.e3i1.repository.MessageDao;
 import com.kh.e3i1.service.ClubBoardService;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
+import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubMemberProfileVO;
 
 import springfox.documentation.annotations.ApiIgnore;
@@ -58,9 +59,13 @@ public class ClubBoardRestController {
 	private MessageDao messageDao;
 	
 	//오른쪽 사이드바 목록
-	@GetMapping("/side/{clubNo}/order/{orderType}")
-	public List<ClubBoardDto> Sidelist(@PathVariable int clubNo , @PathVariable String orderType) {
-		return clubBoardDao.list(clubNo,orderType);
+	@GetMapping("/side/{clubNo}/order/{orderType}/{memberNo}")
+	public List<ClubBoardDto> Sidelist(
+			@PathVariable int clubNo , 
+			@PathVariable String orderType,
+			@PathVariable int memberNo
+			) {
+		return clubBoardDao.list(clubNo,orderType,memberNo);
 	}
 	//목록
 	@GetMapping("/{clubNo}/{likeMemberNo}/{column}/{order}")
@@ -163,6 +168,11 @@ public class ClubBoardRestController {
 	@PostMapping("/message")
 	public int sendMessage(@RequestBody MessageDto messageDto) {
 		return messageDao.sendMessage(messageDto);
+	}
+	//게시글 상세페이지에서 클럽정보 불러오기
+	@GetMapping("/clubDetail/{clubBoardNo}")
+	public ClubDetailVO clubDetail(@PathVariable int clubBoardNo) {
+		return clubBoardDao.clubDetail(clubBoardNo);
 	}
 	
 }

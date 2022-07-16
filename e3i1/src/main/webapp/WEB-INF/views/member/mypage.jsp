@@ -171,6 +171,8 @@ i {
 							<li class="nav-item"><a class="nav-link" data-toggle="tab"
 								href="#buy">회원 증가권 구매</a></li>
 							<li class="nav-item"><a class="nav-link" data-toggle="tab"
+								href="#blocked">차단된 사용자</a></li>
+							<li class="nav-item"><a class="nav-link" data-toggle="tab"
 								href="#info">개인정보 수정</a></li>
 							<li class="nav-item"><a class="nav-link" data-toggle="tab"
 								href="#pw">비밀번호 변경</a></li>
@@ -358,6 +360,25 @@ i {
 									</tbody>
 								</table>
 								</div>
+							<div class="tab-pane fade" id="blocked">
+								<div class="titlefont boldfont mx-1 mt-3">
+								차단된 사용자&nbsp;<i class="fa-solid fa-circle-info"></i>
+								</div>
+								<table class="table text-center">
+									<thead>
+										<tr>
+											<th class="tableInterest2">사용자 닉네임</th>
+											<th class="tableInterest2">관리</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr v-for="( block , index ) in blockedList">
+											<td class="tableInterest2">{{block.memberDto.memberNick}}</td>
+											<td><button type="button"  data-bs-toggle="modal" data-bs-target="#profileModal" class="btn btn-outline-success" v-on:click="detail(index)">프로필 보기</button></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 							<div class="tab-pane fade" id="info">
 								<p>
 								<div class="boldfont2 text-center mt-4 mb-4">
@@ -535,6 +556,52 @@ i {
 				</div>
 			</div>
 		</div>
+		                <!--  프로필 모달 -->
+      <div v-if="this.blockedDetail!=null">
+      <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body">
+                <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <a><img src="https://placeimg.com/120/120/animals" class="rounded"></a>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
+		            <h4><b>{{blockedDetail.memberDto.memberNick}}</b></h4>
+		            <span>{{blockedDetail.memberDto.memberGender}}/</span><span>{{elapsedText(blockedDetail.memberDto.memberBirth)}}/</span> <span>{{blockedDetail.memberDto.memberPlace1}}</span>           
+                </div>
+                <div class="row mt-5">
+                <div class="col-lg-6col-md-6 col-sm-6">
+                	<button class="btn btn-outline-danger form-control" v-on:click="notAnymore()" data-bs-dismiss="modal">차단해제</button>
+                </div>
+                <div class="row mt-5">
+                	<h5><b>SNS계정</b><img style="width:25px "src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"></h5>
+                	<h5>{{blockedDetail.memberDto.memberSnsId}}</h5>
+                </div>
+                <div class="row mt-5">
+                	<h5><b>나의 관심분야</b></h5>
+                	<div class="col-lg-12 col-md-12 col-sm-12">
+		            <button class="btn btn-outline-secondary btn-sm">{{blockedDetail.memberDto.memberInterest1}}</button>
+		            <button class="btn btn-outline-secondary btn-sm">{{blockedDetail.memberDto.memberInterest2}}</button>
+		            <button class="btn btn-outline-secondary btn-sm">{{blockedDetail.memberDto.memberInterest3}}</button>
+		            </div>
+                </div>
+				<div class="row mt-5">
+					<h5><b>마지막 로그인</b></h5>
+					<h5>{{convertTime(blockedDetail.memberDto.memberLogindate)}}({{elapsedText(blockedDetail.memberDto.memberLogindate)}})</h5>
+            	</div>
+
+
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+	</div>
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -542,6 +609,8 @@ i {
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<script src="${root}/js/time.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>	
 
 <script>
 const app = Vue.createApp({
@@ -568,7 +637,9 @@ data() {
 		
 		memberList:[],
 		memberNo : ${login},
-		
+		blockedList:null,//차단된 회원목록
+		blockedDetail:null,//프로필 정보
+		notBlocked:"",
 	};
 },
 computed: {
@@ -624,8 +695,52 @@ methods: {
 			this.address2List3.push(...resp.data);
 		})		
 	},
+	//차단된 사용자 목록
+	blocked(){
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/block/"+this.memberNo,
+			method:"get",
+		}).then(resp=>{
+			this.blockedList=resp.data
+		})
+	},
+	//차단된 회원 상세 조회
+	detail(index){
+		const target= this.blockedList[index];
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/blockdetail/"+target.blockedDto.blockedNo,
+			method:"get",
+		}).then(resp=>{
+			this.blockedDetail=resp.data
+		})
+	},
+	//차단된 회원 해제
+	notAnymore(){
+		const blockedNo= this.blockedDetail.blockedDto.blockedNo
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/block/"+blockedNo,
+			method:"delete"
+		}).then(resp=>{
+			this.notBlocked=resp.data
+			if(this.notBlocked==1){
+				window.alert("차단해제 되었습니다.")
+			}
+			this.blocked();
+		})
+	},
+	//날짜 표현1
+	elapsedText(date) {
+    	return dateformat.elapsedText(new Date(date));
+    },
+    //날짜 표현2
+    convertTime(time){
+    	return moment(time).format('llll'); // 2022년 7월 4일 월요일 오후 9:46
+
+    },
 },
 created() {
+		//차단 목록
+		this.blocked();
 		// 시/도 
 		axios({
 			url:"${pageContext.request.contextPath}/rest/category_n_address/address1",

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.e3i1.entity.BlockedDto;
+import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.repository.AttachmentDao;
 import com.kh.e3i1.repository.MemberDao;
 import com.kh.e3i1.repository.MemberProfileDao;
@@ -57,5 +59,15 @@ public class MemberRestController {
 	@GetMapping("/block/{memberNo}")
 	public List<BlockedVO> blockList(@PathVariable int memberNo){
 		return memberDao.blockList(memberNo);
+	}
+	//회원 상세 정보
+	@GetMapping("/blockdetail/{blockedNo}")
+	public BlockedVO info(@PathVariable int blockedNo) {
+		return memberDao.blockedTargetInfo(blockedNo);
+	}
+	//차단 회원 해제
+	@DeleteMapping("/block/{blockedNo}")
+	public int DeleteBlockTarget(@PathVariable int blockedNo) {
+		return memberDao.DeleteBlockTarget(blockedNo);
 	}
 }
