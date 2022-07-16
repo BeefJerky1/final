@@ -157,11 +157,26 @@ public class MemberDaoImpl implements MemberDao{
 			return 0;
 		}
 	}
-	//차단 해제
 	//차단 목록
 	@Override
 	public List<BlockedVO> blockList(int memberNo) {
 		return sqlSession.selectList("member.blockedlist", memberNo);
+	}
+	//차단 해제
+	@Override
+	public int DeleteBlockTarget(int blockedNo) {
+		sqlSession.delete("member.deleteblocktarget",blockedNo);
+		BlockedDto blockedDto = sqlSession.selectOne("member.info", blockedNo);
+		if(blockedDto==null) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
+	//차단회원 상세정보
+	@Override
+	public BlockedVO blockedTargetInfo(int blockedNo) {
+		return sqlSession.selectOne("member.blockedtargetinfo", blockedNo);
 	}
 	
 }

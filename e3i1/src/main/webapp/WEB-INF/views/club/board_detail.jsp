@@ -918,15 +918,13 @@ position:relative;
             	//leftside
             	//소모임 정보 로드
             	loadClubInfo(){
-            		if(this.board!=null){
             		axios({
-            			url: "${pageContext.request.contextPath}/rest/club/detail/"+this.board.clubBoardDto.clubNo,
+            			url: "${pageContext.request.contextPath}/rest/clubboard/clubDetail/"+this.clubBoardNo,
             			method: "get",
             		}).then((resp) => {
             			this.clubList = resp.data;
             		})
             			
-            		}
             	},
             	//소모임 좋아요
             	likeClub(){      
@@ -972,7 +970,6 @@ position:relative;
 	 	            	this.boardReportCheck();//신고 가능확인
 	 	            	this.clubMemberCheck(); //소모임 가입자 확인
 	 	            	this.TopTenList();//인기 게시글 불러오기
-	 	            	this.loadClubInfo();
  		        	});
  		        
  		    	},
@@ -1398,7 +1395,7 @@ position:relative;
                 //인기게시글
                 TopTenList(){           	
                 	axios({
-                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.board.clubBoardDto.clubNo+"/order/"+this.orderType,
+                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.board.clubBoardDto.clubNo+"/order/"+this.orderType+"/"+this.memberNo,
 		        		method:"get",
                 	}).then(resp=>{
                 		this.side = resp.data
@@ -1407,7 +1404,7 @@ position:relative;
                 //select로 인기게시글 변경
                 changeList(event) {
                 	axios({
-                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.board.clubBoardDto.clubNo+"/order/"+event.target.value,
+                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.board.clubBoardDto.clubNo+"/order/"+event.target.value+"/"+this.memberNo,
 		        		method:"get",
                 	}).then(resp=>{
                 		this.side = resp.data
@@ -1470,6 +1467,7 @@ position:relative;
             created(){
             	this.loadContent(); //게시글 상세
             	this.loadReply(); //댓글 목록
+            	this.loadClubInfo(); //클럽정보 불러오기
             },
             updated(){
             },

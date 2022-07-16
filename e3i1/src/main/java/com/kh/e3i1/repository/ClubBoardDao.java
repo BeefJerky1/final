@@ -10,11 +10,12 @@ import com.kh.e3i1.entity.ClubBoardAttachDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardLikeDto;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
+import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubMemberProfileVO;
 
 public interface ClubBoardDao {
 
-	List<ClubBoardDto> list(int clubNo,String orderType);
+	List<ClubBoardDto> list(int clubNo,String orderType, int memberNo);
 
 	ClubBoardDto insert(ClubBoardDto clubBoardDto);
 
@@ -45,6 +46,9 @@ public interface ClubBoardDao {
 	
 	//게시글 사진 삭제
 	boolean deleteAttachNo(int attachNo);
+	
+	//게시글 상세 페이지에서 클럽정보 조회
+	ClubDetailVO clubDetail(int clubBoardNo);
 
 
 

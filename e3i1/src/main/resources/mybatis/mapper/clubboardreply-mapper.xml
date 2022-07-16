@@ -95,6 +95,11 @@
 			<result column="member_no" property="memberNo"/>
 			<result column="attach_no" property="attachNo"/>
 		</association>
+		<association property="blockedDto">
+			<result column="blocked_no" property="blockedNo"/>
+			<result column="blocked_target" property="blockedTarget"/>
+			<result column="blocked_user" property="blockedUser"/>
+		</association>
 		<association property="animalPhotoDto">
 			<result column="동물사진번호" property="attachNo"/>
 			<result column="animal_no" property="animalNo"/>
@@ -159,7 +164,11 @@ left outer join mbti_animal  B
     on M.member_mbti = B.mbti
 left outer join animal_photo A
  on B.animal_no = A.animal_no
-where C.club_board_no =#{clubBoardNo} order by C.reply_no desc
+left outer join (select * from blocked where blocked_user = #{likeMemberNo})K
+  on C.club_reply_writer = K.blocked_target
+where club_reply_writer not in (select blocked_target from blocked where blocked_user =#{likeMemberNo})
+ and club_reply_writer not in (select blocked_user from blocked where blocked_target = #{likeMemberNo})
+and C.club_board_no = #{clubBoardNo} order by C.reply_no desc
 	</select>
 	<select id="boardlist" resultType="clubBoardReplyDto" parameterType="int">
 		        select * from club_board_reply where club_board_no = #{clubBoardNo}

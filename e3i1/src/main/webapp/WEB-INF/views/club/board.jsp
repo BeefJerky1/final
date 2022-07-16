@@ -793,7 +793,7 @@ position:relative;
                 //인기게시글
                 TopTenList(){
                 	axios({
-                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+this.orderType,
+                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+this.orderType+"/"+this.memberNo,
 		        		method:"get",
                 	}).then(resp=>{
                 		this.side = resp.data
@@ -802,7 +802,7 @@ position:relative;
                 //select로 인기게시글 변경
                 changeList(event) {
                 	axios({
-                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+event.target.value,
+                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+event.target.value+"/"+this.memberNo,
 		        		method:"get",
                 	}).then(resp=>{
                 		this.side = resp.data

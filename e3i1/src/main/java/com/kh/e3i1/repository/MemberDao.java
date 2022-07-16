@@ -47,5 +47,9 @@ public interface MemberDao {
 	int blockTarget(BlockedDto blockedDto);
 	//회원 차단 목록
 	List<BlockedVO> blockList(int memberNo);
+	//차단 회원 해제
+	int DeleteBlockTarget(int blockedNo);
+	//차단 회원 상세정보
+	BlockedVO blockedTargetInfo(int blockedNo);
 	
 }
