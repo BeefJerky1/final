@@ -21,5 +21,4 @@ public interface AttachmentDao {
 	
 	public int edit(MultipartFile attachment, int attachNo) throws IllegalStateException, IOException;
 
-	int basic(AnimalPhotoVO animalPhotoVO) throws IllegalStateException, IOException; 
 }

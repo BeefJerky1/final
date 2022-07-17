@@ -68,6 +68,10 @@
 		select * from club_member where member_no = #{memberNo} and club_no = #{clubNo} and club_member_permission =1
 	</select>
 	
+	<select id="exist" parameterType="Map" resultType="ClubMemberDto">
+		select * from club_member where member_no = #{memberNo} and club_no = #{clubNo}
+	</select>
+	
 	<select id="list" parameterType="int" resultType="ClubMemberDto">
 		select * from club_member where club_no = #{clubNo} order by club_member_no asc
 	</select>
@@ -137,6 +141,7 @@
 		LEFT OUTER JOIN MEMBER m 
 		ON cm.MEMBER_NO = m.MEMBER_NO 
 		WHERE club_no = #{clubNo}
+		ORDER BY cm.CLUB_MEMBER_GRADE DESC, cm.CLUB_MEMBER_DATE ASC
 	</select>
 	
 	<!-- 소모임 회원 리스트 -->

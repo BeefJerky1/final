@@ -19,5 +19,7 @@ public class MbtiBoardDto {
 	private int mbtiBoardVote1;
 	private int mbtiBoardVote2;
 	private int mbtiBoardReplyCount;
-
+	
+	// 마이페이지용  좋아요수
+	private int likeCount;
 }

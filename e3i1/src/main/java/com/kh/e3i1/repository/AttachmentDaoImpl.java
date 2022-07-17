@@ -67,24 +67,4 @@ public class AttachmentDaoImpl implements AttachmentDao {
 		return success;
 	}
 	
-	@Override
-	public int basic(AnimalPhotoVO animalPhotoVO) throws IllegalStateException, IOException {
-		int attachNo = sqlSession.selectOne("attachment.sequence");
-		
-		MultipartFile attachment = null;
-		
-		File target = new File(directory, animalPhotoVO.getAttachmentDto().getAttachUploadname());
-		attachment.transferTo(target); // 저장
-		
-		sqlSession.insert("attachment.insert",AttachmentDto.builder()
-											.attachNo(attachNo)
-											.attachUploadname(animalPhotoVO.getAttachmentDto().getAttachUploadname())
-											.type(animalPhotoVO.getAttachmentDto().getType())
-											.attachSize(animalPhotoVO.getAttachmentDto().getAttachSize())
-										.build());
-		
-		return attachNo;
-	}
-
-	
 }

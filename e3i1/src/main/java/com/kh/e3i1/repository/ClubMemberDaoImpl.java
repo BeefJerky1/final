@@ -40,8 +40,8 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 	// 소모임회원 가입신청
 	@Override
 	public int insert(ClubMemberDto clubMemberDto) {
-		ClubMemberDto isExist = this.one(clubMemberDto.getClubNo(), clubMemberDto.getMemberNo());
-		System.out.println(isExist);
+		ClubMemberDto isExist = this.exist(clubMemberDto.getClubNo(), clubMemberDto.getMemberNo());
+		System.out.println("있어유:"+isExist);
 		if(isExist != null) {
 			return 0;
 		}
@@ -59,6 +59,15 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 		param.put("clubNo", clubNo);
 		param.put("memberNo", memberNo);
 		return sqlSession.selectOne("clubMember.one",param);
+	}
+	
+	// 소모임회원 단일 조회 - clubNo, memberNo 필요
+	@Override
+	public ClubMemberDto exist(int clubNo, int memberNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("clubNo", clubNo);
+		param.put("memberNo", memberNo);
+		return sqlSession.selectOne("clubMember.exist",param);
 	}
 	
 	// 소모임 신청 회원 조회

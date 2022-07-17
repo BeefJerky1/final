@@ -173,7 +173,7 @@
 						<c:if test="${mbtiSurveyDto.surveyNo < 4}">
 							<div class="text-center">
 								<div class="row">
-									<span class="title my-1">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
+									<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
 								</div>
 								<div class="row my-2">
 									<button type="button" value="E" class="btn btn-answer1">${mbtiSurveyDto.surveyAnswer1}</button>
@@ -273,10 +273,10 @@
 									<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
 								</div>
 								<div class="row my-2">
-									<button type="button" value="P" class="btn fill btn-answer1">${mbtiSurveyDto.surveyAnswer1}</button>
+									<button type="button" value="J" class="btn fill btn-answer1">${mbtiSurveyDto.surveyAnswer1}</button>
 								</div>
 								<div class="row my-2 mb-4">
-									<button type="button" value="J" class="btn fill btn-answer2">${mbtiSurveyDto.surveyAnswer2}</button>
+									<button type="button" value="P" class="btn fill btn-answer2">${mbtiSurveyDto.surveyAnswer2}</button>
 								</div>
 								<span class="answer" style="display: none;"></span>
 								<!-- span.text()로 값을 적힌 값을 쓸 수 있을 듯 -->
@@ -300,13 +300,13 @@
 
 				<div class="row row-cols-1 row-cols-md-3 g-10 my-2">
 					<div class="col">
-						<div class="card my-2" :class="{'checked':isChecked('인스타그래머')}" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('\#인스타그래머')}" style="width: 15rem; border-radius: 30px;">
 							<label for="cat1">
 								<div class="card-body m-1">
 									<h5 class="card-title text-center tagtitle"><label class="maincolor"># </label> 인스타그래머 
 									<i class="fa-brands fa-instagram-square"></i>
 									</h5>
-									<input id="cat1" type="checkbox" value="인스타그래머" v-model="interest">
+									<input id="cat1" type="checkbox" value="\#인스타그래머" v-model="interest">
 									<p class="card-text text-center tagtext">
 										남는 건 사진 뿐!<br>내 모든 순간을 남기자!
 									</p>
@@ -316,12 +316,12 @@
 					</div>
 
 					<div class="col">
-						<div class="card my-2" :class="{'checked':isChecked('액티비티매니아')}" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('\#액티비티매니아')}" style="width: 15rem; border-radius: 30px;">
 							<label for="cat2">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 액티비티매니아
 								<i class="fa-solid fa-person-running" class="coloricon"></i></h5>
-								<input id="cat2" type="checkbox" value="액티비티매니아" v-model="interest">
+								<input id="cat2" type="checkbox" value="\#액티비티매니아" v-model="interest">
 								<p class="card-text text-center tagtext">
 									나를 죽이지 못한 고통은<br>나를 더욱 강하게 만든다!
 								</p>
@@ -331,12 +331,12 @@
 					</div>
 
 					<div class="col">
-						<div class="card my-2" :class="{'checked':isChecked('친구해요')}" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('\#친구해요')}" style="width: 15rem; border-radius: 30px;">
 							<label for="cat3">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 친구해요
 								<i class="fa-solid fa-user-group"></i></h5>
-								<input id="cat3" type="checkbox" value="친구해요" v-model="interest">
+								<input id="cat3" type="checkbox" value="\#친구해요" v-model="interest">
 								<p class="card-text text-center tagtext">다들 모여!<br>사람 만나는 게 제일 좋아!</p>
 							</div>
 							</label>
@@ -344,12 +344,12 @@
 					</div>
 
 					<div class="col">
-						<div class="card my-2" :class="{'checked':isChecked('뇌색남녀')}" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('\#뇌색남녀')}" style="width: 15rem; border-radius: 30px;">
 							<label for="cat4">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 뇌색남녀
 								<i class="fa-solid fa-book"></i></h5>
-								<input id="cat4" type="checkbox" value="뇌색남녀" v-model="interest">
+								<input id="cat4" type="checkbox" value="\#뇌색남녀" v-model="interest">
 								<p class="card-text text-center tagtext">
 									지금 잠을 자면 꿈을 꾸지만<br>지금 공부하면 꿈을 이룰지도..?
 								</p>
@@ -359,12 +359,12 @@
 					</div>
 
 					<div class="col">
-						<div class="card my-2" :class="{'checked':isChecked('텅장되자')}" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('\#텅장되자')}" style="width: 15rem; border-radius: 30px;">
 						<label for="cat5">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 텅장되자
 								<i class="fa-solid fa-cart-shopping"></i></h5>
-								<input id="cat5" type="checkbox" value="텅장되자" v-model="interest">
+								<input id="cat5" type="checkbox" value="\#텅장되자" v-model="interest">
 								<p class="card-text text-center tagtext">
 									사는재미 없으면<br>사는 재미라도!
 								</p>
@@ -374,12 +374,12 @@
 					</div>
 
 					<div class="col">
-						<div class="card my-2" :class="{'checked':isChecked('킹스맨')}" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('\#킹스맨')}" style="width: 15rem; border-radius: 30px;">
 						<label for="cat6">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 킹스맨
 								<i class="fa-solid fa-clapperboard"></i></h5>
-								<input id="cat6" type="checkbox" value="킹스맨" v-model="interest">
+								<input id="cat6" type="checkbox" value="\#킹스맨" v-model="interest">
 								<p class="card-text text-center tagtext">
 									관람객 매너가<br>명작을 만든다!
 								</p>
@@ -389,12 +389,12 @@
 					</div>
 
 					<div class="col">
-						<div class="card my-2" :class="{'checked':isChecked('집돌이집순이')}" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('\#집돌이집순이')}" style="width: 15rem; border-radius: 30px;">
 						<label for="cat7">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 집돌이집순이
 								<i class="fa-solid fa-house"></i></i></h5>
-								<input id="cat7" type="checkbox" value="집돌이집순이" v-model="interest">
+								<input id="cat7" type="checkbox" value="\#집돌이집순이" v-model="interest">
 								<p class="card-text text-center tagtext">
 									집에서 할 게<br>얼마나 많은데?!
 								</p>
@@ -404,12 +404,12 @@
 					</div>
 
 					<div class="col">
-						<div class="card my-2" :class="{'checked':isChecked('금손모임')}" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('\#금손모임')}" style="width: 15rem; border-radius: 30px;">
 						<label for="cat8">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 금손모임
 								<i class="fa-solid fa-hand-sparkles"></i></i></h5>
-								<input id="cat8" type="checkbox" value="금손모임" v-model="interest">
+								<input id="cat8" type="checkbox" value="\#금손모임" v-model="interest">
 								<p class="card-text text-center tagtext">똥손도 괜찮아요~<br>함께 만들어요!</p>
 							</div>
 						</label>
@@ -417,12 +417,12 @@
 					</div>
 
 					<div class="col">
-						<div class="card my-2" :class="{'checked':isChecked('자연인')}" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('\#자연인')}" style="width: 15rem; border-radius: 30px;">
 						<label for="cat9">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 자연인
 								<i class="fa-solid fa-mountain-sun"></i></h5>
-								<input id="cat9" type="checkbox" value="자연인" v-model="interest">
+								<input id="cat9" type="checkbox" value="\#자연인" v-model="interest">
 								<p class="card-text text-center tagtext">
 									산은 산이요~<br>물은 물이로다~
 								</p>
@@ -432,12 +432,12 @@
 					</div>
 
 					<div class="col">
-						<div class="card my-2" :class="{'checked':isChecked('집사님')}" style="width: 15rem; border-radius: 30px;">
+						<div class="card my-2" :class="{'checked':isChecked('\#집사님')}" style="width: 15rem; border-radius: 30px;">
 						<label for="cat10">
 							<div class="card-body m-1">
 								<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 집사님
 								<i class="fa-solid fa-paw"></i></h5>
-								<input id="cat10" type="checkbox" value="집사님" v-model="interest">
+								<input id="cat10" type="checkbox" value="\#집사님" v-model="interest">
 								<p class="card-text text-center tagtext">
 									저는 주인님을<br>모시고 있습니다!
 								</p>
@@ -468,6 +468,7 @@
 							<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null">
 						</div>
 						<h3 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.animal}}</h3> 
+						<h3 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.mbti}}</h3> 
 					</div>
 				</div>
 				<div class="row mt-4">

@@ -30,8 +30,8 @@
 	
 	<!-- 복사한 뒤 반드시 고쳐야 하는 부분 -->
 	<groupId>com.kh</groupId>
-	<artifactId>e3i1</artifactId>
-	<name>e3i1</name>
+	<artifactId>siso</artifactId>
+	<name>siso</name>
 	<!-- 복사한 뒤 반드시 고쳐야 하는 부분 -->	
 	
 	<packaging>war</packaging>

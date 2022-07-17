@@ -136,9 +136,26 @@ public class MemberDaoImpl implements MemberDao{
 			return count > 0;
 		}
 	}
-
+	
+	// 마이페이지 회원 정보
 	@Override
 	public MemberDetailVO mypageMember(int memberNo) {
 		return sqlSession.selectOne("member.mypageMember",memberNo);
+	}
+	
+	// 마에페이지 회원 소모임 정보
+	@Override
+	public List<MemberDetailVO> mypageClub(int memberNo) {
+		return sqlSession.selectList("member.mypageClub",memberNo);
+	}
+
+	@Override
+	public List<MemberDetailVO> mypageMbti(int memberNo) {
+		return sqlSession.selectList("member.mypageMbti", memberNo);
+	}
+	
+	@Override
+	public int mypageInterest(MemberDto memberDto) {
+		return sqlSession.update("member.changeInformation", memberDto);
 	}
 }

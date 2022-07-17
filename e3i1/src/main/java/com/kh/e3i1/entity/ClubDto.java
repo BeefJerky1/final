@@ -18,4 +18,7 @@ public class ClubDto {
 	private String clubJoinQuestion2;
 	private String clubJoinQuestion3;
 	private int clubMemberLimit;
+	
+	// 테이블 컬럼은 없고 resultMap용
+	private int clubMemberCount;
 }	

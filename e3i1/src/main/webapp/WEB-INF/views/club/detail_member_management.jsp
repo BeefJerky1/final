@@ -139,35 +139,37 @@
 							<th>신청/승인 날짜</th>
 							<th>승인여부</th>
 						</thead>
-						<tbody v-for="(clubMember, index) in clubMemberList" :key="index" class="fontSS">
-							<tr  @click="isHidden1['hidden1'] = !isHidden1['hidden1']">
-								<td>{{clubMember.memberDto.memberNick}}</td>
+						<tbody class="fontSS">
+							<tr @click="isHidden1['hidden1'] = !isHidden1['hidden1']"  v-for="(clubMember, index) in clubMemberList" :key="index">
+								<td v-if="clubMember.clubMemberDto != null">{{clubMember.memberDto.memberNick}}</td>
 								<td v-if="clubMember.clubMemberDto.clubMemberGrade == 1">관리자</td>
 								<td v-if="clubMember.clubMemberDto.clubMemberGrade == 0">일반</td>
-								<td>{{clubMember.clubMemberDto.clubMemberDate}}</td>
+								<td>{{convertTime(clubMember.clubMemberDto.clubMemberDate)}}</td>
 								<td v-if="clubMember.clubMemberDto.clubMemberPermission == 0">대기중</td>
 								<td v-if="clubMember.clubMemberDto.clubMemberPermission == 1" style="color:green">승인</td>
 								<td v-if="clubMember.clubMemberDto.clubMemberPermission == 2" style="color:red">거절</td>
-							</tr>
-							<tr :class="isHidden1" v-if="clubMember.clubMemberDto.clubMemberGrade != 1">
-								<td colspan="4">
-									<div if="clubMember.clubMemberDto.clubMemberAnswer1 != null">
-										{{clubMember.clubMemberDto.clubMemberAnswer1}}
-									</div>
-									<div if="clubMember.clubMemberDto.clubMemberAnswer2 != null">
-										{{clubMember.clubMemberDto.clubMemberAnswer2}}
-									</div>
-									<div if="clubMember.clubMemberDto.clubMemberAnswer3 != null">
-										{{clubMember.clubMemberDto.clubMemberAnswer3}}
-									</div>
-									<div class="row mt-4" v-if="clubMember.clubMemberDto.clubMemberPermission == 0">
-										<div class="col-md-6">
-											<button class="btn-cancel" @click="removeHidden(index)">거절</button>
-										</div>
-										<div class="col-md-6">
-											<button class="btn-create" @click="approveClub(index)">승인</button>
-										</div>
-									</div>
+								<td v-if="clubMember.clubMemberDto.clubMemberGrade != 1">
+									<tr :class="isHidden1" v-if="clubMember != null" >
+										<td colspan="4">
+											<div if="clubMember.clubMemberDto.clubMemberAnswer1 != null">
+												{{clubMember.clubMemberDto.clubMemberAnswer1}}
+											</div>
+											<div if="clubMember.clubMemberDto.clubMemberAnswer2 != null">
+												{{clubMember.clubMemberDto.clubMemberAnswer2}}
+											</div>
+											<div if="clubMember.clubMemberDto.clubMemberAnswer3 != null">
+												{{clubMember.clubMemberDto.clubMemberAnswer3}}
+											</div>
+											<div class="row mt-4" v-if="clubMember.clubMemberDto.clubMemberPermission == 0">
+												<div class="col-md-6">
+													<button class="btn-cancel" @click="removeHidden(index)">거절</button>
+												</div>
+												<div class="col-md-6">
+													<button class="btn-create" @click="approveClub(index)">승인</button>
+												</div>
+											</div>
+										</td>
+									</tr>
 								</td>
 							</tr>
 						</tbody>
@@ -267,15 +269,14 @@ computed: {
 	},
 	
 	leaderJudge(){
-		if(this.clubList.clubDto != null){
-			if(this.memberNo == this.clubList.clubDto.clubLeader){
-				return true;
-			}
-		}
-		return false;
+		return this.clubList.clubDto != null && this.memberNo == this.clubList.clubDto.clubLeader
 	},
 },
 methods: {
+	//moment js
+    convertTime(time){
+    	return moment(time).format('YYYY-MM-DD'); 
+    },
 	
 	removeHidden(index){
 		this.isHidden["hidden"] = false;
