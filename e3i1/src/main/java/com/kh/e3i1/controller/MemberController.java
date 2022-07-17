@@ -73,7 +73,6 @@ public class MemberController {
 	public String join(
 			@ModelAttribute MemberDto memberDto
 			) throws Exception {
-		System.out.println(memberDto.getAttachNo());
 		memberService.MemberJoin(memberDto);
 		
 		return "redirect:/member/join_success";
@@ -314,10 +313,9 @@ public class MemberController {
 	public String information(HttpSession session, @ModelAttribute MemberDto memberDto) {
 		int memberNo = (Integer) session.getAttribute("login");
 		MemberDto existMember = memberDao.info(memberNo);
+		memberDto.setMemberNo(memberNo);
 		memberDto.setMemberEmail(existMember.getMemberEmail());
-		System.out.println(memberDto.getMemberPw());
 		memberDto.setMemberPw(existMember.getMemberPw());
-		System.out.println(memberDto.getMemberPw());
 		
 		boolean success = memberDao.changeInformation(memberDto);
 		if(success) {

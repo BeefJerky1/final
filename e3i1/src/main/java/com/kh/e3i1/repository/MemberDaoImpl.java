@@ -133,6 +133,7 @@ public class MemberDaoImpl implements MemberDao{
 		}
 		else {
 			int count = sqlSession.update("member.changeInformation", memberDto);
+			System.out.println("왔냐");
 			return count > 0;
 		}
 	}

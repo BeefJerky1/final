@@ -150,6 +150,10 @@ input[type="checkbox"]{
 							<div class="profileimg text-center mt-3 mb-2">
 								<img src="${root }/image/mbti/거북이(ISTP).png" style="border-radius: 50%; width: 140px; height: 140px;" v-if="memberList.memberProfileDto == null" />
 								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberList.memberProfileDto.attachNo" style="border-radius: 50%; width: 140px; height: 140px;" v-if="memberList.memberProfileDto != null"/>
+								<label for="img">
+									<i class="fa-solid fa-image"></i>
+								</label>
+								<input type="file" id="img" accept="image/*" ref="memberProfile" @change="changeProfile()" style="display:none;"> 
 							</div>
 							<div class="ml-5 text-center mb-3">
 								<span class="profileNick"><i class="fa-solid fa-user"></i>&nbsp;${memberDto.memberNick}</span>
@@ -593,8 +597,7 @@ input[type="checkbox"]{
 													Id</span> <input type="text" class="form-control"
 													aria-label="Sizing example input"
 													aria-describedby="inputGroup-sizing-sm" name="memberSnsId"
-													autocomplete="off" value="${memberDto.memberSnsId}"
-													required>
+													autocomplete="off" value="${memberDto.memberSnsId}">
 											</div>
 
 											<div class="input-group-sm">
@@ -1042,6 +1045,31 @@ input[type="checkbox"]{
 												</div>
 											</div>
 											
+										 	<!-- 5번째 페이지 -->
+										 	<div class="container w500 m30 page">
+												<div class="col-md-12 mb-5 p-4 text-dark rounded">
+													<div class="col-md-8 offset-md-2">
+													
+														<div class="card">
+															<div class="card-title mt-4">
+																<h3 style="color:#3E4684;">잠깐 멈춰보시&nbsp;<span style="color:#F4B759;">개!!</span></h3>
+															</div>
+															<div class="card-img text-center">
+																<img src="${pageContext.request.contextPath}/image/mbti/강아지(ENFP).png" style="width:400px; height:400px">  
+															</div>
+															<div class="card-text text-start mt-4 ms-4 mb-2">
+																<span style="color:#3E4684;">*결과와 같은 프로필로 변경을 원치 않으실 경우 <span style="color:red;">'변경하기'</span> 버튼을 눌러주시개 <br> *결과와 같은 프로필로 변경을 원하실 경우 <span style="color:red;">'+프로필'</span> 버튼을 눌러주시개</span>
+															</div>
+														</div>
+														
+														<button type="button" class="btn btn-prev mt-1"
+															style="float: left;">이전</button>
+														<button type="button" class="btn btn-next mt-1"
+															style="float: right;" @click="callAnimal">다음</button>
+													</div>
+												</div>
+											</div> 
+											
 											<!-- 6번째 페이지 -->
 											<div class="container w500 m30 page">
 												<input type="hidden" name="memberMbti" ref="memberMbti">
@@ -1064,7 +1092,7 @@ input[type="checkbox"]{
 																<button type="submit" class="btn btn-outline-success" style="width: 50%;" @click="memberMbti">변경하기</button>
 															</div>
 															<div class="col-md-6">
-																<button type="submit" class="btn btn-outline-success" style="width: 50%;">+프로필</button>
+																<button type="submit" class="btn btn-outline-success" style="width: 50%;" @click="changeAnimalProfile">+프로필</button>
 															</div>
 														</div>
 													</div>
@@ -1246,6 +1274,7 @@ methods: {
 		}).then((resp) => {
 			if(resp.data != 0){
 				location.reload();
+				window.alert("관심분야가 정상적으로 변경되었습니다!!");
 			}
 		})			
     },
@@ -1263,6 +1292,7 @@ methods: {
 		}).then((resp) => {
 			if(resp.data != 0){
 				location.reload();
+				window.alert("MBTI가 정상적으로 변경되었습니다!!");
 			}
 		})				
     },
@@ -1275,12 +1305,61 @@ methods: {
 			method:"get",
 		}).then((resp) => {
 			this.memberAnimal = resp.data;
-		})		
+		})
+	},
+	
+	changeAnimalProfile(){
+		const mbti = this.$refs.memberMbti;
+		
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/member_mbti_profile",
+			method:"put",
+			data:{
+				memberNo : this.memberNo,
+				memberMbti : mbti.value,
+				attachNo : this.memberAnimal.attachmentDto.attachNo,
+			},
+		}).then((resp) => {
+			location.reload();
+			window.alert("MBTI 및 프로필이 정상적으로 변경되었습니다!");
+		})
+	},
+	
+	changeProfile(){
+		let formData = new FormData();
+		
+		const fileInput = this.$refs.memberProfile;
+		if(fileInput.files.length == 0) return;
+		
+		const fileData = fileInput.files[0];
+		formData.append('attach', fileData);
+		formData.append('memberNo', this.memberNo);
+		formData.append('attachNo', this.memberList.memberProfileDto.attachNo);
+		
+		console.log(this.memberList.memberProfileDto.attachNo);
+		
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/member_profile",
+			method:"post",
+			headers:{
+				"Content-Type" : "multipart/form-data",
+			},
+			data: formData,
+		}).then((resp) => {
+			if(resp.data == 0){
+				window.alert("프로필 변경에 실해했습니다.");
+				return;
+			}
+			window.alert("프로필 변경 완료!");
+			location.reload();
+		});
 	},
     
 },
+updated(){
+	 this.callAnimal;
+},
 mounted(){
-
 	$(function() {
 		// 현재 페이지 
 		var index = 0;
@@ -1409,6 +1488,7 @@ mounted(){
 		}
 	});
 },
+
 created() {
 		// 시/도 
 		axios({

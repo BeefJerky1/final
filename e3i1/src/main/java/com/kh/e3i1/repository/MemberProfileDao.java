@@ -6,4 +6,6 @@ public interface MemberProfileDao {
 
 	int insert(int memberNo, int attachNo);
 
+	int update(int memberNo, int attachNo);
+
 }

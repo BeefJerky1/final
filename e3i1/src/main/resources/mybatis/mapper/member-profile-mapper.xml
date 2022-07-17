@@ -30,12 +30,13 @@
 		)
 	</insert>
 	
-	<!-- <select id="one" parameterType="Integer" resultType="Integer">
-		select attach_no from club_profile where club_no = #{clubNo}
-	</select>
-	
-	<delete id="delete" parameterType="Integer">
-		delete club_profile where attach_no = #{attachNo}
-	</delete> -->
+	<update id="update" parameterType="Map">
+		update 
+			member_profile
+		set
+			attach_no = #{attachNo}
+		where 
+			member_no = #{memberNo}
+	</update>
 	
 </mapper>

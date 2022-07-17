@@ -34,8 +34,7 @@
 .btn.btn-next {
 	width: 100px;
 	border-color: #3E4684;
-	background-color: #3E4684;
-	color: white;
+	color: #3E4684;
 }
 
 .btn.btn-next:hover {
@@ -48,8 +47,7 @@
 .btn.btn-prev {
 	width: 100px;
 	border-color: #3E4684;
-	background-color: #3E4684;
-	color: white;
+	color: #3E4684;
 }
 
 .btn.btn-prev:hover {

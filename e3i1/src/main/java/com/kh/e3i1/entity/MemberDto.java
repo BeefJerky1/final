@@ -31,6 +31,7 @@ public class MemberDto {
 	private String memberSnsId;
 	private Date memberLogindate;
 	
+	// 기본 프사용
 	private int attachNo;
 }
 
