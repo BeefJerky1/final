@@ -8,6 +8,8 @@ import com.kh.e3i1.vo.ClubComplexSearchVO;
 import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubLikeVO;
 import com.kh.e3i1.vo.ClubListVO;
+import com.kh.e3i1.vo.ClubMemberListVO;
+import com.kh.e3i1.vo.ClubMemberProfileVO;
 
 public interface ClubDao {
 
@@ -28,4 +30,5 @@ public interface ClubDao {
 	List<ClubDto> search(String keyword);
 
 	List<ClubLikeVO> bestClub();
+
 }

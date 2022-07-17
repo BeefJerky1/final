@@ -15,6 +15,7 @@ import com.kh.e3i1.vo.ClubComplexSearchVO;
 import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubLikeVO;
 import com.kh.e3i1.vo.ClubListVO;
+import com.kh.e3i1.vo.ClubMemberListVO;
 
 @Repository
 public class ClubDaoImpl implements ClubDao {
@@ -112,4 +113,6 @@ public class ClubDaoImpl implements ClubDao {
 	public List<ClubLikeVO> bestClub() {
 		return sqlSession.selectList("club.bestClubList");
 	}
+
+	
 }

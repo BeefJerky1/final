@@ -393,6 +393,7 @@ where C.club_board_No = #{clubBoardNo}
        M.member_place3,
        M.member_sns_id,
        M.member_logindate,
+       M.member_mbti,
        P.attach_no
        from member M 
 left outer join member_profile P 

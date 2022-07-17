@@ -24,9 +24,9 @@ public interface MbtiBoardDao {
 
 	int count(String type);
 
-	List<MbtiMemberListVO> list(String type, int page, int size);
+	List<MbtiMemberListVO> list(String type, String Keyword);
 
-	List<MbtiMemberListVO> list(String type, String keyword);
+	List<MbtiMemberListVO> list(String keyword, int p, int s);
 
 	MbtiBoardVoteDto vote(MbtiBoardVoteDto mbtiBoardVoteDto);
 

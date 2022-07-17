@@ -18,6 +18,28 @@
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <style>
+  .pagination{
+        text-align: center;
+        /*이 설정을 하면 내부 항목의 줄바꿈이 일어나지 않는다*/
+        white-space: nowrap;
+        /*영역을 넘어가는 내용에 대해 표시하지 않도록 설정한다*/
+        overflow: hidden;
+    }
+    .pagination > a {
+        color: black;
+        text-decoration: none;
+
+        display:inline-block;
+        min-width:2em;
+        text-align: center;
+        padding: 0.5em;
+
+    }
+    .pagination>a:hover,
+    .pagination>a.active{
+        color:aqua;
+
+    }
 .search-icon {
     position: relative;
     left: 2em;
@@ -76,7 +98,7 @@ $(function(){
          </button>
       </div>
       
-      <div class="py-4">
+      <div class="py-4" id="app">
          <div class="container">
             <div class="row position-relative">
             
@@ -140,8 +162,7 @@ $(function(){
                            
                            <div class="d-flex followers">
                               <div>
-                                 <p class="mb-0"><i class="fa-solid fa-heart fx-2" style="color:#ffa8c9;"></i>LIKE 
-                                 <span class="text-muted mbti-board-area">좋아요 숫자</span></p>
+                                 <p class="mb-0"><i class="fa-solid fa-heart fx-2" style="color:#ffa8c9;"></i> LIKE 
                               </div>
                               <div class="ms-5 ps-5">
                                  <div class="d-flex">
@@ -155,7 +176,81 @@ $(function(){
                        </a>
 			</c:forEach>
                      
-                   
+                   <div class="pagination">
+	
+			<c:if test="${p > 1}">
+				<c:choose>
+					<c:when test="${search}">
+						<a href="list?p=1&s=${s}&type=${type}&keyword=${keyword}">&laquo;</a>
+					</c:when>
+					<c:otherwise>
+						<a href="list?p=1&s=${s}">&laquo;</a>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+	
+			<c:if test="${startBlock > 1}">
+				<c:choose>
+					<c:when test="${search}">
+						<a href="list?p=${startBlock-1}&s=${s}&type=${type}&keyword=${keyword}">&laquo;</a>
+					</c:when>
+					<c:otherwise>
+						<a href="list?p=${startBlock-1}&s=${s}">&laquo;</a>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+	
+			<!-- 숫자 링크 영역 -->
+			<c:forEach var="i" begin="${startBlock}" end="${endBlock}" step="1">
+				<c:choose>
+					<c:when test="${search}">
+						<c:choose>
+							<c:when test="${i == p}">
+								<a class="active" href="list?p=${i}&s=${s}&type=${type}&keyword=${keyword}">${i}</a>
+							</c:when>
+							<c:otherwise>
+								<a href="list?p=${i}&s=${s}&type=${type}&keyword=${keyword}">${i}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when test="${i == p}">
+								<a class="active" href="list?p=${i}&s=${s}">${i}</a>
+							</c:when>
+							<c:otherwise>
+								<a href="list?p=${i}&s=${s}">${i}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+	
+			<!-- 다음 버튼 영역 -->
+			<c:if test="${endBlock < lastPage}">
+				<c:choose>
+					<c:when test="${search}">
+						<a href="list?p=${endBlock+1}&s=${s}&type=${type}&keyword=${keyword}">&gt;</a>
+					</c:when>
+					<c:otherwise>
+						<a href="list?p=${endBlock+1}&s=${s}">&gt;</a>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+	
+			<c:if test="${p < lastPage}">
+				<c:choose>
+					<c:when test="${search}">
+						<a href="list?p=${lastPage}&s=${s}&type=${type}&keyword=${keyword}">&raquo;</a>
+					</c:when>
+					<c:otherwise>
+						<a href="list?p=${lastPage}&s=${s}">&raquo;</a>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+	
+		</div>
+	
                      <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-feed" role="tabpanel" aria-labelledby="pills-feed-tab">
                            <!-- Follow People -->
@@ -388,7 +483,30 @@ $(function(){
 
 
 </body>
+<script>
+	const app = Vue.createApp({
+		
+		data(){
+			return {
+				
+			};
+		},
+		computed:{
 
+		
+		},
+		methods:{
+			
+		
+		},
+		    
+		created(){
+
+		},
+	});
+	app.mount("#app");
+
+	</script>
 
 <!-- 
 	배포용 cdn (개발자 도구에서 vue가 안 보임)

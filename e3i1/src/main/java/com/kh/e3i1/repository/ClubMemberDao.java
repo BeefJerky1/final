@@ -16,4 +16,6 @@ public interface ClubMemberDao {
 	
 	//소모임 멤버확인용
 	int check(int clubNo, int memberNo);
+	// 멤버 프로필 불러오기
+	ClubMemberListVO memberProfile(int memberNo);
 }

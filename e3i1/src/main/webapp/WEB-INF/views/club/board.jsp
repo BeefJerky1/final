@@ -105,7 +105,87 @@ position:relative;
     .asdf{
     	border-radius: "2rem !important";
     }
-    
+ a {
+	color : black !important;
+}
+a:hover {
+	color : #514e85;
+}
+
+.memberPhoto:hover {
+	transform: scale(1.05);
+}
+
+#app {
+	background-color: #F8F9FA !important;
+}
+
+.clubMemberNick {
+		font-weight: bold !important;
+}
+
+.profileModal {
+	width :600px !important;
+	height : 650px;
+	border : none;
+	border-radius : 1em !important;
+	position: absolute !important;
+}
+.clubMemberList {
+	font-weight: bold !important;
+	margin-bottom: 0.3em;
+	margin-top: 0.5em;
+}
+
+.clubModalDanger {
+    background-color: #a7a7c1;
+    border: none;
+    color: white;
+    padding: 0.4em 1em;
+    border-radius: 16px;
+    font-size: 17px;
+    width: 140px;
+    margin-right : 1em;
+    margin-left : 3em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 4px 0px inset;
+}
+.clubModalDanger:hover {
+    background-color: #9898bc;
+}
+
+.clubModalWarning {
+	background-color: #efc873;
+    border: none;
+    color: white;
+    padding: 0.4em 1em;
+    border-radius: 16px;
+    font-size: 17px;
+    width: 140px;
+    margin-right : 1em;
+    margin-left : 3em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 4px 0px inset;
+}
+
+.clubModalWarning:hover {
+    background-color: #e8bd61;
+}
+
+.clubModal {
+	font-weight: bold !important;
+	margin-bottom: 0.3em;
+	font-size : 18px;
+}
+
+.clubModalInterest {
+	font-weight: bold !important;
+	margin-top: 0.5em;
+	margin-right : 0.3em;
+	margin-bottom: 0.3em;
+	font-size : 15px;
+	background-color : #e8e9ea;
+	border-radius : 1em;
+	padding : 0.3em;
+}
 
 	</style>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
@@ -343,7 +423,7 @@ position:relative;
       <div v-if="this.Mprofile!=null">
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
+          <div class="modal-content profileModal mt-4">
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="modal-body">
                 <div class="row">
@@ -351,34 +431,40 @@ position:relative;
                     <a><img src="https://placeimg.com/120/120/animals" class="circle profile"></a>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
-		            <h4><b>{{Mprofile.memberDto.memberNick}}</b></h4>
-		            <span>{{Mprofile.memberDto.memberGender}}/</span><span>{{elapsedText(Mprofile.memberDto.memberBirth)}}/</span> <span>{{Mprofile.memberDto.memberPlace1}}</span>           
-                </div>
-                <div class="row mt-5">
-                <div class="col-lg-6col-md-6 col-sm-6">
-                	<button class="btn btn-outline-danger form-control">신고하기</button>
-                </div>
-                <div class="col-lg-6col-md-6 col-sm-6">
-                	<button class="btn btn-outline-warning form-control">차단하기</button>
-                </div>
-                </div>
-                <div class="row mt-5">
-                	<h5><b>SNS계정</b><img style="width:25px "src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"></h5>
-                	<h5>{{Mprofile.memberDto.memberSnsId}}</h5>
-                </div>
-                <div class="row mt-5">
-                	<h5><b>나의 관심분야</b></h5>
-                	<div class="col-lg-12 col-md-12 col-sm-12">
-		            <button class="btn btn-outline-secondary btn-sm">{{Mprofile.memberDto.memberInterest1}}</button>
-		            <button class="btn btn-outline-secondary btn-sm">{{Mprofile.memberDto.memberInterest2}}</button>
-		            <button class="btn btn-outline-secondary btn-sm">{{Mprofile.memberDto.memberInterest3}}</button>
-		            </div>
-                </div>
-				<div class="row mt-5">
-					<h5><b>마지막 로그인</b></h5>
-					<h5><h5>{{convertTime(Mprofile.memberDto.memberLogindate)}}({{elapsedText(Mprofile.memberDto.memberLogindate)}})</h5></h5>
-            	</div>
-
+					<h4>
+								<span class="clubMemberNick">{{Mprofile.memberDto.memberNick}}</span>&nbsp;<i class="fa-solid fa-circle-check"></i>
+							</h4>
+							<span class="clubMemberList">{{Mprofile.memberDto.memberGender}} / </span>
+							<span class="clubMemberList"><i class="fa-solid fa-location-dot"></i> {{Mprofile.memberDto.memberPlace1}} / </span>
+							<span class="clubMemberList">{{Mprofile.memberDto.memberMbti}}</span><br>
+							<span class="btn btn-outline-success mt-2">{{Mprofile.memberDto.memberAnimal}}</span>
+						</div>
+						
+						<div class="row mt-4">
+							<div class="col-lg-6col-md-6 col-sm-6">
+								<button class="clubModalDanger">신고하기</button>
+							</div>
+							<div class="col-lg-6col-md-6 col-sm-6">
+								<button class="clubModalWarning">차단하기</button>
+							</div>
+						</div>
+						<div class="mt-4 mb-2 pt-2 border-top">
+							<a href="https://www.instagram.com/{{memberProfile.memberDto.memberSnsId}}" style="float:left;">
+							<span class="clubModal">SNS <i class="fa-brands fa-instagram"></i> {{Mprofile.memberDto.memberSnsId}}</span>
+							</a>
+						</div>
+						<div class="mt-3 mb-2">
+							<span class="clubModal"  style="float: left;width: inherit;margin-top: 0.2em;">나의 관심분야</span><br>
+							<div class="mb-1"  style="float:left;">
+								<span class="clubModalInterest">{{Mprofile.memberDto.memberInterest1}}</span>
+								<span class="clubModalInterest">{{Mprofile.memberDto.memberInterest2}}</span>
+								<span class="clubModalInterest">{{Mprofile.memberDto.memberInterest3}}</span>
+							</div>
+						</div>
+						<div class="mt-3 mb-3">
+						<span class="clubModal"  style="float:left;">마지막 로그인</span><br>
+						<span class="clubModal"  style="float:right;">{{convertTime(Mprofile.memberDto.memberLogindate)}}</span>
+						</div>
 
             </div>
             <div class="modal-footer">
