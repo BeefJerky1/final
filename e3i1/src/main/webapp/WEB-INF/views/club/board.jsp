@@ -287,9 +287,27 @@ position:relative;
                          	</div>
                             </div>
                             <div class="col-lg-8 col-md-8 col-sm-8 align-start top">
-                                <span data-bs-toggle="modal" data-bs-target="#profileModal" v-on:click="modal(index)">
-                                   <b>{{clubboard.memberDto.memberNick}}</b> 
-                                </span><br>
+                            	<!-- 프로필 드롭다운 -->
+                                <div class="dropdown" >
+						            <span class="dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" v-on:click="modal(index)">
+						             {{clubboard.memberDto.memberNick}}
+						            </span>
+						            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"  >
+						              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">프로필</a></li>
+						              <div v-if="Mprofile!=null">
+						                <div v-if="Mprofile.memberDto.memberNo ==this.memberNo">
+	               						</div>
+	               						<div v-else>
+						              		<li><a class="dropdown-item" href="#" v-on:click="blocked()">차단하기</a></li>
+	               						</div>
+	               						<div v-if="Mprofile.memberDto.memberNo ==this.memberNo">
+	               						</div>
+	               						<div v-else>
+						              		<li class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#postModal" >메세지 보내기</li>
+	               						</div>  
+                					 </div>
+						            </ul>
+						          </div>
                                 <span class="interest me-1 ">{{clubboard.memberDto.memberInterest1}}</span>
                                 <span class="interest me-1 ">{{clubboard.memberDto.memberInterest2}}</span>
                                 <span class="interest me-1 ">{{clubboard.memberDto.memberInterest3}}</span>
@@ -356,18 +374,6 @@ position:relative;
                 <div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
 		            <h4><b>{{Mprofile.memberDto.memberNick}}</b></h4>
 		            <span>{{Mprofile.memberDto.memberGender}}/</span><span>{{elapsedText(Mprofile.memberDto.memberBirth)}}/</span> <span>{{Mprofile.memberDto.memberPlace1}}</span>           
-                </div>
-                <div class="row mt-5">
-                <div v-if="Mprofile.memberDto.memberNo ==this.memberNo">
-                </div>
-                <div class="col-lg-6col-md-6 col-sm-6" v-else>
-                	<button class="btn btn-outline-danger form-control" v-on:click="blocked()" data-bs-dismiss="modal">차단하기</button>
-                </div>
-                <div v-if="Mprofile.memberDto.memberNo ==this.memberNo">
-                </div>
-                <div class="col-lg-6col-md-6 col-sm-6" v-else>
-                	<button class="btn btn-outline-warning form-control" data-bs-toggle="modal" data-bs-target="#postModal" >메세지</button>
-                </div>
                 </div>
                 <div class="row mt-5">
                 	<h5><b>SNS계정</b><img style="width:25px "src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"></h5>
@@ -519,12 +525,6 @@ position:relative;
     <script src="${path}/js/time.js"></script>
 <!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script> -->
     <script>
-    $(".modal").on("shown.bs.modal", function () {
-        if ($(".modal-backdrop").length > 1) {
-            $(".modal-backdrop").not(':first').remove();
-        }
-    })
-        //div[id=app]을 제어할 수 있는 Vue instance를 생성
         const app = Vue.createApp({
             //data : 화면을 구현하는데 필요한 데이터를 작성한다.
             data(){
@@ -894,7 +894,7 @@ position:relative;
  						}
  						this.loadClubBoardList();
  					})
- 				}
+ 				},
             	
             },
             created(){

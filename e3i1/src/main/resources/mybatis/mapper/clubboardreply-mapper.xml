@@ -11,10 +11,6 @@
 		insert into club_board_reply(reply_no, club_reply_content, club_reply_time, club_board_no, club_reply_writer, club_no)
 		values(#{replyNo}, #{clubReplyContent}, sysdate, #{clubBoardNo}, #{clubReplyWriter}, #{clubNo})
 	</insert>
-	<select id="one" resultType="clubboardreplyDto" parameterType="int">
-		select * from club_board_reply where reply_no = #{replyNo}
-	</select>
-	
 	<select id="list" resultType="clubboardreplyDto" parameterType="int">
 		select * from club_board_reply where club_board_no = #{clubBoardNo} 
 		order by reply_no desc
@@ -170,6 +166,16 @@ where club_reply_writer not in (select blocked_target from blocked where blocked
  and club_reply_writer not in (select blocked_user from blocked where blocked_target = #{likeMemberNo})
 and C.club_board_no = #{clubBoardNo} order by C.reply_no desc
 	</select>
+<select id="one" resultMap="clubBoardReplyItems" parameterType="int">
+		   select 
+        R.*,
+		M.*
+		from 
+		club_board_reply R
+		left outer join Member M
+		on R.club_reply_writer = M.member_no
+		where reply_no = #{replyNo}
+</select>
 	<select id="boardlist" resultType="clubBoardReplyDto" parameterType="int">
 		        select * from club_board_reply where club_board_no = #{clubBoardNo}
 	</select>

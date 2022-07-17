@@ -57,6 +57,13 @@ li a:hover {
 .logo-item {
 	width: 100% !important;
 }
+.tableInterest2 {
+	background-color: #E9E9E9;
+	color: #3E4684;
+	font-size: 0.85em;
+	font-weight: 600;
+	width: 30px;
+}
 </style>
 </head>
 
@@ -182,7 +189,7 @@ li a:hover {
 					</div>
 					<div class="col-lg-12 col-md-12 col-sm-12">
 						<table class="table text-center mb-5">
-							<thead class="table-dark">
+							<thead class="tableInterest2">
 								<tr>
 									<!--   						<th></th> -->
 									<th>번호</th>
@@ -211,10 +218,10 @@ li a:hover {
 									<td>{{member1.memberReportCount}}</td>
 									<td>{{elapsedText(member1.memberLogindate)}}</td>
 									<td>
-										<button type="button" class="btn btn-warning"
+										<button type="button" class="btn btn-outline-secondary"
 											v-on:click=" select(index)">수정</button>
 									</td>
-									<td><button class="btn btn-danger"
+									<td><button class="btn btn-outline-danger"
 											v-on:click="deleteMember(index)">삭제</button></td>
 								</tr>
 							</tbody>

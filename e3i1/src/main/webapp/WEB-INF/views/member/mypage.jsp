@@ -374,7 +374,18 @@ i {
 									<tbody>
 										<tr v-for="( block , index ) in blockedList">
 											<td class="tableInterest2">{{block.memberDto.memberNick}}</td>
-											<td><button type="button"  data-bs-toggle="modal" data-bs-target="#profileModal" class="btn btn-outline-success" v-on:click="detail(index)">프로필 보기</button></td>
+											<td>
+											<div class="dropdown">
+											  <button class="btn btn-outline-primary dropdown-toggle"  v-on:click="detail(index)" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+											   상세보기
+											  </button>
+											  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+											    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#profileModal"  href="#">프로필보기</a></li>
+											    <li><a class="dropdown-item" href="#" v-on:click="notAnymore()">차단해제</a></li>
+											    <li><a class="dropdown-item" href="#">메시지 보내기</a></li>
+											  </ul>
+											</div>
+											</td>
 										</tr>
 									</tbody>
 								</table>
@@ -572,10 +583,6 @@ i {
 		            <span>{{blockedDetail.memberDto.memberGender}}/</span><span>{{elapsedText(blockedDetail.memberDto.memberBirth)}}/</span> <span>{{blockedDetail.memberDto.memberPlace1}}</span>           
                 </div>
                 <div class="row mt-5">
-                <div class="col-lg-6col-md-6 col-sm-6">
-                	<button class="btn btn-outline-danger form-control" v-on:click="notAnymore()" data-bs-dismiss="modal">차단해제</button>
-                </div>
-                <div class="row mt-5">
                 	<h5><b>SNS계정</b><img style="width:25px "src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"></h5>
                 	<h5>{{blockedDetail.memberDto.memberSnsId}}</h5>
                 </div>
@@ -716,6 +723,8 @@ methods: {
 	},
 	//차단된 회원 해제
 	notAnymore(){
+		const choice = window.confirm("차단 목록에서 삭제 하시겠습니까?");
+		if(choice==false)return
 		const blockedNo= this.blockedDetail.blockedDto.blockedNo
 		axios({
 			url:"${pageContext.request.contextPath}/rest/mypage/block/"+blockedNo,

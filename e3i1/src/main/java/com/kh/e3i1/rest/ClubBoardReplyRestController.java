@@ -64,7 +64,7 @@ public class ClubBoardReplyRestController {
 		clubReplyLikeDao.delete(clubReplyLikeDto);
 	}
 	@GetMapping("/report/{replyNo}")
-	public ClubBoardReplyDto reportInfo(@ApiIgnore HttpSession session, @PathVariable int replyNo ) {
+	public ClubBoardReplyListVO reportInfo(@ApiIgnore HttpSession session, @PathVariable int replyNo ) {
 		return clubBoardReplyDao.reportInfo(replyNo);
 	}
 	@PostMapping("/report")
