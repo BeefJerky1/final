@@ -108,88 +108,7 @@ position:relative;
     .asdf{
     	border-radius: "2rem !important";
     }
- a {
-	color : black !important;
-}
-a:hover {
-	color : #514e85;
-}
-
-.memberPhoto:hover {
-	transform: scale(1.05);
-}
-
-#app {
-	background-color: #F8F9FA !important;
-}
-
-.clubMemberNick {
-		font-weight: bold !important;
-}
-
-.profileModal {
-	width :600px !important;
-	height : 650px;
-	border : none;
-	border-radius : 1em !important;
-	position: absolute !important;
-}
-.clubMemberList {
-	font-weight: bold !important;
-	margin-bottom: 0.3em;
-	margin-top: 0.5em;
-}
-
-.clubModalDanger {
-    background-color: #a7a7c1;
-    border: none;
-    color: white;
-    padding: 0.4em 1em;
-    border-radius: 16px;
-    font-size: 17px;
-    width: 140px;
-    margin-right : 1em;
-    margin-left : 3em;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 4px 0px inset;
-}
-.clubModalDanger:hover {
-    background-color: #9898bc;
-}
-
-.clubModalWarning {
-	background-color: #efc873;
-    border: none;
-    color: white;
-    padding: 0.4em 1em;
-    border-radius: 16px;
-    font-size: 17px;
-    width: 140px;
-    margin-right : 1em;
-    margin-left : 3em;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 4px 0px inset;
-}
-
-.clubModalWarning:hover {
-    background-color: #e8bd61;
-}
-
-.clubModal {
-	font-weight: bold !important;
-	margin-bottom: 0.3em;
-	font-size : 18px;
-}
-
-.clubModalInterest {
-	font-weight: bold !important;
-	margin-top: 0.5em;
-	margin-right : 0.3em;
-	margin-bottom: 0.3em;
-	font-size : 15px;
-	background-color : #e8e9ea;
-	border-radius : 1em;
-	padding : 0.3em;
-}
-
+    
 	</style>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
@@ -444,7 +363,7 @@ a:hover {
       <div v-if="this.Mprofile!=null">
       <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content profileModal mt-4">
+          <div class="modal-content">
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="modal-body">
                 <div class="row">
@@ -452,6 +371,7 @@ a:hover {
                     <a><img src="https://placeimg.com/120/120/animals" class="circle profile"></a>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
+
 
 					<h4>
 								<span class="clubMemberNick">{{Mprofile.memberDto.memberNick}}</span>&nbsp;<i class="fa-solid fa-circle-check"></i>
@@ -507,7 +427,6 @@ a:hover {
 					<h5><b>마지막 로그인</b></h5>
 					<h5><h5>{{convertTime(Mprofile.memberDto.memberLogindate)}}({{elapsedText(Mprofile.memberDto.memberLogindate)}})</h5></h5>
             	</div>
-
 
 
             </div>
@@ -760,8 +679,6 @@ a:hover {
 // 							console.log(i)
 							data.push(resp.data[i])
 						}
-
-
 						this.boardAll = resp.data,
 						this.board = data,
 						this.totalBoard = this.boardAll.length
@@ -791,8 +708,6 @@ a:hover {
 //     							console.log(i)
     							data.push(resp.data[i])
     						}
-
-
     						this.boardAll = resp.data,
     						this.board = data,
     						this.totalBoard = this.boardAll.length
@@ -938,7 +853,6 @@ a:hover {
 			        	});				
 				
                 		 
-
             	},
             	//클럽 멤버 불러오기
             	clubMemberCheck(){

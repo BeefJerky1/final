@@ -26,20 +26,20 @@
         overflow: hidden;
     }
     .pagination > a {
-        color: black;
-        text-decoration: none;
+	color: white !important;
+    text-decoration: none;
+    display: inline-block;
+    min-width: 2em;
+    text-align: center;
+    padding: 0.5em;
+    margin: 0.2em;
+    background-color: #514e85;
+    border-radius: 1em;
+}
 
-        display:inline-block;
-        min-width:2em;
-        text-align: center;
-        padding: 0.5em;
+   
+.pagination > a.active-color {background-color: #f3dba5 !important;}
 
-    }
-    .pagination>a:hover,
-    .pagination>a.active{
-        color:aqua;
-
-    }
 .search-icon {
     position: relative;
     left: 2em;
@@ -98,7 +98,7 @@ $(function(){
          </button>
       </div>
       
-      <div class="py-4" id="app">
+      <div class="py-4" >
          <div class="container">
             <div class="row position-relative">
             
@@ -176,7 +176,10 @@ $(function(){
                        </a>
 			</c:forEach>
                      
-                   <div class="pagination">
+    
+
+                  </div>
+                    <div class="pagination" style="float:none; margin:auto; justify-content: center;">
 	
 			<c:if test="${p > 1}">
 				<c:choose>
@@ -251,21 +254,6 @@ $(function(){
 	
 		</div>
 	
-                     <div class="tab-content" id="pills-tabContent">
-                        <div class="tab-pane fade show active" id="pills-feed" role="tabpanel" aria-labelledby="pills-feed-tab">
-                           <!-- Follow People -->
-                           <div class="ms-1">
-                              <!-- Feeds -->
-                              <div class="feeds">
-
-                
-                              </div>
-                           </div>
-                        </div>
-           
-                     </div>
-                  </div>
-                  
                </main>
                <aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-6 col-12">
                   <div class="p-2 bg-light offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample">
@@ -378,6 +366,7 @@ $(function(){
                                  <div class="center-block">
                                     <h6 class="center-block fw-bold ml-4 mb-3 pe-3" style="text-align:center; font-size:16px;">연애 궁합 BEST 3 <i class="fa-solid fa-cloud" style="color:#d6f5ff;"></i></h6>
                                  <img src="${root}/image/couple.png" width="200px;" class="img-fluid rounded-4 center-block m-4 " alt="couple">
+                                  <img src="${root}/image/couple.png" width="200px;" class="img-fluid rounded-4 center-block m-4 " alt="couple">
                                  </div>
                               </a>
                               <!-- Trending Item -->
@@ -397,7 +386,7 @@ $(function(){
                                 
                                 <div class="bg-white rounded-4 overflow-hidden shadow-sm mb-4">
                               <h5 class="fw-bold text-body p-3 mb-0 border-bottom"></h5>
-                              <a href="tags.html" class="p-3 border-bottom d-flex align-items-center text-dark text-decoration-none">
+                              <a href="#" class="p-3 border-bottom d-flex align-items-center text-dark text-decoration-none">
                                  <div class="center-block">
                                     <h6 class="center-block fw-bold mb-3 pe-3" style="text-align:center; font-size:16px;">우정 궁합 BEST 3 <i class="fa-solid fa-umbrella-beach" style="color:#00ce7c;"></i></h6>
                                  <img src="${root}/image/friend.png" width="200px;" class="m-4 img-fluid rounded-4 center-block " alt="couple">
@@ -419,7 +408,6 @@ $(function(){
                                     </div>
                                  </div>
                                  
-
 						           </div>
 						   </div>
                         </div>
@@ -483,35 +471,17 @@ $(function(){
 
 
 </body>
-<script>
-	const app = Vue.createApp({
-		
-		data(){
-			return {
-				
-			};
-		},
-		computed:{
-
-		
-		},
-		methods:{
-			
-		
-		},
-		    
-		created(){
-
-		},
-	});
-	app.mount("#app");
-
-	</script>
+    <script type="text/javascript">
+$(".pagination>a").click(function() {
+    toggleClass(".active-color");
+});
+</script>
 
 <!-- 
 	배포용 cdn (개발자 도구에서 vue가 안 보임)
 	<script src="https://unpkg.com/vue@next/dist/vue.global.prod.js"></script>
 -->
+
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/vue@next"></script>
 <script src="${root}/js/time.js"></script>
