@@ -6,6 +6,8 @@
 <c:set var="memberAdmin" value="${auth}"></c:set>
 <c:set var="isLogin" value="${memberNo != null}"></c:set>
 	<style>
+	
+	
 	.readonly{
 		background-color:white !important;
 	}
@@ -109,9 +111,94 @@ position:relative;
     	border-radius: "2rem !important";
     }
     
-	</style>
-<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+    .nav-link {
+    	color : #514e85 !important;
+    	font-size : 15px;
+    }
+    
+   .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+     background-color: #f8f9fa !important;
+    border-bottom: 3px solid #514e85;
+    border-radius: 0px;
+    color: #514e85 !important;
+    font-weight: 600;
+   
+   }
+   
+   .clubMemberNick {
+		font-weight: bold !important;
+}
 
+.profileModal {
+	width :600px !important;
+	height : 650px;
+	border : none;
+	border-radius : 1em;
+	position: absolute !important;
+}
+.clubMemberList {
+	font-weight: bold !important;
+	margin-bottom: 0.3em;
+	margin-top: 0.5em;
+}
+
+.clubModalDanger {
+    background-color: #a7a7c1;
+    border: none;
+    color: white;
+    padding: 0.4em 1em;
+    border-radius: 16px;
+    font-size: 17px;
+    width: 140px;
+    margin-left : 2em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 4px 0px inset;
+}
+.clubModalDanger:hover {
+    background-color: #9898bc;
+}
+
+.clubModalWarning {
+	background-color: #efc873;
+    border: none;
+    color: white;
+    padding: 0.4em 1em;
+    border-radius: 16px;
+    font-size: 17px;
+    width: 140px;
+    margin-left : 2em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 4px 0px inset;
+}
+
+.clubModalWarning:hover {
+    background-color: #e8bd61;
+}
+
+.clubModal {
+	font-weight: bold !important;
+	margin-bottom: 0.3em;
+	font-size : 18px;
+}
+
+.clubModalInterest {
+	font-weight: bold !important;
+	margin-top: 0.5em;
+	margin-right : 0.3em;
+	margin-bottom: 0.3em;
+	font-size : 15px;
+	background-color : #e8e9ea;
+	border-radius : 1em;
+	padding : 0.3em;
+}
+	</style>
+	  <link rel="stylesheet" type="text/css" href="${path}/css/slick.css">
+      <link rel="stylesheet" type="text/css" href="${path}/css/slick-theme.css">
+      <link rel="stylesheet" type="text/css" href="${path}/css/slick-theme.css">
+      <link rel="stylesheet" type="text/css" href="${path}/css/icofont.min.css">
+      <link rel="stylesheet" type="text/css" href="${path}/css/materialdesignicons.min.css">
+      <link rel="stylesheet" type="text/css" href="${path}/css/mbtiboard.css">
+	      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+<body>
     <div id="app" class="container-fluid">
         <div class="row all">
              <div class="col-lg-3 col-md-3 col-sm-3 mt-5 left-side "	>
@@ -408,25 +495,6 @@ position:relative;
 						<span class="clubModal"  style="float:right;">{{convertTime(Mprofile.memberDto.memberLogindate)}}</span>
 						</div>
 
-		            <h4><b>{{Mprofile.memberDto.memberNick}}</b></h4>
-		            <span>{{Mprofile.memberDto.memberGender}}/</span><span>{{elapsedText(Mprofile.memberDto.memberBirth)}}/</span> <span>{{Mprofile.memberDto.memberPlace1}}</span>           
-                </div>
-                <div class="row mt-5">
-                	<h5><b>SNS계정</b><img style="width:25px "src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"></h5>
-                	<h5>{{Mprofile.memberDto.memberSnsId}}</h5>
-                </div>
-                <div class="row mt-5">
-                	<h5><b>나의 관심분야</b></h5>
-                	<div class="col-lg-12 col-md-12 col-sm-12">
-		            <button class="btn btn-outline-secondary btn-sm">{{Mprofile.memberDto.memberInterest1}}</button>
-		            <button class="btn btn-outline-secondary btn-sm">{{Mprofile.memberDto.memberInterest2}}</button>
-		            <button class="btn btn-outline-secondary btn-sm">{{Mprofile.memberDto.memberInterest3}}</button>
-		            </div>
-                </div>
-				<div class="row mt-5">
-					<h5><b>마지막 로그인</b></h5>
-					<h5><h5>{{convertTime(Mprofile.memberDto.memberLogindate)}}({{elapsedText(Mprofile.memberDto.memberLogindate)}})</h5></h5>
-            	</div>
 
 
             </div>
@@ -553,11 +621,15 @@ position:relative;
         </div>
     </div>
     </div>
-
+</div>
+</body>
      <!-- vue js도 lazy loading을 사용한다 -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue@next"></script>
     <script src="${path}/js/time.js"></script>
+    <script src="${path}/js/mbtiboard.js"></script>
+	<script src="${path}/js/slick.min.js"></script>
+    
 <!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script> -->
     <script>
         const app = Vue.createApp({
@@ -939,4 +1011,5 @@ position:relative;
         });
         app.mount("#app");
     </script>
+
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
