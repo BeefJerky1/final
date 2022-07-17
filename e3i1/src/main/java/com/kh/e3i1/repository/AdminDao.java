@@ -27,7 +27,7 @@ public interface AdminDao {
 	//멤버 총 숫자
 	int memberCount();
 	//멤버 삭제
-	int deleteMember(int memberNo);
+	List<Integer> deleteMember(List<Integer> memberNo);
 	//멤버 상세
 	MemberDto oneMember(int memberNo);
 	//멤버 수정

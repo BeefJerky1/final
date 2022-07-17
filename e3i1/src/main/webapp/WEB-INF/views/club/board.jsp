@@ -487,7 +487,7 @@ a:hover {
 						<span class="clubModal"  style="float:left;">마지막 로그인</span><br>
 						<span class="clubModal"  style="float:right;">{{convertTime(Mprofile.memberDto.memberLogindate)}}</span>
 						</div>
-=======
+
 		            <h4><b>{{Mprofile.memberDto.memberNick}}</b></h4>
 		            <span>{{Mprofile.memberDto.memberGender}}/</span><span>{{elapsedText(Mprofile.memberDto.memberBirth)}}/</span> <span>{{Mprofile.memberDto.memberPlace1}}</span>           
                 </div>
@@ -565,7 +565,6 @@ a:hover {
          </div>
       </div>
      </div>
-            </div>
             <div class=" mt-3">
                  <button type="button" v-on:click="appendBoard()" :disabled="this.dataFull==true" class="form-control btn-primary shadow " style="border-radius:1em !important">
         더보기 ({{showBoard}}/{{totalBoard}})
