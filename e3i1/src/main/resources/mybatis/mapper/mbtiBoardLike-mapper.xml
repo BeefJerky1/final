@@ -21,13 +21,13 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mbtiBoardLike">
 
-    <select id="likeCount" resultType="Integer" parameterType="MbtiBoardLikeDto">
-		select count(it_like) from mbti_board_like where mbti_board_no = #{mbtiBoardNo} and it_like = 1;
+    <select id="likeCount" resultType="Integer" parameterType="int">
+		select count(it_like) from mbti_board_like where mbti_board_no = #{mbtiBoardNo} and it_like = 1
 	</select>
 	
 	<insert id="likeInsert" parameterType="MbtiBoardLikeDto">
-		insert into mbti_board_like (member_no, mbti_board_no)
-		values (#{memberNo},#{mbtiBoardNo})
+		insert into mbti_board_like (member_no, mbti_board_no, it_like)
+		values (#{memberNo},#{mbtiBoardNo}, 1)
 	</insert>
 	
 	<select id="ItLikeInfo" resultType="Integer" parameterType="MbtiBoardLikeDto">

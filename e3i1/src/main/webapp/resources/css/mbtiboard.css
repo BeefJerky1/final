@@ -201,6 +201,7 @@ a {
 }
 .chat-text {
     padding: 9px 13px !important;
+    width: 400px;
 }
 .ltsp-n5 {
     letter-spacing: -5px !important;

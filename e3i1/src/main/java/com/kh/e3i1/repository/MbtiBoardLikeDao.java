@@ -6,7 +6,7 @@ import com.kh.e3i1.entity.MbtiBoardLikeDto;
 
 public interface MbtiBoardLikeDao {
 	
-	int likeCount(MbtiBoardLikeDto mbtiBoardLikeDto);
+	int likeCount(int mbtiBoardNo);
 	
 	Integer ItLikeInfo(MbtiBoardLikeDto mbtiBoardLikeDto);
 	

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.e3i1.entity.MbtiBoardDto;
@@ -50,8 +51,8 @@ public class MbtiBoardLikeRestController {
 	}
 	
 	@GetMapping("/{mbtiBoardNo}") 
-	public int count(@RequestBody MbtiBoardLikeDto mbtiBoardLikeDto) {
-		return mbtiBoardLikeDao.likeCount(mbtiBoardLikeDto);
+	public int count(@PathVariable int mbtiBoardNo) {
+		return mbtiBoardLikeDao.likeCount(mbtiBoardNo);
 	}
 
 	

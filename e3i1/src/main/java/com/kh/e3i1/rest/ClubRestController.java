@@ -27,6 +27,7 @@ import com.kh.e3i1.vo.ClubComplexSearchVO;
 import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubListVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
+import com.kh.e3i1.vo.ClubMemberProfileVO;
 
 @CrossOrigin(
 			origins = {"http://127.0.0.1:5500"}
@@ -135,6 +136,12 @@ public class ClubRestController {
 	@PutMapping("/refuse")
 	public int refuseClub(@RequestBody ClubMemberDto clubMemberDto) {
 		return clubMemberDao.refuseClub(clubMemberDto);
+	}
+	
+	// 회원 목록 프로필-> 프로필 조회
+	@GetMapping("/modal/{memberNo}")
+	public ClubMemberListVO memberProfile(@PathVariable int memberNo) {
+		return clubMemberDao.memberProfile(memberNo);
 	}
 	
 }
