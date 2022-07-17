@@ -57,6 +57,13 @@ li a:hover {
 .logo-item {
 	width: 100% !important;
 }
+.tableInterest2 {
+	background-color: #E9E9E9;
+	color: #3E4684;
+	font-size: 0.85em;
+	font-weight: 600;
+	width: 30px;
+}
 </style>
 </head>
 
@@ -182,7 +189,7 @@ li a:hover {
 						</div>	
 					<div class="col-lg-12 col-md-12 col-sm-12">
 						<table class="table text-center">
-							<thead class="table-dark">
+							<thead class="tableInterest2">
 								<tr>
 									<th>게시글 번호</th>
 									<th>회원 번호</th>
@@ -200,17 +207,17 @@ li a:hover {
 								<tr v-for="(mbti , index) in board">
 									<td>{{mbti.mbtiBoardNo}}</td>
 									<td>{{mbti.memberNo}}</td>
-									<td><a :href="'http://localhost:8080/e3i1/mbtiboard_detail?mbtiBoardNo='+mbti.mbtiBoardNo">{{mbti.mbtiBoardTitle}}</a></td>
+									<td>{{mbti.mbtiBoardTitle}}</td>
 									<td>{{mbti.mbtiBoardContent}}</td>
 									<td>{{mbti.mbtiBoardTime}}</td>
 									<td>{{mbti.mbtiBoardVote1}}</td>
 									<td>{{mbti.mbtiBoardVote2}}</td>
 									<td>{{mbti.mbtiBoardReplyCount}}</td>
 									<td>
-										<button type="button" class="btn btn-warning"
+										<button type="button" class="btn btn-outline-secondary"
 											v-on:click=" select(index)">수정</button>
 									</td>
-									<td><button class="btn btn-danger"
+									<td><button class="btn btn-outline-danger"
 											v-on:click="deleteClub(index)">삭제</button></td>
 								</tr>
 							</tbody>

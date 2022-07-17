@@ -68,7 +68,7 @@ public class ClubBoardReplyDaoImpl implements ClubBoardReplyDao{
 	}
 
 	@Override
-	public ClubBoardReplyDto reportInfo(int replyNo) {
+	public ClubBoardReplyListVO reportInfo(int replyNo) {
 		return sqlSession.selectOne("clubboardreply.one", replyNo);
 	}
 }
