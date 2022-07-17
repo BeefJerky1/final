@@ -371,6 +371,43 @@ position:relative;
                     <a><img src="https://placeimg.com/120/120/animals" class="circle profile"></a>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
+
+
+					<h4>
+								<span class="clubMemberNick">{{Mprofile.memberDto.memberNick}}</span>&nbsp;<i class="fa-solid fa-circle-check"></i>
+							</h4>
+							<span class="clubMemberList">{{Mprofile.memberDto.memberGender}} / </span>
+							<span class="clubMemberList"><i class="fa-solid fa-location-dot"></i> {{Mprofile.memberDto.memberPlace1}} / </span>
+							<span class="clubMemberList">{{Mprofile.memberDto.memberMbti}}</span><br>
+							<span class="btn btn-outline-success mt-2">{{Mprofile.memberDto.memberAnimal}}</span>
+						</div>
+						
+						<div class="row mt-4">
+							<div class="col-lg-6col-md-6 col-sm-6">
+								<button class="clubModalDanger">신고하기</button>
+							</div>
+							<div class="col-lg-6col-md-6 col-sm-6">
+								<button class="clubModalWarning">차단하기</button>
+							</div>
+						</div>
+						<div class="mt-4 mb-2 pt-2 border-top">
+							<a href="https://www.instagram.com/{{memberProfile.memberDto.memberSnsId}}" style="float:left;">
+							<span class="clubModal">SNS <i class="fa-brands fa-instagram"></i> {{Mprofile.memberDto.memberSnsId}}</span>
+							</a>
+						</div>
+						<div class="mt-3 mb-2">
+							<span class="clubModal"  style="float: left;width: inherit;margin-top: 0.2em;">나의 관심분야</span><br>
+							<div class="mb-1"  style="float:left;">
+								<span class="clubModalInterest">{{Mprofile.memberDto.memberInterest1}}</span>
+								<span class="clubModalInterest">{{Mprofile.memberDto.memberInterest2}}</span>
+								<span class="clubModalInterest">{{Mprofile.memberDto.memberInterest3}}</span>
+							</div>
+						</div>
+						<div class="mt-3 mb-3">
+						<span class="clubModal"  style="float:left;">마지막 로그인</span><br>
+						<span class="clubModal"  style="float:right;">{{convertTime(Mprofile.memberDto.memberLogindate)}}</span>
+						</div>
+
 		            <h4><b>{{Mprofile.memberDto.memberNick}}</b></h4>
 		            <span>{{Mprofile.memberDto.memberGender}}/</span><span>{{elapsedText(Mprofile.memberDto.memberBirth)}}/</span> <span>{{Mprofile.memberDto.memberPlace1}}</span>           
                 </div>
@@ -447,7 +484,6 @@ position:relative;
          </div>
       </div>
      </div>
-            </div>
             <div class=" mt-3">
                  <button type="button" v-on:click="appendBoard()" :disabled="this.dataFull==true" class="form-control btn-primary shadow " style="border-radius:1em !important">
         더보기 ({{showBoard}}/{{totalBoard}})

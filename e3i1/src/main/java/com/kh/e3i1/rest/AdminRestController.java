@@ -63,7 +63,7 @@ public class AdminRestController {
 	}
 	//멤버 삭제
 	@DeleteMapping("/member/{memberNo}")
-	public int deleteMember(@PathVariable int memberNo){
+	public List<Integer> deleteMember(@PathVariable  List<Integer> memberNo){
 		return adminDao.deleteMember(memberNo);
 	}
 	//멤버 상세조회

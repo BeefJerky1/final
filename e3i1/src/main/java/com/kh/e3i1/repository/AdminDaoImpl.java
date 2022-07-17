@@ -1,6 +1,7 @@
 package com.kh.e3i1.repository;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,9 +51,14 @@ public class AdminDaoImpl implements AdminDao{
 	}
 	//회원삭제
 	@Override
-	public int deleteMember(int memberNo) {
-		int count = sqlSession.delete("admin.deleteMember", memberNo);
-		return count;
+	public List<Integer> deleteMember(List<Integer> memberNo) {
+		List<Integer> result = new ArrayList<Integer>();
+		for(Integer memberNo1 : memberNo) {
+			sqlSession.delete("admin.deleteMember", memberNo1);
+			sqlSession.selectOne("admin.oneMember", memberNo1);
+			result.add(memberNo1);
+		}
+		return result;
 	}
 	//회원 상세조회
 	@Override

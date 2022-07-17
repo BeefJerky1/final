@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.e3i1.entity.MemberDto;
@@ -44,6 +45,11 @@ public class MessageRestController {
 	//메세지 작성
 	@PostMapping("/send")
 	public int sendMessage(@RequestBody MessageDto messageDto) {
+		return messageDao.sendMessage(messageDto);
+	}
+	//메세지 작성
+	@PostMapping("/sendAll")
+	public int sendAllMessage(@RequestBody MessageDto messageDto) {
 		return messageDao.sendMessage(messageDto);
 	}
 	//메세지 상세
