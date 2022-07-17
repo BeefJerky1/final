@@ -403,4 +403,5 @@ GROUP BY
 			<result column="entj_percent" property="entjPercent"/>
 		</association>
 		</resultMap>
+		
 </mapper>

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.kh.e3i1.entity.ClubBoardAttachDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
+import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubMemberProfileVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +37,11 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 //	}
 	
 	@Override
-	public List<ClubBoardDto> list(int clubNo , String orderType) {
+	public List<ClubBoardDto> list(int clubNo , String orderType, int memberNo) {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("clubNo",clubNo);
 		param.put("orderType", orderType);
-		log.debug("orderType = {}", orderType);
+		param.put("memberNo", memberNo);
 		return sqlSession.selectList("clubboard.board-side", param);
 	}
 
@@ -107,7 +108,7 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	
 	//리스트 조회
 	@Override
-	public List<ClubBoardListItemVO> listAll(int clubNo, int likeMemberNo){
+	public List<ClubBoardListItemVO> listAll(int clubNo, int likeMemberNo , String column, String order){
 			List<ClubBoardDto> list = sqlSession.selectList("clubboard.clubboardno", clubNo);
 			for(ClubBoardDto clubBoardDto:list) {
 				this.calculateReplyCount(clubBoardDto.getClubBoardNo());
@@ -117,6 +118,8 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("clubNo", clubNo);
 			param.put("likeMemberNo", likeMemberNo);
+			param.put("column",column);
+			param.put("order", order);
 			List<ClubBoardListItemVO> list1=  sqlSession.selectList("clubboard.clubBoardTotalList", param);
 			return list1;		
 	}
@@ -146,6 +149,11 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	public boolean deleteAttachNo(int attachNo) {
 	 int count =  sqlSession.delete("clubboard.deleteattachno", attachNo);
 	 return count>0;
+	}
+	//게시글 상세페이지에서 클럽 정보 조회
+	@Override
+	public ClubDetailVO clubDetail(int clubBoardNo) {
+		return sqlSession.selectOne("club.clubDetail2", clubBoardNo);
 	}
 	
 

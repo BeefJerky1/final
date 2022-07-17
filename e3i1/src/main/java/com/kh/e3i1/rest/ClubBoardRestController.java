@@ -26,12 +26,15 @@ import com.kh.e3i1.entity.ClubBoardReportDto;
 import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.ClubMemberDto;
 import com.kh.e3i1.entity.ClubReplyLikeDto;
+import com.kh.e3i1.entity.MessageDto;
 import com.kh.e3i1.repository.ClubBoardDao;
 import com.kh.e3i1.repository.ClubBoardLikeDao;
 import com.kh.e3i1.repository.ClubMemberDao;
 import com.kh.e3i1.repository.ClubReportDao;
+import com.kh.e3i1.repository.MessageDao;
 import com.kh.e3i1.service.ClubBoardService;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
+import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubMemberProfileVO;
 
 import springfox.documentation.annotations.ApiIgnore;
@@ -52,17 +55,25 @@ public class ClubBoardRestController {
 	private ClubBoardService clubBoardService; 
 	@Autowired
 	private ClubMemberDao clubMemberDao;
-//	private MemberDao memberDao;
+	@Autowired
+	private MessageDao messageDao;
 	
 	//오른쪽 사이드바 목록
-	@GetMapping("/side/{clubNo}/order/{orderType}")
-	public List<ClubBoardDto> Sidelist(@PathVariable int clubNo , @PathVariable String orderType) {
-		return clubBoardDao.list(clubNo,orderType);
+	@GetMapping("/side/{clubNo}/order/{orderType}/{memberNo}")
+	public List<ClubBoardDto> Sidelist(
+			@PathVariable int clubNo , 
+			@PathVariable String orderType,
+			@PathVariable int memberNo
+			) {
+		return clubBoardDao.list(clubNo,orderType,memberNo);
 	}
 	//목록
-	@GetMapping("/{clubNo}/likeMemberNo/{likeMemberNo}")
-	public List<ClubBoardListItemVO> list(@PathVariable int clubNo, @PathVariable int likeMemberNo) {
-		return clubBoardDao.listAll(clubNo,likeMemberNo);
+	@GetMapping("/{clubNo}/{likeMemberNo}/{column}/{order}")
+	public List<ClubBoardListItemVO> list(@PathVariable int clubNo, 
+			@PathVariable int likeMemberNo,
+			@PathVariable String column,
+			@PathVariable String order) {
+		return clubBoardDao.listAll(clubNo,likeMemberNo, column, order);
 	}
 	//등록
 	@PostMapping("/")
@@ -152,6 +163,16 @@ public class ClubBoardRestController {
 	@GetMapping("/member/{clubNo}/{memberNo}")
 	public int verify(@PathVariable int clubNo, @PathVariable int memberNo){
 		return clubMemberDao.check(clubNo, memberNo);		
+	}
+	//메세지 작성
+	@PostMapping("/message")
+	public int sendMessage(@RequestBody MessageDto messageDto) {
+		return messageDao.sendMessage(messageDto);
+	}
+	//게시글 상세페이지에서 클럽정보 불러오기
+	@GetMapping("/clubDetail/{clubBoardNo}")
+	public ClubDetailVO clubDetail(@PathVariable int clubBoardNo) {
+		return clubBoardDao.clubDetail(clubBoardNo);
 	}
 	
 }

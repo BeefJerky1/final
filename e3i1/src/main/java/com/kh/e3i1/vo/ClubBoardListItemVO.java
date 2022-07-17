@@ -3,6 +3,7 @@ package com.kh.e3i1.vo;
 import java.util.List;
 
 import com.kh.e3i1.entity.AnimalPhotoDto;
+import com.kh.e3i1.entity.BlockedDto;
 import com.kh.e3i1.entity.ClubBoardAttachDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardLikeDto;
@@ -26,4 +27,5 @@ public class ClubBoardListItemVO {
 	private ClubBoardReportDto clubBoardReportDto;
 	private MbtiAnimalDto mbtiAnimalDto;
 	private AnimalPhotoDto animalPhotoDto;
+	private BlockedDto blockedDto;
 }

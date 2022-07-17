@@ -2,13 +2,16 @@ package com.kh.e3i1.repository;
 
 import java.util.List;
 
+import com.kh.e3i1.entity.BlockedDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.vo.BlockedVO;
 import com.kh.e3i1.vo.MemberComplexSearchVO;
+import com.kh.e3i1.vo.MemberDetailVO;
 
 public interface MemberDao {
 	
 	// 회원가입
-	void join(MemberDto memberDto);
+	int join(MemberDto memberDto);
 	
 	// 로그인
 	MemberDto login(String memberEmail, String memberPw);
@@ -37,5 +40,16 @@ public interface MemberDao {
 	
 	// 회원 조회용 list 구문 추가
 	List<MemberDto> list();
+
+	MemberDetailVO mypageMember(int memberNo);
+	
+	//회원 차단
+	int blockTarget(BlockedDto blockedDto);
+	//회원 차단 목록
+	List<BlockedVO> blockList(int memberNo);
+	//차단 회원 해제
+	int DeleteBlockTarget(int blockedNo);
+	//차단 회원 상세정보
+	BlockedVO blockedTargetInfo(int blockedNo);
 	
 }

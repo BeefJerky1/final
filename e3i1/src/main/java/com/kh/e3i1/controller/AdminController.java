@@ -84,6 +84,10 @@ public class AdminController {
 			return "redirect:information?error";
 		}
 	}
+	@GetMapping("/club_chart")
+	public String clubChart() {
+		return "admin/club_chart";
+	}
 	@GetMapping("/mbtiboard")
 	public String MbtiBoard() {
 		return "admin/mbtiboard";

@@ -53,6 +53,13 @@ li a:hover {
 .logo-item {
 	width: 100% !important;
 }
+.tableInterest2 {
+	background-color: #E9E9E9;
+	color: #3E4684;
+	font-size: 0.85em;
+	font-weight: 600;
+	width: 30px;
+}
 </style>
 </head>
 
@@ -145,7 +152,7 @@ li a:hover {
 					<div class="col-lg-8 col-md-8 col-sm-8 mt-2 mb-5">
 						<h3>소모임 멤버</h3>
 						<table class="table">
-							<thead class="table-dark">
+							<thead class="tableInterest2">
 								<tr>
 									<th>가입 신청일</th>
 									<th>회원 번호</th>

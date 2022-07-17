@@ -20,4 +20,7 @@ public class ClubMemberDto {
 	private String clubMemberAnswer3;
 	private int clubMemberPermission;
 	private String clubMemberRefuseMsg;
+	
+	// 테이블 컬럼은 없고 resultMap용
+	private int clubMemberCount;
 }

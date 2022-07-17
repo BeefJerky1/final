@@ -44,7 +44,6 @@ public class ClubServiceImpl implements ClubService {
 				clubProfileDao.insert(clubDto.getClubNo(), attachNo);
 			}
 		}
-		
 		return clubNo;
 	}
 

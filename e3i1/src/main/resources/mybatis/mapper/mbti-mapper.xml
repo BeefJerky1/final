@@ -35,6 +35,42 @@
 		select animal from mbti_animal where mbti = #{mbti}
 	</select>
 	
+	
+	<!-- mbti에 맞는 동물, 동물 프로필, 첨부파일 정보 출력 -->
+	<resultMap type="AnimalPhotoVO" id="animalPhotoVO">
+	
+		<association property="animalPhotoDto">
+			<result column="attach_no" property="attachNo"/>
+			<result column="animal_no" property="animalNo"/>
+		</association>
+		
+		<association property="mbtiAnimalDto">
+			<result column="animal_no" property="animalNo"/>
+			<result column="animal" property="animal"/>
+			<result column="mbti" property="mbti"/>
+		</association>
+		
+		<association property="attachmentDto">
+			<result column="attach_no" property="attachNo"/>
+			<result column="attach_uploadname" property="attachUploadname"/>
+			<result column="attach_type" property="type"/>
+			<result column="attach_size" property="attachSize"/>
+		</association>
+	</resultMap>
+	
+	<select id="mbtiAnimalPhoto" resultMap="animalPhotoVO">
+		select 
+			* 
+		from 
+			mbti_animal ma
+		LEFT OUTER JOIN ANIMAL_PHOTO ap 
+			ON ma.ANIMAL_NO = ap.ANIMAL_NO 
+		LEFT OUTER JOIN ATTACHMENT a 
+			ON ap.ATTACH_NO = a.ATTACH_NO
+		WHERE ma.MBTI = #{mbti}
+	</select>
+	
+	
 	<select id="mbtiRank" resultType="MbtiRankVO" parameterType="int">
 		SELECT 
 			cm.CLUB_NO, 

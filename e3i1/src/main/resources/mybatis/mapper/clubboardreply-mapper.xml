@@ -11,10 +11,6 @@
 		insert into club_board_reply(reply_no, club_reply_content, club_reply_time, club_board_no, club_reply_writer, club_no)
 		values(#{replyNo}, #{clubReplyContent}, sysdate, #{clubBoardNo}, #{clubReplyWriter}, #{clubNo})
 	</insert>
-	<select id="one" resultType="clubboardreplyDto" parameterType="int">
-		select * from club_board_reply where reply_no = #{replyNo}
-	</select>
-	
 	<select id="list" resultType="clubboardreplyDto" parameterType="int">
 		select * from club_board_reply where club_board_no = #{clubBoardNo} 
 		order by reply_no desc
@@ -95,6 +91,11 @@
 			<result column="member_no" property="memberNo"/>
 			<result column="attach_no" property="attachNo"/>
 		</association>
+		<association property="blockedDto">
+			<result column="blocked_no" property="blockedNo"/>
+			<result column="blocked_target" property="blockedTarget"/>
+			<result column="blocked_user" property="blockedUser"/>
+		</association>
 		<association property="animalPhotoDto">
 			<result column="동물사진번호" property="attachNo"/>
 			<result column="animal_no" property="animalNo"/>
@@ -159,8 +160,22 @@ left outer join mbti_animal  B
     on M.member_mbti = B.mbti
 left outer join animal_photo A
  on B.animal_no = A.animal_no
-where C.club_board_no =#{clubBoardNo} order by C.reply_no desc
+left outer join (select * from blocked where blocked_user = #{likeMemberNo})K
+  on C.club_reply_writer = K.blocked_target
+where club_reply_writer not in (select blocked_target from blocked where blocked_user =#{likeMemberNo})
+ and club_reply_writer not in (select blocked_user from blocked where blocked_target = #{likeMemberNo})
+and C.club_board_no = #{clubBoardNo} order by C.reply_no desc
 	</select>
+<select id="one" resultMap="clubBoardReplyItems" parameterType="int">
+		   select 
+        R.*,
+		M.*
+		from 
+		club_board_reply R
+		left outer join Member M
+		on R.club_reply_writer = M.member_no
+		where reply_no = #{replyNo}
+</select>
 	<select id="boardlist" resultType="clubBoardReplyDto" parameterType="int">
 		        select * from club_board_reply where club_board_no = #{clubBoardNo}
 	</select>
