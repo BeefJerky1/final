@@ -92,10 +92,12 @@
 	 		<![CDATA[
 	 		where instr(mbti_board_title, #{keyword}) > 0
 	 		or instr(mbti_board_content, #{keyword}) > 0
+	 		order by B.mbti_board_time desc
 	 		]]>
 	 		</if>
 		) TMP
 			) where rn between  #{begin} and #{end}
+
 	</select>
 	
 	

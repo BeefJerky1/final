@@ -365,7 +365,6 @@ $(function(){
                               <a href="tags.html" class="p-3 border-bottom d-flex align-items-center text-dark text-decoration-none">
                                  <div class="center-block">
                                     <h6 class="center-block fw-bold ml-4 mb-3 pe-3" style="text-align:center; font-size:16px;">연애 궁합 BEST 3 <i class="fa-solid fa-cloud" style="color:#d6f5ff;"></i></h6>
-                                 <img src="${root}/image/couple.png" width="200px;" class="img-fluid rounded-4 center-block m-4 " alt="couple">
                                   <img src="${root}/image/couple.png" width="200px;" class="img-fluid rounded-4 center-block m-4 " alt="couple">
                                  </div>
                               </a>
