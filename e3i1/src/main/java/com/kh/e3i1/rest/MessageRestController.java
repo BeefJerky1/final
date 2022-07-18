@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,13 +45,13 @@ public class MessageRestController {
 	}
 	//메세지 작성
 	@PostMapping("/send")
-	public int sendMessage(@RequestBody MessageDto messageDto) {
-		return messageDao.sendMessage(messageDto);
+	public int sendMessage1(@RequestBody MessageDto messageDto) {
+		return messageDao.sendMessage1(messageDto);
 	}
 	//메세지 작성
 	@PostMapping("/sendAll")
-	public int sendAllMessage(@RequestBody MessageDto messageDto) {
-		return messageDao.sendMessage(messageDto);
+	public List<Integer> sendMessage3(@ModelAttribute MessageDto messageDto, @RequestParam List<Integer> asdf) {
+		return messageDao.sendMessage3(messageDto,asdf);
 	}
 	//메세지 상세
 	@GetMapping("/detail/{messageNo}")

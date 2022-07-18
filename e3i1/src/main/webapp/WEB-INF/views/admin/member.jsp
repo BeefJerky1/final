@@ -187,11 +187,15 @@ li a:hover {
 						 </div>
 						</div>
 					</div>
-					<div class="col-lg-12 col-md-12 col-sm-12">
+					<div class="col-lg-12 col-md-12 col-sm-12 text-end">
+									<button class="btn btn-outline-danger"
+											v-on:click="deleteMember()">삭제</button>
+									<button class="btn btn-outline-primary"
+											data-bs-toggle="modal" data-bs-target="#postModal">메세지 보내기</button>
 						<table class="table text-center mb-5">
 							<thead class="tableInterest2">
 								<tr>
-									<th></th>
+									<th><input type="checkbox" id="checkbox" v-model="selectAll" ></th>
 									<th>번호</th>
 									<th>이메일</th>
 									<th>닉네임</th>
@@ -202,13 +206,11 @@ li a:hover {
 									<th>신고</th>
 									<th>마지막 로그인</th>
 									<th>수정</th>
-									<th>삭제</th>
-									<th>메세지</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr v-for="(member1 , index) in member">
-									<td><input type="checkbox" v-model="memberArr" :value=member1.memberNo></td>
+									<td><input type="checkbox" v-model="selected" :value=member1.memberNo></td>
 									<td>{{member1.memberNo}}</td>
 									<td>{{member1.memberEmail}}</td>
 									<td>{{member1.memberNick}}</td>
@@ -223,10 +225,6 @@ li a:hover {
 										<button type="button" class="btn btn-outline-secondary"
 											v-on:click=" select(index)">수정</button>
 									</td>
-									<td><button class="btn btn-outline-danger"
-											v-on:click="deleteMember()">삭제</button></td>
-									<td><button class="btn btn-outline-danger"
-											data-bs-toggle="modal" data-bs-target="#postModal">메세지 보내기</button></td>
 								</tr>
 							</tbody>
 						</table>
@@ -245,7 +243,7 @@ li a:hover {
                <!-- 닉네임 -->
             <div class="modal-body p-0 mb-3">
                 <div class="form-floating">
-                   <div class=" rounded-5 border-0 shadow-sm readonly" id="floatingTextarea1" style="height: 50px"><b>To:{{memberArr}}</b></div>
+                   <div class=" rounded-5 border-0 shadow-sm readonly" id="floatingTextarea1" style="height: 50px"><b>To:{{selected}}</b></div>
                 </div>
              </div>
                <!-- 제목 작성 -->
@@ -325,16 +323,35 @@ li a:hover {
                     
                     //총 회원수
                     count:"",
-                    memberArr:[],
+                    
                     
                     //메세지
                     messageContent:"",
                     messageTitle:"",
                     admin:"1",	
+                    checked:"",
+                    selected: [],
+                    allSelected: false,
                 };
             },
             computed:{
             	
+            	selectAll: {
+                    get: function () {
+                        return this.allMember ? this.selected.length == this.allMember.length : false;
+                    },
+                    set: function (value) {
+                        var selected = [];
+
+                        if (value) {
+                            this.allMember.forEach(function (member1) {
+                                selected.push(member1.memberNo);
+                            });
+                        }
+
+                        this.selected = selected;
+                    }
+                },
             },
             methods:{
             	//멤버 전체 조회
@@ -394,7 +411,7 @@ li a:hover {
 						const choice = window.confirm("정말 삭제하시겠습니까?\n삭제한 데이터는 복구되지 않습니다");
 						if(choice==false)return
                     	axios({
-                    		url:"${pageContext.request.contextPath}/rest/admin/member/"+this.memberArr,
+                    		url:"${pageContext.request.contextPath}/rest/admin/member/"+this.selected,
                     		method:"delete",
                     	}).then(resp=>{
                     		this.deleteResult = resp.data;
@@ -464,26 +481,27 @@ li a:hover {
                 		this.count =resp.data
                 	})
                 },
-                sendMessage(){
+ 				sendMessage(){
 	 				if(this.messageContent=='' ||this.messageContent==null)return
+	 				let formData = new FormData();
+            	    for (let i = 0; i < this.selected.length; i++) { 
+            	        formData.append("asdf", this.selected[i]); // 반복문을 활용하여 파일들을 formData 객체에 추가한다
+            	     }
+            		formData.append('messageWriter', this.admin);
+            		formData.append('messageContent', this.messageContent);
+            		formData.append('messageTitle', this.messageTitle);
 	 					axios({
 	 						url:"${pageContext.request.contextPath}/rest/message/sendAll",
 	 						method:"post",
-	 						data:{
-	 							messageWriter:this.admin,
-	 							messageContent:this.messageContent,
-	 							messageTitle:this.messageTitle,
-	 							asdf:this.memberArr,
-	 						},
+	 						headers:{
+			    				"Content-Type" : "multipart/form-data",
+			    			},
+	 						data:formData,
+	 						
 	 					}).then(resp=>{
-	 						this.sendMessageResult=resp.data;
-	 						if(this.sendMessageResult==1){
-	 							this.messageContent=""
-	 							this.messageTitle=""
-	 							window.alert("메세지 전송이 완료되었습니다.")
-	 						}else{
-	 							window.alert("오류가 발생하였습니다. 나중에 다시 시도해주십시오.")
-	 						}
+	 						this.selected=resp.data;
+	 						console.log(this.selected)
+	 						window.alert(this.selected.length+"명의 회원에게 메세지가 전달하였습니다.")
 	 					})
                 	
                 	

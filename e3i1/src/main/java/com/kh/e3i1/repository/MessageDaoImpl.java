@@ -1,10 +1,12 @@
 package com.kh.e3i1.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.e3i1.entity.MessageDto;
 import com.kh.e3i1.vo.MessageVO;
@@ -16,7 +18,7 @@ public class MessageDaoImpl implements MessageDao{
 	private SqlSession sqlSession;
 	
 	@Override
-	public int sendMessage(MessageDto messageDto) {
+	public int sendMessage1(MessageDto messageDto) {
 		//시퀀스 생성
 		int messageNo= sqlSession.selectOne("message.sequence");
 		messageDto.setMessageNo(messageNo);
@@ -63,6 +65,31 @@ public class MessageDaoImpl implements MessageDao{
 	@Override
 	public MessageVO messageSentDetail(int messageNo) {
 		return sqlSession.selectOne("message.messagesentdetail",messageNo); //메세지 조회
+	}
+
+	@Override
+	public List<Integer> sendMessage2(MessageDto messageDto, List<Integer> asdf) {
+		List<Integer> sentTo = new ArrayList<Integer>();
+		for(Integer no :asdf) {
+			int messageNo= sqlSession.selectOne("message.sequence");
+			messageDto.setMessageNo(messageNo);
+			messageDto.setMessageReceiver(no);
+			sqlSession.insert("message.sendmessage", messageDto);
+		}
+		return sentTo;
+	}
+
+	@Override
+	public List<Integer> sendMessage3(MessageDto messageDto, List<Integer> asdf) {
+		List<Integer> sentTo = new ArrayList<Integer>();
+		for(Integer messageReceiver: asdf) {
+			int messageNo= sqlSession.selectOne("message.sequence");
+			messageDto.setMessageNo(messageNo);
+			messageDto.setMessageReceiver(messageReceiver);
+			sqlSession.insert("message.sendmessage", messageDto);
+			sentTo.add(messageReceiver);
+		}
+		return sentTo;
 	}
 
 }

@@ -62,8 +62,8 @@ public class AdminRestController {
 		return adminDao.memberCount();
 	}
 	//멤버 삭제
-	@DeleteMapping("/member/{memberNo}")
-	public List<Integer> deleteMember(@PathVariable  List<Integer> memberNo){
+	@DeleteMapping("/member/")
+	public List<Integer> deleteMember(@RequestParam List<Integer> memberNo){
 		return adminDao.deleteMember(memberNo);
 	}
 	//멤버 상세조회
