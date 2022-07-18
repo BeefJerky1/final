@@ -46,6 +46,7 @@
 			<result column="mbti_board_vote1" property="mbtiBoardVote1"/>
 			<result column="mbti_board_vote2" property="mbtiBoardVote2"/>
 			<result column="mbti_board_reply_count" property="mbtiBoardReplyCount"/>
+			<result column="mbti_report_count" property="mbtiReportCount"/>
 		</association>
 		
 		<association property="memberDto" javaType="MemberDto">
@@ -71,6 +72,16 @@
 			<result column="member_name" property="memberName"/>
 		</association>
 	
+		<association property="animalPhotoDto" javaType="AnimalPhotoDto">
+			<result column="attach_no" property="attachNo"/>
+			<result column="animal_no" property="animalNo"/>
+		</association>
+		
+		<association property="memberProfileDto" javaType="MemberProfileDto">
+			<result column="member_no" property="memberNo"/>
+			<result column="attach_no" property="attachNo"/>
+		</association>
+	
 	</resultMap>
 	
 	<select id="mbtiboardList" resultMap="mbtiboardMap">
@@ -88,17 +99,20 @@
 			select rownum rn, TMP.* from (
 				select * from mbti_board B
       		join member M on B.member_no = M.member_no
+      		join member_profile P on M.member_no = P.member_no
+      		join animal_photo AP on AP.attach_no = P.attach_no
     	<if test ="keyword !=null">
 	 		<![CDATA[
 	 		where instr(mbti_board_title, #{keyword}) > 0
 	 		or instr(mbti_board_content, #{keyword}) > 0
-	 		order by B.mbti_board_time desc
+	 		order by B.mbti_board_time asc
 	 		]]>
 	 		</if>
 		) TMP
 			) where rn between  #{begin} and #{end}
 
 	</select>
+
 	
 	
 	<!-- 상세 조회 -->
@@ -106,6 +120,8 @@
 	 <select id="one" parameterType="int" resultMap="mbtiboardMap">
  		select * from mbti_board B
  		join member M on B.member_no = M.member_no
+		join member_profile P on M.member_no = P.member_no
+      	join animal_photo AP on AP.attach_no = P.attach_no
  		where mbti_board_no = #{mbtiBoardNo}
  	</select>
  	
@@ -172,5 +188,15 @@
 		        ) TMP
 		) where RN between 1 and 3
 	</select>
+	
+	<!-- 신고 카운트 -->
+	
+		<update id="reportCount" parameterType="int">
+	  	update mbti_board
+		set mbti_report_count = (
+		select count(*) from mbti_board_report where mbti_report_target = #{mbtiBoardNo}
+		)
+		where mbti_board_no = #{mbtiBoardNo}
+	</update>
 		
 </mapper>

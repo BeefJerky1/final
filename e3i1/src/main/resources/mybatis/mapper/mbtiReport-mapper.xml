@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mbtiBoardReport">
+	
+	<!-- 시퀀스 생성 -->
+	<select id="sequence" resultType="int">
+	select mbti_report_no_seq.nextval from dual
+	</select>
+	
+	<insert id="board" parameterType="mbtiBoardReportDto">
+	insert into mbti_board_report (
+		mbti_report_no, mbti_board_no, mbti_report_target,
+		mbti_report_writer, mbti_report_reporter, mbti_report_category,
+		mbti_report_content
+	)
+	values (
+		#{mbtiReportNo}, #{mbtiBoardNo}, #{mbtiReportTarget},
+		#{mbtiReportWriter}, #{mbtiReportReporter}, #{mbtiReportCategory, jdbcType=VARCHAR},
+		#{mbtiReportContent, jdbcType=VARCHAR}
+	)
+	</insert>
+	<select id="boardInfo" parameterType="int" resultType="mbtiBoardReportDto">
+		select * from mbti_board_report where mbti_report_no = #{mbtiReportNo}
+	</select>
+	
+	<select id="list" resultType="mbtiBoardReportDto">
+		select * from mbti_board_report where mbti_board_no = #{mbtiBoardNo}
+	
+	</select>
+	
+</mapper>

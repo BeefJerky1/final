@@ -30,13 +30,43 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 		return sqlSession.selectList("mbtiBoard.mbtiboardList", param);
 	}
 
+	@Override
+	public List<MbtiMemberListVO> list(String keyword, int page, int size) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("keyword", keyword);
+		
+		int end = page * size;
+		int begin = end - (size - 1);
+		param.put("begin", begin);
+		param.put("end", end);
+		
+		return sqlSession.selectList("mbtiBoard.mbtiboardList2", param);
+	}
+	
+	// 정렬을 위한 목록
+	@Override
+	public List<MbtiMemberListVO> listAll(String keyword, String column, String order) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("keyword", keyword);
+		param.put("column", column);
+		param.put("order",order);
+		
+		return sqlSession.selectList("mbtiBoard.mbtiboardList3", param);
+	}
+	
 	// 게시판 상세 페이지
 	@Override
 	public MbtiMemberListVO read(int mbtiBoardNo) {
-		
+		this.reportCount(mbtiBoardNo);
 		return sqlSession.selectOne("mbtiBoard.one", mbtiBoardNo);
 	}
-
+	//신고 수 갱신
+	@Override
+	public void reportCount(int mbtiBoardNo) {
+		sqlSession.update("mbtiBoard.reportCount",mbtiBoardNo);	
+	}
+	
+	
 	// 게시판 글 작성하기
 	
 	@Override
@@ -70,7 +100,7 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 
 	@Override
 	public boolean edit(MbtiBoardDto mbtiBoardDto) {
-		int count = sqlSession.update("mbtiBoard.update", mbtiBoardDto);
+		int count = sqlSession.update("mbtiBoard.edit", mbtiBoardDto);
 		return count > 0;
 	}
 
@@ -82,18 +112,7 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 		return sqlSession.selectOne("mbtiBoard.count", param);
 	}
 
-	@Override
-	public List<MbtiMemberListVO> list(String keyword, int page, int size) {
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("keyword", keyword);
-		
-		int end = page * size;
-		int begin = end - (size - 1);
-		param.put("begin", begin);
-		param.put("end", end);
-		
-		return sqlSession.selectList("mbtiBoard.mbtiboardList2", param);
-	}
+
 
 	// 투표하기
 	
@@ -137,6 +156,8 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 	public List<MbtiMemberListVO> bestMbtiBoard() {
 		return sqlSession.selectList("mbtiBoard.bestMbtiBoard");
 	}
+
+
 
 
 

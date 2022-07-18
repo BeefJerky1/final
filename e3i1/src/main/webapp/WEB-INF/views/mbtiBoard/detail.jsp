@@ -117,7 +117,6 @@ a {
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-<body>
 
    <body class="bg-light">
       <div class="web-none d-flex align-items-center px-3 pt-3">
@@ -136,7 +135,7 @@ a {
             
                <!-- Main Content -->
                <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
-                  <div class="main-content">
+                  <div class="main-content"  id="app">
                      <div class="mb-4 d-flex align-items-center">
                         <div class="d-flex align-items-center">
                            <p class="ms-2 mb-0 fw-bold text-body fs-6">MBTI Community  <i class="fa-solid fa-heart fx-2" style="color:#ffa8c9;"></i></p>
@@ -146,7 +145,7 @@ a {
                      <!--  글 작성 모달 -->
                        <div class="input-group shadow-sm mb-3 rounded-4 overflow-hidden py-2 bg-white" data-bs-toggle="modal" data-bs-target="#postModal">
                            <span class="input-group-text material-icons border-0 bg-white text-primary" style="color: #514e85 !important;">account_circle</span>
-                           <input type="text" class="form-control border-0 fw-light ps-1" placeholder="새로운 글을 작성해 보세요.">
+                           <input type="text" class="form-control border-0 fw-light ps-1"  :disabled="isAnonymous" :placeholder="textareaPlaceholder">
                            <a href="#" class="text-decoration-none input-group-text bg-white border-0 material-icons text-primary" style="color: #514e85 !important;">add_circle</a>
                         </div>
                      
@@ -168,10 +167,15 @@ a {
                      
    					<!-- 게시글 영역 -->
    					<div class="bg-white rounded-4 shadow-sm profile mb-2"  id="mbti-board">
-                        <div class="d-flex align-items-center px-3 pt-3" id="app">
+                        <div class="d-flex align-items-center px-3 pt-3" >
                        		<div class="bg-white p-3 feed-item rounded-4 mb-3 shadow-sm">
                                     <div class="d-flex">
-                                       <img src="${root}/image/mbti/강아지(ENFP).png" class="img-fluid rounded-circle user-img" alt="profile-img">
+	                                        <span v-if="${mbtiMemberListVO.memberProfileDto.attachNo==null}">
+		                     				   <img src="${root}/image/mbti/강아지(ENFP).png" class="img-fluid rounded-circle" alt="profile-img" >
+											</span>
+											<span v-if="${mbtiMemberListVO.memberProfileDto.attachNo!=null}">
+	                           				<img :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+${mbtiMemberListVO.memberProfileDto.attachNo }" class="img-fluid rounded-circle" alt="profile-img">
+	                          				</span> 
                                        <div class="d-flex ms-3 align-items-start w-100">
                                           <div class="w-100">
                                              <div class="d-flex align-items-center justify-content-between">
@@ -182,7 +186,12 @@ a {
                                              </div>
                                              <div class="my-2 mb-4">
                                                 	<h6 class="fw-bold text-body mb-4">${mbtiMemberListVO.memberDto.memberAnimal }</h6>
+                                             	<div v-if="${mbtiMemberListVO.mbtiBoardDto.mbtiReportCount} > 2">
+                                                	<h6 class="fw-bold text-dark mb-4" style="color:  #d64444 !important; ">신고가 접수된 블라인드 게시글입니다.  <br>불편을 끼쳐드려 죄송합니다.</h6>
+                                                </div>
+                                                <div v-else>
                                                 	<h6 class="fw-bold text-dark mb-4">${mbtiMemberListVO.mbtiBoardDto.mbtiBoardContent }</h6>
+                                                </div>
                                                 	
 						               <!-- 추천 / 반대  -->
 												<div class="thumbs mt-5" >
@@ -213,21 +222,83 @@ a {
                                                       <i class="fa-solid fa-message fa-2x" style="color:#f3dba5;"></i>&nbsp;
                                                       <span class="fw-bold" style="font-size : 14px;">${mbtiMemberListVO.mbtiBoardDto.mbtiBoardReplyCount}</span>
                                                    </div>
+                                                   
+                                                   <c:if test="${isOwner || isAdmin}">
                                                    <!-- 수정 -->
                                                    <div>
-                                                      <a href="edit" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-pen-to-square fa-2x" ></i></a>
+                                                      <i class="fa-solid fa-pen-to-square fa-2x" data-bs-toggle="modal" data-bs-target="#exampleModal" ></i>
 						
                                                    </div>
                                                    <!-- 삭제 -->
                                                    <div>
                                                    <a href="delete?mbtiBoardNo=${mbtiMemberListVO.mbtiBoardDto.mbtiBoardNo}"><i class="fa-solid fa-trash-can fa-2x" ></i></a>
                                                    </div>
+                                                   </c:if>
+                                                   
+                                                   <!--  신고 -->
+                                                   
+				                                    <div v-if="isBoardWriter">
+														<!-- 게시글 작성자는 신고 버튼 안보임 -->
+													</div>
+                                                   <div v-else-if="!isAlreadyReported">
+                                                   <!-- 신고 안 한 사람 -->
+                                 						 <i class="fa-solid fa-lightbulb fa-2x" data-bs-toggle="modal" data-bs-target="#reportBoard" style="color : #d64444 !important"></i>
+                                                   </div>
+	                                                   
+												<div v-else-if="isAlreadyReported">
+													<!-- 이미 신고한 사람 -->
+													<i class="fa-solid fa-lightbulb fa-2x"  :disabled="isAlreadyReported" style="color : #d64444 !important"></i>
+												</div>
+	                                                   
+                                                   
+			<div class="modal fade" id="reportBoard" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">게시물 신고</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close" v-on:click="cancelReport()"></button>
+								</div>
+								<div class="modal-body">
+									<div class="mt-3">
+										<label class="label-control"><b>신고 분류</b></label> <select
+											class="form-select" v-model="mbtiReportCategory">
+											<option value="영리목적/홍보">영리목적/홍보</option>
+											<option value="불법정보">불법정보</option>
+											<option value="욕실/인신공격">욕실/인신공격</option>
+											<option value="개인정보노출">개인정보노출</option>
+											<option value="음란성/선정성">음란성/선정성</option>
+											<option value="기타">기타</option>
+										</select>
+									</div>
+									<div class="mt-3">
+										<label><b>신고 상세 내역</b></label>
+										<textarea class="form-control" v-model="mbtiReportContent"></textarea>
+									</div>
+									<div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
+			                     <span class="leg">
+			                    	<span class="text-muted count2" >{{mbtiReportContent.length}}</span> 
+			                    	/
+			                    	<span class="text-muted total">300</span> 
+			                     </span>
+			                  </div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal" v-on:click="cancelReport()">취소</button>
+									<button type="button" class="btn btn-danger"
+										v-on:click="boardReport()" :disabled="BoardReportReasonEmpty()==true"data-bs-dismiss="modal">접수</button>
+								</div>
+							</div>
+						</div>
+					</div>
+		
                                                    
                                                 </div>
                                                 <div class="d-flex align-items-center mb-3">
                                                    <input type="text"  v-model="mbtiReplyContent" class="form-control form-control-sm rounded-3 fw-light" 
-                                                   style="width : 100% !important;"
-                                                   placeholder="댓글을 작성해 보세요.">&nbsp;
+                                                   style="width : 100% !important;" :disabled="isAnonymous" :placeholder="textareaPlaceholder" 
+                                                  >&nbsp;
                                                 	<i class="fa-solid fa-circle-chevron-right fa-2x" @click="addReply"></i>
                                                 </div>
                                  
@@ -244,13 +315,13 @@ a {
                                                                <h7 class="fw-bold mb-0">@{{reply.memberDto.memberAnimal}}</h7><br>
                                                                <span class="text-muted">{{reply.mbtiBoardReplyDto.mbtiReplyContent}}</span><br>
                                                                <span class="text-muted">{{elapsedText(reply.mbtiBoardReplyDto.mbtiReplyTime)}}</span>
-                                                         <div class="d-flex align-items-right ms-2" style="float:right;">
                                                          
-                                                         	<span class="me-2"><i class="fa-solid fa-pen-to-square" @click="changeEditMode(index);"></i></span>
+                                                         <div v-if="isEditAndDeleteAvailable(reply.mbtiBoardReplyDto.memberNo)" class="d-flex align-items-right ms-2" style="float:right;">
+                                                         	<span class="me-2"><i  v-if="!isAdmin" class="fa-solid fa-pen-to-square" @click="changeEditMode(index);"></i></span>
 															<span class="me-2"><i class="fa-solid fa-trash-can" @click="deleteReply(index);"></i></span>
-                                                            
-                                                         	</div>
-                                                            </div>
+                                                         </div>
+                                                         
+                                                         </div>
                                                       </div>
                                                    </div>
                                                    
@@ -259,8 +330,8 @@ a {
                                                    		<img src="${root }/image/mbti/거북이(ISTP).png"  style="width: 2rem;">                                                      
                                                       <div class="ms-2 small">
                                                             <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
-                                                               <input type="text" class="replyEdit text-muted" v-model="mbtiBoardReplyList[index].mbtiBoardReplyDto.mbtiReplyContent">
-																<i class="fa-solid fa-circle-check fa-2x" @click="editReply(index);" style="color:#f3dba5;"></i>
+                                                               <input type="text" class="replyEdit text-muted"  v-model="mbtiBoardReplyList[index].mbtiBoardReplyDto.mbtiReplyContent">
+																<i class="fa-solid fa-circle-check fa-2x" @click="editReply(index);"  :disabled="isAnonymous" style="color:#f3dba5;"></i>
                                                             </div>
                                                       </div>
                                                    
@@ -288,7 +359,7 @@ a {
            
                      </div>
                   </div>
-                  
+                  </div>
                </main>
                <aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-6 col-12">
                   <div class="p-2 bg-light offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample">
@@ -500,6 +571,7 @@ a {
 
 		 <!-- 게시글 수정 Modal -->
 					<form action="edit" method="post">
+					<input type="hidden" name="mbtiBoardNo" value="${mbtiMemberListVO.mbtiBoardDto.mbtiBoardNo }">
 						<div class="modal fade" id="exampleModal" tabindex="-1"
 							aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
@@ -548,7 +620,23 @@ a {
 			return {
 				// 게시글 번호
 				mbtiBoardNo:${mbtiMemberListVO.mbtiBoardDto.mbtiBoardNo },
-				
+				memberNo:"${login}",
+		        memberAdmin:"${auth}",
+		        
+		        // 신고에 필요한 정보
+		        mbtiReportWriter: ${mbtiMemberListVO.mbtiBoardDto.memberNo },
+				mbtiReportCategory: "", // 신고 분류
+				mbtiReportContent: "", //신고 내역
+		        
+                //게시글 신고
+                clubReportCategory:"",//신고분류
+                clubReportContent:"",//신고내역
+                isAlready:"", // 신고내역 저장
+                mbtiReportList: {
+                	mbtiBoardReportDto: {},
+                }, // 신고내역 불러오기
+                mbtiReportReporter: "",
+                
 				// 댓글 입력 정보
 				mbtiReplyContent:"",
 				
@@ -556,7 +644,6 @@ a {
 				mbtiBoardReplyList:[],
 				
 				// 좋아요 기능에 필요한 데이터
-				memberNo:9,
 				itLike : false,
 				likeCount : "",
 				
@@ -564,9 +651,25 @@ a {
 				voteCount : "",
 				// 투표 전체 개수 카운팅
 				voteTotalCount : "",
+				
+
+                
 			};
 		},
 		computed:{
+	        isAnonymous(){
+	        	return this.memberNo == "";
+	        },
+	        isMember(){
+	        	return this.memberNo != "" && this.memberAdmin != "";
+	        },
+	        isAdmin(){
+	        	return this.isMember && this.memberGrade == "관리자";
+	        },
+	        boardContentIsEmpty(){
+	        	return this.mbtiReplyContent.length == 0;
+	        },
+	        
 			isVotePercent () {
 				var num = this.voteCount * 100.0 / this.voteTotalCount;
 				if (isNaN(num)) { // 값이 없어서 NaN값이 나올 경우
@@ -574,7 +677,22 @@ a {
 					}
 				return num.toFixed(0);
 			},
-		
+			
+	        textareaPlaceholder(){
+	        	return this.isAnonymous ? "로그인 후 작성할 수 있습니다" : "새롭게 작성해 보세요!";
+	        },
+	        
+		        //게시글 작성자 == 세션 멤버 일때 신고 불가
+		        isBoardWriter(){
+		        	return this.memberNo== ${mbtiMemberListVO.mbtiBoardDto.memberNo };
+		        },
+				
+ 		        //게시글 이미 신고한 자라면 신고불가
+ 		        isAlreadyReported(){
+		        	//console.log("신고:", this.mbtiReportList.mbtiReportReporter); 	
+		        	return this.memberNo == this.mbtiReportList.mbtiReportReporter;
+ 		        },
+ 		        
 		},
 		methods:{
 			// 투표 *공감 
@@ -666,7 +784,6 @@ a {
 	
 		},
 		
-		
 			// 좋아요 
  			likeUpdate(){
 				axios({
@@ -693,9 +810,13 @@ a {
 	        	}); 
 			}, 
 			
-			
 			// 댓글 추가
 			addReply(){
+				
+	        	//미입력 시 차단
+	        	if(this.boardContentIsEmpty) return;
+	        	
+	        	
 	        	axios({
 	        		url:"${pageContext.request.contextPath}/rest/mbtiBoardReply/",
 	        		method:"post",
@@ -725,6 +846,16 @@ a {
 		        	});
 			},
 			
+			isEditAndDeleteAvailable(memberNo){
+	        	//1.관리자면 통과
+	        	if(this.isAdmin) return true;
+	        	
+	        	//2. 현재사용자가 작성자라면 통과
+	        	if(this.memberNo == memberNo) return true;
+	        	
+	        	//나머지 다 차단
+	        	return false;
+	        },
 
 			// 댓글 삭제
 			  deleteReply(index){
@@ -752,6 +883,7 @@ a {
 	        	this.mbtiBoardReplyList[index].edit = false;	
 	        },
 	        
+	        // 댓글 수정
 	        editReply(index){
 	        	const reply = this.mbtiBoardReplyList[index];
 	        	if(reply.mbtiBoardReplyDto.mbtiReplyContent.length == 0) return;
@@ -769,8 +901,59 @@ a {
 	        		this.loadReply();
 	        	});
 	        },
-			
-			
+	        
+        	//게시글 신고 사유 미작성시 접수 버튼 비활성화
+        	BoardReportReasonEmpty(){
+        		return this.mbtiReportCategory.length==0 || this.mbtiReportContent.length==0;		
+        	},
+        	
+        	// 게시글 신고 내역 불러오기
+			  loadReport(){
+                
+	        	axios({
+	        		url:"${pageContext.request.contextPath}/rest/mbtiReport/"+this.mbtiBoardNo,
+	        		method:"get",
+	        	})
+	        	.then(resp=>{
+	        		this.mbtiReportList = resp.data;
+	        	});
+		},
+		
+        	//게시글 신고
+            boardReport(){
+            	axios({
+            		url:"${pageContext.request.contextPath}/rest/mbtiReport/report",
+            		method:"post",
+           			data:{
+           				mbtiBoardNo:this.mbtiBoardNo,
+           				mbtiReportTarget: this.mbtiBoardNo,
+           				mbtiReportWriter:this.mbtiReportWriter, 
+           				mbtiReportReporter:this.memberNo,
+           				clubReportCategory:this.clubReportCategory,
+           				clubReportContent:this.clubReportContent,
+           			},
+            	}).then(resp=>{
+            		this.boardResult = resp.data
+            		if(this.boardResult==1){
+            			window.alert("신고가 완료되었습니다")
+            			this.cancelReport();
+
+            		}else{
+            			window.alert("오류가 발생했습니다. 나중에 다시 시도해주십시오.")
+            			this.cancelReport();
+            		}
+            	})
+	        },
+	        
+        	//신고 취소하면 리프레쉬
+        	cancelReport(){
+        		this.clubReportCategory='';
+        		this.clubReportContent='';
+        	},
+        	
+        	
+        	
+        	
 		
 		},
 		    
@@ -779,6 +962,7 @@ a {
 			this.loadVote();
 			this.loadVoteTotal();
 			this.loadLikeCount();
+			this.loadReport();
 		},
 	});
 	app.mount("#app");
