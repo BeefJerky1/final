@@ -5,41 +5,7 @@
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/member.css">
 <style>
-	.tagtitle {
-		font-weight: 900;
-		font-size: 1.0em;
-	}
 	
-	.tagtext {
-		font-weight: 500;
-		font-size: 0.85em;
-	}
-	
-	.card {
-		border-width: 0.25em;
-	}
-	.card:hover{
-		border-color: #3E4684;
-		border-width: 0.25em;
-	}
-	.checked{
-		border-color: #3E4684;
-		border-width: 0.25em;
-	}
-	
-	.maincolor {
-		color: #3E4684;
-		font-weight: 900;
-		font-size: 1.0em;
-	}
-	
-	input[type="checkbox"]{
-		display:none;
-	}
-	
-	i{
-		color: #3E4684;
-	}
 </style>
 
 
@@ -262,7 +228,7 @@
 			</div>
 		</div>
 
-		<!-- 5번째 페이지 -->
+		<!-- 5번째 페이지 --> 
 		<div class="container w500 m30 page">
 			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark rounded">
 				<div class="col-md-8 offset-md-2">
@@ -294,7 +260,7 @@
 		</div>
 
 		<!-- 6번째 페이지 -->
-		<div class="container w500 m30 page">
+		<div class="container w500 m30 page mb-5" style="height:570px;">
 			<div class="col-md-8 offset-md-2 mb-5 text-dark rounded">
 				<input type="hidden" name="memberMbti" ref="memberMbti">
 
@@ -455,19 +421,19 @@
 
 		<!-- 7번째 페이지 -->
 		<div class="container w500 m30 page">
-			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
+			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark">
 				<input type="hidden" name="memberAnimal" :value="memberAnimal.mbtiAnimalDto.animal" v-if="memberAnimal.mbtiAnimalDto != null">
 				<input type="hidden" name="memberInterest1" :value="interest[0]">
 				<input type="hidden" name="memberInterest2" :value="interest[1]">
 				<input type="hidden" name="memberInterest3" :value="interest[2]">
 				<input type="hidden" name="attachNo" :value="memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null">
 				<div class="row">
-					<div class="card" v-if="memberAnimal != null">
-						<div class="card-img text-center">
+					<div v-if="memberAnimal != null">
+						<div class="text-center">
 							<img src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png" v-if="memberAnimal.attachmentDto == null">  
-							<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null">
+							<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null" style="width: 100px; height: 100px;">
 						</div>
-						<h3 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.animal}}</h3> 
+						<span class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">회원님의 성향분석결과는 <span class="boldfont">{{memberAnimal.mbtiAnimalDto.animal}}</span> 입니다.</span> 
 					</div>
 				</div>
 				<div class="row mt-4">
