@@ -288,7 +288,7 @@ where C.club_board_No = #{clubBoardNo}
    select * from (
     select rownum rn, TMP.* from ( select * from club_board C left outer join (select * from blocked where blocked_user = #{memberNo})K
   on C.club_board_writer = K.blocked_target where club_board_time >= TO_CHAR(SYSDATE-7,'YYYYMMDD' ) and club_board_writer not in (select blocked_target from blocked where blocked_user =#{memberNo})
- and club_board_writer not in (select blocked_user from blocked where blocked_target = #{memberNo}) and club_no = 19 order by
+ and club_board_writer not in (select blocked_user from blocked where blocked_target = #{memberNo}) and club_no = #{clubNo} order by
 	<choose>
 		<when test="orderType == 'clubBoardLikeAsc'">club_board_like asc</when>
 		<when test="orderType == 'clubBoardLikeDesc'">club_board_like desc</when>

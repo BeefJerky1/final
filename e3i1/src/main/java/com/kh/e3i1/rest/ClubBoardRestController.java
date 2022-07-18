@@ -167,7 +167,7 @@ public class ClubBoardRestController {
 	//메세지 작성
 	@PostMapping("/message")
 	public int sendMessage(@RequestBody MessageDto messageDto) {
-		return messageDao.sendMessage(messageDto);
+		return messageDao.sendMessage1(messageDto);
 	}
 	//게시글 상세페이지에서 클럽정보 불러오기
 	@GetMapping("/clubDetail/{clubBoardNo}")

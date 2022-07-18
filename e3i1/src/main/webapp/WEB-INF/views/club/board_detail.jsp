@@ -6,6 +6,10 @@
 <c:set var="memberAdmin" value="${auth == '관리자'}"></c:set>
 <c:set var="isLogin" value="${memberNo != null}"></c:set>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/modal.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/club.css">
 <style>
   .modal { background: rgba(0, 0, 0, 0.5) !important; }   
   .modal-backdrop { display: none !important; }  
@@ -164,129 +168,97 @@ position:relative;
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div id="app" class="container-fluid">
 	<div class="row">
-		<div class="col-lg-3 col-md-3 col-sm-3 mt-5 left-side">
-				<!-- 소모임 정보 출력 -->
-			<div
-				class="border text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side rounded shadow"
-				style="border-radius: 1em !important">
-				<div class="row">
-					<div class="col-md-2 align-self-center">
-						<i class="fa-solid fa-house-chimney fa-2x"
-							style="color: lightgray;"></i>
-					</div>
-					<div class="col-md-8 align-self-center"
-						v-if="clubList.clubDto != null">
-						<h5 style="margin: 0px;">{{clubList.clubDto.clubName}}</h5>
-					</div>
-					<div class="col-md-2 align-self-center">
-						<div class="row" @click="likeClub">
-							<i class="fa-solid fa-heart" style="color: red;" v-if="isLike"></i>
-							<i class="fa-regular fa-heart" style="color: red;" v-if="!isLike"></i>
+		<div class="col-lg-3 col-md-3 col-sm-3 mt-5 left-side "	>
+             <div class="border text-dark mt-3 p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 rounded shadow white" style="border-radius:1em !important">
+                  <div class="row">
+							<div class="col-md-2 align-self-center"></div>
+							<div class="text-center" v-if="clubList.clubDto != null">
+								<a
+									:href="'${pageContext.request.contextPath}/club/detail?clubNo='+clubList.clubDto.clubNo">
+									<i class="fa-solid fa-house"></i>
+								</a> <span class="boldfont">&nbsp;&nbsp;{{clubList.clubDto.clubName}}&nbsp;&nbsp;</span>
+								<span @click="likeClub"> <i class="fa-solid fa-heart"
+									style="color: red;" v-if="isLike"></i> <i
+									class="fa-regular fa-heart" style="color: red;" v-if="!isLike"></i>&nbsp;
+								</span> <i class="fa-solid fa-circle-exclamation"></i>
+							</div>
 						</div>
-						<div class="row mt-2">
-							<i class="fa-solid fa-bullhorn"></i>
-						</div>
-					</div>
-				</div>
+				
+					<hr>
 
-				<hr>
-
-
-				<div class="row">
-					<div class="col-md-2" width="10px" height="10px">
-<!--                          		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+clubList.clubProfileDto.attachNo">  -->
-
-					</div>
-					<div class="col-md-8 offset-md-2 row align-self-center">
-						<div class="col-md-3">
-							<i class="fa-solid fa-crown fa-2x" style="color: #f6e58d"></i>
-						</div>
-						<div class="col-md-9 align-self-center"
+					
+						<div class="card-title">
+						<div class="row text-center my-2"
 							v-if="clubList.memberDto != null">
-							<h6 style="margin: 0px;">{{clubList.memberDto.memberNick}}</h6>
+							<span><i class="fa-solid fa-crown" style="color: #f6e58d;"></i></span>
+							<span class="boldfontS">{{clubList.memberDto.memberNick}}</span>
+						</div>
+						<div class="row">
+							<div class="col-md-4" width="16px" height="16px"
+								style="margin-left: 0.8em; margin-top: 0.45em;">
+								<img src="${pageContext.request.contextPath}/image/mbti/거북이(ISTP).png" class="profile"
+									v-if="clubList.memberProfileDto == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo"
+									class="profile" v-if="clubList.memberProfileDto != null">
+							</div>
+							<div class="col-md-7 text-right" v-if="clubList.clubDto != null"
+								width="10px" height="10px">
+								<div class="hash-tag text-center">\#{{clubList.clubDto.clubMainCategory}}</div>
+								<div class="hash-tag text-center">\#{{clubList.clubDto.clubSubCategory}}</div>
+								<div class="hash-tag text-center">\#{{clubList.clubDto.clubPlace}}</div>
+							</div>
+						</div>
+
+						<div class="text-right mt-2 boldfontSright"
+							v-if="clubList.clubMbtiPercent != null">
+							<span class="col-md-10"><i class="fa-solid fa-user-group"
+								style="margin-right: 0.5em;"></i>{{clubList.clubMbtiPercent.total}}
+								/ {{clubList.clubDto.clubMemberLimit}}</span>
 						</div>
 					</div>
-				</div>
 
-				<div class="row mt-4" v-if="clubList.clubDto != null">
-					<div class="col-md-4">
-						<div class="hash-tag">
-							<span>\#{{clubList.clubDto.clubMainCategory}}</span>
+
+
+						<div class="text-center mb-3">
+							<span class="boldfontS">소모임 멤버 MBTI TOP 3 <i
+								class="fa-solid fa-ranking-star"></i></span>
 						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="hash-tag">
-							<span>\#{{clubList.clubDto.clubSubCategory}}</span>
+
+						<!-- v-for index를 []안에 사용할 방법을 찾으면 v-for로 반복할 예정 너무 복잡해지면 그냥 이대로 사용 -->
+						<div class="row">
+							<div class="col-md-4 text-center" v-if="mbtiList[0] != null">
+								<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[0].attachNo == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[0].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[0].attachNo != null">
+								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[0].memberMbti}}</p>
+								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[0].mbtiPercent}}%</p>
+							</div>
+							<div class="col-md-4 text-center" v-if="mbtiList[1] != null">
+								<img src="${root }/image/mbti/물개(ESFP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[1].attachNo == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[1].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[1].attachNo != null">
+								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[1].memberMbti}}</p>
+								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[1].mbtiPercent}}%</p>
+							</div>
+							<div class="col-md-4 text-center" v-if="mbtiList[2] != null">
+								<img src="${root }/image/mbti/원숭이(ESTP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[2].attachNo == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[2].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[2].attachNo != null">
+								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[2].memberMbti}}</p>
+								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[2].mbtiPercent}}%</p>
+							</div>
 						</div>
-					</div>
-				</div>
-				<div class="row mt-4" v-if="clubList.clubMbtiPercent != null">
-					<div class="col-md-2">
-						<i class="fa-solid fa-user-group"></i>
-					</div>
-					<div class="col-md-10">{{clubList.clubMbtiPercent.total}} /
-						{{clubList.clubDto.clubMemberLimit}}</div>
-				</div>
-
-
-				<div class="col">
-					<h5 style="font-weight: bold">우리 소모임 MBTI 순위</h5>
-				</div>
-
-				<!-- v-for index를 []안에 사용할 방법을 찾으면 v-for로 반복할 예정 너무 복잡해지면 그냥 이대로 사용 -->
-				<div class="row mt-4" v-if="mbtiList[0] != null">
-					<div class="col-md-4">
-						<img src="https://via.placeholder.com/250/69f/fff.png"
-							class="profile">
-					</div>
-					<div class="col-md-8 align-self-center">
-						<div>
-							<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[0].memberMbti}}</h4>
-						</div>
-						<div>
-							<p style="margin: 0px 0px;">{{mbtiList[0].mbtiPercent}}%</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="row mt-4" v-if="mbtiList[1] != null">
-					<div class="col-md-4">
-						<img src="https://via.placeholder.com/250/69f/fff.png"
-							class="profile">
-					</div>
-					<div class="col-md-8 align-self-center">
-						<div>
-							<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[1].memberMbti}}</h4>
-						</div>
-						<div>
-							<p style="margin: 0px 0px;">{{mbtiList[1].mbtiPercent}}%</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="row mt-4" v-if="mbtiList[2] != null">
-					<div class="col-md-4">
-						<img src="https://via.placeholder.com/250/69f/fff.png"
-							class="profile">
-					</div>
-					<div class="col-md-8 align-self-center">
-						<div>
-							<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[2].memberMbti}}</h4>
-						</div>
-						<div>
-							<p style="margin: 0px 0px;">{{mbtiList[2].mbtiPercent}}%</p>
-						</div>
-					</div>
-				</div>
-
-
-
-
-
-
-			</div>
-
-		</div>
+            </div>
+            </div>
 		<div class="col-lg-5 col-md-5 col-sm-5 main">
 			<div
 				class="border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 rounded"
@@ -493,7 +465,7 @@ position:relative;
 					<div class="text-end">
 						<textarea class="form-control reply " v-model="replyContent"
 							placeholder="내 댓글을 등록합니다" style="border-radius: 1em !important"></textarea>
-						<button class="btn btn-primary shadow" v-on:click="addReply"
+						<button class="btn btn-primary shadow" v-on:click="addReply" :disabled="replyContentIsEmpty()==true"
 							style="border-radius: 1em !important">댓글 등록</button>
 					</div>
 				</div>
@@ -602,13 +574,13 @@ position:relative;
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h5 class="modal-title" id="exampleModalLabel">게시물 신고</h5>
+										<h5 class="modal-title" id="exampleModalLabel">댓글 신고</h5>
 										<button type="button" class="btn-close"
-											data-bs-dismiss="modal" aria-label="Close"></button>
+											data-bs-dismiss="modal" aria-label="Close" v-on:click="cancelReport()"></button>
 									</div>
 									<div class="modal-body">
 										<div class="">
-											<label class="label-control"><b>게시물 작성자:</b></label>
+											<label class="label-control"><b>게시물 작성자:{{reply.memberDto.memberNick}}</b></label>
 										</div>
 										<div class="mt-3">
 											<label class="label-control"><b>신고 분류</b></label> <select
@@ -623,14 +595,22 @@ position:relative;
 										</div>
 										<div class="mt-3">
 											<label><b>신고 상세내역</b></label>
-											<textarea class="form-control" v-model="clubReportContent"></textarea>
+											<textarea class="form-control" v-model="clubReportContent" :maxLength="contentMax"></textarea>
 										</div>
+										<div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
+                     <span class="leg">
+                    	<span class="text-muted count2" >{{clubReportContent.length}}</span> 
+                    	/
+                    	<span class="text-muted total">{{contentMax}}</span> 
+                     </span>
+                  </div>
 									</div>
+									
 									<div class="modal-footer">
 										<button type="button" class="btn btn-secondary"
 											data-bs-dismiss="modal" v-on:click="cancelReport()">취소</button>
 										<button type="button" class="btn btn-danger"
-											v-on:click="replyReport() " data-bs-dismiss="modal">접수</button>
+											v-on:click="replyReport() " data-bs-dismiss="modal" :disabled="ReplyReportReasonEmpty()==true">접수</button>
 									</div>
 								</div>
 							</div>
@@ -709,13 +689,13 @@ position:relative;
 		</div>
 	</div>
 	
-          <!--  게시글 더보기에서 메시지 보내기  -->
+          <!--  게시글 메시지 모달  -->
      <div v-if="this.board!=null">
       <div class="modal fade" id="postModal"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
          <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content rounded-4 p-4 border-0 bg-light">
                <div class="modal-header d-flex align-items-center justify-content-start border-0 p-0 mb-3">
-                  <a href="#" class="text-muted text-decoration-none material-icons" data-bs-dismiss="modal">arrow_back_ios_new</a>
+                  <a href="#" class="text-muted text-decoration-none material-icons" data-bs-dismiss="modal" v-on:click="cancelMessage()">arrow_back_ios_new</a>
                   <h5 class="modal-title text-muted ms-3 ln-0" id="staticBackdropLabel"><span class="material-icons md-32">account_circle</span></h5>
                </div>
                <!-- 닉네임 -->
@@ -727,14 +707,14 @@ position:relative;
                <!-- 제목 작성 -->
             <div class="modal-body p-0 mb-3">
                 <div class="form-floating">
-                   <input type="text" class="form-control rounded-5 border-0 shadow-sm" v-model="messageTitle"  id="floatingTextarea2" style="height: 50px">
+                   <input type="text" class="form-control rounded-5 border-0 shadow-sm" v-model="messageTitle"  id="floatingTextarea2" style="height: 50px" :maxLength="titleMax">
                    <label for="floatingTextarea2" class="h6 text-muted mb-0">제목을 작성하세요.</label>
                 </div>
              </div>
              	<!-- 내용 작성 -->
                <div class="modal-body p-0 mb-3">
                   <div class="form-floating">
-                     <textarea class="reviewC form-control rounded-5 border-0 shadow-sm" v-model="messageContent"placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px"></textarea>
+                     <textarea class="reviewC form-control rounded-5 border-0 shadow-sm" v-model="messageContent"placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px" :maxLength="contentMax"></textarea>
                      <label for="floatingTextarea2" class="h6 text-muted mb-0">내용을 작성하세요.</label>
                   </div>
                </div>
@@ -742,26 +722,26 @@ position:relative;
                <div class="modal-footer justify-content-start px-1 py-1 bg-white shadow-sm rounded-5">
                   <div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
                      <span class="leg">
-                    	<span class="text-muted count2" >0</span> 
+                    	<span class="text-muted count2" >{{messageContent.length}}</span> 
                     	/
-                    	<span class="text-muted total">100</span> 
+                    	<span class="text-muted total">{{contentMax}}</span> 
                      </span>
                   </div>
                   <div class="ms-auto m-0">
-                  	<button type="button" v-on:click="sendMessage()"  data-bs-dismiss="modal" data-bs-target="#postModal" class="writeButton btn btn-primary fw-bold px-3 py-2 fs-6 mb-0 d-flex align-items-center" style="border-radius : 1em; background-color: #514e85; border:none; font-size: 14px !important;">보내기</button>
+                  	<button type="button" v-on:click="sendMessage()"  :disabled="messageIsEmpty()==true" data-bs-dismiss="modal" data-bs-target="#postModal" class="writeButton btn btn-primary fw-bold px-3 py-2 fs-6 mb-0 d-flex align-items-center" style="border-radius : 1em; background-color: #514e85; border:none; font-size: 14px !important;">보내기</button>
                   </div>
                </div>
             </div>
          </div>
       </div>
      </div>
-          <!--  댓글 더보기에서 메시지 보내기 -->
+    <!-- 댓글 메세지 모달 -->
       <div v-if="this.replyinformation!=null">
       <div class="modal fade" id="postModal2"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
          <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content rounded-4 p-4 border-0 bg-light">
                <div class="modal-header d-flex align-items-center justify-content-start border-0 p-0 mb-3">
-                  <a href="#" class="text-muted text-decoration-none material-icons" data-bs-dismiss="modal">arrow_back_ios_new</a>
+                  <a href="#" class="text-muted text-decoration-none material-icons" data-bs-dismiss="modal" v-on:click="cancelMessage()">arrow_back_ios_new</a>
                   <h5 class="modal-title text-muted ms-3 ln-0" id="staticBackdropLabel"><span class="material-icons md-32">account_circle</span></h5>
                </div>
                <!-- 닉네임 -->
@@ -773,14 +753,14 @@ position:relative;
                <!-- 제목 작성 -->
             <div class="modal-body p-0 mb-3">
                 <div class="form-floating">
-                   <input type="text" class="form-control rounded-5 border-0 shadow-sm" v-model="messageTitle"  id="floatingTextarea2" style="height: 50px">
+                   <input type="text" class="form-control rounded-5 border-0 shadow-sm" v-model="messageTitle"  id="floatingTextarea2" style="height: 50px" :maxLength="titleMax">
                    <label for="floatingTextarea2" class="h6 text-muted mb-0">제목을 작성하세요.</label>
                 </div>
              </div>
              	<!-- 내용 작성 -->
                <div class="modal-body p-0 mb-3">
                   <div class="form-floating">
-                     <textarea class="reviewC form-control rounded-5 border-0 shadow-sm" v-model="messageContent"placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px"></textarea>
+                     <textarea class="reviewC form-control rounded-5 border-0 shadow-sm" v-model="messageContent"placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px" :maxLength="contentMax"></textarea>
                      <label for="floatingTextarea2" class="h6 text-muted mb-0">내용을 작성하세요.</label>
                   </div>
                </div>
@@ -788,13 +768,13 @@ position:relative;
                <div class="modal-footer justify-content-start px-1 py-1 bg-white shadow-sm rounded-5">
                   <div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
                      <span class="leg">
-                    	<span class="text-muted count2" >0</span> 
+                    	<span class="text-muted count2" >{{messageContent.length}}</span> 
                     	/
-                    	<span class="text-muted total">100</span> 
+                    	<span class="text-muted total">{{contentMax}}</span> 
                      </span>
                   </div>
                   <div class="ms-auto m-0">
-                  	<button type="button" v-on:click="replySendMessage()"  data-bs-dismiss="modal" data-bs-target="#postModal2" class="writeButton btn btn-primary fw-bold px-3 py-2 fs-6 mb-0 d-flex align-items-center" style="border-radius : 1em; background-color: #514e85; border:none; font-size: 14px !important;">보내기</button>
+                  	<button type="button" v-on:click="replySendMessage()" :disabled="messageIsEmpty()==true"  data-bs-dismiss="modal" data-bs-target="#postModal2" class="writeButton btn btn-primary fw-bold px-3 py-2 fs-6 mb-0 d-flex align-items-center" style="border-radius : 1em; background-color: #514e85; border:none; font-size: 14px !important;">보내기</button>
                   </div>
                </div>
             </div>
@@ -892,7 +872,7 @@ position:relative;
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">게시물 신고</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
+							aria-label="Close" v-on:click="cancelReport()"></button>
 					</div>
 					<div class="modal-body">
 						<div class="">
@@ -912,14 +892,21 @@ position:relative;
 						</div>
 						<div class="mt-3">
 							<label><b>신고 상세내역</b></label>
-							<textarea class="form-control" v-model="clubReportContent"></textarea>
+							<textarea class="form-control" v-model="clubReportContent" :maxlength="contentMax"></textarea>
 						</div>
+						<div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
+                     <span class="leg">
+                    	<span class="text-muted count2" >{{clubReportContent.length}}</span> 
+                    	/
+                    	<span class="text-muted total">{{contentMax}}</span> 
+                     </span>
+                  </div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal" v-on:click="cancelBoardReport()">취소</button>
+							data-bs-dismiss="modal" v-on:click="cancelReport()">취소</button>
 						<button type="button" class="btn btn-danger"
-							v-on:click="boardReport()" data-bs-dismiss="modal">접수</button>
+							v-on:click="boardReport()" :disabled="BoardReportReasonEmpty()==true"data-bs-dismiss="modal">접수</button>
 					</div>
 				</div>
 			</div>
@@ -988,6 +975,10 @@ position:relative;
                    messageTitle:"",
                    messageContent:"",
                    sendMessageResult:"",
+                   
+                   //글자제한
+                   contentMax:300,
+                   titleMax:30,
                 };
             },
             computed:{
@@ -1073,6 +1064,8 @@ position:relative;
 	 	            	this.boardReportCheck();//신고 가능확인
 	 	            	this.clubMemberCheck(); //소모임 가입자 확인
 	 	            	this.TopTenList();//인기 게시글 불러오기
+	 	            	this.mbti();
+
  		        	});
  		        
  		    	},
@@ -1181,6 +1174,10 @@ position:relative;
 
                		})
             	},
+            	//게시글 신고 사유 미작성시 접수 버튼 비활성화
+            	BoardReportReasonEmpty(){
+            		return this.clubReportCategory.length==0 || this.clubReportContent.length==0;		
+            	},
             	//게시글 신고
                 boardReport(){
                 	const clubReportType = 1; //게시글은 1번
@@ -1200,19 +1197,15 @@ position:relative;
                 		this.boardResult = resp.data
                 		if(this.boardResult==1){
                 			window.alert("신고가 완료되었습니다")
-                			this.cancelBoardReport();
+                			this.cancelReport();
                 			this.boardReportCheck();
                         	this.loadContent();
                 		}else{
                 			window.alert("오류가 발생했습니다. 나중에 다시 시도해주십시오.")
-                			this.cancelBoardReport();
+                			this.cancelReport();
                         	this.loadContent();
                 		}
                 	})
-                },
-                cancelBoardReport(){
-                	this.clubReportCategory="",
-                	this.clubReportContent=""
                 },
                 //게시글 신고 가능한 사람
                 AllowedToReport(){                	
@@ -1293,6 +1286,9 @@ position:relative;
  						}
  					})
  				},
+            	replyContentIsEmpty(){
+            		return this.replyContent.length==0;     		
+            	},
               //댓글 등록
 		        addReply(){
  		    		let uri = window.location.search.substring(1); 
@@ -1478,6 +1474,15 @@ position:relative;
                 		this.replyinformation = resp.data
                 	})
                 },
+            	//신고 취소하면 리프레쉬
+            	cancelReport(){
+            		this.clubReportCategory='';
+            		this.clubReportContent='';
+            	},
+                //댓글 신고 사유 미작성시 접수 버튼 비활성화
+               	ReplyReportReasonEmpty(){
+            		return this.clubReportCategory.length==0 || this.clubReportContent.length==0;		
+            	},
                 //댓글 신고
                 replyReport(){
                 	const clubReportType = 2;
@@ -1562,6 +1567,15 @@ position:relative;
                 		this.showReply=5;
                 	}
             	},
+            	//메세지가 비어있으면 전송버튼 비활성화
+            	messageIsEmpty(){
+            		return this.messageContent.length==0 || this.messageTitle.length==0;
+            	},
+            	//메세지 취소하면 리프레쉬
+            	cancelMessage(){
+            		this.messageContent='';
+            		this.messageTitle='';
+            	},
             	//메세지 보내기
             	sendMessage(){
  					const messageReceiver = this.board.memberDto.memberNo
@@ -1632,6 +1646,16 @@ position:relative;
  						}
  					})
  					
+ 				},
+ 				//mbti 리스트
+ 				mbti(){
+ 					// mbti
+ 					axios({
+ 						url: "${pageContext.request.contextPath}/rest/category_n_address/mbti/"+this.board.clubBoardDto.clubNo,
+ 						method: "get",
+ 					}).then((resp) => {
+ 						this.mbtiList = resp.data;
+ 					})
  				},
  				
             },

@@ -285,6 +285,9 @@ li a:hover {
 		        	.then(resp=>{
 		        		//완성 시 코드
 		        		window.confirm("사진 등록이 완료되었습니다!");
+	                	this.animal="",
+	                	this.animalNo="",
+	                	this.mbti="",
 		            	this.mbtiAnimalList();
 		        	});
 				},
