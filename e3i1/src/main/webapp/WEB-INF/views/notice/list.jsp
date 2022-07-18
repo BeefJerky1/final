@@ -179,7 +179,7 @@ a {
 							aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<form action="write" method="post">
+						<form action="write" method="post" enctype="multipart/form-data">
 							<div class="form-floating mb-3">
 								<select name="noticeHead" class="form-select"
 									id="floatingSelect">
@@ -200,6 +200,9 @@ a {
 									name="noticeContent" style="height: 250px"></textarea>
 
 								<label for="floatingTextarea">내용</label>
+							</div>
+							<div>
+								<input type="file" name="noticeAttach">
 							</div>
 							<div class="col-md-8 offset-md-2 text-center">
 								<a href="list" class="btn btn-edit two m-3"
@@ -225,14 +228,14 @@ a {
 				</tr>
 			</thead>
 			<tbody align="center">
-				<c:forEach var="noticeDto" items="${list}">
+				<c:forEach var="noticede" items="${list}">
 					<tr>
-						<td><div class="noticehead my-5">[${noticeDto.noticeHead}]</div></td>
-						<td><a href="detail?noticeNo=${noticeDto.noticeNo}"><div
-									class="noticetitle text-center my-5">${noticeDto.noticeTitle}</div></a></td>
-						<td><a href="detail?noticeNo=${noticeDto.noticeNo}"><img
-								src="${root }/image/LOGO.png"
-								style="width: 200px; height: 130px; float: right; padding: 10px; margin-right: 2.5em;" /></a></td>
+						<td><div class="noticehead my-5">[${noticede.noticeHead}]</div></td>
+						<td><a href="detail?noticeNo=${noticede.noticeNo}"><div
+									class="noticetitle text-center my-5">${noticede.noticeTitle}</div></a></td>
+						<td><a href="detail?noticeNo=${noticede.noticeNo}">
+						<img src="${root}/attachment/download?attachNo=${noticede.attachNo}"
+								style="width: 250px; height: 130px; float: right; padding: 10px; margin-right: 2.5em;" /></a></td>
 					</tr>
 				</c:forEach>
 			</tbody>

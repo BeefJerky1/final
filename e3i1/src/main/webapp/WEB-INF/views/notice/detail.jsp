@@ -52,23 +52,31 @@
 	</div>
 	<div class="col-md-8 offset-md-2 mb-3">
 		<div class="text-center">
-			<table class="table table-border">
+			<table class="table table-border" style="width:800px;">
 				<tr>
 					<td class="left"><span class="noticehead"> <c:if
-								test="${noticeDto.noticeHead != null}">
-						[${noticeDto.noticeHead}]
+								test="${detailVO.noticeHead != null}">
+						[${detailVO.noticeHead}]
 						</c:if>
-					</span> <span class="noticetitle"> &nbsp;${noticeDto.noticeTitle} </span>
+					</span> <span class="noticetitle"> &nbsp;${detailVO.noticeTitle} </span>
 					</td>
 				</tr>
 
 				<tr>
-					<td class="left">${boardDto.boardWriter}</td>
+					<td class="left">${detailVO.memberNick}</td>
 				</tr>
 
 				<tr height="250">
 					<td valign="top" class="left noticecontent"><div>
-							<br>${noticeDto.noticeContent}</div></td>
+							<br>${detailVO.noticeContent}</div>
+							<img src="${root}/attachment/download?attachNo=${detailVO.attachNo}"
+						style="width: 800px; height: 600px;"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+					
+					</td>
 				</tr>
 			</table>
 			<div class="mt-3 mb-4">
@@ -91,10 +99,10 @@
 							<div class="modal-body">
 								<form action="edit" method="post" enctype="multipart/form-data">
 									<div class="form-floating mb-3">
-										<input type="hidden" name="noticeNo"
-											value="${noticeDto.noticeNo}"> <select
-											name="noticeHead" class="form-select" id="floatingSelect">
-											<option value="${noticeDto.noticeHead}">${noticeDto.noticeHead}</option>
+										<input type="hidden" name="noticeNo" value="${detailVO.noticeNo}"> 
+										<input type="hidden" name="attachNo" value="${detailVO.attachNo}">
+										<select name="noticeHead" class="form-select" id="floatingSelect">
+											<option value="${detailVO.noticeHead}">${detailVO.noticeHead}</option>
 											<option>이벤트</option>
 											<option>공지</option>
 											<option>긴급</option>
@@ -103,20 +111,24 @@
 
 									<div class="form-floating mb-3">
 										<input type="text" class="form-control" name="noticeTitle"
-											value="${noticeDto.noticeTitle}" autocomplete="off" required>
+											value="${detailVO.noticeTitle}" autocomplete="off" required>
 										<label for="floatingInput">제목</label>
+									</div>
+									
+									<div class="form-floating mb-3">
+										<input type="file" accept="img/*" name="attachment">
 									</div>
 
 									<div class="form-floating mb-3">
 										<textarea class="form-control" id="floatingTextarea"
-											name="noticeContent" style="height: 250px">${noticeDto.noticeContent}</textarea>
+											name="noticeContent" style="height: 350px">${detailVO.noticeContent}</textarea>
 
 										<label for="floatingTextarea">내용</label>
 									</div>
 									<div class="col-md-8 offset-md-2 text-center">
-										<a href="detail?noticeNo=${noticeDto.noticeNo}"
+										<a href="detail?noticeNo=${detailVO.noticeNo}"
 											class="btn btn-edit" data-bs-dismiss="modal">취소</a>
-										<button type="submit" class="btn btn-outline-success">등록</button>
+										<button type="submit" class="btn btn-outline-success" @click="confirm">등록</button>
 										</div>
 								</form>
 							</div>
@@ -124,7 +136,7 @@
 					</div>
 				</div>
 				<a
-					href="${pageContext.request.contextPath}/notice/delete/${noticeDto.noticeNo}"
+					href="${pageContext.request.contextPath}/notice/delete/${detailVO.noticeNo}"
 					class="btn btn-outline-success">삭제</a>
 			</div>
 		</div>
@@ -142,7 +154,7 @@ const app = Vue.createApp({
         	//서버에서 전달된 정보
             memberNo:"${login}",
             memberAdmin:"${auth}",
-            boardNo:${noticeDto.noticeNo},
+            boardNo:${detailVO.noticeNo},
         };
     },
     //computed : data를 기반으로 하여 실시간 계산이 필요한 경우 작성한다.
@@ -164,6 +176,10 @@ const app = Vue.createApp({
     },
     //methods : 애플리케이션 내에서 언제든 호출 가능한 코드 집합이 필요한 경우 작성한다.
     methods:{
+    	
+    	confirm(){
+    		console.log(${noticeDto.noticeNo});
+    	},
         
     },
     //watch : 특정 data를 감시하여 연계 코드를 실행하기 위해 작성한다
