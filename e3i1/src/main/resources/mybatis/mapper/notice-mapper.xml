@@ -33,6 +33,20 @@
 		) where rn between #{begin} and #{end}
 	</select>
 	
+	<select id="listde" parameterType="Map" resultType="NoticeListVO">
+		select * from (
+				select rownum rn, TMP.* from (
+                    select n.notice_no, n.notice_title, n.notice_head, na.attach_no
+                        from notice n, notice_attach na
+                        where n.notice_no=na.notice_no 
+		                <if test ="type != null and keyword !=null">
+				 		<![CDATA[and instr(${type}, #{keyword}) > 0]]>
+				 		</if>
+                        order by n.notice_no desc
+                )TMP
+		) where rn between #{begin} and #{end}
+	
+	</select>
 	<select id="count" parameterType="Map" resultType="int">
 		select count(*) from notice
 		<if test="type != null and keyword != null">
@@ -42,8 +56,14 @@
 		</if>
 	</select>
 	
-	<select id="one" parameterType="int" resultType="NoticeDto">
-		select * from notice where notice_no = #{noticeNo}
+	<select id="one" parameterType="int" resultType="NoticeDetailVO">
+		select n.*, na.attach_no, m.member_nick
+        from notice n, notice_attach na, member m
+        where n.notice_no = #{noticeNo}
+        and
+        n.notice_no = na.notice_no
+        and
+        m.member_no = n.member_no
 	</select>
 	
 	<delete id="delete" parameterType="int">

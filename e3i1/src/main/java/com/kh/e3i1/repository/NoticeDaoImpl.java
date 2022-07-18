@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.e3i1.entity.NoticeDto;
+import com.kh.e3i1.vo.NoticeDetailVO;
+import com.kh.e3i1.vo.NoticeListVO;
 
 @Repository
 public class NoticeDaoImpl implements NoticeDao {
@@ -17,7 +19,7 @@ public class NoticeDaoImpl implements NoticeDao {
 	private SqlSession sqlSession;
 	
 	@Override
-	public List<NoticeDto> list(String type, String keyword, int page, int size) {
+	public List<NoticeListVO> list(String type, String keyword, int page, int size) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("type", type);
 		param.put("keyword", keyword);
@@ -27,11 +29,12 @@ public class NoticeDaoImpl implements NoticeDao {
 		param.put("begin", begin);
 		param.put("end", end);
 		
-		return sqlSession.selectList("notice.list", param);
+		return sqlSession.selectList("notice.listde", param);
 	}
 	
 	@Override
-	public NoticeDto read(int noticeNo) {
+	public NoticeDetailVO read(int noticeNo) {
+		
 		return sqlSession.selectOne("notice.one", noticeNo);
 	}
 	
