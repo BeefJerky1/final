@@ -262,6 +262,15 @@
 			ON m.MEMBER_NO = mp.MEMBER_NO 
 		WHERE m.member_no = #{memberNo}
 	</select>
+	<!-- 차단 시퀀스 -->
+	<select id="blockedsequence" resultType="int">
+		select blocked_seq.nextval from dual
+	</select>
+	<!-- 차단 -->
+	<insert id="blocktarget" parameterType="blockedDto">
+		insert into blocked (blocked_no, blocked_target, blocked_user)
+		values (#{blockedNo}, #{blockedTarget}, #{blockedUser})
+	</insert>
 	
 	<select id="mypageClub" resultMap="memberDetailVO">
 		SELECT 
@@ -389,4 +398,65 @@
 	</update>
 	
 	
+	<resultMap type="BlockedVO" id="blockedVOlist">
+		<association property="memberDto">
+			<result column="member_no" property="memberNo"/>
+			<result column="member_email" property="memberEmail"/>
+			<result column="member_pw" property="memberPw"/>
+			<result column="member_nick" property="memberNick"/>
+			<result column="member_gender" property="memberGender"/>
+			<result column="member_mbti" property="memberMbti"/>
+			<result column="member_animal" property="memberAnimal"/>
+			<result column="member_interest1" property="memberInterest1"/>
+			<result column="member_interest2" property="memberInterest2"/>
+			<result column="member_interest3" property="memberInterest3"/>
+			<result column="member_place1" property="memberPlace1"/>
+			<result column="member_place2" property="memberPlace2"/>
+			<result column="member_place3" property="memberPlace3"/>
+			<result column="member_admin" property="memberAdmin"/>
+			<result column="member_report_count" property="memberReportCount"/>
+			<result column="member_club_count" property="memberClubCount"/>
+			<result column="member_sns_id" property="memberSnsId"/>
+			<result column="member_logindate" property="memberLogindate"/>
+			<result column="member_birth" property="memberBirth"/>
+			<result column="member_name" property="memberName"/>
+		</association>
+			<association property ="blockedDto">
+			<result column="blocked_no" property="blockedNo"/>
+			<result column="blocked_target" property="blockedTarget"/>
+			<result column="blocked_user" property="blockedUser"/>
+		</association>
+	</resultMap>
+	<!-- 조회 -->
+	<select id="blockedlist" resultMap="blockedVOlist" parameterType="int">
+		select 
+		B.*,
+        Y.member_nick
+		from 
+		Blocked B
+		left outer join Member Y
+		on B. blocked_target = Y.member_no
+        left outer join Member M
+        on B.blocked_user = M.member_no
+        where M.member_no = #{blockedUser}
+        order by blocked_no
+	</select>
+	<!-- 단일조회 -->
+	<select id="blockedtargetinfo" resultMap="blockedVOlist" parameterType="int">
+		select 
+		*
+		from 
+		Blocked B
+		left outer join Member Y
+		on B. blocked_target = Y.member_no
+        where B.blocked_no = #{blockedNo}
+	</select>
+	<!-- 차단해제 -->
+	<delete id="deleteblocktarget" parameterType="int">
+	delete blocked where blocked_no = #{blockedNo}
+	</delete>
+	<!-- 확인용 -->
+	<select id="info" resultType="blockedDto" parameterType="int">
+		select * from blocked where blocked_no = #{blockedNo}
+	</select>
 </mapper> 

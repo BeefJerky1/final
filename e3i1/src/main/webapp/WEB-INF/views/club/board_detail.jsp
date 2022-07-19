@@ -5,7 +5,14 @@
 <c:set var="memberNo" value="${login}"></c:set>
 <c:set var="memberAdmin" value="${auth == '관리자'}"></c:set>
 <c:set var="isLogin" value="${memberNo != null}"></c:set>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/modal.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/club.css">
 <style>
+  .modal { background: rgba(0, 0, 0, 0.5) !important; }   
+  .modal-backdrop { display: none !important; }  
 .deletePicture:hover{
   animation: left-right 0.2s infinite ease-in-out alternate;
 }
@@ -161,129 +168,97 @@ position:relative;
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div id="app" class="container-fluid">
 	<div class="row">
-		<div class="col-lg-3 col-md-3 col-sm-3 mt-5 left-side">
-				<!-- 소모임 정보 출력 -->
-			<div
-				class="border text-dark p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 left-side rounded shadow"
-				style="border-radius: 1em !important">
-				<div class="row">
-					<div class="col-md-2 align-self-center">
-						<i class="fa-solid fa-house-chimney fa-2x"
-							style="color: lightgray;"></i>
-					</div>
-					<div class="col-md-8 align-self-center"
-						v-if="clubList.clubDto != null">
-						<h5 style="margin: 0px;">{{clubList.clubDto.clubName}}</h5>
-					</div>
-					<div class="col-md-2 align-self-center">
-						<div class="row" @click="likeClub">
-							<i class="fa-solid fa-heart" style="color: red;" v-if="isLike"></i>
-							<i class="fa-regular fa-heart" style="color: red;" v-if="!isLike"></i>
+		<div class="col-lg-3 col-md-3 col-sm-3 mt-5 left-side "	>
+             <div class="border text-dark mt-3 p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 rounded shadow white" style="border-radius:1em !important">
+                  <div class="row">
+							<div class="col-md-2 align-self-center"></div>
+							<div class="text-center" v-if="clubList.clubDto != null">
+								<a
+									:href="'${pageContext.request.contextPath}/club/detail?clubNo='+clubList.clubDto.clubNo">
+									<i class="fa-solid fa-house"></i>
+								</a> <span class="boldfont">&nbsp;&nbsp;{{clubList.clubDto.clubName}}&nbsp;&nbsp;</span>
+								<span @click="likeClub"> <i class="fa-solid fa-heart"
+									style="color: red;" v-if="isLike"></i> <i
+									class="fa-regular fa-heart" style="color: red;" v-if="!isLike"></i>&nbsp;
+								</span> <i class="fa-solid fa-circle-exclamation"></i>
+							</div>
 						</div>
-						<div class="row mt-2">
-							<i class="fa-solid fa-bullhorn"></i>
-						</div>
-					</div>
-				</div>
+				
+					<hr>
 
-				<hr>
-
-
-				<div class="row">
-					<div class="col-md-2" width="10px" height="10px">
-<!--                          		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+clubList.clubProfileDto.attachNo">  -->
-
-					</div>
-					<div class="col-md-8 offset-md-2 row align-self-center">
-						<div class="col-md-3">
-							<i class="fa-solid fa-crown fa-2x" style="color: #f6e58d"></i>
-						</div>
-						<div class="col-md-9 align-self-center"
+					
+						<div class="card-title">
+						<div class="row text-center my-2"
 							v-if="clubList.memberDto != null">
-							<h6 style="margin: 0px;">{{clubList.memberDto.memberNick}}</h6>
+							<span><i class="fa-solid fa-crown" style="color: #f6e58d;"></i></span>
+							<span class="boldfontS">{{clubList.memberDto.memberNick}}</span>
+						</div>
+						<div class="row">
+							<div class="col-md-4" width="16px" height="16px"
+								style="margin-left: 0.8em; margin-top: 0.45em;">
+								<img src="${pageContext.request.contextPath}/image/mbti/거북이(ISTP).png" class="profile"
+									v-if="clubList.memberProfileDto == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo"
+									class="profile" v-if="clubList.memberProfileDto != null">
+							</div>
+							<div class="col-md-7 text-right" v-if="clubList.clubDto != null"
+								width="10px" height="10px">
+								<div class="hash-tag text-center">\#{{clubList.clubDto.clubMainCategory}}</div>
+								<div class="hash-tag text-center">\#{{clubList.clubDto.clubSubCategory}}</div>
+								<div class="hash-tag text-center">\#{{clubList.clubDto.clubPlace}}</div>
+							</div>
+						</div>
+
+						<div class="text-right mt-2 boldfontSright"
+							v-if="clubList.clubMbtiPercent != null">
+							<span class="col-md-10"><i class="fa-solid fa-user-group"
+								style="margin-right: 0.5em;"></i>{{clubList.clubMbtiPercent.total}}
+								/ {{clubList.clubDto.clubMemberLimit}}</span>
 						</div>
 					</div>
-				</div>
 
-				<div class="row mt-4" v-if="clubList.clubDto != null">
-					<div class="col-md-4">
-						<div class="hash-tag">
-							<span>\#{{clubList.clubDto.clubMainCategory}}</span>
+
+
+						<div class="text-center mb-3">
+							<span class="boldfontS">소모임 멤버 MBTI TOP 3 <i
+								class="fa-solid fa-ranking-star"></i></span>
 						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="hash-tag">
-							<span>\#{{clubList.clubDto.clubSubCategory}}</span>
+
+						<!-- v-for index를 []안에 사용할 방법을 찾으면 v-for로 반복할 예정 너무 복잡해지면 그냥 이대로 사용 -->
+						<div class="row">
+							<div class="col-md-4 text-center" v-if="mbtiList[0] != null">
+								<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[0].attachNo == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[0].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[0].attachNo != null">
+								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[0].memberMbti}}</p>
+								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[0].mbtiPercent}}%</p>
+							</div>
+							<div class="col-md-4 text-center" v-if="mbtiList[1] != null">
+								<img src="${root }/image/mbti/물개(ESFP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[1].attachNo == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[1].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[1].attachNo != null">
+								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[1].memberMbti}}</p>
+								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[1].mbtiPercent}}%</p>
+							</div>
+							<div class="col-md-4 text-center" v-if="mbtiList[2] != null">
+								<img src="${root }/image/mbti/원숭이(ESTP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[2].attachNo == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[2].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[2].attachNo != null">
+								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[2].memberMbti}}</p>
+								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[2].mbtiPercent}}%</p>
+							</div>
 						</div>
-					</div>
-				</div>
-				<div class="row mt-4" v-if="clubList.clubMbtiPercent != null">
-					<div class="col-md-2">
-						<i class="fa-solid fa-user-group"></i>
-					</div>
-					<div class="col-md-10">{{clubList.clubMbtiPercent.total}} /
-						{{clubList.clubDto.clubMemberLimit}}</div>
-				</div>
-
-
-				<div class="col">
-					<h5 style="font-weight: bold">우리 소모임 MBTI 순위</h5>
-				</div>
-
-				<!-- v-for index를 []안에 사용할 방법을 찾으면 v-for로 반복할 예정 너무 복잡해지면 그냥 이대로 사용 -->
-				<div class="row mt-4" v-if="mbtiList[0] != null">
-					<div class="col-md-4">
-						<img src="https://via.placeholder.com/250/69f/fff.png"
-							class="profile">
-					</div>
-					<div class="col-md-8 align-self-center">
-						<div>
-							<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[0].memberMbti}}</h4>
-						</div>
-						<div>
-							<p style="margin: 0px 0px;">{{mbtiList[0].mbtiPercent}}%</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="row mt-4" v-if="mbtiList[1] != null">
-					<div class="col-md-4">
-						<img src="https://via.placeholder.com/250/69f/fff.png"
-							class="profile">
-					</div>
-					<div class="col-md-8 align-self-center">
-						<div>
-							<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[1].memberMbti}}</h4>
-						</div>
-						<div>
-							<p style="margin: 0px 0px;">{{mbtiList[1].mbtiPercent}}%</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="row mt-4" v-if="mbtiList[2] != null">
-					<div class="col-md-4">
-						<img src="https://via.placeholder.com/250/69f/fff.png"
-							class="profile">
-					</div>
-					<div class="col-md-8 align-self-center">
-						<div>
-							<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[2].memberMbti}}</h4>
-						</div>
-						<div>
-							<p style="margin: 0px 0px;">{{mbtiList[2].mbtiPercent}}%</p>
-						</div>
-					</div>
-				</div>
-
-
-
-
-
-
-			</div>
-
-		</div>
+            </div>
+            </div>
 		<div class="col-lg-5 col-md-5 col-sm-5 main">
 			<div
 				class="border-opacity-10 text-dark p-4 col-lg-12 col-md-12 col-sm-12 rounded"
@@ -304,8 +279,26 @@ position:relative;
 	                         	</div>
 							</div>
 							<div class="col-lg-8 col-md-8 col-sm-8 align-start ">
-								{{board.memberDto.memberNick}}<br> <span>{{board.memberDto.memberInterest1}}</span>,
-								<span>{{board.memberDto.memberInterest2}}</span>, <span>{{board.memberDto.memberInterest3}}</span>
+							<div class="dropdown">
+							  <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+							   {{board.memberDto.memberNick}}
+							  </a>
+							
+							  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">프로필</a></li>
+							    <div v-if="board.memberDto.memberNo == this.memberNo"></div>
+							    <div v-else>
+							    <li><a class="dropdown-item" href="#" v-on:click="blocked()">차단하기</a></li>
+							    </div>
+							    <div v-if="board.memberDto.memberNo == this.memberNo"></div>
+							    <div v-else>
+							    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#postModal">메시지 보내기</a></li>
+							 	 </div>
+							  </ul>
+							</div>
+                                <span class="interest me-1 ">{{board.memberDto.memberInterest1}}</span>
+                                <span class="interest me-1 ">{{board.memberDto.memberInterest2}}</span>
+                                <span class="interest me-1 ">{{board.memberDto.memberInterest3}}</span>
 							</div>
 							<div class="col-lg-2 col-md-2 col-sm-2 p-3">
 <!-- 								<div v-if="isBoardWriter"> -->
@@ -472,7 +465,7 @@ position:relative;
 					<div class="text-end">
 						<textarea class="form-control reply " v-model="replyContent"
 							placeholder="내 댓글을 등록합니다" style="border-radius: 1em !important"></textarea>
-						<button class="btn btn-primary shadow" v-on:click="addReply"
+						<button class="btn btn-primary shadow" v-on:click="addReply" :disabled="replyContentIsEmpty()==true"
 							style="border-radius: 1em !important">댓글 등록</button>
 					</div>
 				</div>
@@ -496,7 +489,24 @@ position:relative;
                          	</div>
 						</div>
 						<div class="col-lg-8 col-md-8 col-sm-8 align-start">
-							{{reply.memberDto.memberNick}}</div>
+							<div class="dropdown">
+							  <a class="dropdown-toggle"  v-on:click="replyInfo(index)" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+							   {{reply.memberDto.memberNick}}
+							  </a>
+							
+							  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal2">프로필</a></li>
+							    <div v-if="reply.memberDto.memberNo == this.memberNo"></div>
+							    <div v-else>
+							    <li><a class="dropdown-item" href="#" v-on:click="replyBlocked()">차단하기</a></li>
+							    </div>
+							    <div v-if="reply.memberDto.memberNo == this.memberNo"></div>
+							    <div v-else>
+							    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#postModal2">메시지 보내기</a></li>
+							 	 </div>
+							  </ul>
+							</div>
+						</div>
 						<div class="col-lg-2 col-md-2 col-sm-2">
 							<h6 class="time">{{elapsedText(reply.clubBoardReplyDto.clubReplyTime)}}</h6>
 						</div>
@@ -564,13 +574,13 @@ position:relative;
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h5 class="modal-title" id="exampleModalLabel">게시물 신고</h5>
+										<h5 class="modal-title" id="exampleModalLabel">댓글 신고</h5>
 										<button type="button" class="btn-close"
-											data-bs-dismiss="modal" aria-label="Close"></button>
+											data-bs-dismiss="modal" aria-label="Close" v-on:click="cancelReport()"></button>
 									</div>
 									<div class="modal-body">
 										<div class="">
-											<label class="label-control"><b>게시물 작성자:</b></label>
+											<label class="label-control"><b>게시물 작성자:{{reply.memberDto.memberNick}}</b></label>
 										</div>
 										<div class="mt-3">
 											<label class="label-control"><b>신고 분류</b></label> <select
@@ -585,14 +595,22 @@ position:relative;
 										</div>
 										<div class="mt-3">
 											<label><b>신고 상세내역</b></label>
-											<textarea class="form-control" v-model="clubReportContent"></textarea>
+											<textarea class="form-control" v-model="clubReportContent" :maxLength="contentMax"></textarea>
 										</div>
+										<div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
+                     <span class="leg">
+                    	<span class="text-muted count2" >{{clubReportContent.length}}</span> 
+                    	/
+                    	<span class="text-muted total">{{contentMax}}</span> 
+                     </span>
+                  </div>
 									</div>
+									
 									<div class="modal-footer">
 										<button type="button" class="btn btn-secondary"
 											data-bs-dismiss="modal" v-on:click="cancelReport()">취소</button>
 										<button type="button" class="btn btn-danger"
-											v-on:click="replyReport()">접수</button>
+											v-on:click="replyReport() " data-bs-dismiss="modal" :disabled="ReplyReportReasonEmpty()==true">접수</button>
 									</div>
 								</div>
 							</div>
@@ -670,6 +688,181 @@ position:relative;
 
 		</div>
 	</div>
+	
+          <!--  게시글 메시지 모달  -->
+     <div v-if="this.board!=null">
+      <div class="modal fade" id="postModal"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 p-4 border-0 bg-light">
+               <div class="modal-header d-flex align-items-center justify-content-start border-0 p-0 mb-3">
+                  <a href="#" class="text-muted text-decoration-none material-icons" data-bs-dismiss="modal" v-on:click="cancelMessage()">arrow_back_ios_new</a>
+                  <h5 class="modal-title text-muted ms-3 ln-0" id="staticBackdropLabel"><span class="material-icons md-32">account_circle</span></h5>
+               </div>
+               <!-- 닉네임 -->
+            <div class="modal-body p-0 mb-3">
+                <div class="form-floating">
+                   <div class=" rounded-5 border-0 shadow-sm readonly" id="floatingTextarea1" style="height: 50px"><b>To:{{board.memberDto.memberNick}}</b></div>
+                </div>
+             </div>
+               <!-- 제목 작성 -->
+            <div class="modal-body p-0 mb-3">
+                <div class="form-floating">
+                   <input type="text" class="form-control rounded-5 border-0 shadow-sm" v-model="messageTitle"  id="floatingTextarea2" style="height: 50px" :maxLength="titleMax">
+                   <label for="floatingTextarea2" class="h6 text-muted mb-0">제목을 작성하세요.</label>
+                </div>
+             </div>
+             	<!-- 내용 작성 -->
+               <div class="modal-body p-0 mb-3">
+                  <div class="form-floating">
+                     <textarea class="reviewC form-control rounded-5 border-0 shadow-sm" v-model="messageContent"placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px" :maxLength="contentMax"></textarea>
+                     <label for="floatingTextarea2" class="h6 text-muted mb-0">내용을 작성하세요.</label>
+                  </div>
+               </div>
+
+               <div class="modal-footer justify-content-start px-1 py-1 bg-white shadow-sm rounded-5">
+                  <div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
+                     <span class="leg">
+                    	<span class="text-muted count2" >{{messageContent.length}}</span> 
+                    	/
+                    	<span class="text-muted total">{{contentMax}}</span> 
+                     </span>
+                  </div>
+                  <div class="ms-auto m-0">
+                  	<button type="button" v-on:click="sendMessage()"  :disabled="messageIsEmpty()==true" data-bs-dismiss="modal" data-bs-target="#postModal" class="writeButton btn btn-primary fw-bold px-3 py-2 fs-6 mb-0 d-flex align-items-center" style="border-radius : 1em; background-color: #514e85; border:none; font-size: 14px !important;">보내기</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+     </div>
+    <!-- 댓글 메세지 모달 -->
+      <div v-if="this.replyinformation!=null">
+      <div class="modal fade" id="postModal2"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 p-4 border-0 bg-light">
+               <div class="modal-header d-flex align-items-center justify-content-start border-0 p-0 mb-3">
+                  <a href="#" class="text-muted text-decoration-none material-icons" data-bs-dismiss="modal" v-on:click="cancelMessage()">arrow_back_ios_new</a>
+                  <h5 class="modal-title text-muted ms-3 ln-0" id="staticBackdropLabel"><span class="material-icons md-32">account_circle</span></h5>
+               </div>
+               <!-- 닉네임 -->
+            <div class="modal-body p-0 mb-3">
+                <div class="form-floating">
+                   <div class=" rounded-5 border-0 shadow-sm readonly" id="floatingTextarea1" style="height: 50px"><b>To:{{replyinformation.memberDto.memberNick}}</b></div>
+                </div>
+             </div>
+               <!-- 제목 작성 -->
+            <div class="modal-body p-0 mb-3">
+                <div class="form-floating">
+                   <input type="text" class="form-control rounded-5 border-0 shadow-sm" v-model="messageTitle"  id="floatingTextarea2" style="height: 50px" :maxLength="titleMax">
+                   <label for="floatingTextarea2" class="h6 text-muted mb-0">제목을 작성하세요.</label>
+                </div>
+             </div>
+             	<!-- 내용 작성 -->
+               <div class="modal-body p-0 mb-3">
+                  <div class="form-floating">
+                     <textarea class="reviewC form-control rounded-5 border-0 shadow-sm" v-model="messageContent"placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px" :maxLength="contentMax"></textarea>
+                     <label for="floatingTextarea2" class="h6 text-muted mb-0">내용을 작성하세요.</label>
+                  </div>
+               </div>
+
+               <div class="modal-footer justify-content-start px-1 py-1 bg-white shadow-sm rounded-5">
+                  <div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
+                     <span class="leg">
+                    	<span class="text-muted count2" >{{messageContent.length}}</span> 
+                    	/
+                    	<span class="text-muted total">{{contentMax}}</span> 
+                     </span>
+                  </div>
+                  <div class="ms-auto m-0">
+                  	<button type="button" v-on:click="replySendMessage()" :disabled="messageIsEmpty()==true"  data-bs-dismiss="modal" data-bs-target="#postModal2" class="writeButton btn btn-primary fw-bold px-3 py-2 fs-6 mb-0 d-flex align-items-center" style="border-radius : 1em; background-color: #514e85; border:none; font-size: 14px !important;">보내기</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+     </div>
+     <!--  게시글 프로필 모달 -->
+      <div v-if="this.board!=null">
+      <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body">
+                <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <a><img src="https://placeimg.com/120/120/animals" class="circle profile"></a>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
+		            <h4><b>{{board.memberDto.memberNick}}</b></h4>
+		            <span>{{board.memberDto.memberGender}}/</span><span>{{elapsedText(board.memberDto.memberBirth)}}/</span> <span>{{board.memberDto.memberPlace1}}</span>           
+                </div>
+                <div class="row mt-5">
+                	<h5><b>SNS계정</b><img style="width:25px "src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"></h5>
+                	<h5>{{board.memberDto.memberSnsId}}</h5>
+                </div>
+                <div class="row mt-5">
+                	<h5><b>나의 관심분야</b></h5>
+                	<div class="col-lg-12 col-md-12 col-sm-12">
+		            <button class="btn btn-outline-secondary btn-sm">{{board.memberDto.memberInterest1}}</button>
+		            <button class="btn btn-outline-secondary btn-sm">{{board.memberDto.memberInterest2}}</button>
+		            <button class="btn btn-outline-secondary btn-sm">{{board.memberDto.memberInterest3}}</button>
+		            </div>
+                </div>
+				<div class="row mt-5">
+					<h5><b>마지막 로그인</b></h5>
+					<h5><h5>{{convertTime(board.memberDto.memberLogindate)}}({{elapsedText(board.memberDto.memberLogindate)}})</h5></h5>
+            	</div>
+
+
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+     <!--  댓글 프로필 모달 -->
+      <div v-if="this.replyinformation!=null">
+      <div class="modal fade" id="profileModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body">
+                <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <a><img src="https://placeimg.com/120/120/animals" class="circle profile"></a>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
+		            <h4><b>{{replyinformation.memberDto.memberNick}}</b></h4>
+		            <span>{{replyinformation.memberDto.memberGender}}/</span><span>{{elapsedText(replyinformation.memberDto.memberBirth)}}/</span> <span>{{replyinformation.memberDto.memberPlace1}}</span>           
+                </div>
+                <div class="row mt-5">
+                	<h5><b>SNS계정</b><img style="width:25px "src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"></h5>
+                	<h5>{{replyinformation.memberDto.memberSnsId}}</h5>
+                </div>
+                <div class="row mt-5">
+                	<h5><b>나의 관심분야</b></h5>
+                	<div class="col-lg-12 col-md-12 col-sm-12">
+		            <button class="btn btn-outline-secondary btn-sm">{{replyinformation.memberDto.memberInterest1}}</button>
+		            <button class="btn btn-outline-secondary btn-sm">{{replyinformation.memberDto.memberInterest2}}</button>
+		            <button class="btn btn-outline-secondary btn-sm">{{replyinformation.memberDto.memberInterest3}}</button>
+		            </div>
+                </div>
+				<div class="row mt-5">
+					<h5><b>마지막 로그인</b></h5>
+					<h5><h5>{{convertTime(replyinformation.memberDto.memberLogindate)}}({{elapsedText(replyinformation.memberDto.memberLogindate)}})</h5></h5>
+            	</div>
+
+
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
 	<!-- 게시글 신고 모달 -->
 	<div v-if="board!=null">
 		<div class="modal fade" id="reportBoard" tabindex="-1"
@@ -679,7 +872,7 @@ position:relative;
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">게시물 신고</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
+							aria-label="Close" v-on:click="cancelReport()"></button>
 					</div>
 					<div class="modal-body">
 						<div class="">
@@ -699,36 +892,38 @@ position:relative;
 						</div>
 						<div class="mt-3">
 							<label><b>신고 상세내역</b></label>
-							<textarea class="form-control" v-model="clubReportContent"></textarea>
+							<textarea class="form-control" v-model="clubReportContent" :maxlength="contentMax"></textarea>
 						</div>
+						<div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
+                     <span class="leg">
+                    	<span class="text-muted count2" >{{clubReportContent.length}}</span> 
+                    	/
+                    	<span class="text-muted total">{{contentMax}}</span> 
+                     </span>
+                  </div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal" v-on:click="cancelBoardReport()">취소</button>
+							data-bs-dismiss="modal" v-on:click="cancelReport()">취소</button>
 						<button type="button" class="btn btn-danger"
-							v-on:click="boardReport()">접수</button>
+							v-on:click="boardReport()" :disabled="BoardReportReasonEmpty()==true"data-bs-dismiss="modal">접수</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
 <!-- vue js도 lazy loading을 사용한다 -->
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-	crossorigin="anonymous"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://unpkg.com/vue@next"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.3/dayjs.min.js"
-	integrity="sha512-Ot7ArUEhJDU0cwoBNNnWe487kjL5wAOsIYig8llY/l0P2TUFwgsAHVmrZMHsT8NGo+HwkjTJsNErS6QqIkBxDw=="
-	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="${path}/js/time.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="${path}/js/time.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    
 <!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script> -->
 <script>
+
         const app = Vue.createApp({
-			
             data(){
                 return {
                 	//소모임 번호
@@ -770,13 +965,22 @@ position:relative;
                    blind:true,
                    //댓글 신고
                    replyResult:"",
-                   replyinformation:"",           
+                   replyinformation:null,           
                    
                    //소모임정보
                    	clubList:[],
 					mbtiList:[],
                    isLike:false,
                    clubMember:"", //소모임 멤버 확인
+                   
+                   //메세지 보내기
+                   messageTitle:"",
+                   messageContent:"",
+                   sendMessageResult:"",
+                   
+                   //글자제한
+                   contentMax:300,
+                   titleMax:30,
                 };
             },
             computed:{
@@ -810,15 +1014,13 @@ position:relative;
             	//leftside
             	//소모임 정보 로드
             	loadClubInfo(){
-            		if(this.board!=null){
             		axios({
-            			url: "${pageContext.request.contextPath}/rest/club/detail/"+this.board.clubBoardDto.clubNo,
+            			url: "${pageContext.request.contextPath}/rest/clubboard/clubDetail/"+this.clubBoardNo,
             			method: "get",
             		}).then((resp) => {
             			this.clubList = resp.data;
             		})
             			
-            		}
             	},
             	//소모임 좋아요
             	likeClub(){      
@@ -864,7 +1066,8 @@ position:relative;
 	 	            	this.boardReportCheck();//신고 가능확인
 	 	            	this.clubMemberCheck(); //소모임 가입자 확인
 	 	            	this.TopTenList();//인기 게시글 불러오기
-	 	            	this.loadClubInfo();
+	 	            	this.mbti();
+
  		        	});
  		        
  		    	},
@@ -973,6 +1176,10 @@ position:relative;
 
                		})
             	},
+            	//게시글 신고 사유 미작성시 접수 버튼 비활성화
+            	BoardReportReasonEmpty(){
+            		return this.clubReportCategory.length==0 || this.clubReportContent.length==0;		
+            	},
             	//게시글 신고
                 boardReport(){
                 	const clubReportType = 1; //게시글은 1번
@@ -992,19 +1199,15 @@ position:relative;
                 		this.boardResult = resp.data
                 		if(this.boardResult==1){
                 			window.alert("신고가 완료되었습니다")
-                			this.cancelBoardReport();
+                			this.cancelReport();
                 			this.boardReportCheck();
                         	this.loadContent();
                 		}else{
                 			window.alert("오류가 발생했습니다. 나중에 다시 시도해주십시오.")
-                			this.cancelBoardReport();
+                			this.cancelReport();
                         	this.loadContent();
                 		}
                 	})
-                },
-                cancelBoardReport(){
-                	this.clubReportCategory="",
-                	this.clubReportContent=""
                 },
                 //게시글 신고 가능한 사람
                 AllowedToReport(){                	
@@ -1065,6 +1268,29 @@ position:relative;
                 		})
                 	
                 },
+                //게시글 프로필에서 차단
+ 				blocked(){
+					const choice = window.confirm("정말 차단하시겠습니까?\n차단한 상대의 게시글과 댓글 보이지 않습니다.");
+					if(choice==false)return
+ 					const blockedTarget = this.board.memberDto.memberNo;
+ 					axios({
+ 						url:"${pageContext.request.contextPath}/rest/mypage/block",
+ 						method:"post",
+ 						data:{
+ 							blockedTarget:blockedTarget,
+ 							blockedUser:this.memberNo,
+ 						}
+ 					}).then(resp=>{
+ 						this.blockedResult=resp.data
+ 						if(this.blockedResult ==1){
+ 							window.alert("차단되었습니다. 차단해제는 마이페이지에서 가능합니다");
+ 							window.location.href='http://localhost:8080/e3i1/club/board?clubNo='+this.board.clubBoardDto.clubNo;
+ 						}
+ 					})
+ 				},
+            	replyContentIsEmpty(){
+            		return this.replyContent.length==0;     		
+            	},
               //댓글 등록
 		        addReply(){
  		    		let uri = window.location.search.substring(1); 
@@ -1170,17 +1396,39 @@ position:relative;
 		    	},
 		    	//댓글 삭제
 		        deleteReply(index){
-					const choice = window.confirm("정말 삭제하시겠습니까?\n삭제한 데이터는 복구되지 않습니다");
-					if(choice==false)return
-		        	const reply = this.reply[index];
-		        	axios({
-		        		url:"${pageContext.request.contextPath}/rest/clubboardreply/"+reply.clubBoardReplyDto.replyNo,
-		        		method:"delete",
-		        	})
-		        	.then(resp=>{
-		        		this.loadContent();
-		        		this.loadReply();
-		        	});
+						Swal.fire({
+		    			  title: '정말 삭제하시겠습니까???',
+		    			  text: "삭제하시면 다시 복구시킬 수 없습니다.",
+		    			  icon: 'question',
+		    			  showCancelButton: true,
+		    			  confirmButtonColor: '#3085d6',
+		    			  cancelButtonColor: '#d33',
+		    			  confirmButtonText: '삭제',
+		    			  cancelButtonText: '취소'
+		    			}).then((result) => {
+		    			  if (result.value) {
+				        	const reply = this.reply[index];
+				        	axios({
+				        		url:"${pageContext.request.contextPath}/rest/clubboardreply/"+reply.clubBoardReplyDto.replyNo,
+				        		method:"delete",
+				        	})
+				        	.then(resp=>{
+				        		if(resp.data==1){
+				        			 Swal.fire(
+		        			          '삭제가 완료되었습니다.',
+		        			          '',
+		        			          'success'
+		        			        )
+				        		}
+				        		this.loadReply();
+				        	});
+		    	              
+		    			  }
+		    			})
+		    		
+		    	
+// 					const choice = window.confirm("정말 삭제하시겠습니까?\n삭제한 데이터는 복구되지 않습니다");
+// 					if(choice==false)return
 		        },
 		        //댓글 수정모드
 		        replyEditMode(index){
@@ -1250,6 +1498,15 @@ position:relative;
                 		this.replyinformation = resp.data
                 	})
                 },
+            	//신고 취소하면 리프레쉬
+            	cancelReport(){
+            		this.clubReportCategory='';
+            		this.clubReportContent='';
+            	},
+                //댓글 신고 사유 미작성시 접수 버튼 비활성화
+               	ReplyReportReasonEmpty(){
+            		return this.clubReportCategory.length==0 || this.clubReportContent.length==0;		
+            	},
                 //댓글 신고
                 replyReport(){
                 	const clubReportType = 2;
@@ -1257,10 +1514,10 @@ position:relative;
                 			url:"${pageContext.request.contextPath}/rest/clubboardreply/report/",
                 			method:"post",
                 			data:{  
-                				clubNo:this.replyinformation.clubNo,
-                   				clubReportTarget:this.replyinformation.replyNo,
+                				clubNo:this.replyinformation.clubBoardReplyDto.clubNo,
+                   				clubReportTarget:this.replyinformation.clubBoardReplyDto.replyNo,
                    				clubReportType:clubReportType,
-                   				clubReportWriter:this.replyinformation.clubReplyWriter,
+                   				clubReportWriter:this.replyinformation.clubBoardReplyDto.clubReplyWriter,
                    				clubReportReporter:this.memberNo,
                    				clubReportCategory:this.clubReportCategory,
                    				clubReportContent:this.clubReportContent,
@@ -1290,7 +1547,7 @@ position:relative;
                 //인기게시글
                 TopTenList(){           	
                 	axios({
-                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.board.clubBoardDto.clubNo+"/order/"+this.orderType,
+                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.board.clubBoardDto.clubNo+"/order/"+this.orderType+"/"+this.memberNo,
 		        		method:"get",
                 	}).then(resp=>{
                 		this.side = resp.data
@@ -1299,7 +1556,7 @@ position:relative;
                 //select로 인기게시글 변경
                 changeList(event) {
                 	axios({
-                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.board.clubBoardDto.clubNo+"/order/"+event.target.value,
+                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.board.clubBoardDto.clubNo+"/order/"+event.target.value+"/"+this.memberNo,
 		        		method:"get",
                 	}).then(resp=>{
                 		this.side = resp.data
@@ -1313,6 +1570,10 @@ position:relative;
 	            elapsedText(date) {
                 	return dateformat.elapsedText(new Date(date));
                 },
+    	        convertTime(time){
+		        	return moment(time).format('llll'); // 2022년 7월 4일 월요일 오후 9:46
+ 
+		        },
                 //소모임 멤버 확인
             	clubMemberCheck(){
             		axios({
@@ -1330,10 +1591,102 @@ position:relative;
                 		this.showReply=5;
                 	}
             	},
+            	//메세지가 비어있으면 전송버튼 비활성화
+            	messageIsEmpty(){
+            		return this.messageContent.length==0 || this.messageTitle.length==0;
+            	},
+            	//메세지 취소하면 리프레쉬
+            	cancelMessage(){
+            		this.messageContent='';
+            		this.messageTitle='';
+            	},
+            	//메세지 보내기
+            	sendMessage(){
+ 					const messageReceiver = this.board.memberDto.memberNo
+ 					if(this.messageContent=='' ||this.messageContent==null)return
+ 					axios({
+ 						url:"${pageContext.request.contextPath}/rest/message/send",
+ 						method:"post",
+ 						data:{
+ 							messageWriter:this.memberNo,
+ 							messageContent:this.messageContent,
+ 							messageTitle:this.messageTitle,
+ 							messageReceiver:messageReceiver
+ 						},
+ 					}).then(resp=>{
+ 						this.sendMessageResult=resp.data;
+ 						if(this.sendMessageResult==1){
+ 							this.messageContent=""
+ 							this.messageTitle=""
+ 							window.alert("메세지 전송이 완료되었습니다.")
+ 						}else{
+ 							window.alert("오류가 발생하였습니다. 나중에 다시 시도해주십시오.")
+ 						}
+ 					})
+ 					
+ 				},
+                //댓글 프로필에서 차단
+ 				replyBlocked(){
+					const choice = window.confirm("정말 차단하시겠습니까?\n차단한 상대의 게시글과 댓글은 보이지 않습니다.");
+					if(choice==false)return
+ 					const blockedTarget = this.replyinformation.clubBoardReplyDto.clubReplyWriter;
+					console.log(blockedTarget)
+ 					axios({
+ 						url:"${pageContext.request.contextPath}/rest/mypage/block",
+ 						method:"post",
+ 						data:{
+ 							blockedTarget:blockedTarget,
+ 							blockedUser:this.memberNo,
+ 						}
+ 					}).then(resp=>{
+ 						this.blockedResult=resp.data
+ 						if(this.blockedResult ==1){
+ 							window.alert("차단되었습니다. 차단해제는 마이페이지에서 가능합니다");
+ 						}
+ 			            	this.loadReply(); //댓글 목록
+ 					})
+ 				},
+ 				//댓글 프로필에서 메세지 보내기
+            	replySendMessage(){
+ 					const messageReceiver = this.replyinformation.clubBoardReplyDto.clubReplyWriter;
+ 					if(this.messageContent=='' ||this.messageContent==null)return
+ 					axios({
+ 						url:"${pageContext.request.contextPath}/rest/message/send",
+ 						method:"post",
+ 						data:{
+ 							messageWriter:this.memberNo,
+ 							messageContent:this.messageContent,
+ 							messageTitle:this.messageTitle,
+ 							messageReceiver:messageReceiver
+ 						},
+ 					}).then(resp=>{
+ 						this.sendMessageResult=resp.data;
+ 						if(this.sendMessageResult==1){
+ 							this.messageContent=""
+ 							this.messageTitle=""
+ 							window.alert("메세지 전송이 완료되었습니다.")
+ 						}else{
+ 							window.alert("오류가 발생하였습니다. 나중에 다시 시도해주십시오.")
+ 						}
+ 					})
+ 					
+ 				},
+ 				//mbti 리스트
+ 				mbti(){
+ 					// mbti
+ 					axios({
+ 						url: "${pageContext.request.contextPath}/rest/category_n_address/mbti/"+this.board.clubBoardDto.clubNo,
+ 						method: "get",
+ 					}).then((resp) => {
+ 						this.mbtiList = resp.data;
+ 					})
+ 				},
+ 				
             },
             created(){
             	this.loadContent(); //게시글 상세
             	this.loadReply(); //댓글 목록
+            	this.loadClubInfo(); //클럽정보 불러오기
             },
             updated(){
             },

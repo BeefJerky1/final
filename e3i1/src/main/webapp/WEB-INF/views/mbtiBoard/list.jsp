@@ -18,6 +18,28 @@
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <style>
+  .pagination{
+        text-align: center;
+        /*이 설정을 하면 내부 항목의 줄바꿈이 일어나지 않는다*/
+        white-space: nowrap;
+        /*영역을 넘어가는 내용에 대해 표시하지 않도록 설정한다*/
+        overflow: hidden;
+    }
+    .pagination > a {
+	color: white !important;
+    text-decoration: none;
+    display: inline-block;
+    min-width: 2em;
+    text-align: center;
+    padding: 0.5em;
+    margin: 0.2em;
+    background-color: #514e85;
+    border-radius: 1em;
+}
+
+   
+.pagination > a.active-color {background-color: #f3dba5 !important;}
+
 .search-icon {
     position: relative;
     left: 2em;
@@ -59,15 +81,17 @@ $(function(){
 		}
 		
 	});
+	
+	$(".pagination>a").click(function() {
+	    toggleClass(".active-color");
+	});
+	
 });
 
 </script>
 
-<body>
-
-   <body class="bg-light">
+      <body class="bg-light" >
       <div class="web-none d-flex align-items-center px-3 pt-3">
-      
       <!--  반응형 디자인 추가 -->
          <img src="${root}/image/LOGO.png" class="img-fluid logo-mobile">
 
@@ -76,13 +100,13 @@ $(function(){
          </button>
       </div>
       
-      <div class="py-4">
+      <div class="py-4" >
          <div class="container">
             <div class="row position-relative">
             
                <!-- Main Content -->
                <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
-                  <div class="main-content">
+                  <div class="main-content"  id="app">
                      <div class="mb-4 d-flex align-items-center">
                         <div class="d-flex align-items-center">
                            <p class="ms-2 mb-0 fw-bold text-body fs-6">MBTI Community  <i class="fa-solid fa-heart fx-2" style="color:#ffa8c9;"></i></p>
@@ -92,8 +116,8 @@ $(function(){
                      <!--  글 작성 모달 -->
                        <div class="input-group shadow-sm mb-3 rounded-4 overflow-hidden py-2 bg-white" data-bs-toggle="modal" data-bs-target="#postModal">
                            <span class="input-group-text material-icons border-0 bg-white text-primary" style="color: #514e85 !important;">account_circle</span>
-                           <input type="text" class="form-control border-0 fw-light ps-1" placeholder="새로운 글을 작성해 보세요.">
-                           <a href="#" class="text-decoration-none input-group-text bg-white border-0 material-icons text-primary" style="color: #514e85 !important;">add_circle</a>
+                           <input type="text" class="form-control border-0 fw-light ps-1"  :disabled="isAnonymous" :placeholder="textareaPlaceholder">
+                           <a href="#" class="text-decoration-none input-group-text bg-white border-0 material-icons text-primary"  :disabled="isAnonymous"style="color: #514e85 !important;">add_circle</a>
                         </div>
                      
                     <!--  정렬 버튼 구간 -->
@@ -119,7 +143,14 @@ $(function(){
                         <div class="d-flex align-items-center px-3 pt-3">
                         
                         <!-- 프로필 이미지 들어가는 공간! -->
-                           <img src="${root}/image/mbti/강아지(ENFP).png" class="img-fluid rounded-circle" alt="profile-img">
+
+>
+                        <span v-if="${mbtiMemberListVO.memberProfileDto.attachNo==null}">
+	                        <img src="${root}/image/mbti/강아지(ENFP).png" class="img-fluid rounded-circle" alt="profile-img" >
+						</span>
+						<span v-if="${mbtiMemberListVO.memberProfileDto.attachNo!=null}">
+                           <img :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+${mbtiMemberListVO.memberProfileDto.attachNo }" class="img-fluid rounded-circle" alt="profile-img">
+                          </span> 
                            <div class="ms-3">
                               <h6 class="mb-0 d-flex align-items-start text-body fs-6 fw-bold">${mbtiMemberListVO.mbtiBoardDto.mbtiBoardTitle }<span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon"  style="background-color:#514e85 !important;">done</span></h6>
                               <p class="text-muted mb-0">${mbtiMemberListVO.memberDto.memberAnimal }</p>
@@ -140,8 +171,7 @@ $(function(){
                            
                            <div class="d-flex followers">
                               <div>
-                                 <p class="mb-0"><i class="fa-solid fa-heart fx-2" style="color:#ffa8c9;"></i>LIKE 
-                                 <span class="text-muted mbti-board-area">좋아요 숫자</span></p>
+                                 <p class="mb-0"><i class="fa-solid fa-heart fx-2" style="color:#ffa8c9;"></i> LIKE 
                               </div>
                               <div class="ms-5 ps-5">
                                  <div class="d-flex">
@@ -155,22 +185,84 @@ $(function(){
                        </a>
 			</c:forEach>
                      
-                   
-                     <div class="tab-content" id="pills-tabContent">
-                        <div class="tab-pane fade show active" id="pills-feed" role="tabpanel" aria-labelledby="pills-feed-tab">
-                           <!-- Follow People -->
-                           <div class="ms-1">
-                              <!-- Feeds -->
-                              <div class="feeds">
+    
 
-                
-                              </div>
-                           </div>
-                        </div>
-           
-                     </div>
                   </div>
-                  
+                    <div class="pagination" style="float:none; margin:auto; justify-content: center;">
+	
+			<c:if test="${p > 1}">
+				<c:choose>
+					<c:when test="${search}">
+						<a href="list?p=1&s=${s}&type=${type}&keyword=${keyword}">&laquo;</a>
+					</c:when>
+					<c:otherwise>
+						<a href="list?p=1&s=${s}">&laquo;</a>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+	
+			<c:if test="${startBlock > 1}">
+				<c:choose>
+					<c:when test="${search}">
+						<a href="list?p=${startBlock-1}&s=${s}&type=${type}&keyword=${keyword}">&laquo;</a>
+					</c:when>
+					<c:otherwise>
+						<a href="list?p=${startBlock-1}&s=${s}">&laquo;</a>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+	
+			<!-- 숫자 링크 영역 -->
+			<c:forEach var="i" begin="${startBlock}" end="${endBlock}" step="1">
+				<c:choose>
+					<c:when test="${search}">
+						<c:choose>
+							<c:when test="${i == p}">
+								<a class="active" href="list?p=${i}&s=${s}&type=${type}&keyword=${keyword}">${i}</a>
+							</c:when>
+							<c:otherwise>
+								<a href="list?p=${i}&s=${s}&type=${type}&keyword=${keyword}">${i}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when test="${i == p}">
+								<a class="active" href="list?p=${i}&s=${s}">${i}</a>
+							</c:when>
+							<c:otherwise>
+								<a href="list?p=${i}&s=${s}">${i}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+	
+			<!-- 다음 버튼 영역 -->
+			<c:if test="${endBlock < lastPage}">
+				<c:choose>
+					<c:when test="${search}">
+						<a href="list?p=${endBlock+1}&s=${s}&type=${type}&keyword=${keyword}">&gt;</a>
+					</c:when>
+					<c:otherwise>
+						<a href="list?p=${endBlock+1}&s=${s}">&gt;</a>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+	
+			<c:if test="${p < lastPage}">
+				<c:choose>
+					<c:when test="${search}">
+						<a href="list?p=${lastPage}&s=${s}&type=${type}&keyword=${keyword}">&raquo;</a>
+					</c:when>
+					<c:otherwise>
+						<a href="list?p=${lastPage}&s=${s}">&raquo;</a>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+	
+		</div>
+	
                </main>
                <aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-6 col-12">
                   <div class="p-2 bg-light offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample">
@@ -282,7 +374,7 @@ $(function(){
                               <a href="tags.html" class="p-3 border-bottom d-flex align-items-center text-dark text-decoration-none">
                                  <div class="center-block">
                                     <h6 class="center-block fw-bold ml-4 mb-3 pe-3" style="text-align:center; font-size:16px;">연애 궁합 BEST 3 <i class="fa-solid fa-cloud" style="color:#d6f5ff;"></i></h6>
-                                 <img src="${root}/image/couple.png" width="200px;" class="img-fluid rounded-4 center-block m-4 " alt="couple">
+                                  <img src="${root}/image/couple.png" width="200px;" class="img-fluid rounded-4 center-block m-4 " alt="couple">
                                  </div>
                               </a>
                               <!-- Trending Item -->
@@ -302,7 +394,7 @@ $(function(){
                                 
                                 <div class="bg-white rounded-4 overflow-hidden shadow-sm mb-4">
                               <h5 class="fw-bold text-body p-3 mb-0 border-bottom"></h5>
-                              <a href="tags.html" class="p-3 border-bottom d-flex align-items-center text-dark text-decoration-none">
+                              <a href="#" class="p-3 border-bottom d-flex align-items-center text-dark text-decoration-none">
                                  <div class="center-block">
                                     <h6 class="center-block fw-bold mb-3 pe-3" style="text-align:center; font-size:16px;">우정 궁합 BEST 3 <i class="fa-solid fa-umbrella-beach" style="color:#00ce7c;"></i></h6>
                                  <img src="${root}/image/friend.png" width="200px;" class="m-4 img-fluid rounded-4 center-block " alt="couple">
@@ -321,19 +413,18 @@ $(function(){
                                     	<small class="fw-bold m-3  mb-2 pe-3 text-dark" style="color:black !important;">
                                     	3위. INTP <i class="fa-solid fa-plus" style="color:#ffa8c9;"></i> ENFJ (반대가 끌리는 이유...)
                                     </small><BR>
-                                    </div>
-                                 </div>
-                                 
-
+                                    	</div>
+                                	 </div>
 						           </div>
 						   </div>
                         </div>
                      </div>
-                  </div>
+                     </div>
                </aside>
+                  </div>
             </div>
          </div>
-      </div>
+         </body>
       
 
 
@@ -380,20 +471,47 @@ $(function(){
       </div>
      </form>
 
- 
+<script>
+	const app = Vue.createApp({
+		
+		data(){
+			return {
+				memberNo:"${login}",
+		        memberAdmin:"${auth}",
 
+			};
+		},
+		computed:{
+	        isAnonymous(){
+	        	return this.memberNo == "";
+	        },
+	        isMember(){
+	        	return this.memberNo != "" && this.memberAdmin != "";
+	        },
+	        isAdmin(){
+	        	return this.isMember && this.memberGrade == "관리자";
+	        },
+	        	
+			 textareaPlaceholder(){
+	        	return this.isAnonymous ? "로그인 후 작성할 수 있습니다" : "새로운 글을 작성해 보세요!";
+	        },
+		
+		},
+		methods:{
+		
+		},
+		    
+		created(){
 
-
-
-
-
-</body>
-
-
+		},
+	});
+	app.mount("#app");
+</script>
 <!-- 
 	배포용 cdn (개발자 도구에서 vue가 안 보임)
 	<script src="https://unpkg.com/vue@next/dist/vue.global.prod.js"></script>
 -->
+
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/vue@next"></script>
 <script src="${root}/js/time.js"></script>

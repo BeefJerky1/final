@@ -57,6 +57,13 @@ li a:hover {
 .logo-item {
 	width: 100% !important;
 }
+.tableInterest2 {
+	background-color: #E9E9E9;
+	color: #3E4684;
+	font-size: 0.85em;
+	font-weight: 600;
+	width: 30px;
+}
 </style>
 </head>
 
@@ -146,14 +153,15 @@ li a:hover {
         const app = Vue.createApp({
             data(){
                 return {
-    
+    				
                 };
             },
             computed:{
                 
             },
             methods:{
-
+            },
+            created(){
             },
         });
         app.mount("#app");

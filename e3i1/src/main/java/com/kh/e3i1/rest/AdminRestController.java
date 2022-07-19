@@ -30,6 +30,7 @@ import com.kh.e3i1.service.AdminService;
 import com.kh.e3i1.vo.AdminClubSearchVO;
 import com.kh.e3i1.vo.AdminMbtiAnimalListVO;
 import com.kh.e3i1.vo.AdminSearchVO;
+import com.kh.e3i1.vo.ClubMbtiPercentVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
 import com.kh.e3i1.vo.ClubStatisticVO;
 
@@ -61,8 +62,8 @@ public class AdminRestController {
 		return adminDao.memberCount();
 	}
 	//멤버 삭제
-	@DeleteMapping("/member/{memberNo}")
-	public int deleteMember(@PathVariable int memberNo){
+	@DeleteMapping("/member/")
+	public List<Integer> deleteMember(@RequestParam List<Integer> memberNo){
 		return adminDao.deleteMember(memberNo);
 	}
 	//멤버 상세조회
@@ -70,11 +71,6 @@ public class AdminRestController {
 	public MemberDto oneMember(@PathVariable int memberNo){
 		return adminDao.oneMember(memberNo);
 	}
-//	//멤버 검색
-//	@PostMapping("/membersearch")
-//	public List<MemberDto> findMember(@RequestBody AdminSearchVO searchVO) {
-//		return adminDao.findMember(searchVO);
-//	}
 	//총 소모임수
 	@GetMapping("/clubcount")
 	public int clubCount(){
@@ -173,7 +169,7 @@ public class AdminRestController {
 	public int mbtiAnimalDelete(@PathVariable int animalNo) {
 		return adminDao.mbtianimalDelete(animalNo);
 	}
-
+	
 	
 	
 	

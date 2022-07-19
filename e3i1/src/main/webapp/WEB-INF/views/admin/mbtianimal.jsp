@@ -72,6 +72,13 @@ li a:hover {
 .logo-item {
 	width: 100% !important;
 }
+.tableInterest2 {
+	background-color: #E9E9E9;
+	color: #3E4684;
+	font-size: 0.85em;
+	font-weight: 600;
+	width: 30px;
+}
 </style>
 </head>
 
@@ -278,6 +285,9 @@ li a:hover {
 		        	.then(resp=>{
 		        		//완성 시 코드
 		        		window.confirm("사진 등록이 완료되었습니다!");
+	                	this.animal="",
+	                	this.animalNo="",
+	                	this.mbti="",
 		            	this.mbtiAnimalList();
 		        	});
 				},

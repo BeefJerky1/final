@@ -11,7 +11,7 @@ public interface ClubBoardReplyDao {
 
 	List<ClubBoardReplyDto> list(int clubBoardNo);
 
-	void delete(int replyNo);
+	int delete(int replyNo);
 
 	ClubBoardReplyDto edit(ClubBoardReplyDto clubBoardReplyDto);
 
@@ -19,7 +19,7 @@ public interface ClubBoardReplyDao {
 
 	List<ClubBoardReplyListVO> listAll(int clubBoardNo, int likeMemberNo);
 
-	ClubBoardReplyDto reportInfo(int replyNo);
+	ClubBoardReplyListVO reportInfo(int replyNo);
 
 	void calculateReportCount(int replyNob);
 

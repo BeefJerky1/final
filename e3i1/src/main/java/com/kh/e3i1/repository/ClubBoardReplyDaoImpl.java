@@ -22,7 +22,7 @@ public class ClubBoardReplyDaoImpl implements ClubBoardReplyDao{
 		clubBoardReplyDto.setReplyNo(replyNo);
 		sqlSession.insert("clubboardreply.insert", clubBoardReplyDto);
 		this.calculateReplyCount(clubBoardReplyDto.getClubBoardNo());
-		return sqlSession.selectOne("clubboardreply.one", replyNo);
+		return sqlSession.selectOne("clubboardreply.info", replyNo);
 	}
 
 	@Override
@@ -31,11 +31,16 @@ public class ClubBoardReplyDaoImpl implements ClubBoardReplyDao{
 	}
 
 	@Override
-	public void delete(int replyNo) {
-		ClubBoardReplyDto clubBoardReplyDto = sqlSession.selectOne("clubboardreply.one",replyNo);
-		int count = sqlSession.delete("clubboardreply.delete", replyNo);
-//		if(count==0)throw new CannotFindException();
+	public int delete(int replyNo) {
+		ClubBoardReplyDto clubBoardReplyDto = sqlSession.selectOne("clubboardreply.info",replyNo);
+		sqlSession.delete("clubboardreply.delete", replyNo);
 		this.calculateReplyCount(clubBoardReplyDto.getClubBoardNo());
+		ClubBoardReplyDto resultDto = sqlSession.selectOne("clubboardreply.info",replyNo);
+		if(resultDto!=null) {
+			return 0;
+		}else {
+			return 1;
+		}
 		
 	}
 
@@ -45,7 +50,7 @@ public class ClubBoardReplyDaoImpl implements ClubBoardReplyDao{
 		if(count==0) {
 //			throw new CannotFindException();
 		}
-		return sqlSession.selectOne("clubboardreply.one", clubBoardReplyDto.getReplyNo());
+		return sqlSession.selectOne("clubboardreply.info", clubBoardReplyDto.getReplyNo());
 	}
 	@Override
 	public void calculateReplyCount(int clubBoardNo) {
@@ -68,7 +73,7 @@ public class ClubBoardReplyDaoImpl implements ClubBoardReplyDao{
 	}
 
 	@Override
-	public ClubBoardReplyDto reportInfo(int replyNo) {
+	public ClubBoardReplyListVO reportInfo(int replyNo) {
 		return sqlSession.selectOne("clubboardreply.one", replyNo);
 	}
 }

@@ -2,6 +2,8 @@ package com.kh.e3i1.rest;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,8 @@ import com.kh.e3i1.entity.MbtiBoardReplyDto;
 import com.kh.e3i1.repository.MbtiBoardReplyDao;
 import com.kh.e3i1.vo.MbtiReplyVO;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 @RestController
 @RequestMapping("/rest/mbtiBoardReply")
 public class MbtiBoardReplyRestController {
@@ -25,11 +29,11 @@ public class MbtiBoardReplyRestController {
 	
 	@PostMapping("/")
 	public MbtiBoardReplyDto insert(
+				@ApiIgnore HttpSession session,
 				@RequestBody  MbtiBoardReplyDto mbtiBoardReplyDto
 			) {
 		
-		// 임시 작성자 추가
-		int memberNo = 7;
+		int memberNo = (int) session.getAttribute("login");
 		mbtiBoardReplyDto.setMemberNo(memberNo);
 		
 		return mbtiBoardReplyDao.insert(mbtiBoardReplyDto);

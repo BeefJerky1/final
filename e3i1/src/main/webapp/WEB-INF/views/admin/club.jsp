@@ -57,6 +57,20 @@ li a:hover {
 .logo-item {
 	width: 100% !important;
 }
+.tableInterest2 {
+	background-color: #E9E9E9;
+	color: #3E4684;
+	font-size: 0.85em;
+	font-weight: 600;
+	width: 30px;
+}
+
+.txt{
+    width:50px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;  
+}
 </style>
 </head>
 
@@ -187,7 +201,7 @@ li a:hover {
 						</div>	
 					<div class="col-lg-12 col-md-12 col-sm-12">
 						<table class="table text-center">
-							<thead class="table-dark">
+							<thead class="tableInterest2">
 								<tr>
 									<th>번호</th>
 									<th>이름</th>
@@ -205,21 +219,21 @@ li a:hover {
 							<tbody>
 								<tr v-for="(club1 , index) in club">
 									<td>{{club1.clubNo}}</td>
-									<td >{{club1.clubName}}</td>
+									<td>{{club1.clubName}}</td>
 									<td>{{club1.clubLeader}}</td>
 									<td>{{club1.clubMainCategory}}</td>
 									<td>{{club1.clubSubCategory}}</td>
 									<td>{{club1.clubPlace}}</td>
 									<td>{{club1.clubMemberLimit}}</td>
 									<td>
-									<button type="button" class="btn btn-secondary"
+									<button type="button" class="btn btn-outline-success"
 											v-on:click="detail(index)">상세</button>
 									</td>
 									<td>
-										<button type="button" class="btn btn-warning"
+										<button type="button" class="btn btn-outline-secondary"
 											v-on:click=" select(index)">수정</button>
 									</td>
-									<td><button class="btn btn-danger"
+									<td><button class="btn btn-outline-danger"
 											v-on:click="deleteClub(index)">삭제</button></td>
 								</tr>
 							</tbody>

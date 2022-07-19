@@ -60,6 +60,13 @@ li a:hover {
 .logo-item {
 	width: 100% !important;
 }
+.tableInterest2 {
+	background-color: #E9E9E9;
+	color: #3E4684;
+	font-size: 0.85em;
+	font-weight: 600;
+	width: 30px;
+}
 </style>
 </head>
 
@@ -148,6 +155,33 @@ li a:hover {
             </div>
     		</div>
     		<div v-else class="mt-5">
+    			<div class=" bottom border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 rounded mt-3" v-if="this.insert==true" style="border-radius:1em !important">
+              <h1>설문 추가</h1>
+                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+            <label>번호</label>
+            <input type="number" class="form-control" v-model="this.no">
+             </div>
+                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+    		 <label>문제</label>
+             <textarea class="form-control update-reply" v-model="this.question" ></textarea>
+             </div>
+                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+             <label>답변1</label>
+             <textarea class="form-control update-reply" v-model="this.answer1" ></textarea>
+             </div>
+             <div class="row">
+                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+             <label>답변2</label>
+             <textarea class="form-control update-reply" v-model="this.answer2" ></textarea>
+    		 </div>
+    		 <div class="col-lg-2 col-md-2 col-sm-2 mt-1">
+    		 <button class="btn btn-primary " v-on:click="insertSurvey()">등록</button>
+    		 <button class="btn btn-secondary " v-on:click="displayMode()">취소</button>    		 
+    		 </div>
+    		 </div>
+    		<div v-else>
+    		</div>
+            </div>
     		</div>
     	</div>
     	</div>
@@ -197,34 +231,7 @@ li a:hover {
                         </div>
                         
                         </div>
-                    </div>
-              <div class=" bottom border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 rounded mt-3" v-if="this.insert==true" style="border-radius:1em !important">
-              <h1>설문 추가</h1>
-                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-            <label>번호</label>
-            <input type="number" class="form-control" v-model="this.no">
-             </div>
-                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-    		 <label>문제</label>
-             <textarea class="form-control update-reply" v-model="this.question" ></textarea>
-             </div>
-                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-             <label>답변1</label>
-             <textarea class="form-control update-reply" v-model="this.answer1" ></textarea>
-             </div>
-             <div class="row">
-                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-             <label>답변2</label>
-             <textarea class="form-control update-reply" v-model="this.answer2" ></textarea>
-    		 </div>
-    		 <div class="col-lg-2 col-md-2 col-sm-2 mt-1">
-    		 <button class="btn btn-primary " v-on:click="insertSurvey()">등록</button>
-    		 <button class="btn btn-secondary " v-on:click="displayMode()">취소</button>    		 
-    		 </div>
-    		 </div>
-    		<div v-else>
-    		</div>
-            </div>
+                    </div> 
                  </div>
             </div>
     </div>

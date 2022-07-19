@@ -4,6 +4,7 @@ package com.kh.e3i1.vo;
 import java.util.Set;
 
 import com.kh.e3i1.entity.AnimalPhotoDto;
+import com.kh.e3i1.entity.BlockedDto;
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubReplyLikeDto;
 import com.kh.e3i1.entity.ClubReplyReportDto;
@@ -25,4 +26,5 @@ public class ClubBoardReplyListVO {
 	private ClubReplyReportDto clubReplyReportDto;
 	private MbtiAnimalDto mbtiAnimalDto;
 	private AnimalPhotoDto animalPhotoDto;
+	private BlockedDto blockedDto;
 }

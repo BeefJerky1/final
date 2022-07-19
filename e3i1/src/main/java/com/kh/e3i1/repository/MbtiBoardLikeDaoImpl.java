@@ -15,8 +15,8 @@ public class MbtiBoardLikeDaoImpl implements MbtiBoardLikeDao {
 	private SqlSession sqlSession;
 	
 	// count 하는 구문
-	public int likeCount(MbtiBoardLikeDto mbtiBoardLikeDto) {
-			return sqlSession.selectOne("mbtiBoardLike.likeCount", mbtiBoardLikeDto);
+	public int likeCount(int mbtiBoardNo) {
+			return sqlSession.selectOne("mbtiBoardLike.likeCount", mbtiBoardNo);
 		}
 	
 	// 좋아요가 있는 경우 다시 select하는 단일 조회 구문

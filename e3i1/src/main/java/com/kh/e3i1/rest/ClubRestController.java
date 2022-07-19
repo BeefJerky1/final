@@ -29,6 +29,7 @@ import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubListVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
 import com.kh.e3i1.vo.PurchaseListVO;
+import com.kh.e3i1.vo.ClubMemberProfileVO;
 
 @CrossOrigin(
 			origins = {"http://127.0.0.1:5500"}
@@ -152,6 +153,12 @@ public class ClubRestController {
 //	public int clubPayment(@ModelAttribute PurchaseListVO listVO) {
 //		return 
 //	}
+	
+	// 회원 목록 프로필-> 프로필 조회
+	@GetMapping("/modal/{memberNo}")
+	public ClubMemberListVO memberProfile(@PathVariable int memberNo) {
+		return clubMemberDao.memberProfile(memberNo);
+	}
 	
 }
 

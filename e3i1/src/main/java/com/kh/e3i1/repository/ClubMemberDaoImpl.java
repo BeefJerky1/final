@@ -122,4 +122,11 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 		return sqlSession.delete("clubMember.delete", param);
 	}
 	
+	
+	// 모달 프로필 조회
+	@Override
+	public ClubMemberListVO memberProfile(int memberNo) {
+		return sqlSession.selectOne("clubMember.memberProfile", memberNo);
+	}
+	
 }

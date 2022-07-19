@@ -2,7 +2,9 @@ package com.kh.e3i1.repository;
 
 import java.util.List;
 
+import com.kh.e3i1.entity.BlockedDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.vo.BlockedVO;
 import com.kh.e3i1.vo.MemberComplexSearchVO;
 import com.kh.e3i1.vo.MemberDetailVO;
 
@@ -46,4 +48,14 @@ public interface MemberDao {
 	List<MemberDetailVO> mypageMbti(int memberNo);
 
 	int mypageInterest(MemberDto memberDto);
+	
+	//회원 차단
+	int blockTarget(BlockedDto blockedDto);
+	//회원 차단 목록
+	List<BlockedVO> blockList(int memberNo);
+	//차단 회원 해제
+	int DeleteBlockTarget(int blockedNo);
+	//차단 회원 상세정보
+	BlockedVO blockedTargetInfo(int blockedNo);
+	
 }

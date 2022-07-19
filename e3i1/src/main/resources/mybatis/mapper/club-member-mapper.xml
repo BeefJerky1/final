@@ -209,4 +209,30 @@
 		delete club_member where member_no = #{memberNo} and club_no = #{clubNo}
 	</delete>
 	
+	
+		<!-- 소모임 회원 프로필 정보 -->
+	<select id="memberProfile" resultMap="clubMemberListVO">
+		SELECT 
+			m.member_no,
+			m.MEMBER_GENDER,
+			m.MEMBER_MBTI,
+			m.MEMBER_ANIMAL,
+			m.MEMBER_INTEREST1,
+			m.MEMBER_INTEREST2,
+			m.MEMBER_INTEREST3,
+			m.MEMBER_PLACE1,
+			m.MEMBER_PLACE2,
+			m.MEMBER_PLACE3,
+			m.MEMBER_SNS_ID,
+			m.MEMBER_NICK,
+			m.MEMBER_BIRTH, 
+       		m.member_logindate,
+			mp.MEMBER_NO,
+			mp.ATTACH_NO 
+		FROM 
+			MEMBER m 
+		LEFT OUTER JOIN MEMBER_PROFILE mp 
+		ON m.MEMBER_NO = mp.MEMBER_NO 
+		WHERE m.member_no = #{memberNo}
+	</select>
 </mapper>

@@ -176,7 +176,35 @@
 		LEFT OUTER JOIN MEMBER_PROFILE mp ON m.MEMBER_NO = mp.MEMBER_NO
 	WHERE c.CLUB_NO = #{clubNo}
 	</select>
-	
+	<!-- 게시글 번호로 소모임 정보 조회 -->
+	<select id="clubDetail2" resultMap="clubDetailVO">
+	 select 
+ C.club_leader,
+ C.club_main_category,
+ C.club_sub_category,
+ C.club_place,
+ C.club_name,
+ C.club_no,
+ C.club_summary,
+ C.club_member_limit,
+ P.*,
+ CP.attach_no as attach_no,
+ M.member_nick,
+ MP. attach_no as attach_no2
+ from 
+ club C 
+ left outer join club_board B 
+ on C.club_no = B.club_no 
+ left outer join club_mbti_percent P
+ on B.club_no = P.club_no
+ left outer join club_profile CP
+ on P.club_no = CP.club_no
+ left outer join member M
+ on C. club_leader = M.member_no
+ left outer join member_profile MP
+ on M.member_no = MP.member_no
+ where club_board_no = #{clubBoardNo}
+	</select>
 	<select id="like_sequence" resultType="int">
 		select club_like_seq.nextval from dual
 	</select>

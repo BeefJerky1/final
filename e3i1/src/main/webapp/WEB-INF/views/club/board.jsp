@@ -5,7 +5,18 @@
 <c:set var="memberNo" value="${login}"></c:set>
 <c:set var="memberAdmin" value="${auth}"></c:set>
 <c:set var="isLogin" value="${memberNo != null}"></c:set>
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/modal.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/club.css">
 	<style>
+	.memberPhoto:hover {
+	transform: scale(1.05);
+}
+	
+	.readonly{
+		background-color:white !important;
+	}
 	body{
 	background-color:#F6F6F6 !important;
 	}
@@ -106,128 +117,182 @@ position:relative;
     	border-radius: "2rem !important";
     }
     
+    .nav-link {
+    	color : #514e85 !important;
+    	font-size : 15px;
+    }
+    
+   .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+     background-color: #f8f9fa !important;
+    border-bottom: 3px solid #514e85;
+    border-radius: 0px;
+    color: #514e85 !important;
+    font-weight: 600;
+   
+   }
+   
+   .clubMemberNick {
+		font-weight: bold !important;
+}
 
+.profileModal {
+	width :600px !important;
+	height : 650px;
+	border : none;
+	border-radius : 1em;
+	position: absolute !important;
+}
+.clubMemberList {
+	font-weight: bold !important;
+	margin-bottom: 0.3em;
+	margin-top: 0.5em;
+}
+
+.clubModalDanger {
+    background-color: #a7a7c1;
+    border: none;
+    color: white;
+    padding: 0.4em 1em;
+    border-radius: 16px;
+    font-size: 17px;
+    width: 140px;
+    margin-left : 2em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 4px 0px inset;
+}
+.clubModalDanger:hover {
+    background-color: #9898bc;
+}
+
+.clubModalWarning {
+	background-color: #efc873;
+    border: none;
+    color: white;
+    padding: 0.4em 1em;
+    border-radius: 16px;
+    font-size: 17px;
+    width: 140px;
+    margin-left : 2em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 4px 0px inset;
+}
+
+.clubModalWarning:hover {
+    background-color: #e8bd61;
+}
+
+.clubModal {
+	font-weight: bold !important;
+	margin-bottom: 0.3em;
+	font-size : 18px;
+}
+
+.clubModalInterest {
+	font-weight: bold !important;
+	margin-top: 0.5em;
+	margin-right : 0.3em;
+	margin-bottom: 0.3em;
+	font-size : 15px;
+	background-color : #e8e9ea;
+	border-radius : 1em;
+	padding : 0.3em;
+}
 	</style>
+	  <link rel="stylesheet" type="text/css" href="${path}/css/slick.css">
+      <link rel="stylesheet" type="text/css" href="${path}/css/slick-theme.css">
+      <link rel="stylesheet" type="text/css" href="${path}/css/slick-theme.css">
+      <link rel="stylesheet" type="text/css" href="${path}/css/icofont.min.css">
+      <link rel="stylesheet" type="text/css" href="${path}/css/materialdesignicons.min.css">
+      <link rel="stylesheet" type="text/css" href="${path}/css/mbtiboard.css">
+	      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
-
+<body>
     <div id="app" class="container-fluid">
         <div class="row all">
              <div class="col-lg-3 col-md-3 col-sm-3 mt-5 left-side "	>
              <div class="border text-dark mt-3 p-4 col-lg-9 offset-lg-3 col-md-9 offset-md-3 col-sm-9 offset-sm-3 rounded shadow white" style="border-radius:1em !important">
-                 <div class="row ">
-							<div class="col-md-2 align-self-center ">
-								<i class="fa-solid fa-house-chimney fa-2x"
-									style="color: lightgray;"></i>
-							</div>
-							<div class="col-md-8 align-self-center"
-								v-if="clubList.clubDto != null">
-								<h5 style="margin: 0px;">{{clubList.clubDto.clubName}}</h5>
-							</div>
-							<div class="col-md-2 align-self-center">
-								<div class="row" @click="likeClub">
-									<i class="fa-solid fa-heart" style="color: red;" v-if="isLike"></i>
-									<i class="fa-regular fa-heart" style="color: red;"
-										v-if="!isLike"></i>
-								</div>
-								<div class="row mt-2">
-									<i class="fa-solid fa-bullhorn"></i>
-								</div>
+                 <div class="row">
+							<div class="col-md-2 align-self-center"></div>
+							<div class="text-center" v-if="clubList.clubDto != null">
+								<a
+									:href="'${pageContext.request.contextPath}/club/detail?clubNo='+clubList.clubDto.clubNo">
+									<i class="fa-solid fa-house"></i>
+								</a> <span class="boldfont">&nbsp;&nbsp;{{clubList.clubDto.clubName}}&nbsp;&nbsp;</span>
+								<span @click="likeClub"> <i class="fa-solid fa-heart"
+									style="color: red;" v-if="isLike"></i> <i
+									class="fa-regular fa-heart" style="color: red;" v-if="!isLike"></i>&nbsp;
+								</span> <i class="fa-solid fa-circle-exclamation"></i>
 							</div>
 						</div>
 				
 					<hr>
 
 					
+						<div class="card-title">
+						<div class="row text-center my-2"
+							v-if="clubList.memberDto != null">
+							<span><i class="fa-solid fa-crown" style="color: #f6e58d;"></i></span>
+							<span class="boldfontS">{{clubList.memberDto.memberNick}}</span>
+						</div>
 						<div class="row">
-							<div class="col-md-2" width="10px" height="10px">
-<!-- 								<img src="https://via.placeholder.com/250/69f/fff.png" -->
-<!-- 									class="profile"> -->
-<!-- 							<div v-if="clubList.memberProfileDto==null"> -->
-                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"> 
-<!--                             </div> -->
-<!--                             <div v-else> -->
-<!--                          		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+clubList.memberProfileDto.attachNo">                              -->
-<!--                          	</div> -->
+							<div class="col-md-4" width="16px" height="16px"
+								style="margin-left: 0.8em; margin-top: 0.45em;">
+								<img src="${pageContext.request.contextPath}/image/mbti/거북이(ISTP).png" class="profile"
+									v-if="clubList.memberProfileDto == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo"
+									class="profile" v-if="clubList.memberProfileDto != null">
 							</div>
-							<div class="col-md-8 offset-md-2 row align-self-center">
-								<div class="col-md-3">
-									<i class="fa-solid fa-crown fa-2x" style="color: #f6e58d"></i>
-								</div>
-								<div class="col-md-9 align-self-center"
-									v-if="clubList.memberDto != null">
-									<h6 style="margin: 0px;">{{clubList.memberDto.memberNick}}</h6>
-								</div>
+							<div class="col-md-7 text-right" v-if="clubList.clubDto != null"
+								width="10px" height="10px">
+								<div class="hash-tag text-center">\#{{clubList.clubDto.clubMainCategory}}</div>
+								<div class="hash-tag text-center">\#{{clubList.clubDto.clubSubCategory}}</div>
+								<div class="hash-tag text-center">\#{{clubList.clubDto.clubPlace}}</div>
 							</div>
 						</div>
 
-						<div class="row mt-4" v-if="clubList.clubDto != null">
-							<div class="col-md-4">
-								<div class="hash-tag">
-									<span>\#{{clubList.clubDto.clubMainCategory}}</span>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="hash-tag">
-									<span>\#{{clubList.clubDto.clubSubCategory}}</span>
-								</div>
-							</div>
+						<div class="text-right mt-2 boldfontSright"
+							v-if="clubList.clubMbtiPercent != null">
+							<span class="col-md-10"><i class="fa-solid fa-user-group"
+								style="margin-right: 0.5em;"></i>{{clubList.clubMbtiPercent.total}}
+								/ {{clubList.clubDto.clubMemberLimit}}</span>
 						</div>
-						<div class="row mt-4" v-if="clubList.clubMbtiPercent != null">
-							<div class="col-md-2">
-								<i class="fa-solid fa-user-group"></i>
-							</div>
-							<div class="col-md-10">{{clubList.clubMbtiPercent.total}} /
-								{{clubList.clubDto.clubMemberLimit}}</div>
-						</div>
+					</div>
 
 
-						<div class="col">
-							<h5 style="font-weight: bold">우리 소모임 MBTI 순위</h5>
+						<div class="text-center mb-3">
+							<span class="boldfontS">소모임 멤버 MBTI TOP 3 <i
+								class="fa-solid fa-ranking-star"></i></span>
 						</div>
 
 						<!-- v-for index를 []안에 사용할 방법을 찾으면 v-for로 반복할 예정 너무 복잡해지면 그냥 이대로 사용 -->
-						<div class="row mt-4" v-if="mbtiList[0] != null">
-							<div class="col-md-4">
-								<img src="https://via.placeholder.com/250/69f/fff.png"
-									class="profile">
+						<div class="row">
+							<div class="col-md-4 text-center" v-if="mbtiList[0] != null">
+								<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[0].attachNo == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[0].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[0].attachNo != null">
+								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[0].memberMbti}}</p>
+								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[0].mbtiPercent}}%</p>
 							</div>
-							<div class="col-md-8 align-self-center">
-								<div>
-									<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[0].memberMbti}}</h4>
-								</div>
-								<div>
-									<p style="margin: 0px 0px;">{{mbtiList[0].mbtiPercent}}%</p>
-								</div>
+							<div class="col-md-4 text-center" v-if="mbtiList[1] != null">
+								<img src="${root }/image/mbti/물개(ESFP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[1].attachNo == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[1].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[1].attachNo != null">
+								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[1].memberMbti}}</p>
+								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[1].mbtiPercent}}%</p>
 							</div>
-						</div>
-
-						<div class="row mt-4" v-if="mbtiList[1] != null">
-							<div class="col-md-4">
-								<img src="https://via.placeholder.com/250/69f/fff.png"
-									class="profile">
-							</div>
-							<div class="col-md-8 align-self-center">
-								<div>
-									<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[1].memberMbti}}</h4>
-								</div>
-								<div>
-									<p style="margin: 0px 0px;">{{mbtiList[1].mbtiPercent}}%</p>
-								</div>
-							</div>
-						</div>
-
-						<div class="row mt-4" v-if="mbtiList[2] != null">
-							<div class="col-md-4">
-								<img src="https://via.placeholder.com/250/69f/fff.png"
-									class="profile">
-							</div>
-							<div class="col-md-8 align-self-center">
-								<div>
-									<h4 style="margin: 0px 0px; font-weight: bold;">{{mbtiList[2].memberMbti}}</h4>
-								</div>
-								<div>
-									<p style="margin: 0px 0px;">{{mbtiList[2].mbtiPercent}}%</p>
-								</div>
+							<div class="col-md-4 text-center" v-if="mbtiList[2] != null">
+								<img src="${root }/image/mbti/원숭이(ESTP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[2].attachNo == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[2].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684; width:50px; height:50px;"
+									v-if="mbtiList[2].attachNo != null">
+								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[2].memberMbti}}</p>
+								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[2].mbtiPercent}}%</p>
 							</div>
 						</div>
             </div>
@@ -251,20 +316,20 @@ position:relative;
                     </div>
  
                 </div>
-             	<div v-else class="shadow">
+             	<div v-else class="shadow " style="border-radius:1em !important">
              	<!--  정렬 버튼 구간 -->
-             	 <ul class=" top-osahan-nav-tab nav nav-pills justify-content-center nav-justified mb-4 shadow-sm rounded-4 overflow-hidden bg-white mt-4" id="pills-tab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                           <button class="p-3 nav-link  active nav-area" id="pills-feed-tab" data-bs-toggle="pill" data-bs-target="#pills-feed" type="button" role="tab" aria-controls="pills-feed" aria-selected="true">new!</button>
+             	 <ul class=" top-osahan-nav-tab nav nav-pills justify-content-center nav-justified rounded shadow-sm rounded-4 overflow-hidden bg-white mt-3 " style="border-radius:1em !important" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation" style="border-radius:1em !important">
+                           <button class="p-3 nav-link  active nav-area" id="pills-feed-tab" data-bs-toggle="pill" data-bs-target="#pills-feed" type="button" role="tab" aria-controls="pills-feed" aria-selected="true" v-on:click="newest()">new!</button>
                         </li>
-                        <li class="nav-item" role="presentation">
-                           <button class="p-3 nav-link nav-area" id="pills-people-tab" data-bs-toggle="pill" data-bs-target="#pills-people" type="button" role="tab" aria-controls="pills-people" aria-selected="false">좋아요순</button>
+                        <li class="nav-item" role="presentation" style="border-radius:1em !important">
+                           <button class="p-3 nav-link nav-area" id="pills-people-tab" data-bs-toggle="pill" data-bs-target="#pills-people" type="button" role="tab" aria-controls="pills-people" aria-selected="false" v-on:click="like()">좋아요순</button>
                         </li>
-                        <li class="nav-item" role="presentation">
-                           <button class="p-3 nav-link nav-area" id="pills-mentions-tab" data-bs-toggle="pill" data-bs-target="#pills-mentions" type="button" role="tab" aria-controls="pills-mentions" aria-selected="false">댓글순</button>
+                        <li class="nav-item" role="presentation" style="border-radius:1em !important">
+                           <button class="p-3 nav-link nav-area" id="pills-mentions-tab" data-bs-toggle="pill" data-bs-target="#pills-mentions" type="button" role="tab" aria-controls="pills-mentions" aria-selected="false" v-on:click="reply()">댓글순</button>
                         </li>
-                        <li class="nav-item" role="presentation">
-                           <button class="p-3 nav-link nav-area" id="pills-mentions-tab" data-bs-toggle="pill" data-bs-target="#pills-mentions" type="button" role="tab" aria-controls="pills-mentions" aria-selected="false">사진</button>
+                        <li class="nav-item" role="presentation" style="border-radius:1em !important">
+                           <button class="p-3 nav-link nav-area" id="pills-mentions-tab" data-bs-toggle="pill" data-bs-target="#pills-mentions" type="button" role="tab" aria-controls="pills-mentions" aria-selected="false" v-on:click="read()">조회수순</button>
                         </li>
                      </ul>
              	</div>
@@ -284,9 +349,27 @@ position:relative;
                          	</div>
                             </div>
                             <div class="col-lg-8 col-md-8 col-sm-8 align-start top">
-                                <span data-bs-toggle="modal" data-bs-target="#exampleModal" v-on:click="modal(index)">
-                                   <b>{{clubboard.memberDto.memberNick}}</b> 
-                                </span><br>
+                            	<!-- 프로필 드롭다운 -->
+                                <div class="dropdown" >
+						            <span class="dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" v-on:click="modal(index)">
+						             {{clubboard.memberDto.memberNick}}
+						            </span>
+						            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"  >
+						              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">프로필</a></li>
+						              <div v-if="Mprofile!=null">
+						                <div v-if="Mprofile.memberDto.memberNo ==this.memberNo">
+	               						</div>
+	               						<div v-else>
+						              		<li><a class="dropdown-item" href="#" v-on:click="blocked()">차단하기</a></li>
+	               						</div>
+	               						<div v-if="Mprofile.memberDto.memberNo ==this.memberNo">
+	               						</div>
+	               						<div v-else>
+						              		<li class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#postModal" >메세지 보내기</li>
+	               						</div>  
+                					 </div>
+						            </ul>
+						          </div>
                                 <span class="interest me-1 ">{{clubboard.memberDto.memberInterest1}}</span>
                                 <span class="interest me-1 ">{{clubboard.memberDto.memberInterest2}}</span>
                                 <span class="interest me-1 ">{{clubboard.memberDto.memberInterest3}}</span>
@@ -339,9 +422,9 @@ position:relative;
 
                     </div>
             </div>
-                     <!-- 모달 -->
+                     <!--  프로필 모달 -->
       <div v-if="this.Mprofile!=null">
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -351,33 +434,34 @@ position:relative;
                     <a><img src="https://placeimg.com/120/120/animals" class="circle profile"></a>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
-		            <h4><b>{{Mprofile.memberDto.memberNick}}</b></h4>
-		            <span>{{Mprofile.memberDto.memberGender}}/</span><span>{{elapsedText(Mprofile.memberDto.memberBirth)}}/</span> <span>{{Mprofile.memberDto.memberPlace1}}</span>           
-                </div>
-                <div class="row mt-5">
-                <div class="col-lg-6col-md-6 col-sm-6">
-                	<button class="btn btn-outline-danger form-control">신고하기</button>
-                </div>
-                <div class="col-lg-6col-md-6 col-sm-6">
-                	<button class="btn btn-outline-warning form-control">차단하기</button>
-                </div>
-                </div>
-                <div class="row mt-5">
-                	<h5><b>SNS계정</b><img style="width:25px "src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"></h5>
-                	<h5>{{Mprofile.memberDto.memberSnsId}}</h5>
-                </div>
-                <div class="row mt-5">
-                	<h5><b>나의 관심분야</b></h5>
-                	<div class="col-lg-12 col-md-12 col-sm-12">
-		            <button class="btn btn-outline-secondary btn-sm">{{Mprofile.memberDto.memberInterest1}}</button>
-		            <button class="btn btn-outline-secondary btn-sm">{{Mprofile.memberDto.memberInterest2}}</button>
-		            <button class="btn btn-outline-secondary btn-sm">{{Mprofile.memberDto.memberInterest3}}</button>
-		            </div>
-                </div>
-				<div class="row mt-5">
-					<h5><b>마지막 로그인</b></h5>
-					<h5><h5>{{convertTime(Mprofile.memberDto.memberLogindate)}}({{elapsedText(Mprofile.memberDto.memberLogindate)}})</h5></h5>
-            	</div>
+
+
+					<h4>
+								<span class="clubMemberNick">{{Mprofile.memberDto.memberNick}}</span>&nbsp;<i class="fa-solid fa-circle-check"></i>
+							</h4>
+							<span class="clubMemberList">{{Mprofile.memberDto.memberGender}} / </span>
+							<span class="clubMemberList"><i class="fa-solid fa-location-dot"></i> {{Mprofile.memberDto.memberPlace1}} / </span>
+							<span class="clubMemberList">{{Mprofile.memberDto.memberMbti}}</span><br>
+							<span class="btn btn-outline-success mt-2">{{Mprofile.memberDto.memberAnimal}}</span>
+						</div>
+						<div class="mt-4 mb-2 pt-2 border-top">
+							<a href="https://www.instagram.com/{{memberProfile.memberDto.memberSnsId}}" style="float:left;">
+							<span class="clubModal">SNS <i class="fa-brands fa-instagram"></i> {{Mprofile.memberDto.memberSnsId}}</span>
+							</a>
+						</div>
+						<div class="mt-3 mb-2 text-start">
+							<span class="clubModal"  style="float: left;width: inherit;margin-top: 0.2em;">나의 관심분야</span><br>
+							<div class="mb-1"  style="float:left;">
+								<span class="clubModalInterest">{{Mprofile.memberDto.memberInterest1}}</span>
+								<span class="clubModalInterest">{{Mprofile.memberDto.memberInterest2}}</span>
+								<span class="clubModalInterest">{{Mprofile.memberDto.memberInterest3}}</span>
+							</div>
+						</div>
+						<div class="mt-3 mb-3">
+						<span class="clubModal"  style="float:left;">마지막 로그인</span><br>
+						<span class="clubModal"  style="float:right;">{{convertTime(Mprofile.memberDto.memberLogindate)}}</span>
+						</div>
+
 
 
             </div>
@@ -388,7 +472,53 @@ position:relative;
       </div>
     </div>
     </div>
+    <!-- 메세지 모달 -->
+    <div v-if="this.Mprofile!=null">
+          <!--  글 작성 모달 -->
+      <div class="modal fade" id="postModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 p-4 border-0 bg-light">
+               <div class="modal-header d-flex align-items-center justify-content-start border-0 p-0 mb-3">
+                  <a href="#" class="text-muted text-decoration-none material-icons" data-bs-dismiss="modal" v-on:click="cancelMessage()">arrow_back_ios_new</a>
+                  <h5 class="modal-title text-muted ms-3 ln-0" id="staticBackdropLabel"><span class="material-icons md-32">account_circle</span></h5>
+               </div>
+               <!-- 닉네임 -->
+            <div class="modal-body p-0 mb-3">
+                <div class="form-floating">
+                   <div class=" rounded-5 border-0 shadow-sm readonly" id="floatingTextarea1" style="height: 50px"><b>To:{{Mprofile.memberDto.memberNick}}</b></div>
+                </div>
+             </div>
+               <!-- 제목 작성 -->
+            <div class="modal-body p-0 mb-3">
+                <div class="form-floating">
+                   <input type="text" class="form-control rounded-5 border-0 shadow-sm" v-model="messageTitle"  id="floatingTextarea2" style="height: 50px" :maxlength="titleMax">
+                   <label for="floatingTextarea2" class="h6 text-muted mb-0">제목을 작성하세요.</label>
+                </div>
+             </div>
+             	<!-- 내용 작성 -->
+               <div class="modal-body p-0 mb-3">
+                  <div class="form-floating">
+                     <textarea class="reviewC form-control rounded-5 border-0 shadow-sm" v-model="messageContent"placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px" :maxlength="contentMax"></textarea>
+                     <label for="floatingTextarea2" class="h6 text-muted mb-0">내용을 작성하세요.</label>
+                  </div>
+               </div>
+
+               <div class="modal-footer justify-content-start px-1 py-1 bg-white shadow-sm rounded-5">
+                  <div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
+                     <span class="leg">
+                    	<span class="text-muted count2" >{{messageContent.length}}</span> 
+                    	/
+                    	<span class="text-muted total">{{contentMax}}</span> 
+                     </span>
+                  </div>
+                  <div class="ms-auto m-0">
+                  	<button type="button" v-on:click="sendMessage()" data-bs-dismiss="modal"	 :disabled="messageIsEmpty()==true" class=" writeButton btn btn-primary fw-bold px-3 py-2 fs-6 mb-0 d-flex align-items-center" style="border-radius : 1em; background-color: #514e85; border:none; font-size: 14px !important;">보내기</button>
+                  </div>
+               </div>
             </div>
+         </div>
+      </div>
+     </div>
             <div class=" mt-3">
                  <button type="button" v-on:click="appendBoard()" :disabled="this.dataFull==true" class="form-control btn-primary shadow " style="border-radius:1em !important">
         더보기 ({{showBoard}}/{{totalBoard}})
@@ -397,6 +527,8 @@ position:relative;
             
         </div>
         </div>
+        <!-- 우측 사이드  -->
+    </div>
        <div class="col-lg-3 col-md-3 col-sm-3  right-side mt-5 ">
        			<div v-if="this.clubMember==1 || this.memberAdmin =='관리자'" class="mt-3">
         			<button class="btn btn-secondary form-control shadow" v-on:click="notAllowed()" v-if="cancel " style="border-radius:1em !important">cancel</button>
@@ -456,15 +588,17 @@ position:relative;
             </div>
         </div>
     </div>
-    </div>
-
+</div>
+</body>
      <!-- vue js도 lazy loading을 사용한다 -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue@next"></script>
     <script src="${path}/js/time.js"></script>
+    <script src="${path}/js/mbtiboard.js"></script>
+	<script src="${path}/js/slick.min.js"></script>
+    
 <!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script> -->
     <script>
-        //div[id=app]을 제어할 수 있는 Vue instance를 생성
         const app = Vue.createApp({
             //data : 화면을 구현하는데 필요한 데이터를 작성한다.
             data(){
@@ -473,8 +607,8 @@ position:relative;
                 	boardLike:"",
 		            //세션
 		            memberAdmin:"${auth}",	
-// 		           Admin:"${auth}",
-				   memberNo:"${login}",
+// 		            Admin:"${auth}",
+				    memberNo:"${login}",
 		            //댓글 입력 정보
 		            boardContent:"",
 		            boardContent2:"",
@@ -489,6 +623,9 @@ position:relative;
                     showBoard:5, //보여주는 게시글 수
                     boardLeft:0,//남은 게시글 수
                     dataFull:false,
+                    //기본 정렬
+                    column:"club_board_time",
+                    order:"desc",
                     //사이드 인기 게시판
                     side:{},
                     orderType:"clubBoardNoDesc",
@@ -496,10 +633,19 @@ position:relative;
                    	clubList:[],
 					mbtiList:[],
 					clubMember:"",
-                   isLike:false,
+                    isLike:false,
                     //멤버 프로필: 모달
                     Mprofile:null,
                     True:1,
+                    
+                    //메세지 보내기
+                    messageTitle:"",
+                    messageContent:"",
+                    sendMessageResult:"",
+                    titleMax:30,
+                    contentMax:300,
+                    //차단
+                    blockedResult:"",
                 };
             },
             //computed : data를 기반으로 하여 실시간 계산이 필요한 경우 작성한다.
@@ -559,12 +705,19 @@ position:relative;
             	clubBoardContentIsEmpty(){
             		return this.boardContent.length==0;     		
             	},
+            	messageIsEmpty(){
+            		return this.messageContent.length==0 || this.messageTitle.length==0;
+            	},
+            	cancelMessage(){
+            		this.messageContent='';
+            		this.messageTitle='';
+            	},
             	//게시글 목록 출력
                 loadClubBoardList(){
             		if(this.memberNo==""){
             			const memberNo=0
                     axios({
-		        		url:"${pageContext.request.contextPath}/rest/clubboard/"+this.clubNo+"/likeMemberNo/"+memberNo,
+		        		url:"${pageContext.request.contextPath}/rest/clubboard/"+this.clubNo+"/"+this.memberNo+"/"+this.column+"/"+this.order,
 		        		method:"get",
 		        	})
 		        	.then(resp=>{
@@ -574,8 +727,6 @@ position:relative;
 // 							console.log(i)
 							data.push(resp.data[i])
 						}
-
-
 						this.boardAll = resp.data,
 						this.board = data,
 						this.totalBoard = this.boardAll.length
@@ -595,7 +746,7 @@ position:relative;
 		        	});
             		}else{
                         axios({
-    		        		url:"${pageContext.request.contextPath}/rest/clubboard/"+this.clubNo+"/likeMemberNo/"+this.memberNo,
+    		        		url:"${pageContext.request.contextPath}/rest/clubboard/"+this.clubNo+"/"+this.memberNo+"/"+this.column+"/"+this.order,
     		        		method:"get",
     		        	})
     		        	.then(resp=>{
@@ -605,8 +756,6 @@ position:relative;
 //     							console.log(i)
     							data.push(resp.data[i])
     						}
-
-
     						this.boardAll = resp.data,
     						this.board = data,
     						this.totalBoard = this.boardAll.length
@@ -663,13 +812,6 @@ position:relative;
                    	this.cancel= false;
 					this.write = true;
 					this.boardContent = "";
-                },
-                //파일 크기 확인
-                checkFileSize(){
-                	if (this.$refs.clubBoardAttach.files.size > (20 * 1024 * 1024)) {
-                        alert("파일 사이즈가 20mb 를 넘습니다.");
-                        return
-                    }
                 },
                 //게시글 등록
                 addBoard(){
@@ -730,7 +872,7 @@ position:relative;
                 //인기게시글
                 TopTenList(){
                 	axios({
-                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+this.orderType,
+                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+this.orderType+"/"+this.memberNo,
 		        		method:"get",
                 	}).then(resp=>{
                 		this.side = resp.data
@@ -739,7 +881,7 @@ position:relative;
                 //select로 인기게시글 변경
                 changeList(event) {
                 	axios({
-                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+event.target.value,
+                		url:"${pageContext.request.contextPath}/rest/clubboard/side/"+this.clubNo+"/order/"+event.target.value+"/"+this.memberNo,
 		        		method:"get",
                 	}).then(resp=>{
                 		this.side = resp.data
@@ -759,7 +901,6 @@ position:relative;
 			        	});				
 				
                 		 
-
             	},
             	//클럽 멤버 불러오기
             	clubMemberCheck(){
@@ -773,6 +914,77 @@ position:relative;
             			this.clubMember=resp.data
             		})
             	},
+            	newest(){
+ 					this.column ="club_board_time";
+ 					this.loadClubBoardList()
+            	},
+				read(){
+ 					this.column ="club_board_readcount";
+ 					this.loadClubBoardList()
+ 				},
+ 				like(){
+ 					this.column ="club_board_like";
+ 					this.loadClubBoardList()
+ 				},
+ 				reply(){
+ 					this.column ="club_board_count";
+ 					this.loadClubBoardList()
+ 				},
+ 				sendMessage(){
+ 					const messageReceiver = this.Mprofile.memberDto.memberNo
+ 					if(this.messageContent=='' ||this.messageContent==null){
+ 						
+ 						return
+ 					}
+ 					axios({
+ 						url:"${pageContext.request.contextPath}/rest/message/send",
+ 						method:"post",
+ 						data:{
+ 							messageWriter:this.memberNo,
+ 							messageContent:this.messageContent,
+ 							messageTitle:this.messageTitle,
+ 							messageReceiver:messageReceiver
+ 						},
+ 					}).then(resp=>{
+ 						this.sendMessageResult=resp.data;
+ 						if(this.sendMessageResult==1){
+ 							this.messageContent=""
+ 							this.messageTitle=""
+ 							window.alert("메세지 전송이 완료되었습니다.")
+ 						}else{
+ 							window.alert("오류가 발생하였습니다. 나중에 다시 시도해주십시오.")
+ 						}
+ 					})
+ 					
+ 				},
+ 				blocked(){
+					const choice = window.confirm("정말 차단하시겠습니까?\n차단한 상대의 게시물은 보이지 않습니다.");
+					if(choice==false)return
+ 					const blockedTarget = this.Mprofile.memberDto.memberNo;
+ 					axios({
+ 						url:"${pageContext.request.contextPath}/rest/mypage/block",
+ 						method:"post",
+ 						data:{
+ 							blockedTarget:blockedTarget,
+ 							blockedUser:this.memberNo,
+ 						}
+ 					}).then(resp=>{
+ 						this.blockedResult=resp.data
+ 						if(this.blockedResult ==1){
+ 							window.alert("차단되었습니다. 차단해제는 마이페이지에서 가능합니다");
+ 						}
+ 						this.loadClubBoardList();
+ 					})
+ 				},
+ 				mbti(){
+ 					// mbti
+ 					axios({
+ 						url: "${pageContext.request.contextPath}/rest/category_n_address/mbti/"+this.clubNo,
+ 						method: "get",
+ 					}).then((resp) => {
+ 						this.mbtiList = resp.data;
+ 					})
+ 				},
             	
             },
             created(){
@@ -780,6 +992,7 @@ position:relative;
             	this.TopTenList();
             	this.loadClubInfo();
             	this.clubMemberCheck(); 
+            	this.mbti();
             	
             },
             mounted(){
@@ -787,4 +1000,5 @@ position:relative;
         });
         app.mount("#app");
     </script>
+
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

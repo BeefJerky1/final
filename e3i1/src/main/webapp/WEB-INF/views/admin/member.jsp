@@ -57,6 +57,13 @@ li a:hover {
 .logo-item {
 	width: 100% !important;
 }
+.tableInterest2 {
+	background-color: #E9E9E9;
+	color: #3E4684;
+	font-size: 0.85em;
+	font-weight: 600;
+	width: 30px;
+}
 </style>
 </head>
 
@@ -180,11 +187,15 @@ li a:hover {
 						 </div>
 						</div>
 					</div>
-					<div class="col-lg-12 col-md-12 col-sm-12">
+					<div class="col-lg-12 col-md-12 col-sm-12 text-end">
+									<button class="btn btn-outline-danger"
+											v-on:click="deleteMember()">삭제</button>
+									<button class="btn btn-outline-primary"
+											data-bs-toggle="modal" data-bs-target="#postModal">메세지 보내기</button>
 						<table class="table text-center mb-5">
-							<thead class="table-dark">
+							<thead class="tableInterest2">
 								<tr>
-									<!--   						<th></th> -->
+									<th><input type="checkbox" id="checkbox" v-model="selectAll" ></th>
 									<th>번호</th>
 									<th>이메일</th>
 									<th>닉네임</th>
@@ -195,11 +206,11 @@ li a:hover {
 									<th>신고</th>
 									<th>마지막 로그인</th>
 									<th>수정</th>
-									<th>삭제</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr v-for="(member1 , index) in member">
+									<td><input type="checkbox" v-model="selected" :value=member1.memberNo></td>
 									<td>{{member1.memberNo}}</td>
 									<td>{{member1.memberEmail}}</td>
 									<td>{{member1.memberNick}}</td>
@@ -211,11 +222,9 @@ li a:hover {
 									<td>{{member1.memberReportCount}}</td>
 									<td>{{elapsedText(member1.memberLogindate)}}</td>
 									<td>
-										<button type="button" class="btn btn-warning"
+										<button type="button" class="btn btn-outline-secondary"
 											v-on:click=" select(index)">수정</button>
 									</td>
-									<td><button class="btn btn-danger"
-											v-on:click="deleteMember(index)">삭제</button></td>
 								</tr>
 							</tbody>
 						</table>
@@ -223,6 +232,50 @@ li a:hover {
 <button type="button" v-on:click="append()" :disabled="this.dataFull == true" class="form-control btn-outline-primary " style="border-radius:1em !important">
         더보기 ({{showMember}}/{{totalMember}})
     </button>
+           <!--  게시글 더보기에서 메시지 보내기  -->
+      <div class="modal fade" id="postModal"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 p-4 border-0 bg-light">
+               <div class="modal-header d-flex align-items-center justify-content-start border-0 p-0 mb-3">
+                  <a href="#" class="text-muted text-decoration-none material-icons" data-bs-dismiss="modal">arrow_back_ios_new</a>
+                  <h5 class="modal-title text-muted ms-3 ln-0" id="staticBackdropLabel"><span class="material-icons md-32">account_circle</span></h5>
+               </div>
+               <!-- 닉네임 -->
+            <div class="modal-body p-0 mb-3">
+                <div class="form-floating">
+                   <div class=" rounded-5 border-0 shadow-sm readonly" id="floatingTextarea1" style="height: 50px"><b>To:{{selected}}</b></div>
+                </div>
+             </div>
+               <!-- 제목 작성 -->
+            <div class="modal-body p-0 mb-3">
+                <div class="form-floating">
+                   <input type="text" class="form-control rounded-5 border-0 shadow-sm" v-model="messageTitle"  id="floatingTextarea2" style="height: 50px">
+                   <label for="floatingTextarea2" class="h6 text-muted mb-0">제목을 작성하세요.</label>
+                </div>
+             </div>
+             	<!-- 내용 작성 -->
+               <div class="modal-body p-0 mb-3">
+                  <div class="form-floating">
+                     <textarea class="reviewC form-control rounded-5 border-0 shadow-sm" v-model="messageContent"placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px"></textarea>
+                     <label for="floatingTextarea2" class="h6 text-muted mb-0">내용을 작성하세요.</label>
+                  </div>
+               </div>
+
+               <div class="modal-footer justify-content-start px-1 py-1 bg-white shadow-sm rounded-5">
+                  <div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
+                     <span class="leg">
+                    	<span class="text-muted count2" >0</span> 
+                    	/
+                    	<span class="text-muted total">100</span> 
+                     </span>
+                  </div>
+                  <div class="ms-auto m-0">
+                  	<button type="button" v-on:click="sendMessage()"  data-bs-dismiss="modal" data-bs-target="#postModal" class="writeButton btn btn-primary fw-bold px-3 py-2 fs-6 mb-0 d-flex align-items-center" style="border-radius : 1em; background-color: #514e85; border:none; font-size: 14px !important;">보내기</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
     <br><br><br><br><br><br><br><br><br><br><br>
 				</div>
 			</div>
@@ -270,11 +323,35 @@ li a:hover {
                     
                     //총 회원수
                     count:"",
-                
+                    
+                    
+                    //메세지
+                    messageContent:"",
+                    messageTitle:"",
+                    admin:"1",	
+                    checked:"",
+                    selected: [],
+                    allSelected: false,
                 };
             },
             computed:{
             	
+            	selectAll: {
+                    get: function () {
+                        return this.allMember ? this.selected.length == this.allMember.length : false;
+                    },
+                    set: function (value) {
+                        var selected = [];
+
+                        if (value) {
+                            this.allMember.forEach(function (member1) {
+                                selected.push(member1.memberNo);
+                            });
+                        }
+
+                        this.selected = selected;
+                    }
+                },
             },
             methods:{
             	//멤버 전체 조회
@@ -330,22 +407,19 @@ li a:hover {
 	                	window.location.href='http://localhost:8080/e3i1/admin/member_detail?memberNo='+member.memberNo;
 	              },
 				//멤버 삭제
-	             deleteMember(index){
-                	const member = this.allMember[index];
-                	if (window.confirm('정말 삭제하시겠습니까?')){
+	             deleteMember(){
+						const choice = window.confirm("정말 삭제하시겠습니까?\n삭제한 데이터는 복구되지 않습니다");
+						if(choice==false)return
                     	axios({
-                    		url:"${pageContext.request.contextPath}/rest/admin/member/"+member.memberNo,
+                    		url:"${pageContext.request.contextPath}/rest/admin/member/"+this.selected,
                     		method:"delete",
                     	}).then(resp=>{
                     		this.deleteResult = resp.data;
-                    		if(this.deleteResult==1){
-                    			window.alert("회원이 삭제되었습니다.")
-                    			this.memberList();
-                    		}
+							window.alert("회원이 삭제되었습니다.")
+                    		this.memberList();
+                    		
                     	})
-                	}else{
-                	  return;
-                	}
+                	
                 },
                 //시간 바꾸기
                 elapsedText(date) {
@@ -407,6 +481,32 @@ li a:hover {
                 		this.count =resp.data
                 	})
                 },
+ 				sendMessage(){
+	 				if(this.messageContent=='' ||this.messageContent==null)return
+	 				let formData = new FormData();
+            	    for (let i = 0; i < this.selected.length; i++) { 
+            	        formData.append("asdf", this.selected[i]); // 반복문을 활용하여 파일들을 formData 객체에 추가한다
+            	     }
+            		formData.append('messageWriter', this.admin);
+            		formData.append('messageContent', this.messageContent);
+            		formData.append('messageTitle', this.messageTitle);
+	 					axios({
+	 						url:"${pageContext.request.contextPath}/rest/message/sendAll",
+	 						method:"post",
+	 						headers:{
+			    				"Content-Type" : "multipart/form-data",
+			    			},
+	 						data:formData,
+	 						
+	 					}).then(resp=>{
+	 						this.selected=resp.data;
+	 						console.log(this.selected)
+	 						window.alert(this.selected.length+"명의 회원에게 메세지가 전달하였습니다.")
+	 					})
+                	
+                	
+ 					
+ 				},
 		       
             },
             created(){

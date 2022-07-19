@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import com.kh.e3i1.entity.BlockedDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.vo.BlockedVO;
 import com.kh.e3i1.vo.MemberComplexSearchVO;
 import com.kh.e3i1.vo.MemberDetailVO;
 
@@ -159,4 +161,39 @@ public class MemberDaoImpl implements MemberDao{
 	public int mypageInterest(MemberDto memberDto) {
 		return sqlSession.update("member.changeInformation", memberDto);
 	}
+	//회원 차단
+	@Override
+	public int blockTarget(BlockedDto blockedDto) {
+		int blockedNo = sqlSession.selectOne("member.blockedsequence");
+		blockedDto.setBlockedNo(blockedNo);
+		sqlSession.insert("member.blocktarget", blockedDto);
+		BlockedDto resultDto = sqlSession.selectOne("member.info", blockedNo);
+		if(resultDto!=null) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
+	//차단 목록
+	@Override
+	public List<BlockedVO> blockList(int memberNo) {
+		return sqlSession.selectList("member.blockedlist", memberNo);
+	}
+	//차단 해제
+	@Override
+	public int DeleteBlockTarget(int blockedNo) {
+		sqlSession.delete("member.deleteblocktarget",blockedNo);
+		BlockedDto blockedDto = sqlSession.selectOne("member.info", blockedNo);
+		if(blockedDto==null) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
+	//차단회원 상세정보
+	@Override
+	public BlockedVO blockedTargetInfo(int blockedNo) {
+		return sqlSession.selectOne("member.blockedtargetinfo", blockedNo);
+	}
+	
 }

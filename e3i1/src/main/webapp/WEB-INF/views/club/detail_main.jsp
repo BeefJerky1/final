@@ -9,9 +9,88 @@
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/club.css">
 <style>
+a {
+	color : black;
+}
+a:hover {
+	color : #514e85;
+}
 
+.memberPhoto:hover {
+	transform: scale(1.05);
+}
+
+#app {
+	background-color: #F8F9FA !important;
+}
+
+.clubMemberNick {
+		font-weight: bold !important;
+}
+
+.profileModal {
+	width :600px !important;
+	height : 650px;
+	border : none;
+	border-radius : 1em;
+	position: absolute !important;
+}
+.clubMemberList {
+	font-weight: bold !important;
+	margin-bottom: 0.3em;
+	margin-top: 0.5em;
+}
+
+.clubModalDanger {
+    background-color: #a7a7c1;
+    border: none;
+    color: white;
+    padding: 0.4em 1em;
+    border-radius: 16px;
+    font-size: 17px;
+    width: 140px;
+    margin-left : 2em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 4px 0px inset;
+}
+.clubModalDanger:hover {
+    background-color: #9898bc;
+}
+
+.clubModalWarning {
+	background-color: #efc873;
+    border: none;
+    color: white;
+    padding: 0.4em 1em;
+    border-radius: 16px;
+    font-size: 17px;
+    width: 140px;
+    margin-left : 2em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 4px 0px inset;
+}
+
+.clubModalWarning:hover {
+    background-color: #e8bd61;
+}
+
+
+
+.clubModal {
+	font-weight: bold !important;
+	margin-bottom: 0.3em;
+	font-size : 18px;
+}
+
+.clubModalInterest {
+	font-weight: bold !important;
+	margin-top: 0.5em;
+	margin-right : 0.3em;
+	margin-bottom: 0.3em;
+	font-size : 15px;
+	background-color : #e8e9ea;
+	border-radius : 1em;
+	padding : 0.3em;
+}
 </style>
-
 <div id="app" class="container-fluid">
 
 	<div class="row mt-4">
@@ -24,10 +103,12 @@
 						<div class="row">
 							<div class="col-md-2 align-self-center"></div>
 							<div class="text-center" v-if="clubList.clubDto != null">
-								<a :href="'${pageContext.request.contextPath}/club/detail?clubNo='+clubList.clubDto.clubNo">
+								<a
+									:href="'${pageContext.request.contextPath}/club/detail?clubNo='+clubList.clubDto.clubNo">
 									<i class="fa-solid fa-house"></i>
 								</a> <span class="boldfont">&nbsp;&nbsp;{{clubList.clubDto.clubName}}&nbsp;&nbsp;</span>
-								<span @click="likeClub"> <i class="fa-solid fa-heart" style="color: red;" v-if="isLike"></i> <i
+								<span @click="likeClub"> <i class="fa-solid fa-heart"
+									style="color: red;" v-if="isLike"></i> <i
 									class="fa-regular fa-heart" style="color: red;" v-if="!isLike"></i>&nbsp;
 								</span> <i class="fa-solid fa-circle-exclamation"></i>
 							</div>
@@ -45,8 +126,9 @@
 						<div class="row">
 							<div class="col-md-4" width="16px" height="16px"
 								style="margin-left: 0.8em; margin-top: 0.45em;">
-								<img src="${root }/image/mbti/거북이(ISTP).png" class="profile" v-if="clubList.memberProfileDto == null"> 
-								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo"
+								<img src="${root }/image/mbti/거북이(ISTP).png" class="profile"
+									v-if="clubList.memberProfileDto == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo"
 									class="profile" v-if="clubList.memberProfileDto != null">
 							</div>
 							<div class="col-md-7 text-right" v-if="clubList.clubDto != null"
@@ -77,23 +159,32 @@
 						<!-- v-for index를 []안에 사용할 방법을 찾으면 v-for로 반복할 예정 너무 복잡해지면 그냥 이대로 사용 -->
 						<div class="row">
 							<div class="col-md-4 text-center" v-if="mbtiList[0] != null">
-								<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[0].attachNo == null">
-								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[0].attachNo"
-									class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[0].attachNo != null">
+								<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684;"
+									v-if="mbtiList[0].attachNo == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[0].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684;"
+									v-if="mbtiList[0].attachNo != null">
 								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[0].memberMbti}}</p>
 								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[0].mbtiPercent}}%</p>
 							</div>
 							<div class="col-md-4 text-center" v-if="mbtiList[1] != null">
-								<img src="${root }/image/mbti/물개(ESFP).png" class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[1].attachNo == null">
-								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[1].attachNo"
-									class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[1].attachNo != null">
+								<img src="${root }/image/mbti/물개(ESFP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684;"
+									v-if="mbtiList[1].attachNo == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[1].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684;"
+									v-if="mbtiList[1].attachNo != null">
 								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[1].memberMbti}}</p>
 								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[1].mbtiPercent}}%</p>
 							</div>
 							<div class="col-md-4 text-center" v-if="mbtiList[2] != null">
-								<img src="${root }/image/mbti/원숭이(ESTP).png" class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[2].attachNo == null">
-								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[2].attachNo"
-									class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[2].attachNo != null">
+								<img src="${root }/image/mbti/원숭이(ESTP).png" class="mbtitop"
+									style="border: 1.5px solid #3E4684;"
+									v-if="mbtiList[2].attachNo == null"> <img
+									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[2].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684;"
+									v-if="mbtiList[2].attachNo != null">
 								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[2].memberMbti}}</p>
 								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[2].mbtiPercent}}%</p>
 							</div>
@@ -121,8 +212,9 @@
 		<div class="col-md-6 mb-5">
 			<div class="card shadow">
 				<img src="https://via.placeholder.com/200/69f/fff.png"
-					class="card-img-top" style="width: 100%; height: 300px;" v-if="clubList.clubProfileDto == null"> 
-					<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"
+					class="card-img-top" style="width: 100%; height: 300px;"
+					v-if="clubList.clubProfileDto == null"> <img
+					:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"
 					style="width: 100%; height: 300px;" class="card-img-top"
 					v-if="clubList.clubProfileDto != null">
 				<div class="card-body">
@@ -152,56 +244,140 @@
 					</div>
 
 					<div class="row mt-4">
-					<div class="col text-center" v-if="mbtiList != null" v-for="(mbti, index) in mbtiList" :key="index">
-						<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="mbtiList[index].attachNo == null">
-							<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[index].attachNo"
-								class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="mbtiList[index].attachNo != null">
-						<div>
-							<span class="boldfont">{{mbti.memberMbti}}</span>
+						<div class="col text-center" v-if="mbtiList != null"
+							v-for="(mbti, index) in mbtiList" :key="index">
+							<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"
+								style="width: 50px; height: 50px; border: 1.5px solid #3E4684;"
+								v-if="mbtiList[index].attachNo == null"> <img
+								:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[index].attachNo"
+								class="mbtitop"
+								style="width: 50px; height: 50px; border: 1.5px solid #3E4684;"
+								v-if="mbtiList[index].attachNo != null">
+							<div>
+								<span class="boldfont">{{mbti.memberMbti}}</span>
+							</div>
+							<div>
+								<span class="boldfontSS">{{mbti.mbtiPercent}}%</span>
+							</div>
 						</div>
-						<div>
-							<span class="boldfontSS">{{mbti.mbtiPercent}}%</span>
-						</div>
-					</div>
 					</div>
 				</div>
-				
+
 				<div class="card-body mt-4">
 					<div class="card-title mt-4 mb-2">
-						<span class="boldfont">
-							<i class="fa-solid fa-users"></i>
+						<span class="boldfont"> <i class="fa-solid fa-users"></i>
 							&nbsp; 우리 소모임 회원
 						</span>
 					</div>
+
+					<div class="row mt-4 " v-for="(member, index) in clubMemberList" :key="index" style="width: 25%; float: left;">
+						<div class="col text-center"  >
+							<!-- memberProfile 연결되면 프로필 사진으로 찍기 -->
+						<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="clubMemberList[index].memberProfileDto.attachNo == null">
+						<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubMemberList[index].memberProfileDto.attachNo"
+								class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="clubMemberList[index].memberProfileDto.attachNo != null">  
+				<%-- 			<img src="${root }/image/mbti/강아지(ENFP).png" class="memberPhoto mbtitop"
+								style="width: 50px; height: 50px; border: 1.5px solid #3E4684; border-radius: 50%; box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;"> --%>
+							<div v-on:click="removeHidden2()" class="clubMemberList">
+								<span v-on:click="modal(index)">{{member.memberDto.memberAnimal}}</span>
+							</div>
+							<div class="clubMemberList">
+								<span
+									style="background-color: #f3dba5; border-radius: 0.8em; padding: 5px;">@{{member.memberDto.memberNick}}</span><br>
+							</div>
+						</div>
+
+					</div>
 					
-					<div class="row mt-4">
-						<div class="col text-center">
-							회원들
+					<div class="modal rounded" :class="isHidden2">
+						<div class="modal-content profileModal mt-4">
+						<button type="button" class="btn-close" @click="addHidden2()" data-bs-dismiss="modal" aria-label="Close"></button>
+							<div class="row mt-4">
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-lg-4 col-md-4 col-sm-4">
+						<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"style="width: 100px; height: 100px;" v-if="memberProfile.memberProfileDto.attachNo == null"> 
+						<!-- ps. 사진 경로 지정이 안 되네요 ㅠㅠ  memberProfile은 이미 index값을 같이 불러온 객체입니다 -->
+						<img
+								:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberProfile.memberProfileDto.attachNo"
+								class="mbtitop"
+								style="width: 100px; height: 100px; border: 1.5px solid #3E4684;"
+								v-if="memberProfile.memberProfileDto.attachNo != null">
+										</div>
+										<div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
+											<h4>
+												<span class="clubMemberNick">{{memberProfile.memberDto.memberNick}}</span>&nbsp;<i class="fa-solid fa-circle-check"></i>
+											</h4>
+											<span class="clubMemberList">{{memberProfile.memberDto.memberGender}} / </span>
+											<span class="clubMemberList"><i class="fa-solid fa-location-dot"></i> {{memberProfile.memberDto.memberPlace1}} / </span>
+											<span class="clubMemberList">{{memberProfile.memberDto.memberMbti}}</span><br>
+											<span class="btn btn-outline-success mt-2">{{memberProfile.memberDto.memberAnimal}}</span>
+										</div>
+										
+										<div class="row mt-4">
+											<div class="col-lg-6col-md-6 col-sm-6">
+												<button class="clubModalDanger">신고하기</button>
+											</div>
+											<div class="col-lg-6col-md-6 col-sm-6">
+												<button class="clubModalWarning">차단하기</button>
+											</div>
+										</div>
+										<div class="mt-4 mb-2 pt-2 border-top">
+											<a href="https://www.instagram.com/{{memberProfile.memberDto.memberSnsId}}" style="float:left;">
+											<span class="clubModal">SNS <i class="fa-brands fa-instagram"></i> {{memberProfile.memberDto.memberSnsId}}</span>
+											</a>
+										</div>
+										<div class="mt-3 mb-2">
+											<span class="clubModal"  style="float:left;">나의 관심분야</span><br>
+											<div class="mb-1"  style="float:left;">
+												<span class="clubModalInterest">{{memberProfile.memberDto.memberInterest1}}</span>
+												<span class="clubModalInterest">{{memberProfile.memberDto.memberInterest2}}</span>
+												<span class="clubModalInterest">{{memberProfile.memberDto.memberInterest3}}</span>
+											</div>
+										</div>
+										<div class="mt-3 mb-3">
+										<span class="clubModal"  style="float:left;">마지막 로그인</span><br>
+										<span class="clubModal"  style="float:right;">{{convertTime(memberProfile.memberDto.memberLogindate)}}</span>
+										</div>
+									</div>
+								</div>
+
+							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
+
 
 
 		<!-- 오른쪽 사이드바 -->
 		<div class="col-md-3">
 			<button class="btn-create shadow" v-on:click="removeHidden">소모임 가입 신청</button>
 			<div class="list-group mt-2" v-if="clubList.clubDto != null">
-				<a class="list-group-item list-group-item-action disabled boldfontS" style="color:#3E4684;">소모임</a>
-				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/board?clubNo='+clubList.clubDto.clubNo">게시판</a> 
-				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/chat?clubNo='+clubList.clubDto.clubNo">채팅</a> 
+				<a class="list-group-item list-group-item-action disabled boldfontS"
+					style="color: #3E4684;">소모임</a> <a
+					class="list-group-item list-group-item-action boldfontSS"
+					:href="'${pageContext.request.contextPath}/club/board?clubNo='+clubList.clubDto.clubNo">게시판</a>
+				<a class="list-group-item list-group-item-action boldfontSS"
+					:href="'${pageContext.request.contextPath}/club/chat?clubNo='+clubList.clubDto.clubNo">채팅</a>
 			</div>
 			<div class="list-group mt-2" v-if="leaderJudge">
-				<a class="list-group-item list-group-item-action disabled boldfontS" style="color:#3E4684;">관리</a>
-				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/member_management?clubNo='+clubList.clubDto.clubNo">멤버 관리</a> 
-				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/edit?clubNo='+clubList.clubDto.clubNo">소모임 관리</a>  
+				<a class="list-group-item list-group-item-action disabled boldfontS"
+					style="color: #3E4684;">관리</a> <a
+					class="list-group-item list-group-item-action boldfontSS"
+					:href="'${pageContext.request.contextPath}/club/member_management?clubNo='+clubList.clubDto.clubNo">멤버
+					관리</a> <a class="list-group-item list-group-item-action boldfontSS"
+					:href="'${pageContext.request.contextPath}/club/edit?clubNo='+clubList.clubDto.clubNo">소모임
+					관리</a>
 			</div>
 			<button class="btn-create shadow mt-4" @click="deleteClub">소모임 탈퇴</button>
 
 		</div>
 
 	</div>
+
 
 
 
@@ -278,7 +454,6 @@
 </div>
 
 
-
 <script>
 
 let dateElement = document.getElementById('dateLocal');
@@ -293,6 +468,10 @@ data() {
 			"hidden" : true,
 		},
 		
+		isHidden2:{
+			"hidden" : true,
+		},
+		
 		// 소모임 상세에 필요한 정보(소모임, 소모임좋아요, mbti, 소모임프로필)
 		clubList:[],
 		mbtiList:[],
@@ -304,6 +483,12 @@ data() {
 		memberNo:"${login}",
 		
 		isLike:false,
+		
+		memberProfile:{
+			memberDto : {},
+			memberProfileDto : {},
+		},
+		True:1,
 	};
 },
 computed: {
@@ -325,8 +510,27 @@ computed: {
 },
 methods: {
 	
+	
+	// 모달로 프로필 조회
+	 modal(index){
+	     	
+			const memberNo = this.clubMemberList[index].memberDto.memberNo;
+	         	axios({
+	         		url:"${pageContext.request.contextPath}/rest/club/modal/"+memberNo,
+	        		method:"get",
+	        	})
+	        	.then(resp=>{
+	        		this.memberProfile = resp.data;
+	  				console.log("this.memberProfile= ",this.memberProfile);
+	        	});		
+	 },
+	
 	removeHidden(){
 		this.isHidden["hidden"] = false;
+	},
+	
+	removeHidden2(){
+		this.isHidden2["hidden"] = false;
 	},
 	
 	addHidden(){
@@ -335,6 +539,10 @@ methods: {
 		this.clubMemberAnswer1 = "";
 		this.clubMemberAnswer2 = "";
 		this.clubMemberAnswer3 = "";
+	},
+	addHidden2(){
+		this.isHidden2["hidden"] = true; 
+		
 	},
 	
 	insertClubMember(){
@@ -439,8 +647,10 @@ methods: {
 		});
 	},
 	
-},
-mounted(){
+	//moment js
+    convertTime(time){
+    	return moment(time).format('llll'); // 2022년 7월 4일 월요일 오후 9:46
+	},
 },
 created() {
 	this.existLike();
@@ -470,10 +680,7 @@ created() {
 		this.mbtiList = resp.data;
 	})
 },
-
 mounted(){},
-
-
 });
 app.mount("#app");
 </script>

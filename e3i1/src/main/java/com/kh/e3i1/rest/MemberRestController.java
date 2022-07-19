@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.e3i1.entity.BlockedDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.repository.AttachmentDao;
 import com.kh.e3i1.repository.MemberDao;
 import com.kh.e3i1.repository.MemberProfileDao;
 import com.kh.e3i1.service.MemberService;
+import com.kh.e3i1.vo.BlockedVO;
 import com.kh.e3i1.vo.MemberDetailVO;
 
 @CrossOrigin(
@@ -82,4 +85,28 @@ public class MemberRestController {
 		return memberService.mypageMemberProfile(memberDto, attach);
 	}
 	
+//	@GetMapping("/club/{memberNo}")
+//	public List<MemberDetailVO> mypageClub(@PathVariable int memberNo){
+//		return memberDao.mypageClub(memberNo);
+//	}
+	//회원 차단
+	@PostMapping("/block")
+	public int blockTarget(@RequestBody BlockedDto blockedDto) {
+		return memberDao.blockTarget(blockedDto);
+	}
+	//회원 차단 목록
+	@GetMapping("/block/{memberNo}")
+	public List<BlockedVO> blockList(@PathVariable int memberNo){
+		return memberDao.blockList(memberNo);
+	}
+	//회원 상세 정보
+	@GetMapping("/blockdetail/{blockedNo}")
+	public BlockedVO info(@PathVariable int blockedNo) {
+		return memberDao.blockedTargetInfo(blockedNo);
+	}
+	//차단 회원 해제
+	@DeleteMapping("/block/{blockedNo}")
+	public int DeleteBlockTarget(@PathVariable int blockedNo) {
+		return memberDao.DeleteBlockTarget(blockedNo);
+	}
 }
