@@ -12,6 +12,7 @@
 	href="${pageContext.request.contextPath}/css/club.css">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/sweetalert.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style>
   .modal { background: rgba(0, 0, 0, 0.5) !important; }   
   .modal-backdrop { display: none !important; }  
@@ -792,7 +793,12 @@ position:relative;
             <div class="modal-body">
                 <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-4">
-                    <a><img src="https://placeimg.com/120/120/animals" class="circle profile"></a>
+                  <div v-if="board.memberProfileDto.attachNo==0">
+                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+board.animalPhotoDto.attachNo"> 
+	                            </div>
+	                            <div v-else>
+	                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+board.memberProfileDto.attachNo">                             
+	                         	</div>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
 		            <h4><b>{{board.memberDto.memberNick}}</b></h4>
@@ -833,7 +839,12 @@ position:relative;
             <div class="modal-body">
                 <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-4">
-                    <a><img src="https://placeimg.com/120/120/animals" class="circle profile"></a>
+                	<div v-if="replyinformation.memberProfileDto.attachNo==0">
+                    <img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+replyinformation.animalPhotoDto.attachNo"> 
+	                </div>
+	                <div v-else>
+	                <img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+replyinformation.memberProfileDto.attachNo">                             
+	                </div>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
 		            <h4><b>{{replyinformation.memberDto.memberNick}}</b></h4>
@@ -1041,10 +1052,18 @@ position:relative;
             			},
             		}).then((resp) => {
             			if(resp.data == 0){
-            				window.alert("좋아요 취소");
+            				Swal.fire({
+	        			         title: '좋아요 취소!',
+	        			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+	    		    			  imageWidth : 100
+		        		  	        			 })
             				return;
             			}
-            			window.alert("좋아요 완료!");
+            			Swal.fire({
+       			         title: '좋아요!',
+       			          imageUrl : '${pageContext.request.contextPath}/image/smile.png',
+   		    			  imageWidth : 100
+	        		  	        			 })
             		});
             	},
             	//main
@@ -1075,19 +1094,37 @@ position:relative;
  		    	},
  		    	//게시글 삭제
  		    	deleteBoard(){
-					const choice = window.confirm("정말 삭제하시겠습니까?\n삭제한 데이터는 복구되지 않습니다");
-					if(choice==false)return
- 		    		let uri = window.location.search.substring(1); 
-                    let params = new URLSearchParams(uri);
-                    console.log(params.get("clubBoardNo"));
-                    const clubBoardNo = params.get("clubBoardNo");
-                	axios({
-                		url:"${pageContext.request.contextPath}/rest/clubboard/"+clubBoardNo,
-                		method:"delete",
-                	})
-                	.then(resp=>{
-                    	window.location.href='http://localhost:8080/e3i1/club/board?clubNo='+this.board.clubBoardDto.clubNo;
-                	});
+ 		    		Swal.fire({
+		    			  title: '정말 삭제하시겠습니까???',
+		    			  text: "삭제하시면 다시 복구시킬 수 없습니다.",
+		    			  imageUrl : '${pageContext.request.contextPath}/image/alert.png',
+		    			  imageWidth : 100,
+		    			  showCancelButton: true,
+		    			  confirmButtonColor: '#3085d6',
+		    			  cancelButtonColor: '#d33',
+		    			  confirmButtonText: '삭제',	
+		    			  cancelButtonText: '취소'
+		    			}).then((result) => {
+		    			  if (result.value) {
+		 		    		let uri = window.location.search.substring(1); 
+		                    let params = new URLSearchParams(uri);
+		                    console.log(params.get("clubBoardNo"));
+		                    const clubBoardNo = params.get("clubBoardNo");
+		                	axios({
+		                		url:"${pageContext.request.contextPath}/rest/clubboard/"+clubBoardNo,
+		                		method:"delete",
+		                	})
+		                	.then(resp=>{
+		                  		Swal.fire(
+			        			          '삭제가 완료되었습니다.',
+			        			          '',
+			        			          'success'
+			        			        )
+		                    	window.location.href='http://localhost:8080/e3i1/club/board?clubNo='+this.board.clubBoardDto.clubNo;
+		                	});
+		    			  }
+		    			});
+				
                 },
  		    	//삭제 가능자 
 		    	isBoardDeleteAvailable(board){
@@ -1133,16 +1170,37 @@ position:relative;
 		        },
 		        //사진 삭제
 		        deletePicture(index){
-		        	const choice = window.confirm("정말 삭제하시겠습니까?");
-					if(choice==false)return
-		        	const attach = this.attachNo[index];
-		        	axios({
-		        		url:"${pageContext.request.contextPath}/rest/clubboard/attach/"+attach.attachNo,
-		        		method:"delete",
-		        	}).then(resp=>{
-		        		window.alert("삭제되었습니다.")
-		        		this.changeEditMode();
-		        	})
+		        	Swal.fire({
+		    			  title: '정말 삭제하시겠습니까???',
+		    			  text: "삭제하시면 다시 복구시킬 수 없습니다.",
+		    			  imageUrl : '${pageContext.request.contextPath}/image/alert.png',
+		    			  imageWidth : 100,
+		    			  showCancelButton: true,
+		    			  confirmButtonColor: '#3085d6',
+		    			  cancelButtonColor: '#d33',
+		    			  confirmButtonText: '삭제',	
+		    			  cancelButtonText: '취소'
+		    			}).then((result) => {
+		    			  if (result.value) {
+				        	const attach = this.attachNo[index];
+				        	axios({
+				        		url:"${pageContext.request.contextPath}/rest/clubboard/attach/"+attach.attachNo,
+				        		method:"delete",
+				        	}).then(resp=>{
+				        		if(resp.data==1){
+					        		Swal.fire(
+				        			          '삭제가 완료되었습니다.',
+				        			          '',
+				        			          'success'
+				        			        )
+					        		this.changeEditMode();
+				        		}
+				        	
+				        	})
+		    				  
+		    			  }
+		    			})
+		    			
 	
 		        },
 		        //수정모드
@@ -1200,12 +1258,20 @@ position:relative;
                 	}).then(resp=>{
                 		this.boardResult = resp.data
                 		if(this.boardResult==1){
-                			window.alert("신고가 완료되었습니다")
+                			Swal.fire({
+	        			         title: '신고가 완료되었습니다.!',
+	        			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+	    		    			  imageWidth : 100
+		        		  	        			 })
                 			this.cancelReport();
                 			this.boardReportCheck();
                         	this.loadContent();
                 		}else{
-                			window.alert("오류가 발생했습니다. 나중에 다시 시도해주십시오.")
+                			 Swal.fire(
+		        			          '오류가 발생했습니다. 다시 시도해 주세요.',
+		        			          '',
+		        			          'error'
+		        			        )
                 			this.cancelReport();
                         	this.loadContent();
                 		}
@@ -1272,23 +1338,41 @@ position:relative;
                 },
                 //게시글 프로필에서 차단
  				blocked(){
-					const choice = window.confirm("정말 차단하시겠습니까?\n차단한 상대의 게시글과 댓글 보이지 않습니다.");
-					if(choice==false)return
- 					const blockedTarget = this.board.memberDto.memberNo;
- 					axios({
- 						url:"${pageContext.request.contextPath}/rest/mypage/block",
- 						method:"post",
- 						data:{
- 							blockedTarget:blockedTarget,
- 							blockedUser:this.memberNo,
- 						}
- 					}).then(resp=>{
- 						this.blockedResult=resp.data
- 						if(this.blockedResult ==1){
- 							window.alert("차단되었습니다. 차단해제는 마이페이지에서 가능합니다");
- 							window.location.href='http://localhost:8080/e3i1/club/board?clubNo='+this.board.clubBoardDto.clubNo;
- 						}
- 					})
+                	Swal.fire({
+		    			  title: '정말 차단하시겠습니까???',
+		    			  text: "차단한 상대의 게시물은 보이지 않습니다.",
+		    			  imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+		    			  imageWidth : 100,
+		    			  showCancelButton: true,
+		    			  confirmButtonColor: '#3085d6',
+		    			  cancelButtonColor: '#d33',
+		    			  confirmButtonText: '차단',	
+		    			  cancelButtonText: '취소'
+		    			}).then((result) => {
+		    			  if (result.value) {
+		                	const blockedTarget = this.board.memberDto.memberNo;
+		 					axios({
+		 						url:"${pageContext.request.contextPath}/rest/mypage/block",
+		 						method:"post",
+		 						data:{
+		 							blockedTarget:blockedTarget,
+		 							blockedUser:this.memberNo,
+		 						}
+		 					}).then(resp=>{
+		 						this.blockedResult=resp.data
+		 						if(this.blockedResult ==1){
+		 							Swal.fire({
+			        			         title: '차단되었습니다. 차단해제는 마이페이지에서 가능합니다!',
+			        			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+			    		    			  imageWidth : 100
+				        		  	        			 })
+		 							window.location.href='http://localhost:8080/e3i1/club/board?clubNo='+this.board.clubBoardDto.clubNo;
+		 						}
+		 					})
+                		
+		    			  }
+		    			})
+                	
  				},
             	replyContentIsEmpty(){
             		return this.replyContent.length==0;     		
@@ -1530,7 +1614,7 @@ position:relative;
                     		if(this.replyResult==1){
      	        		  	   Swal.fire({
   	        			         title: '신고가 완료되었습니다.',
-  	        			          imageUrl : '${pageContext.request.contextPath}/image/smile.png',
+  	        			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
   	    		    			  imageWidth : 100
   		        		  	        			 })
                             	this.loadReply()
@@ -1646,24 +1730,42 @@ position:relative;
  				},
                 //댓글 프로필에서 차단
  				replyBlocked(){
-					const choice = window.confirm("정말 차단하시겠습니까?\n차단한 상대의 게시글과 댓글은 보이지 않습니다.");
-					if(choice==false)return
- 					const blockedTarget = this.replyinformation.clubBoardReplyDto.clubReplyWriter;
-					console.log(blockedTarget)
- 					axios({
- 						url:"${pageContext.request.contextPath}/rest/mypage/block",
- 						method:"post",
- 						data:{
- 							blockedTarget:blockedTarget,
- 							blockedUser:this.memberNo,
- 						}
- 					}).then(resp=>{
- 						this.blockedResult=resp.data
- 						if(this.blockedResult ==1){
- 							window.alert("차단되었습니다. 차단해제는 마이페이지에서 가능합니다");
- 						}
- 			            	this.loadReply(); //댓글 목록
- 					})
+ 					Swal.fire({
+		    			  title: '정말 차단하시겠습니까???',
+		    			  text: "차단한 상대의 게시물은 보이지 않습니다.",
+		    			  imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+		    			  imageWidth : 100,
+		    			  showCancelButton: true,
+		    			  confirmButtonColor: '#3085d6',
+		    			  cancelButtonColor: '#d33',
+		    			  confirmButtonText: '차단',	
+		    			  cancelButtonText: '취소'
+		    			}).then((result) => {
+		    			  if (result.value) {
+		 					const blockedTarget = this.replyinformation.clubBoardReplyDto.clubReplyWriter;
+							console.log(blockedTarget)
+		 					axios({
+		 						url:"${pageContext.request.contextPath}/rest/mypage/block",
+		 						method:"post",
+		 						data:{
+		 							blockedTarget:blockedTarget,
+		 							blockedUser:this.memberNo,
+		 						}
+		 					}).then(resp=>{
+		 						this.blockedResult=resp.data
+		 						if(this.blockedResult ==1){
+		 							Swal.fire({
+			        			         title: '차단되었습니다. 차단해제는 마이페이지에서 가능합니다!',
+			        			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+			    		    			  imageWidth : 100
+				        		  	        			 })
+		 						}
+		 			            	this.loadReply(); //댓글 목록
+		 					})
+ 					
+		    			  }
+		    		})
+ 				
  				},
  				//댓글 프로필에서 메세지 보내기
             	replySendMessage(){
@@ -1683,9 +1785,17 @@ position:relative;
  						if(this.sendMessageResult==1){
  							this.messageContent=""
  							this.messageTitle=""
- 							window.alert("메세지 전송이 완료되었습니다.")
+ 								Swal.fire({
+		        			         title: '메시지 전송을 완료했어요!',
+		        			          imageUrl : '${pageContext.request.contextPath}/image/smile.png',
+		    		    			  imageWidth : 100
+			        		  	        			 })
  						}else{
- 							window.alert("오류가 발생하였습니다. 나중에 다시 시도해주십시오.")
+ 							Swal.fire(
+		        			          '오류가 발생했습니다. 다시 시도해 주세요.',
+		        			          '',
+		        			          'error'
+		        			        )
  						}
  					})
  					

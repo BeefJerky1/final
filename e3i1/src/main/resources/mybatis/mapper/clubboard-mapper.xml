@@ -332,7 +332,15 @@ where C.club_board_No = #{clubBoardNo}
 			<result column="member_birth" property="memberBirth"/>
 			<result column="member_name" property="memberName"/>
 		</association>
-
+		<association property="animalPhotoDto">
+			<result column="동물사진번호" property="attachNo"/>
+			<result column="animal_no" property="animalNo"/>
+		</association>
+		<association property="mbtiAnimalDto">
+			<result column="동물번호" property="animalNo"/>
+			<result column="animal" property="animal"/>
+			<result column="mbti" property="mbti"/>
+		</association>
 		<association property="memberProfileDto">
 			<result column="member_no" property="memberNo"/>
 			<result column="attach_no" property="attachNo"/>
@@ -354,10 +362,15 @@ where C.club_board_No = #{clubBoardNo}
        M.member_sns_id,
        M.member_logindate,
        M.member_mbti,
-       P.attach_no
+       P.attach_no  as 프로필사진번호,
+       A.attach_no as 동물사진번호
        from member M 
 left outer join member_profile P 
    on M.member_no = p.member_no 
+left outer join mbti_animal  B
+    on M.member_mbti = B.mbti
+left outer join animal_photo A
+ on B.animal_no = A.animal_no
    where M.member_no = #{memberNo} 
 		</select>
 </mapper>

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kh.e3i1.entity.AttachmentDto;
 import com.kh.e3i1.entity.ClubBoardAttachDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.vo.ClubBoardListItemVO;
@@ -56,9 +57,14 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 
 	//삭제
 	@Override
-	public boolean delete(int clubBoardNo) {
-		int count = sqlSession.delete("clubboard.delete", clubBoardNo);
-		return count>0;
+	public int delete(int clubBoardNo) {
+		sqlSession.delete("clubboard.delete", clubBoardNo);
+		ClubBoardDto resultDto = sqlSession.selectOne("clubboard.info", clubBoardNo);
+		if(resultDto!=null) {
+			return 0;
+		}else {
+			return 1;			
+		}
 	}
 
 	//상세조회
@@ -146,9 +152,16 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	}
 
 	@Override
-	public boolean deleteAttachNo(int attachNo) {
-	 int count =  sqlSession.delete("clubboard.deleteattachno", attachNo);
-	 return count>0;
+	public int deleteAttachNo(int attachNo) {
+		
+		sqlSession.delete("clubboard.deleteattachno", attachNo);
+		AttachmentDto attachmentDto = sqlSession.selectOne("clubboard.info",attachNo);
+	 	if(attachmentDto!=null) {
+	 		return 0;
+	 	}else {
+	 		return 1;
+	 	}
+	 	
 	}
 	//게시글 상세페이지에서 클럽 정보 조회
 	@Override

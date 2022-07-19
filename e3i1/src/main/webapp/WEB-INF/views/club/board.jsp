@@ -431,7 +431,12 @@ position:relative;
             <div class="modal-body">
                 <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-4">
-                    <a><img src="https://placeimg.com/120/120/animals" class="circle profile"></a>
+                   <div v-if="Mprofile.memberProfileDto.attachNo==0">
+                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+Mprofile.animalPhotoDto.attachNo"> 
+                            </div>
+                            <div v-else>
+                         		<img class="profile  rounded mx-auto d-block" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+Mprofile.memberProfileDto.attachNo">                             
+                    </div>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
 
