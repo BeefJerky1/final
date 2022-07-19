@@ -12,7 +12,10 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/modal.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/member.css">
 <style>
-
+.modal.fade {
+	opacity:0;
+	z-index:-1;
+}
 .point2 {
 	font-size: 3em;
 	font-weight: 900;
@@ -1241,6 +1244,7 @@ input[type="checkbox"]{
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>	
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	<script src="${root}/js/time.js"></script>
 
 <script>
@@ -1251,7 +1255,6 @@ $(function(){
 	     });
 	  });
 });
-
 
 const app = Vue.createApp({
 data() {
