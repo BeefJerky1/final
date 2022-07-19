@@ -92,4 +92,11 @@ public class MessageDaoImpl implements MessageDao{
 		return sentTo;
 	}
 
+	@Override
+	public List<MessageVO> newMessage(int memberNo) {
+		
+		return sqlSession.selectList("message.newMessage", memberNo);
+		
+	}
+
 }
