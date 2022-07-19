@@ -562,6 +562,25 @@ methods: {
 			this.memberNo = session;
 		}
 		
+		if(this.clubList.clubDto.clubJoinQuestion1 != null){
+			if(this.clubMemberAnswer1 == "" || this.clubMemberAnswer1 == null){
+				window.alert("가입 질문에 대한 대답이 필요합니다.");
+				return;
+			}
+		}
+		if(this.clubList.clubDto.clubJoinQuestion2 != null){
+			if(this.clubMemberAnswer2 == "" || this.clubMemberAnswer2 == null){
+				window.alert("가입 질문에 대한 대답이 필요합니다.");
+				return;
+			}
+		}
+		if(this.clubList.clubDto.clubJoinQuestion3 != null){
+			if(this.clubMemberAnswer3 == "" || this.clubMemberAnswer3 == null){
+				window.alert("가입 질문에 대한 대답이 필요합니다.");
+				return;
+			}
+		}
+		
 		axios({
 			url:"${pageContext.request.contextPath}/rest/club/member",
 			method:"post",

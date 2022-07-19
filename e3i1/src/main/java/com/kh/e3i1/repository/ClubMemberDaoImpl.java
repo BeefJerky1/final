@@ -128,5 +128,4 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 	public ClubMemberListVO memberProfile(int memberNo) {
 		return sqlSession.selectOne("clubMember.memberProfile", memberNo);
 	}
-	
 }

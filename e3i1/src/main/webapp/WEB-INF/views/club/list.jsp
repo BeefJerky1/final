@@ -752,11 +752,39 @@ methods: {
 	
 	// 소모임 생성 with file
 	createClub(){
+		if(this.clubName == "" || this.clubName == null) {
+			window.alert("소모임 이름을 입력해주세요");
+			return;
+		}
+		if(this.clubSummary == "" || this.clubSummary == null) {
+			window.alert("소모임 소개를 입력해주세요");
+			return;
+		}
+		if(this.clubMainCategory == "" || this.clubMainCategory == null) {
+			window.alert("관심사(대분)를 선택해주세요");
+			return;
+		}
+		if(this.clubSubCategory == "" || this.clubSubCategory == null) {
+			window.alert("관심사(소분류)를 선택해주세요");
+			return;
+		}
+		if(this.city == "" || this.city == null) {
+			window.alert("지역을 선택해주세요");
+			return;
+		}
+		if(this.clubJoinQuestion1 == "" || this.clubJoinQuestion1 == null) {
+			window.alert("가입질문은 반드시 1개 이상 입력해주세요");
+			return;
+		}
+		
 		let formData = new FormData();
 		
 		//const fileInput = document.querySelector("input[name=clubProfile]");
 		const fileInput = this.$refs.clubProfile;
-		if(fileInput.files.length == 0) return;
+		if(fileInput.files.length == 0) {
+			window.alert("프로필 사진을 설정해주세요");
+			return;
+		}
 		const fileData = fileInput.files[0];
 		
 		const session = this.$refs.clubLeader.value;

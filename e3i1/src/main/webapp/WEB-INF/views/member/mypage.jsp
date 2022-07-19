@@ -156,6 +156,7 @@ input[type="radio"]{
 					
 						<div class="col-md-3 profile">
 							<div class="profileimg text-center mt-3 mb-2">
+								<i class="fa-solid fa-xmark img" style="color:red;" @click="deleteProfile"></i>
 								<img src="${root }/image/mbti/거북이(ISTP).png" style="border-radius: 50%; width: 140px; height: 140px;" v-if="memberList.memberProfileDto == null" />
 								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberList.memberProfileDto.attachNo" style="border-radius: 50%; width: 140px; height: 140px;" v-if="memberList.memberProfileDto != null"/>
 								<label for="img" class="img">
@@ -300,9 +301,9 @@ input[type="radio"]{
 									<thead>
 										<tr>
 											<th style="width: 40%;"></th>
-											<th style="width: 30%;"></th>
+											<th style="width: 35%;"></th>
 											<th style="width: 15%;"></th>
-											<th style="width: 15%;"></th>
+											<th style="width: 10%;"></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -316,10 +317,12 @@ input[type="radio"]{
 												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubMainCategory}}</span>
 												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubSubCategory}}</span>
 												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubPlace}}</span>
-												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubPlace}}</span>
 											</td>
 										 	<td  v-if="waitClub(index) && memberClub.clubDto != null">
 												<span class="tableInterest2 mx-2" v-if="memberClub.clubMemberDto != null"> {{elapsedText(memberClub.clubMemberDto.clubMemberDate)}}</span>
+											</td>
+											<td v-if="waitClub(index) && memberClub.clubDto != null">
+												<spane style="color:red; cursor:pointer;" @click="cancelRequest(index)">취소</spane>
 											</td>
 										</tr>
 									</tbody>
@@ -1504,6 +1507,45 @@ methods: {
 		else{
 			return;
 		}
+	},
+	
+	// 가입요청 취소
+	cancelRequest(index){
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/cancel_request/"+this.memberClubList[index].clubDto.clubNo,
+			method:"delete",
+		}).then(resp=>{
+			if(resp.data == 0){
+				window.alert("취소할 수 없습니다.");
+				return;
+			}
+			window.alert("가입신청이 취소되었습니다.");
+			location.reload();
+		})
+	},
+	
+	// 프로필 사진 삭제 - mbti 프로필로 변경
+	deleteProfile(){
+	    const mbti = this.memberList.memberDto.memberMbti;
+	    	
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/animal/"+mbti,
+			method:"get",
+		}).then((resp) => {
+			this.memberAnimal = resp.data;
+			
+			axios({
+				url:"${pageContext.request.contextPath}/rest/mypage/delete_profile/"+this.memberAnimal.animalPhotoDto.attachNo,
+				method:"put",
+			}).then(resp=>{
+				if(resp.data == 0){
+					window.alert("삭제가 실패했습니다.");
+					return;
+				}
+				window.alert("프로필 사진이 정상적으로 삭제되었습니다.");
+				location.reload();
+			})
+		})
 	},
 	
 	//차단된 사용자 목록

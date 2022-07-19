@@ -159,7 +159,6 @@ public class ClubRestController {
 	public ClubMemberListVO memberProfile(@PathVariable int memberNo) {
 		return clubMemberDao.memberProfile(memberNo);
 	}
-	
 }
 
 
