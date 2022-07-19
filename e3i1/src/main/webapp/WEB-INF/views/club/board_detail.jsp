@@ -10,6 +10,8 @@
 	href="${pageContext.request.contextPath}/css/modal.css">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/club.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/sweetalert.css">
 <style>
   .modal { background: rgba(0, 0, 0, 0.5) !important; }   
   .modal-backdrop { display: none !important; }  
@@ -1399,11 +1401,12 @@ position:relative;
 						Swal.fire({
 		    			  title: '정말 삭제하시겠습니까???',
 		    			  text: "삭제하시면 다시 복구시킬 수 없습니다.",
-		    			  icon: 'question',
+		    			  imageUrl : '${pageContext.request.contextPath}/image/alert.png',
+		    			  imageWidth : 100,
 		    			  showCancelButton: true,
 		    			  confirmButtonColor: '#3085d6',
 		    			  cancelButtonColor: '#d33',
-		    			  confirmButtonText: '삭제',
+		    			  confirmButtonText: '삭제',	
 		    			  cancelButtonText: '취소'
 		    			}).then((result) => {
 		    			  if (result.value) {
@@ -1525,7 +1528,11 @@ position:relative;
                 		}).then(resp=>{
                     		this.replyResult = resp.data
                     		if(this.replyResult==1){
-                    			window.alert("신고가 완료되었습니다")
+     	        		  	   Swal.fire({
+  	        			         title: '신고가 완료되었습니다.',
+  	        			          imageUrl : '${pageContext.request.contextPath}/image/smile.png',
+  	    		    			  imageWidth : 100
+  		        		  	        			 })
                             	this.loadReply()
                     		}else{
                     		}
@@ -1533,7 +1540,11 @@ position:relative;
                  },
                 	//이미 신고한 회원 
                 	AlreadyReported(){
-                 	window.alert("이미 신고한 게시글입니다.")
+      		  	   Swal.fire({
+  			         title: '이미 신고한 게시글이에요.',
+  			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+		    			  imageWidth : 100
+      		  	        			 })
                  },
 
                  
@@ -1618,9 +1629,17 @@ position:relative;
  						if(this.sendMessageResult==1){
  							this.messageContent=""
  							this.messageTitle=""
- 							window.alert("메세지 전송이 완료되었습니다.")
+ 		        		  	   Swal.fire({
+ 		        			         title: '메시지 전송을 완료했어요!',
+ 		        			          imageUrl : '${pageContext.request.contextPath}/image/smile.png',
+ 		    		    			  imageWidth : 100
+ 			        		  	        			 })
  						}else{
- 							window.alert("오류가 발생하였습니다. 나중에 다시 시도해주십시오.")
+ 		        			 Swal.fire(
+ 		        			          '오류가 발생했습니다. 다시 시도해 주세요.',
+ 		        			          '',
+ 		        			          'error'
+ 		        			        )
  						}
  					})
  					

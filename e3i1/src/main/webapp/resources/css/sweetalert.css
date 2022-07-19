@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+.swal2-container:not(.swal2-top):not(.swal2-top-start):not(.swal2-top-end):not(.swal2-top-left):not(.swal2-top-right):not(.swal2-center-start):not(.swal2-center-end):not(.swal2-center-left):not(.swal2-center-right):not(.swal2-bottom):not(.swal2-bottom-start):not(.swal2-bottom-end):not(.swal2-bottom-left):not(.swal2-bottom-right):not(.swal2-grow-fullscreen)>.swal2-modal
+	{
+	margin: auto;
+	width: 400;
+	border-radius: 2em;
+	box-shadow: rgb(50 50 93/ 25%) 0px 50px 100px -20px, rgb(0 0 0/ 30%) 0px
+		30px 60px -30px, rgb(10 37 64/ 35%) 0px -2px 6px 0px inset;
+}
+
+.swal2-title {
+    position: relative;
+    max-width: 100%;
+    margin: 0 0 0.4em;
+    padding: 0;
+    color: #595959;
+    font-size: 1.4em  !important;
+    font-weight: 600;
+    text-align: center;
+    text-transform: none;
+    word-wrap: break-word;
+    font-family: 'Noto Sans KR' !important;
+}
+
+.swal2-content {
+    z-index: 1;
+    justify-content: center;
+    margin: 0;
+    padding: 0 1.6em;
+    color: #545454;
+    font-size: 1.03em !important;
+    font-weight: 600 !important;
+    line-height: normal;
+    text-align: center;
+    word-wrap: break-word;
+    font-family: 'Noto Sans KR' !important;
+}
+
+.swal2-styled.swal2-confirm {
+    border: 0;
+    border-radius: 1em !important;
+    background: initial;
+    background-color: #3e4684 !important;
+    color: #fff;
+    font-size: 1.0625em;
+    font-family: 'Noto Sans KR'!important;
+    font-weight: 600;
+}
+
+.swal2-styled.swal2-cancel {
+    border: 0;
+    border-radius: 1em !important;
+    background: initial;
+    background-color: #aaa;
+    color: #fff;
+    font-size: 1.0625em;
+    font-family: 'Noto Sans KR' !important;
+    font-weight: 600;
+}

@@ -14,6 +14,7 @@
       <link rel="stylesheet" type="text/css" href="${root}/css/icofont.min.css">
       <link rel="stylesheet" type="text/css" href="${root}/css/materialdesignicons.min.css">
       <link rel="stylesheet" type="text/css" href="${root}/css/mbtiboard.css">
+      <link rel="stylesheet" type="text/css" href="${root}/css/sweetalert.css">
       
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
@@ -710,10 +711,18 @@ a {
 	        		console.log(resp);
 					if(resp.data.voteChoice == null) {
 	        		//완성 시 코드
-	        		window.alert("공감해요!");
+	        		  	   Swal.fire({
+	        			         title: '공감해요!',
+	        			          imageUrl : '${pageContext.request.contextPath}/image/smile.png',
+	    		    			  imageWidth : 100
+		        		  	        			 })
 					}
 					else {
-						window.alert("투표가 취소되었어요.");
+ 	        			 Swal.fire(
+	        			          '투표가 취소 되었어요.',
+	        			          '',
+	        			          'success'
+	        			        )
 					}
 	        		
 	        		this.loadVote();
@@ -735,10 +744,18 @@ a {
 	        	.then(resp=>{
 					if(resp.data.voteChoice == null) {
 		        		//완성 시 코드
-		        		window.alert("공감하지 않아요.");
+		        		  	   Swal.fire({
+	        			         title: '공감하지 않아요.',
+	        			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+	    		    			  imageWidth : 100
+		        		  	        			 })
 						}
 						else {
-							window.alert("투표가 취소되었어요.");
+	 	        			 Swal.fire(
+		        			          '투표가 취소 되었어요.',
+		        			          '',
+		        			          'success'
+		        			        )
 						}
 
 	        		this.loadVote();
@@ -798,12 +815,20 @@ a {
 	        		console.log(resp);
 	        		//완성 시 코드
 	        		if(resp.data.itLike == 1) {
-	        		window.alert("좋아요 취소");
+	        		  	   Swal.fire({
+	        			         title: '좋아요를 취소했어요.',
+	        			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+	    		    			  imageWidth : 100
+		        		  	        			 })
 	        		this.itLike = false;
 	        		this.loadLikeCount();
 	        		}
 	        		else if(resp.data.itLike == 0 || resp.data.itLike == null) {
-	        		window.alert("좋아요");
+	        		  	   Swal.fire({
+	        			         title: '좋아요',
+	        			          imageUrl : '${pageContext.request.contextPath}/image/smile.png',
+	    		    			  imageWidth : 100
+		        		  	        			 })
 	        		this.itLike = true;
 	        		this.loadLikeCount();
 	        		}
@@ -828,7 +853,11 @@ a {
 	        	.then(resp=>{
 	        		
 	        		//완성 시 코드
-	        		window.alert("댓글 등록 완료!");
+	        			 	        			 Swal.fire(
+		        			          '댓글 등록 완료!',
+		        			          '',
+		        			          'success'
+		        			        )
 	        		this.mbtiBoardReplyContent = "";
 	        		this.loadReply();
 	        	});
@@ -897,7 +926,11 @@ a {
 	        		},
 	        	})
 	        	.then(resp=>{
-	        		window.alert("수정 완료!");
+        			 Swal.fire(
+       			          '댓글 수정 완료!',
+       			          '',
+       			          'success'
+       			        )
 	        		this.loadReply();
 	        	});
 	        },
@@ -935,11 +968,19 @@ a {
             	}).then(resp=>{
             		this.boardResult = resp.data
             		if(this.boardResult==1){
-            			window.alert("신고가 완료되었습니다")
+	        			 Swal.fire(
+	        			          '신고가 완료되었습니다.',
+	        			          '',
+	        			          'success'
+	        			        )
             			this.cancelReport();
 
             		}else{
-            			window.alert("오류가 발생했습니다. 나중에 다시 시도해주십시오.")
+	        			 Swal.fire(
+	        			          '오류가 발생했습니다. 다시 시도해 주세요.',
+	        			          '',
+	        			          'error'
+	        			        )
             			this.cancelReport();
             		}
             	})
@@ -968,6 +1009,7 @@ a {
 	app.mount("#app");
 
 	</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/vue@next"></script>
 <script src="${root}/js/time.js"></script>
