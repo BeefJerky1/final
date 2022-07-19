@@ -96,9 +96,13 @@
 								<li class="nav-item"><a class="nav-link"
 									href="${root}/notice/list">NOTICE</a></li>
 							
-							
 								<li class="nav-item"><a class="nav-link"
 									href="${root}/member/mypage">MYPAGE</a></li>
+									
+									
+								<li class="nav-item"><a class="nav-link"
+									href="${root}/member/message"><i class="fa-solid fa-envelope fa-2x"></i></a></li>
+									
 							</ul>
 								
 								<form class="d-flex" action="club/detail" method="get" >

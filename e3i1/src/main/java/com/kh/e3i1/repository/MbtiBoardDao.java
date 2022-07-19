@@ -40,4 +40,8 @@ public interface MbtiBoardDao {
 
 	List<MbtiMemberListVO> bestMbtiBoard();
 
+	void reportCount(int mbtiBoardNo);
+
+	List<MbtiMemberListVO> listAll(String keyword, String column, String order);
+
 }

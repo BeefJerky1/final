@@ -19,5 +19,7 @@ public class MbtiBoardDto {
 	private int mbtiBoardVote1;
 	private int mbtiBoardVote2;
 	private int mbtiBoardReplyCount;
+	private int mbtiBoardWriter;
+	private int mbtiReportCount;
 
 }

@@ -81,15 +81,17 @@ $(function(){
 		}
 		
 	});
+	
+	$(".pagination>a").click(function() {
+	    toggleClass(".active-color");
+	});
+	
 });
 
 </script>
 
-<body>
-
-   <body class="bg-light">
+      <body class="bg-light" >
       <div class="web-none d-flex align-items-center px-3 pt-3">
-      
       <!--  반응형 디자인 추가 -->
          <img src="${root}/image/LOGO.png" class="img-fluid logo-mobile">
 
@@ -104,7 +106,7 @@ $(function(){
             
                <!-- Main Content -->
                <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
-                  <div class="main-content">
+                  <div class="main-content"  id="app">
                      <div class="mb-4 d-flex align-items-center">
                         <div class="d-flex align-items-center">
                            <p class="ms-2 mb-0 fw-bold text-body fs-6">MBTI Community  <i class="fa-solid fa-heart fx-2" style="color:#ffa8c9;"></i></p>
@@ -114,8 +116,8 @@ $(function(){
                      <!--  글 작성 모달 -->
                        <div class="input-group shadow-sm mb-3 rounded-4 overflow-hidden py-2 bg-white" data-bs-toggle="modal" data-bs-target="#postModal">
                            <span class="input-group-text material-icons border-0 bg-white text-primary" style="color: #514e85 !important;">account_circle</span>
-                           <input type="text" class="form-control border-0 fw-light ps-1" placeholder="새로운 글을 작성해 보세요.">
-                           <a href="#" class="text-decoration-none input-group-text bg-white border-0 material-icons text-primary" style="color: #514e85 !important;">add_circle</a>
+                           <input type="text" class="form-control border-0 fw-light ps-1"  :disabled="isAnonymous" :placeholder="textareaPlaceholder">
+                           <a href="#" class="text-decoration-none input-group-text bg-white border-0 material-icons text-primary"  :disabled="isAnonymous"style="color: #514e85 !important;">add_circle</a>
                         </div>
                      
                     <!--  정렬 버튼 구간 -->
@@ -141,7 +143,14 @@ $(function(){
                         <div class="d-flex align-items-center px-3 pt-3">
                         
                         <!-- 프로필 이미지 들어가는 공간! -->
-                           <img src="${root}/image/mbti/강아지(ENFP).png" class="img-fluid rounded-circle" alt="profile-img">
+
+>
+                        <span v-if="${mbtiMemberListVO.memberProfileDto.attachNo==null}">
+	                        <img src="${root}/image/mbti/강아지(ENFP).png" class="img-fluid rounded-circle" alt="profile-img" >
+						</span>
+						<span v-if="${mbtiMemberListVO.memberProfileDto.attachNo!=null}">
+                           <img :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+${mbtiMemberListVO.memberProfileDto.attachNo }" class="img-fluid rounded-circle" alt="profile-img">
+                          </span> 
                            <div class="ms-3">
                               <h6 class="mb-0 d-flex align-items-start text-body fs-6 fw-bold">${mbtiMemberListVO.mbtiBoardDto.mbtiBoardTitle }<span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon"  style="background-color:#514e85 !important;">done</span></h6>
                               <p class="text-muted mb-0">${mbtiMemberListVO.memberDto.memberAnimal }</p>
@@ -404,18 +413,18 @@ $(function(){
                                     	<small class="fw-bold m-3  mb-2 pe-3 text-dark" style="color:black !important;">
                                     	3위. INTP <i class="fa-solid fa-plus" style="color:#ffa8c9;"></i> ENFJ (반대가 끌리는 이유...)
                                     </small><BR>
-                                    </div>
-                                 </div>
-                                 
+                                    	</div>
+                                	 </div>
 						           </div>
 						   </div>
                         </div>
                      </div>
-                  </div>
+                     </div>
                </aside>
+                  </div>
             </div>
          </div>
-      </div>
+         </body>
       
 
 
@@ -462,20 +471,42 @@ $(function(){
       </div>
      </form>
 
- 
+<script>
+	const app = Vue.createApp({
+		
+		data(){
+			return {
+				memberNo:"${login}",
+		        memberAdmin:"${auth}",
 
+			};
+		},
+		computed:{
+	        isAnonymous(){
+	        	return this.memberNo == "";
+	        },
+	        isMember(){
+	        	return this.memberNo != "" && this.memberAdmin != "";
+	        },
+	        isAdmin(){
+	        	return this.isMember && this.memberGrade == "관리자";
+	        },
+	        	
+			 textareaPlaceholder(){
+	        	return this.isAnonymous ? "로그인 후 작성할 수 있습니다" : "새로운 글을 작성해 보세요!";
+	        },
+		
+		},
+		methods:{
+		
+		},
+		    
+		created(){
 
-
-
-
-
-</body>
-    <script type="text/javascript">
-$(".pagination>a").click(function() {
-    toggleClass(".active-color");
-});
+		},
+	});
+	app.mount("#app");
 </script>
-
 <!-- 
 	배포용 cdn (개발자 도구에서 vue가 안 보임)
 	<script src="https://unpkg.com/vue@next/dist/vue.global.prod.js"></script>
