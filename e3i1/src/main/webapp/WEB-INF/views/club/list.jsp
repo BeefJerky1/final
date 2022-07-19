@@ -446,7 +446,7 @@ select{
 					<div class="mt-2 text-start">
 						<label>소모임 이름</label> <input class="form-control rounded"
 							type="text" name="clubName" v-model="clubName"
-							v-on:input="clubName = $event.target.value" />
+							v-on:input="clubName = $event.target.value" autocomplete="off" />
 					</div>
 
 					<div class="mt-2 text-start">
@@ -513,15 +513,15 @@ select{
 					</div>
 					<div class="text-start">
 						<label>질문1</label> <input class="form-control rounded" type="text"
-							name="clubJoinQuestion1" v-model="clubJoinQuestion1" />
+							name="clubJoinQuestion1" v-model="clubJoinQuestion1" autocomplete="off"/>
 					</div>
 					<div class="text-start" v-if="count > 1">
 						<label>질문2</label> <input class="form-control rounded" type="text"
-							name="clubJoinQuestion2" v-model="clubJoinQuestion2" />
+							name="clubJoinQuestion2" v-model="clubJoinQuestion2" autocomplete="off"/>
 					</div>
 					<div class="text-start" v-if="count > 2">
 						<label>질문3</label> <input class="form-control rounded" type="text"
-							name="clubJoinQuestion3" v-model="clubJoinQuestion3" />
+							name="clubJoinQuestion3" v-model="clubJoinQuestion3" autocomplete="off"/>
 					</div>
 
 					<div class="row mt-4">

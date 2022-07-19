@@ -72,7 +72,7 @@
 .profileInterest {
 	background-color: #E9E9E9;
 	color: #3E4684;
-	border-radius: 15px;
+	border-radius: 13px;
 	font-size: 0.8em;
 	font-weight: 600;
 }
@@ -132,7 +132,7 @@ i {
 	border-color: #3E4684;
 	border-width: 0.25em;
 }
-input[type="checkbox"]{
+input[type="radio"]{
 	display:none;
 }
 .img{
@@ -336,7 +336,7 @@ input[type="checkbox"]{
 											<th style="width: 15%;"></th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody class="show-detail">
 										<template v-for="(memberClub, index) in memberClubList" :key="index">
 											<tr v-if="rejectClub(index)" class="show-detail">
 												<td  v-if="rejectClub(index)">
@@ -352,8 +352,8 @@ input[type="checkbox"]{
 											 	<td v-if="rejectClub(index)">
 													<span class="tableInterest2 mx-2"> {{elapsedText(memberClub.clubMemberDto.clubMemberDate)}}</span>
 												</td>	
-												<td class="detail">
-													<tr>
+												<td>
+													<tr class="detail">
 														<td colspan="3" v-if="rejectClub(index)">
 															<span>
 																거절 메세지: {{memberClub.clubMemberDto.clubMemberRefuseMsg}}
@@ -474,12 +474,13 @@ input[type="checkbox"]{
 								<div class="titlefont boldfont mx-1">
 									구매하기&nbsp;<i class="fa-solid fa-circle-info"></i>
 								</div>
+								<form action="${pageContext.request.contextPath}/pay_purchase" method="post">
 								<div class="row row-cols-1 row-cols-md-4 g-10 my-2">
 									<div class="col">
 										<label for="pay1">
-										<div class="card my-2" :class="{'checked':isCheckedPlus('10')}" style="width: 11rem; border-radius: 30px;">
+										<div class="card my-2" :class="{'checked':isCheckedPlus('1')}" style="width: 11rem; border-radius: 30px;">
 											<div class="card-body m-1">
-												<input type="checkbox" name="clubPlus" id="pay1" value="10" v-model="clubPlus">
+												<input type="radio" name="clubPlusNo" id="pay1" value="1" v-model="clubPlusNo">
 												<h5 class="card-title text-center tagtitle">
 													<div class="text-center">
 														<img src="${root}/image/crowd.png" class="pluscount">
@@ -495,9 +496,9 @@ input[type="checkbox"]{
 									</div>
 									<div class="col">
 										<label for="pay2">
-										<div class="card my-2" style="width: 11rem; border-radius: 30px;" :class="{'checked':isCheckedPlus('30')}">
+										<div class="card my-2" style="width: 11rem; border-radius: 30px;" :class="{'checked':isCheckedPlus('2')}">
 											<div class="card-body m-1">
-												<input type="checkbox" name="clubPlus" id="pay2" value="30" v-model="clubPlus">
+												<input type="radio" name="clubPlusNo" id="pay2" value="2" v-model="clubPlusNo">
 												<h5 class="card-title text-center tagtitle">
 													<div class="text-center">
 														<img src="${root}/image/crowd.png" class="pluscount">
@@ -513,9 +514,9 @@ input[type="checkbox"]{
 									</div>
 									<div class="col">
 										<label for="pay3">
-										<div class="card my-2" style="width: 11rem; border-radius: 30px;" :class="{'checked':isCheckedPlus('50')}">
+										<div class="card my-2" style="width: 11rem; border-radius: 30px;" :class="{'checked':isCheckedPlus('3')}">
 											<div class="card-body m-1">
-												<input type="checkbox" name="clubPlus" id="pay3" value="50" v-model="clubPlus">
+												<input type="radio" name="clubPlusNo" id="pay3" value="3" v-model="clubPlusNo">
 												<h5 class="card-title text-center tagtitle">
 													<div class="text-center">
 														<img src="${root}/image/crowd.png" class="pluscount">
@@ -531,9 +532,9 @@ input[type="checkbox"]{
 									</div>
 									<div class="col">
 										<label for="pay4">
-										<div class="card my-2" style="width: 11rem; border-radius: 30px;" :class="{'checked':isCheckedPlus('100')}">
+										<div class="card my-2" style="width: 11rem; border-radius: 30px;" :class="{'checked':isCheckedPlus('4')}">
 											<div class="card-body m-1">
-												<input type="checkbox" name="clubPlus" id="pay4" value="100" v-model="clubPlus">
+												<input type="radio" name="clubPlusNo" id="pay4" value="4" v-model="clubPlusNo">
 												<h5 class="card-title text-center tagtitle">
 													<div class="text-center">
 														<img src="${root}/image/crowd.png" class="pluscount">
@@ -569,7 +570,7 @@ input[type="checkbox"]{
 													<span class="tableInterest mx-2">{{memberClub.clubDto.clubMemberCount}} / {{memberClub.clubDto.clubMemberLimit}}</span>
 												</td>
 												<td v-if="isClubLeader(index)">
-													<input type="checkbox" name="clubNo" :value="memberClub.clubDto.clubNo" style="display:inline;">
+													<input type="radio" name="clubNo" :value="memberClub.clubDto.clubNo" style="display:inline;" v-model="clubPayNo">
 												</td>
 											</tr>
 										</tbody>
@@ -577,32 +578,23 @@ input[type="checkbox"]{
 								<div class="row" style="float: right;">
 									<button type="submit" class="btn btn-outline-success">구매</button>
 								</div>
+								</form>
 								<div class="row titlefont boldfont mt-5 mx-1">구매 및 사용내역</div>
 								<table class="table text-center">
 									<thead>
 										<tr>
+											<th style="width: 10%;"></th>
+											<th style="width: 40%;"></th>
 											<th style="width: 20%;"></th>
 											<th style="width: 30%;"></th>
-											<th style="width: 50%;"></th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="tableInterest">구매</td>
-											<td class="tableInterest">2022-07-11</td>
-											<td class="tableInterest">구매내역상세정보입니다 123</td>											
-										</tr>
-										
-										<tr>
-											<td class="tableInterest">사용</td>
-											<td class="tableInterest">2022-07-10</td>
-											<td class="tableInterest">사용내역상세정보입니다 12345</td>											
-										</tr>
-										
-										<tr>
-											<td class="tableInterest">구매</td>
-											<td class="tableInterest">2022-07-09</td>
-											<td class="tableInterest">구매내역상세정보입니다 12345</td>											
+										<tr v-for="(pay, index) in memberPayDetail" :key="index">
+											<td class="tableInterest" v-if="isMemberPay(index)">{{pay.paymentDto.paymentStatus}}</td>
+											<td class="tableInterest" v-if="isMemberPay(index)">{{pay.clubDto.clubName}}</td>											
+											<td class="tableInterest" v-if="isMemberPay(index)">{{pay.paymentDto.paymentName}} 증가</td>											
+											<td class="tableInterest" v-if="isMemberPay(index)">{{convertTime(pay.paymentDto.paymentTime)}}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -816,7 +808,7 @@ input[type="checkbox"]{
 									
 										<div class="container-fluid">
 											<div class="modal-header">
-												<span class="boldfontL">관심분야 변경하기</span>
+												<span class="boldfont">관심분야 변경하기</span>
 												<div class="text-center profileInterest my-1 mx-5">${memberDto.memberInterest1}</div>
 												<div class="text-center profileInterest my-1 mx-5">${memberDto.memberInterest2}</div>
 												<div class="text-center profileInterest my-1 mx-5">${memberDto.memberInterest3}</div>
@@ -987,14 +979,14 @@ input[type="checkbox"]{
 								</div> 
 								
 								<!-- MBTI검사 모달창 -->
-								<div class="modal" v-bind:class="isHidden1" class="rounded">
+								<div class="modal rounded" :class="isHidden1">
 									<div class="modal-overlay" v-on:click="addHidden1"></div>
 							
-									<div class="modal-content mt-4" style="width:1000px!important; height:700px!important; position:absolute!important; padding:0px; margin:0px">
+									<div class="modal-content mt-4" style="width:950px!important; height:700px!important; position:absolute!important; padding:0px; margin:0px">
 									
 										<div class="container-fluid">
 											<div class="modal-header">
-												<span class="boldfontL">MBTI검사</span>
+												<span class="boldfont">MBTI검사</span>
 												<div class="text-end" @click="addHidden1()" style="cursor:pointer">
 													<i class="fa-solid fa-x"></i>
 												</div>
@@ -1135,9 +1127,9 @@ input[type="checkbox"]{
 																<h3 style="color:#3E4684;">잠깐 멈춰보시&nbsp;<span style="color:#F4B759;">개!!</span></h3>
 															</div>
 															<div class="card-img text-center">
-																<img src="${pageContext.request.contextPath}/image/mbti/강아지(ENFP).png" style="width:400px; height:400px">  
+																<img src="${pageContext.request.contextPath}/image/mbti/강아지(ENFP).png" style="width:350px; height:350px">  
 															</div>
-															<div class="card-text text-start mt-4 ms-4 mb-2">
+															<div class="card-text text-start mt-4 mb-2">
 																<span style="color:#3E4684;">*결과와 같은 프로필로 변경을 원치 않으실 경우 <span style="color:red;">'변경하기'</span> 버튼을 눌러주시개 <br> *결과와 같은 프로필로 변경을 원하실 경우 <span style="color:red;">'+프로필'</span> 버튼을 눌러주시개</span>
 															</div>
 														</div>
@@ -1166,8 +1158,8 @@ input[type="checkbox"]{
 															<h3 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null" style="color:#F7D68A;">{{memberAnimal.mbtiAnimalDto.mbti}}</h3> 
 														</div>
 													</div>
-													<div class="row mt-4">
-														<div class="col-md-12 row text-center">
+													<div class="mt-4">
+														<div class="col-md-12 row text-center" style="margin:0px;">
 															<div class="col-md-6">
 																<button type="submit" class="btn btn-outline-success" style="width: 50%;" @click="memberMbti">변경하기</button>
 															</div>
@@ -1197,7 +1189,8 @@ input[type="checkbox"]{
 			</div>
 			
 		</div>
-		                <!--  프로필 모달 -->
+		
+		<!--  프로필 모달 -->
       <div v-if="this.blockedDetail!=null">
       <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -1242,20 +1235,12 @@ input[type="checkbox"]{
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	<script src="${root}/js/time.js"></script>
 
 <script>
-$(function(){
-	$(".show-detail").each(function(){
-	     $(this).click(function() {
-	        $(this).children("tr").find(".detail").toggle();
-	     });
-	  });
-});
-
 const app = Vue.createApp({
 data() {
 	return {
@@ -1293,14 +1278,24 @@ data() {
 		interest:[],
 		memberAnimal:[],
 		
-		clubPlus:[],
+		clubPlusNo:[],
 		
 		blockedList:null,//차단된 회원목록
 		blockedDetail:null,//프로필 정보
 		notBlocked:"",
+		
+		// 결제 
+		clubPayNo:[],
+		memberPayDetail:[],
 	};
 },
-computed: {},
+computed: {
+	error(){
+		const href = window.location.href;
+		const url = new URL(href);
+		return url.searchParams.get("error");
+	},
+},
 methods: {
 	removeHidden(){
 		this.isHidden["hidden"] = false;
@@ -1318,7 +1313,9 @@ methods: {
 		this.isHidden1["hidden1"] = true; 
 	},
 	
-	
+	isMemberPay(index){
+		return this.memberPayDetail[index].paymentDto != null && this.memberPayDetail[index].clubDto != null;
+	},
 	isClubLeader(index){
 		return this.memberClubList[index].clubMemberDto.clubMemberGrade == 1;
 	},
@@ -1345,8 +1342,8 @@ methods: {
 	},
 	
 	isCheckedPlus(value){
-		if(this.clubPlus.length == 0) return; 
-		return this.clubPlus?.includes(value);
+		if(this.clubPlusNo.length == 0) return; 
+		return this.clubPlusNo?.includes(value);
 	},
 	
 	// 시/군/구 추가
@@ -1433,6 +1430,7 @@ methods: {
 			data:{
 				memberNo : this.memberNo,
 				memberMbti : mbti.value,
+				memberAnimal : this.memberAnimal.mbtiAnimalDto.animal,
 			},
 		}).then((resp) => {
 			if(resp.data != 0){
@@ -1472,52 +1470,40 @@ methods: {
 	},
 	
 	changeProfile(){
-		let formData = new FormData();
-		
-		const fileInput = this.$refs.memberProfile;
-		if(fileInput.files.length == 0) return;
-		
-		const fileData = fileInput.files[0];
-		formData.append('attach', fileData);
-		formData.append('memberNo', this.memberNo);
-		formData.append('attachNo', this.memberList.memberProfileDto.attachNo);
-		
-		console.log(this.memberList.memberProfileDto.attachNo);
-		
-		axios({
-			url:"${pageContext.request.contextPath}/rest/mypage/member_profile",
-			method:"post",
-			headers:{
-				"Content-Type" : "multipart/form-data",
-			},
-			data: formData,
-		}).then((resp) => {
-			if(resp.data == 0){
-				window.alert("프로필 변경에 실패했습니다.");
-				return;
-			}
-			window.alert("프로필 변경 완료!");
-			location.reload();
-		});
+		if(window.confirm("프로필을 변경하시겠습니까?")){
+			let formData = new FormData();
+			
+			const fileInput = this.$refs.memberProfile;
+			if(fileInput.files.length == 0) return;
+			
+			console.log(this.memberList.memberProfileDto.attachNo);
+			
+			const fileData = fileInput.files[0];
+			formData.append('attach', fileData);
+			formData.append('memberNo', this.memberNo);
+			formData.append('attachNo', this.memberList.memberProfileDto.attachNo);
+			
+			axios({
+				url:"${pageContext.request.contextPath}/rest/mypage/member_profile",
+				method:"post",
+				headers:{
+					"Content-Type" : "multipart/form-data",
+				},
+				data: formData,
+			}).then((resp) => {
+				if(resp.data == 0){
+					window.alert("프로필 변경에 실패했습니다.");
+					return;
+				}
+				window.alert("프로필 변경 완료!");
+				location.reload();
+			});
+		}
+		else{
+			return;
+		}
 	},
 	
-	/* clubPayment(){
-		axios({
-			url:"${pageContext.request.contextPath}/rest/mypage/pay",
-			method:"post",
-			data:{
-				purchase : this.clubPlus,
-			},
-		}).then((resp) => {
-			if(resp.data == 0){
-				window.alert("결제가 실패되었습니다.");
-				return;
-			}
-			window.alert("결제가 완료되었습니다.");
-			location.reload();
-		});
-	}, */
-    
 	//차단된 사용자 목록
 	blocked(){
 		axios({
@@ -1681,9 +1667,19 @@ mounted(){
 			$(".page").hide();
 			$(".page").eq(index).show();
 		}
+		
+		$(".show-detail").each(function(index, element){
+		     $(this).click(function() {
+		        $(this).children("tr").find(".detail").toggle();
+		     });
+		  });
 	});
+	
+	// error 처리
+	if(this.error != null){
+		window.alert("가입 가능 회원수가 200명이 넘기 때문에 더이상 증가는 불가능합니다.");
+	}
 },
-
 created() {
 		//차단 목록
 		this.blocked();
@@ -1719,6 +1715,14 @@ created() {
 			method:"get",
 		}).then((resp) => {
 			this.memberMbtiList = resp.data;
+		})	
+		
+		// 회원 결제 정보
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/member_pay/"+this.memberNo,
+			method:"get",
+		}).then((resp) => {
+			this.memberPayDetail = resp.data;
 		})	
 	},
 });

@@ -22,9 +22,11 @@ import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.repository.AttachmentDao;
 import com.kh.e3i1.repository.MemberDao;
 import com.kh.e3i1.repository.MemberProfileDao;
+import com.kh.e3i1.repository.PaymentDao;
 import com.kh.e3i1.service.MemberService;
 import com.kh.e3i1.vo.BlockedVO;
 import com.kh.e3i1.vo.MemberDetailVO;
+import com.kh.e3i1.vo.PaymentDetailVO;
 
 @CrossOrigin(
 		origins = {"http://127.0.0.1:5500"}
@@ -44,6 +46,9 @@ public class MemberRestController {
 	
 	@Autowired
 	private MemberDao memberDao;
+	
+	@Autowired
+	private PaymentDao paymentDao;
 	
 	
 	@GetMapping("/member/{memberNo}")
@@ -109,4 +114,11 @@ public class MemberRestController {
 	public int DeleteBlockTarget(@PathVariable int blockedNo) {
 		return memberDao.DeleteBlockTarget(blockedNo);
 	}
+	
+	// 회원 결제 정보
+	@GetMapping("/member_pay/{memberNo}")
+	public List<PaymentDetailVO> mypagePayDetail(@PathVariable int memberNo) {
+		return paymentDao.mypagePayDetail(memberNo);
+	}
+	
 }

@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.e3i1.entity.AttachmentDto;
@@ -58,6 +59,7 @@ public class AttachmentDaoImpl implements AttachmentDao {
 		return sqlSession.delete("attachment.delete",attachNo);
 	}
 	
+	@Transactional
 	@Override
 	public int edit(MultipartFile attachment, int attachNo) throws IllegalStateException, IOException {
 		int success = this.save(attachment);

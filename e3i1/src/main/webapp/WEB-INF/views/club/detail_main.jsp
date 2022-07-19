@@ -271,7 +271,7 @@ a:hover {
 					</div>
 
 					<div class="row mt-4 " v-for="(member, index) in clubMemberList" :key="index" style="width: 25%; float: left;">
-						<div class="col text-center"  >
+						<div class="col text-center" >
 							<!-- memberProfile 연결되면 프로필 사진으로 찍기 -->
 						<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="clubMemberList[index].memberProfileDto.attachNo == null">
 						<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubMemberList[index].memberProfileDto.attachNo"

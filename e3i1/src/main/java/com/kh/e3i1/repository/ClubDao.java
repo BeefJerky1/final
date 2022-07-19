@@ -30,5 +30,9 @@ public interface ClubDao {
 	List<ClubDto> search(String keyword);
 
 	List<ClubLikeVO> bestClub();
+	
+	void clubPlus(int clubPlusNo, int clubNo);
+
+	boolean isLimit(int clubNo, int clubPlusNo); 
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kh.e3i1.entity.PaymentDetailDto;
 import com.kh.e3i1.entity.PaymentDto;
+import com.kh.e3i1.vo.PaymentDetailVO;
 import com.kh.e3i1.vo.PaymentListVO;
 
 public interface PaymentDao {
@@ -22,4 +23,6 @@ public interface PaymentDao {
 	void cancelAll(int paymentNo);
 	
 	List<PaymentListVO> treeList();
+	
+	List<PaymentDetailVO> mypagePayDetail(int memberNo);
 }

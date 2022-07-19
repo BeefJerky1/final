@@ -113,6 +113,32 @@ public class ClubDaoImpl implements ClubDao {
 	public List<ClubLikeVO> bestClub() {
 		return sqlSession.selectList("club.bestClubList");
 	}
+	
+	// 인원제한 확인
+	
+	
+	// 결제시 소모임 인원제한 증가
+	public void clubPlus(int clubPlusNo, int clubNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("clubPlusNo", clubPlusNo);
+		param.put("clubNo", clubNo);
+		sqlSession.update("club.clubPlus",param);
+	}
 
+	@Override
+	public boolean isLimit(int clubNo, int clubPlusNo) {
+		ClubDto clubDto = sqlSession.selectOne("club.one",clubNo);
+		int plus = 0;
+		
+		if(clubPlusNo == 1) plus = 10;
+		if(clubPlusNo == 2) plus = 30;
+		if(clubPlusNo == 3) plus = 50;
+		if(clubPlusNo == 4) plus = 100;
+		
+		if(plus + clubDto.getClubMemberLimit() > 200) {
+			return true;
+		}
+		return false;
+	}
 	
 }
