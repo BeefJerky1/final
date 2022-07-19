@@ -22,6 +22,24 @@
 	border-radius: 70%;
 	overflow: hidden;
 }
+
+.message-wrapper > .message {
+	display:flex;
+}
+.message-wrapper > .message.admin {
+	color:red
+}
+.message-wrapper > .message > .user {
+	padding:0.25em;	
+	min-width: 100px;
+}
+.message-wrapper > .message > .text{
+	padding:0.25em;
+	flex-grow:1;	
+}
+.message-wrapper > .message > .time{
+	padding:0.25em;	
+}
 </style>
 
 <div id="app" class="container-fluid">
@@ -29,19 +47,17 @@
 	<div class="row mt-4">
 
 		<!-- 왼쪽 사이드바 -->
-		<div class="col-md-3 mb-5">
+		<div class="col-md-3">
 			<div class="card shadow" style="margin-left: 1em;">
 				<div class="card-body">
 					<div class="card-title">
 						<div class="row">
 							<div class="col-md-2 align-self-center"></div>
 							<div class="text-center" v-if="clubList.clubDto != null">
-								<a
-									:href="'${pageContext.request.contextPath}/club/detail?clubNo='+clubList.clubDto.clubNo">
+								<a :href="'${pageContext.request.contextPath}/club/detail?clubNo='+clubList.clubDto.clubNo">
 									<i class="fa-solid fa-house"></i>
 								</a> <span class="boldfont">&nbsp;&nbsp;{{clubList.clubDto.clubName}}&nbsp;&nbsp;</span>
-								<span @click="likeClub"> <i class="fa-solid fa-heart"
-									style="color: red;" v-if="isLike"></i> <i
+								<span @click="likeClub"> <i class="fa-solid fa-heart" style="color: red;" v-if="isLike"></i> <i
 									class="fa-regular fa-heart" style="color: red;" v-if="!isLike"></i>&nbsp;
 								</span> <i class="fa-solid fa-circle-exclamation"></i>
 							</div>
@@ -59,9 +75,8 @@
 						<div class="row">
 							<div class="col-md-4" width="16px" height="16px"
 								style="margin-left: 0.8em; margin-top: 0.45em;">
-								<img src="${root }/image/mbti/거북이(ISTP).png" class="profile"
-									v-if="clubList.memberProfileDto == null"> <img
-									:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo"
+								<img src="${root }/image/mbti/거북이(ISTP).png" class="profile" v-if="clubList.memberProfileDto == null"> 
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.memberProfileDto.attachNo"
 									class="profile" v-if="clubList.memberProfileDto != null">
 							</div>
 							<div class="col-md-7 text-right" v-if="clubList.clubDto != null"
@@ -92,20 +107,23 @@
 						<!-- v-for index를 []안에 사용할 방법을 찾으면 v-for로 반복할 예정 너무 복잡해지면 그냥 이대로 사용 -->
 						<div class="row">
 							<div class="col-md-4 text-center" v-if="mbtiList[0] != null">
-								<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"
-									style="border: 1.5px solid #3E4684">
+								<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[0].attachNo == null">
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[0].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[0].attachNo != null">
 								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[0].memberMbti}}</p>
 								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[0].mbtiPercent}}%</p>
 							</div>
 							<div class="col-md-4 text-center" v-if="mbtiList[1] != null">
-								<img src="${root }/image/mbti/물개(ESFP).png" class="mbtitop"
-									style="border: 1.5px solid #3E4684">
+								<img src="${root }/image/mbti/물개(ESFP).png" class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[1].attachNo == null">
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[1].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[1].attachNo != null">
 								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[1].memberMbti}}</p>
 								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[1].mbtiPercent}}%</p>
 							</div>
 							<div class="col-md-4 text-center" v-if="mbtiList[2] != null">
-								<img src="${root }/image/mbti/원숭이(ESTP).png" class="mbtitop"
-									style="border: 1.5px solid #3E4684">
+								<img src="${root }/image/mbti/원숭이(ESTP).png" class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[2].attachNo == null">
+								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+mbtiList[2].attachNo"
+									class="mbtitop" style="border: 1.5px solid #3E4684;" v-if="mbtiList[2].attachNo != null">
 								<p style="margin: 0px 0px; font-weight: bold;">{{mbtiList[2].memberMbti}}</p>
 								<p class="boldfontSS" style="margin: 0px 0px;">{{mbtiList[2].mbtiPercent}}%</p>
 							</div>
@@ -115,7 +133,6 @@
 			</div>
 		</div>
 
-
 		<!-- 중앙 -->
 		<div class="col-md-6">
 			<div class="card">
@@ -124,13 +141,18 @@
 						<h4 style="font-weight: bold">소모임 채팅</h4>
 					</div>
 				</div>
+				<div class="card-body">
+					<input type="text" class="send-input">
+					<button class="btn-send">전송</button>
+					
+					<!-- 메세지 출력 공간 -->
+					<div class="message-wrapper"></div>
+				</div>
 			</div>
 		</div>
 
 		<!-- 오른쪽 사이드바 -->
 		<div class="col-md-3">
-			<button class="btn-create shadow" v-on:click="removeHidden">소모임
-				가입 신청</button>
 			<div class="list-group mt-2" v-if="clubList.clubDto != null">
 				<a class="list-group-item list-group-item-action disabled boldfontS" style="color:#3E4684;">소모임</a>
 				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/board?clubNo='+clubList.clubDto.clubNo">게시판</a> 
@@ -148,80 +170,10 @@
 
 
 
-	<!-- 소모임 생성 모달 -->
-	<div class="modal" v-bind:class="isHidden" class="rounded"
-		v-if="clubList.clubDto != null">
-		<div class="modal-overlay" v-on:click="addHidden"></div>
-
-		<div class="modal-content mt-4"
-			style="width: 600px !important; position: absolute !important;">
-			<input type="hidden" ref="memberNo" value="${login}" />
-
-			<div class="container-fluid">
-				<div class="modal-header">
-					<div class="text-start col-md-12" v-if="clubList.clubDto != null">
-						<span class="boldfontL">소모임 가입 신청</span>
-					</div>
-				</div>
-
-				<div class="modal-body">
-
-					<div class="text-start">
-						<p class="boldfontSSS">
-							*소모임 성격과 맞지 않는 답변 시 가입이 거절 될 수 있습니다.<br> *답변은 성심성의껏 작성해주세요.
-						</p>
-					</div>
-					<div class="mt-3" v-if="clubList.clubDto.clubJoinQuestion1 != null">
-						<div class="text-start fontS">
-							Q1.&nbsp;{{clubList.clubDto.clubJoinQuestion1}}</div>
-						<div class="mt-2">
-							<input type="text" class="form-control boldfontS"
-								v-model="clubMemberAnswer1">
-						</div>
-					</div>
-
-					<div class="mt-4" v-if="clubList.clubDto.clubJoinQuestion2 != null">
-						<div class="text-start boldfontS">
-							Q2.&nbsp;{{clubList.clubDto.clubJoinQuestion2}}</div>
-						<div class="mt-2">
-							<input type="text" class="form-control fontS"
-								v-model="clubMemberAnswer2">
-						</div>
-					</div>
-
-					<div class="mt-4" v-if="clubList.clubDto.clubJoinQuestion3 != null">
-						<div class="text-start boldfontS">
-							Q3.&nbsp;{{clubList.clubDto.clubJoinQuestion3}}</div>
-						<div class="mt-2">
-							<input type="text" class="form-control fontS"
-								v-model="clubMemberAnswer3">
-						</div>
-					</div>
-
-					<div class="mt-2">
-						<p class="text-start" style="color: red; font-size: 10px;">*답변
-							시 회원님의 소중한 개인정보가 유출되지 않도록 주의해주시기 바랍니다.</p>
-					</div>
-
-					<div class="row mt-4">
-						<div class="col">
-							<button type="button" class="btn-cancel" @click="addHidden">돌아가기</button>
-						</div>
-						<div class="col">
-							<button type="submit" class="btn-create"
-								@click="insertClubMember">가입하기</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
-
 </div>
 
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
 <script>
   
 const app = Vue.createApp({
@@ -353,12 +305,93 @@ methods: {
 	},
 	
 },
+mounted(){
+	$(function() {
+		disconnectOperation();//최초 상태 설정
 
+		// 주소 자동 계산
+		// - 표준 웹소켓 API는 주소를 ws:// 부터 작성해야 하므로 불필요한 host, port 등을 작성해야 한다.
+		// - 웹소켓은 지원하는 브라우저가 적다(구버전 브라우저에서는 안됨)
+		// - 이를 해결하기 위해 sockjs를 사용한다.
+		var uri = "${pageContext.request.contextPath}/ws/channel";
+
+		//접속 - 자바스크립트 표준 API 사용
+		socket = new SockJS(uri);
+
+		socket.onopen = function(e) {
+			connectOperation();
+			
+			// 접속하자마자 나의 채널명을 서버로 전송해야한다(입장메세지)
+			var message = {
+				type: 1,
+				name:"${channelName}",
+			};
+			var json = JSON.stringify(message);
+			socket.send(json);
+			
+		};
+		socket.onclose = function(e) {
+			// console.log(arguments);
+			disconnectOperation();
+		};
+		socket.onerror = function() {
+			// console.log(arguments);
+			alert("서버와의 연결 오류가 발생하였습니다.");
+			disconnectOperation();
+		};
+		socket.onmessage = function(e) {
+			// tip. 콘솔화면에 그냥 검은글자로 나오면 Stirng이다.
+			// console.log(e.data);
+			var data = JSON.parse(e.data); // json을 객체로 복구
+			// var timeObject = new Date(data.time); // 날짜 객체로 변환(자바스크립트 표준 API)
+			var timeObject = moment(data.time).format("YYYY-MM-DD hh:mm:ss"); // 날짜 객체로 변환(moment js)
+			
+			var div = $("<div>").addClass("message");
+			if(data.auth == "관리자"){
+				div.addClass("admin");
+			}
+			
+			var span1 = $("<span>").addClass("user").text(data.memberId);
+			var span2 = $("<span>").addClass("text").text(data.text);
+			var span3 = $("<span>").addClass("time").text(timeObject);
+			
+			div.append(span1).append(span2).append(span3);
+			$(".message-wrapper").append(div);
+		};
+
+		$(".btn-send").click(function() {
+			// 채팅메세지를 보내야 한다.
+			var text = $(".send-input").val();
+			if (!text) return;
+			
+			var message = {
+					type:2,
+					name:"${channelName}",
+					message:text
+			};
+
+			var json = JSON.stringify(message);
+			socket.send(json); // 전송 명령 
+
+			$(".send-input").val(""); // 초기화
+		});
+
+		function connectOperation() {//연결되면 처리할 화면 작업을 구현
+			$(".send-input").prop("disabled", false); // 입력창 활성화 
+			$(".btn-send").prop("disabled", false); // 전송버튼 활성화
+		};
+		function disconnectOperation() {//연결 종료되면 처리할 화면 작업을 구현
+			$(".send-input").prop("disabled", true); // 입력창 비활성화 
+			$(".btn-send").prop("disabled", true); // 전송버튼 비활성화
+		};
+	});
+},
 created() {
 	this.existLike();
 	
+	// 소모임 상세 정보
 	axios({
-		url: "${pageContext.request.contextPath}/rest/club/"+this.clubNo,
+		url: "${pageContext.request.contextPath}/rest/club/detail/"+this.clubNo,
 		method: "get",
 	}).then((resp) => {
 		this.clubList = resp.data;
@@ -373,8 +406,6 @@ created() {
 		this.mbtiList = resp.data;
 	})
 },
-
-mounted(){},
 
 
 });

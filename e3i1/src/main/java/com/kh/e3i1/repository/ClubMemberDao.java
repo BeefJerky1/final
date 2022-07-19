@@ -18,4 +18,5 @@ public interface ClubMemberDao {
 	int check(int clubNo, int memberNo);
 	// 중복 가입 방지
 	ClubMemberDto exist(int clubNo, int memberNo);
+	int delete(int memberNo, int clubNo);
 }

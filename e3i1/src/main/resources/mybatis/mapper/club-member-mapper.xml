@@ -65,7 +65,7 @@
 	</insert>
 	
 	<select id="one" parameterType="Map" resultType="ClubMemberDto">
-		select * from club_member where member_no = #{memberNo} and club_no = #{clubNo} and club_member_permission =1
+		select * from club_member where member_no = #{memberNo} and club_no = #{clubNo} and club_member_permission = 1
 	</select>
 	
 	<select id="exist" parameterType="Map" resultType="ClubMemberDto">
@@ -89,6 +89,7 @@
 			<result column="club_member_answer3" property="clubMemberAnswer3"/>			
 			<result column="club_member_permission" property="clubMemberPermission"/>			
 			<result column="club_member_refuse_msg" property="clubMemberRefuseMsg"/>			
+			<result column="club_refuse_count" property="clubRefuseCount"/>
 		</association>
 
 		<association property="memberDto">
@@ -181,15 +182,31 @@
 			club_member_no = #{clubMemberNo}
 	</update>
 	
+	
 	<!-- 소모임 가입 거절 -->
 	<update id="refuse" parameterType="ClubMemberDto">
 		update 
 			club_member
 		set
 			club_member_permission = 2, 
-			club_member_refuse_msg = #{clubMemberRefuseMsg}
+			club_member_refuse_msg = #{clubMemberRefuseMsg},
+			club_refuse_count = club_refuse_count + 1
 		where 
 			club_member_no = #{clubMemberNo}
 	</update>
+	
+	<!-- 재신청 -->
+	<update id="retry" parameterType="ClubMemberDto">
+		update 
+			club_member
+		set
+			club_member_permission = 0
+		where 
+			club_member_no = #{clubMemberNo}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete club_member where member_no = #{memberNo} and club_no = #{clubNo}
+	</delete>
 	
 </mapper>

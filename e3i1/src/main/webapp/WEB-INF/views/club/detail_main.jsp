@@ -100,6 +100,19 @@
 						</div>
 					</div>
 				</div>
+				<div class="card-body">
+					<div class="card-title">
+						<div class="text-center mb-3">
+							<span class="boldfontS">소모임 정모<i class="fa-solid fa-map"></i></span>
+						</div>
+						<div class="mt-2">
+							<input type="datetime-local" class="form-control" id="dateLocal">
+						</div>
+						<div>
+							
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -119,6 +132,18 @@
 					</div>
 					<div class="card-text boldfontS" v-if="clubList.clubDto != null">
 						{{clubList.clubDto.clubSummary}}</div>
+				</div>
+
+				<div class="card-body mt-4">
+					<div class="card-title mt-4 mb-2">
+						<span class="boldfont"><i class="fa-solid fa-mars-and-venus"></i>&nbsp;우리 지금 만나</span>
+					</div>
+
+					<div class="row mt-4">
+					<div class="col text-center">
+						<div class="mt-2">정모</div>
+					</div>
+					</div>
 				</div>
 
 				<div class="card-body mt-4">
@@ -161,8 +186,7 @@
 
 		<!-- 오른쪽 사이드바 -->
 		<div class="col-md-3">
-			<button class="btn-create shadow" v-on:click="removeHidden">소모임
-				가입 신청</button>
+			<button class="btn-create shadow" v-on:click="removeHidden">소모임 가입 신청</button>
 			<div class="list-group mt-2" v-if="clubList.clubDto != null">
 				<a class="list-group-item list-group-item-action disabled boldfontS" style="color:#3E4684;">소모임</a>
 				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/board?clubNo='+clubList.clubDto.clubNo">게시판</a> 
@@ -173,6 +197,7 @@
 				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/member_management?clubNo='+clubList.clubDto.clubNo">멤버 관리</a> 
 				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/edit?clubNo='+clubList.clubDto.clubNo">소모임 관리</a>  
 			</div>
+			<button class="btn-create shadow mt-4" @click="deleteClub">소모임 탈퇴</button>
 
 		</div>
 
@@ -255,6 +280,12 @@
 
 
 <script>
+
+let dateElement = document.getElementById('dateLocal');
+let date = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -5);
+dateElement.value = date;
+dateElement.setAttribute("min", date);
+
 const app = Vue.createApp({
 data() {
 	return {
@@ -327,8 +358,14 @@ methods: {
 				memberNo:this.memberNo,
 			},
 		}).then((resp) => {
+			console.log(resp.data);
 			if(resp.data == 0){
 				window.alert("이미 가입 신청 완료된 소모임입니다.");
+				this.addHidden();
+				return;
+			}
+			if(resp.data == -1){
+				window.alert("3회 이상 가입 거절된 상태이기 때문에, 더이상 가입 신청을 할 수 없습니다.");
 				this.addHidden();
 				return;
 			}
@@ -384,18 +421,27 @@ methods: {
 		});
 	},
 	
-	/* clubMemberList(){
-		// 소모임 회원 정보
+	// 회원 탈퇴
+	deleteClub(){
+		
+		window.confirm("소모임을 탈퇴 하시겠습니까?");
+		
 		axios({
-			url: "${pageContext.request.contextPath}/rest/club/member/"+this.clubNo,
-			method: "get",
+			url:"${pageContext.request.contextPath}/rest/club/member/"+this.memberNo+"/"+this.clubNo,
+			method:"delete",
 		}).then((resp) => {
-			this.clubMemberList = resp.data;
+			if(resp.data == 0){
+				window.alert("탈퇴 실패");
+				return;
+			}
+			window.alert("탈퇴 완료");
+			location.reload();
 		});
-	}, */
+	},
 	
 },
-
+mounted(){
+},
 created() {
 	this.existLike();
 	

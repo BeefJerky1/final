@@ -27,7 +27,18 @@
     padding: 0 !important;
 }
 </style>
-
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script>
+$(function(){
+	$(".show-detail").each(function(){
+		 console.log("되나");
+	     $(this).click(function() {
+	   	  console.log("되나");
+	        $(this).children("tr").find(".detail").toggle();
+	     });
+	  });
+});
+</script>
 <div id="app" class="container-fluid">
 
 	<div class="row mt-4">
@@ -140,38 +151,40 @@
 							<th>승인여부</th>
 						</thead>
 						<tbody class="fontSS">
-							<tr @click="isHidden1['hidden1'] = !isHidden1['hidden1']"  v-for="(clubMember, index) in clubMemberList" :key="index">
-								<td v-if="clubMember.clubMemberDto != null">{{clubMember.memberDto.memberNick}}</td>
-								<td v-if="clubMember.clubMemberDto.clubMemberGrade == 1">관리자</td>
-								<td v-if="clubMember.clubMemberDto.clubMemberGrade == 0">일반</td>
-								<td>{{convertTime(clubMember.clubMemberDto.clubMemberDate)}}</td>
-								<td v-if="clubMember.clubMemberDto.clubMemberPermission == 0">대기중</td>
-								<td v-if="clubMember.clubMemberDto.clubMemberPermission == 1" style="color:green">승인</td>
-								<td v-if="clubMember.clubMemberDto.clubMemberPermission == 2" style="color:red">거절</td>
-								<td v-if="clubMember.clubMemberDto.clubMemberGrade != 1">
-									<tr :class="isHidden1" v-if="clubMember != null" >
-										<td colspan="4">
-											<div if="clubMember.clubMemberDto.clubMemberAnswer1 != null">
-												{{clubMember.clubMemberDto.clubMemberAnswer1}}
-											</div>
-											<div if="clubMember.clubMemberDto.clubMemberAnswer2 != null">
-												{{clubMember.clubMemberDto.clubMemberAnswer2}}
-											</div>
-											<div if="clubMember.clubMemberDto.clubMemberAnswer3 != null">
-												{{clubMember.clubMemberDto.clubMemberAnswer3}}
-											</div>
-											<div class="row mt-4" v-if="clubMember.clubMemberDto.clubMemberPermission == 0">
-												<div class="col-md-6">
-													<button class="btn-cancel" @click="removeHidden(index)">거절</button>
+							<template v-for="(clubMember, index) in clubMemberList" :key="index">
+								<tr class="show-detail">
+									<td v-if="clubMember.clubMemberDto != null">{{clubMember.memberDto.memberNick}}</td>
+									<td v-if="clubMember.clubMemberDto.clubMemberGrade == 1">관리자</td>
+									<td v-if="clubMember.clubMemberDto.clubMemberGrade == 0">일반</td>
+									<td>{{convertTime(clubMember.clubMemberDto.clubMemberDate)}}</td>
+									<td v-if="clubMember.clubMemberDto.clubMemberPermission == 0">대기중</td>
+									<td v-if="clubMember.clubMemberDto.clubMemberPermission == 1" style="color:green">승인</td>
+									<td v-if="clubMember.clubMemberDto.clubMemberPermission == 2" style="color:red">거절</td>
+									<td v-if="clubMember.clubMemberDto.clubMemberGrade != 1">
+										<tr v-if="clubMember.clubMemberDto.clubMemberGrade != 1" class="detail">
+											<td colspan="4" v-if="clubMember != null">
+												<div if="clubMember.clubMemberDto.clubMemberAnswer1 != null">
+													{{clubMember.clubMemberDto.clubMemberAnswer1}}
 												</div>
-												<div class="col-md-6">
-													<button class="btn-create" @click="approveClub(index)">승인</button>
+												<div if="clubMember.clubMemberDto.clubMemberAnswer2 != null">
+													{{clubMember.clubMemberDto.clubMemberAnswer2}}
 												</div>
-											</div>
-										</td>
-									</tr>
-								</td>
-							</tr>
+												<div if="clubMember.clubMemberDto.clubMemberAnswer3 != null">
+													{{clubMember.clubMemberDto.clubMemberAnswer3}}
+												</div>
+												<div class="row mt-4" v-if="clubMember.clubMemberDto.clubMemberPermission == 0">
+													<div class="col-md-6">
+														<button class="btn-cancel" @click="removeHidden(index)">거절</button>
+													</div>
+													<div class="col-md-6">
+														<button class="btn-create" @click="approveClub(index)">승인</button>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</td>
+								</tr>
+							</template>
 						</tbody>
 					</table>
 					
@@ -234,7 +247,18 @@
 
 
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script>
+$(function(){
+	$(".show-detail").each(function(){
+		 console.log("되나");
+	     $(this).click(function() {
+	   	  console.log("되나");
+	        $(this).children("tr").find(".detail").toggle();
+	     });
+	  });
+});
+
 const app = Vue.createApp({
 data() {
 	return {
@@ -375,7 +399,17 @@ methods: {
 	},
 	
 },
-
+mounted(){
+	$(function(){
+		$(".show-detail").each(function(){
+			 console.log("되나");
+		     $(this).click(function() {
+		   	  console.log("되나");
+		        $(this).children("tr").find(".detail").toggle();
+		     });
+		  });
+	});
+},
 created() {
 	this.existLike();
 	

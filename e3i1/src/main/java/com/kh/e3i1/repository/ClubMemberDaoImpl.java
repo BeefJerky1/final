@@ -41,10 +41,17 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 	@Override
 	public int insert(ClubMemberDto clubMemberDto) {
 		ClubMemberDto isExist = this.exist(clubMemberDto.getClubNo(), clubMemberDto.getMemberNo());
-		System.out.println("있어유:"+isExist);
 		if(isExist != null) {
+			if(isExist.getClubMemberPermission() == 2) {
+				if(isExist.getClubRefuseCount() > 2) {
+					return -1;
+				}
+				sqlSession.update("clubMember.retry", isExist);
+				return 1;
+			}
 			return 0;
 		}
+		
 		
 		int clubMemberNo = sqlSession.selectOne("clubMember.sequence");
 		clubMemberDto.setClubMemberNo(clubMemberNo);
@@ -105,6 +112,14 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 		}else {		
 			return 1;
 		}
+	}
+
+	@Override
+	public int delete(int memberNo, int clubNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberNo", memberNo);
+		param.put("clubNo", clubNo);
+		return sqlSession.delete("clubMember.delete", param);
 	}
 	
 }

@@ -132,6 +132,10 @@ i {
 input[type="checkbox"]{
 	display:none;
 }
+.img{
+	position:absolute;
+	cursor: pointer;
+}
 
 </style>
 </head>
@@ -146,11 +150,12 @@ input[type="checkbox"]{
 
 				<div class="row mt-4">
 					<div class="col-md-3">
+					
 						<div class="col-md-3 profile">
 							<div class="profileimg text-center mt-3 mb-2">
 								<img src="${root }/image/mbti/거북이(ISTP).png" style="border-radius: 50%; width: 140px; height: 140px;" v-if="memberList.memberProfileDto == null" />
 								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberList.memberProfileDto.attachNo" style="border-radius: 50%; width: 140px; height: 140px;" v-if="memberList.memberProfileDto != null"/>
-								<label for="img">
+								<label for="img" class="img">
 									<i class="fa-solid fa-image"></i>
 								</label>
 								<input type="file" id="img" accept="image/*" ref="memberProfile" @change="changeProfile()" style="display:none;"> 
@@ -162,7 +167,7 @@ input[type="checkbox"]{
 							<div class="text-center profileInterest my-1 mx-5">${memberDto.memberInterest1}</div>
 							<div class="text-center profileInterest my-1 mx-5">${memberDto.memberInterest2}</div>
 							<div class="text-center profileInterest my-1 mx-5">${memberDto.memberInterest3}</div>
-							<div class="text-center profileInterest my-1 mx-5">${memberDto.memberMbti}</div>
+							<div class="text-center profileInterest my-1 mx-5">\#${memberDto.memberMbti}</div>
 
 							<div class="row text-center">
 								<a href="#">
@@ -189,6 +194,7 @@ input[type="checkbox"]{
 							<li class="nav-item"><a class="nav-link" data-toggle="tab"
 								href="#exit">회원탈퇴</a></li>
 						</ul>
+						
 						<div class="tab-content">
 							<div class="tab-pane fade show active" id="club">
 								<p>
@@ -221,6 +227,7 @@ input[type="checkbox"]{
 										</tr>
 									</tbody>
 								</table>
+								
 								<div class="titlefont boldfont mt-5 mx-1">
 									가입한 소모임&nbsp;<i class="fa-solid fa-circle-info"></i>
 								</div>
@@ -311,9 +318,11 @@ input[type="checkbox"]{
 									</tbody>
 								</table>
 								
+								
 								<div class="titlefont boldfont mt-5 mx-1">
 									거절된 소모임&nbsp;<i class="fa-solid fa-circle-info"></i>
 								</div>
+								
 								<table class="table text-center">
 									<thead>
 										<tr>
@@ -323,30 +332,32 @@ input[type="checkbox"]{
 										</tr>
 									</thead>
 									<tbody>
-										<tr v-for="(memberClub, index) in memberClubList" :key="index" class="show-detail">
-											<td v-if="rejectClub(index)">
-												<a class="tableInterest2" :href="'${pageContext.request.contextPath}/club/detail?clubNo='+memberClub.clubDto.clubNo">
-													{{memberClub.clubDto.clubName}}
-												</a>
-											</td>
-											<td  v-if="rejectClub(index)">
-												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubMainCategory}}</span>
-												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubSubCategory}}</span>
-												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubPlace}}</span>
-											</td>
-										 	<td v-if="rejectClub(index)">
-												<span class="tableInterest2 mx-2"> {{elapsedText(memberClub.clubMemberDto.clubMemberDate)}}</span>
-											</td>	
-										 	<!-- <td v-if="rejectClub(index)">
-												<tr v-if="memberClub != null">
-													<td colspan="3" v-if="memberClub.clubMemberDto != null">
-														<span>
-															거절 메세지: {{memberClub.clubMemberDto.clubMemberRefuseMsg}}
-														</span>
-													</td>
-												</tr>
-											</td> -->
-										</tr>
+										<template v-for="(memberClub, index) in memberClubList" :key="index">
+											<tr v-if="rejectClub(index)" class="show-detail">
+												<td  v-if="rejectClub(index)">
+													<a class="tableInterest2" :href="'${pageContext.request.contextPath}/club/detail?clubNo='+memberClub.clubDto.clubNo">
+														{{memberClub.clubDto.clubName}}
+													</a>
+												</td>
+												<td  v-if="rejectClub(index)">
+													<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubMainCategory}}</span>
+													<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubSubCategory}}</span>
+													<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubPlace}}</span>
+												</td>
+											 	<td v-if="rejectClub(index)">
+													<span class="tableInterest2 mx-2"> {{elapsedText(memberClub.clubMemberDto.clubMemberDate)}}</span>
+												</td>	
+												<td class="detail">
+													<tr>
+														<td colspan="3" v-if="rejectClub(index)">
+															<span>
+																거절 메세지: {{memberClub.clubMemberDto.clubMemberRefuseMsg}}
+															</span>
+														</td>
+													</tr>
+												</td>
+											</tr>
+										</template>
 									</tbody>
 								</table>
 								
@@ -460,9 +471,10 @@ input[type="checkbox"]{
 								</div>
 								<div class="row row-cols-1 row-cols-md-4 g-10 my-2">
 									<div class="col">
-										<div class="card my-2"
-											style="width: 11rem; border-radius: 30px;">
+										<label for="pay1">
+										<div class="card my-2" :class="{'checked':isCheckedPlus('10')}" style="width: 11rem; border-radius: 30px;">
 											<div class="card-body m-1">
+												<input type="checkbox" name="clubPlus" id="pay1" value="10" v-model="clubPlus">
 												<h5 class="card-title text-center tagtitle">
 													<div class="text-center">
 														<img src="${root}/image/crowd.png" class="pluscount">
@@ -474,11 +486,13 @@ input[type="checkbox"]{
 												</p>
 											</div>
 										</div>
+										</label>
 									</div>
 									<div class="col">
-										<div class="card my-2"
-											style="width: 11rem; border-radius: 30px;">
+										<label for="pay2">
+										<div class="card my-2" style="width: 11rem; border-radius: 30px;" :class="{'checked':isCheckedPlus('30')}">
 											<div class="card-body m-1">
+												<input type="checkbox" name="clubPlus" id="pay2" value="30" v-model="clubPlus">
 												<h5 class="card-title text-center tagtitle">
 													<div class="text-center">
 														<img src="${root}/image/crowd.png" class="pluscount">
@@ -490,11 +504,13 @@ input[type="checkbox"]{
 												</p>
 											</div>
 										</div>
+										</label>
 									</div>
 									<div class="col">
-										<div class="card my-2"
-											style="width: 11rem; border-radius: 30px;">
+										<label for="pay3">
+										<div class="card my-2" style="width: 11rem; border-radius: 30px;" :class="{'checked':isCheckedPlus('50')}">
 											<div class="card-body m-1">
+												<input type="checkbox" name="clubPlus" id="pay3" value="50" v-model="clubPlus">
 												<h5 class="card-title text-center tagtitle">
 													<div class="text-center">
 														<img src="${root}/image/crowd.png" class="pluscount">
@@ -506,11 +522,13 @@ input[type="checkbox"]{
 												</p>
 											</div>
 										</div>
+										</label>
 									</div>
 									<div class="col">
-										<div class="card my-2"
-											style="width: 11rem; border-radius: 30px;">
+										<label for="pay4">
+										<div class="card my-2" style="width: 11rem; border-radius: 30px;" :class="{'checked':isCheckedPlus('100')}">
 											<div class="card-body m-1">
+												<input type="checkbox" name="clubPlus" id="pay4" value="100" v-model="clubPlus">
 												<h5 class="card-title text-center tagtitle">
 													<div class="text-center">
 														<img src="${root}/image/crowd.png" class="pluscount">
@@ -522,10 +540,37 @@ input[type="checkbox"]{
 												</p>
 											</div>
 										</div>
+										</label>
 									</div>
 								</div>
+									<div class="titlefont boldfont mx-1">
+										결제할 소모임 선택
+									</div>
+									<table class="table text-center">
+										<thead>
+											<tr>
+												<th style="width: 50%;"></th>
+												<th style="width: 30%;"></th>
+												<th style="width: 20%;"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="(memberClub, index) in memberClubList" :key="index">
+												<td v-if="isClubLeader(index)">
+													<a class="tableInterest2" :href="'${pageContext.request.contextPath}/club/detail?clubNo='+memberClub.clubDto.clubNo">
+														{{memberClub.clubDto.clubName}}
+													</a>
+											 	<td  v-if="isClubLeader(index)">
+													<span class="tableInterest mx-2">{{memberClub.clubDto.clubMemberCount}} / {{memberClub.clubDto.clubMemberLimit}}</span>
+												</td>
+												<td v-if="isClubLeader(index)">
+													<input type="checkbox" name="clubNo" :value="memberClub.clubDto.clubNo" style="display:inline;">
+												</td>
+											</tr>
+										</tbody>
+										</table>
 								<div class="row" style="float: right;">
-									<button type="submit" class="btn btn-outline-success">구매</button>
+									<button type="submit" class="btn btn-outline-success" @click="clubPayment">구매</button>
 								</div>
 								<div class="row titlefont boldfont mt-5 mx-1">구매 및 사용내역</div>
 								<table class="table text-center">
@@ -1079,8 +1124,8 @@ input[type="checkbox"]{
 													<div class="row">
 														<div class="card" v-if="memberAnimal != null">
 															<div class="card-img text-center">
-																<img src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png" v-if="memberAnimal.attachmentDto == null">  
-																<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null">
+																<img src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png" v-if="memberAnimal.attachmentDto == null" style="width:400px; height:400px">  
+																<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null" style="width:400px; height:400px">
 															</div>
 															<h3 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.animal}}</h3> 
 															<h3 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null" style="color:#F7D68A;">{{memberAnimal.mbtiAnimalDto.mbti}}</h3> 
@@ -1107,6 +1152,7 @@ input[type="checkbox"]{
 											</div>
 											</div>
 										</div>
+										
 									</div>
 								</div>
 							
@@ -1114,15 +1160,21 @@ input[type="checkbox"]{
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/time.js"></script>
 <script>
-
+$(function(){
+	$(".show-detail").each(function(){
+		 console.log("되나");
+	     $(this).click(function() {
+	   	  console.log("되는가");
+	        $(this).children("tr").find(".detail").toggle();
+	     });
+	  });
+});
 
 const app = Vue.createApp({
 data() {
@@ -1159,6 +1211,8 @@ data() {
 		
 		interest:[],
 		memberAnimal:[],
+		
+		clubPlus:[],
 	};
 },
 computed: {},
@@ -1179,6 +1233,7 @@ methods: {
 		this.isHidden1["hidden1"] = true; 
 	},
 	
+	
 	isClubLeader(index){
 		return this.memberClubList[index].clubMemberDto.clubMemberGrade == 1;
 	},
@@ -1192,7 +1247,7 @@ methods: {
 		return this.memberClubList[index].clubMemberDto.clubMemberPermission == 0  && this.memberClubList[index].clubMemberDto != null;
 	},
 	rejectClub(index){
-		return this.memberClubList[index].clubMemberDto.clubMemberPermission == 2 && this.memberClubList[index].clubMemberDto != null;
+		return this.memberClubList[index].clubMemberDto.clubMemberPermission == 2;
 	},
 	
 	// checkbox 
@@ -1202,6 +1257,11 @@ methods: {
 			this.interest?.shift();
 		}
 		return this.interest?.includes(value);
+	},
+	
+	isCheckedPlus(value){
+		if(this.clubPlus.length == 0) return; 
+		return this.clubPlus?.includes(value);
 	},
 	
 	// 시/군/구 추가
@@ -1317,6 +1377,7 @@ methods: {
 			data:{
 				memberNo : this.memberNo,
 				memberMbti : mbti.value,
+				memberAnimal : this.memberAnimal.mbtiAnimalDto.animal,
 				attachNo : this.memberAnimal.attachmentDto.attachNo,
 			},
 		}).then((resp) => {
@@ -1347,10 +1408,27 @@ methods: {
 			data: formData,
 		}).then((resp) => {
 			if(resp.data == 0){
-				window.alert("프로필 변경에 실해했습니다.");
+				window.alert("프로필 변경에 실패했습니다.");
 				return;
 			}
 			window.alert("프로필 변경 완료!");
+			location.reload();
+		});
+	},
+	
+	clubPayment(){
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/pay",
+			method:"post",
+			data:{
+				purchase : this.clubPlus,
+			},
+		}).then((resp) => {
+			if(resp.data == 0){
+				window.alert("결제가 실패되었습니다.");
+				return;
+			}
+			window.alert("결제가 완료되었습니다.");
 			location.reload();
 		});
 	},

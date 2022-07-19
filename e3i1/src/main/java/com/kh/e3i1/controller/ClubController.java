@@ -46,7 +46,8 @@ public class ClubController {
 	}
 	// 소모임 채팅방
 	@GetMapping("/chat")
-	public String clubChat(@RequestParam int clubNo) {
+	public String clubChat(@RequestParam int clubNo, Model model) {
+		model.addAttribute("channelName", clubNo);
 		return "club/detail_chat";
 	}
 	// 소모임 관리페이지
@@ -54,9 +55,12 @@ public class ClubController {
 	public String clubEdit(@RequestParam int clubNo) {
 		return "club/detail_edit";
 	}
-	// 소모임 관리페이지
+	// 소모임 회원 관리페이지
 	@GetMapping("/member_management")
-	public String clubMemberManagement(@RequestParam int clubNo) {
+	public String clubMemberManagement(
+				@RequestParam int clubNo,
+				Model model
+			) {
 		return "club/detail_member_management";
 	}
 	

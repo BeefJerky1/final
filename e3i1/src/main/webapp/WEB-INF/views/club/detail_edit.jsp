@@ -21,6 +21,16 @@
 	border-radius: 70%;
 	overflow: hidden;
 }
+.btn-plus {
+	background-color: #3E4684;
+	color: white;
+}
+
+.btn-minus {
+	background-color: white;
+	border: 1px solid #3E4684;
+	color: #3E4684;
+}
 </style>
 
 <div id="app" class="container-fluid">
@@ -144,6 +154,10 @@
 						<label class="boldfontS">소모임 설명</label>
 						<textarea class="form-control fontS" type="text" v-model="clubSummary"></textarea>
 					</div>
+					<div class="text-end mt-4" v-if="clubList.clubDto.clubJoinQuestion3 == null">
+						<button @click="addInput" class="btn btn-plus">+</button>
+						<button @click="removeInput" class="btn btn-minus">-</button>
+					</div>
 					<div class="mt-4" v-if="clubList.clubDto.clubJoinQuestion1 != null">
 						<label class="boldfontS">가입 질문1</label>
 						<input class="form-control fontS" type="text" v-model="clubJoinQuestion1">
@@ -155,6 +169,14 @@
 					<div class="mt-2" v-if="clubList.clubDto.clubJoinQuestion3 != null">
 						<label class="boldfontS">가입 질문3</label>
 						<input class="form-control fontS" type="text" v-model="clubJoinQuestion3">
+					</div>
+					 <div class="mt-2" v-if="count > 2 && clubList.clubDto.clubJoinQuestion2 == null">
+					 	<label class="boldfontS">가입 질문2</label>
+					 	<input class="form-control fontS" type="text" v-model="clubJoinQuestion2">
+					</div>
+					 <div class="mt-2" v-if="count > 3 && clubList.clubDto.clubJoinQuestion3 == null">
+					 	<label class="boldfontS">가입 질문3</label>
+					 	<input class="form-control fontS" type="text" v-model="clubJoinQuestion3">
 					</div>
 				</div>
 				<div class="card-footer">
@@ -234,6 +256,8 @@ data() {
 		file:[],
 		filesPreview:[],
 		uploadImageIndex: 0, // 이미지 업로드를 위한 변수
+		
+		count: 1,
 	};
 },
 computed: {
@@ -254,7 +278,24 @@ computed: {
 	},
 },
 methods: {
-	
+	addInput(){
+		if(this.count >= 4) return;
+		this.count = this.count + 1;
+	},
+	removeInput(){
+		if(this.count <= 1) {
+			this.clubJoinQuestion1 = "";
+			return;
+		}
+		else if(this.count == 2){
+			this.clubJoinQuestion2 = "";
+		}
+		else if(this.count == 3){
+			this.clubJoinQuestion3 = "";
+		}
+		
+		this.count = this.count - 1;
+	},
 	removeHidden(){
 		this.isHidden["hidden"] = false;
 	},
@@ -394,6 +435,18 @@ created() {
 	}).then((resp) => {
 		this.clubList = resp.data;
 		
+		var count = this.count;
+		if(this.clubList.clubDto.clubJoinQuestion1 != null){
+			count = count + 1;
+		}
+		if(this.clubList.clubDto.clubJoinQuestion2 != null){
+			count = count + 1;
+		}
+		if(this.clubList.clubDto.clubJoinQuestion3 != null){
+			count = count + 1;
+		}
+		
+		this.count = count;
 		this.clubName = this.clubList.clubDto.clubName;
 		this.clubSummary = this.clubList.clubDto.clubSummary;
 		this.clubJoinQuestion1 = this.clubList.clubDto.clubJoinQuestion1;

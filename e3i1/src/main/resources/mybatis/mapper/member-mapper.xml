@@ -116,6 +116,9 @@
 				<if test="memberMbti != null">
 					, member_mbti = #{memberMbti}
 				</if>
+				<if test="memberAnimal != null">
+					, member_animal = #{memberAnimal}
+				</if>
 				<if test="memberPlace1 != null">
 					, member_place1 = #{memberPlace1}
 				</if>
@@ -293,7 +296,7 @@
 			ON cm.CLUB_NO = c.CLUB_NO 
 		LEFT OUTER JOIN club_like cl 
 			ON m.MEMBER_NO = cl.MEMBER_NO AND cm.CLUB_NO = cl.CLUB_NO  
-		LEFT OUTER JOIN (SELECT cm.club_no, count(*) club_member_count FROM CLUB_MEMBER cm GROUP BY club_no) cc 
+		LEFT OUTER JOIN (SELECT cm.club_no, count(*) club_member_count FROM CLUB_MEMBER cm WHERE club_member_permission = 1 GROUP BY club_no) cc 
 			ON c.CLUB_NO = cc.club_no
 		WHERE m.MEMBER_NO = #{memberNo}
 		ORDER BY cl.CLUB_LIKE_NO DESC, cm.CLUB_MEMBER_NO DESC

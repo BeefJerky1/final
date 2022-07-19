@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--  
+	mapper 파일은 특정 테이블에 대한 SQL 구문을 보관하는 파일이다
+	- myBatis를 이용하는 개발자는 이곳에 저장된 SQL 구문을 "아이디"를 이용해서 호출한다
+	- 파일마다 동일한 아이디로 인해 발생하는 충돌을 방지하기 위해 고유한 namespace를 사용한다. 
+	- 만약 namespace가 olympic이고 구문 ID가 list라면 외부에서는 olympic.list로 호출한다.
+	- 일반적으로 namespace는 테이블명으로 한다!
+	- mapper 내부에는 다음 종류 태그로 구문을 저장할 수 있다.
+		- <insert>
+		- <select>
+		- <update>
+		- <delete>
+	- 각 구문은 반드시 아이디를 가져야 한다. 
+	- 각 구문에는 다음과 같은 속성을 작성할 수 있다. 
+		- parameterType : 해당 구문이 실행되기 위해 필요한 데이터의 자료형(1개만 작성 가능, 선택) 
+		- resultType : 해당 구문의 실행 결과를 변환하기 위한 자료형(1개만 작성 가능, 필수)
+			- (주의) List이든 아니든 DTO의 형태를 작성한다(모르는 부분을 알려준다)
+	- 각 구문에는 데이터를 다음과 같이 바인딩할 수 있다. 
+		- 정적 바인딩 : ${이름} 형태로 작성하면 어떠한 추가 작업도 없이 해당 위치에 데이터가 그대로 작성된다.
+		- 동적 바인딩 : #{이름} 형태로 작성하면 자동으로 자료형에 맞게 해당 데이터를 추출하여 작성해준다.(DTO 변수명 = 카멜케이스 사용)
+-->
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="payment">
+	
+	<select id="sequence" resultType="int">
+		select payment_seq.nextval from dual
+	</select>
+	<insert id="insert" parameterType="PaymentDto">
+		insert into payment(
+			payment_no, payment_tid, payment_total, payment_name, payment_time, payment_status
+		)
+		values(
+			#{paymentNo}, #{paymentTid}, #{paymentTotal}, #{paymentName}, sysdate, '승인'
+		)	
+	</insert>
+	
+	<select id="list" resultType="PaymentDto">
+		select * from payment order by payment_no desc
+	</select>
+	
+	<select id="one" resultType="PaymentDto" parameterType="int">
+		select * from payment where payment_no = #{paymentNo}
+	</select>
+	
+	<update id="refresh" parameterType="int">
+		UPDATE payment SET PAYMENT_STATUS = 
+			(SELECT 
+			CASE
+				WHEN "all" = "success" THEN '승인'
+				WHEN "all" = "cancel" THEN '취소'
+				ELSE '부분취소'
+			END
+		FROM (
+			SELECT 
+				(SELECT COUNT(*) FROM payment_detail WHERE payment_no = #{paymentNo}) "all",
+				(SELECT COUNT(*) FROM payment_detail WHERE PAYMENT_DETAIL_STATUS = '승인' AND payment_no = #{paymentNo}) "success",
+				(SELECT COUNT(*) FROM payment_detail WHERE PAYMENT_DETAIL_STATUS = '취소' AND payment_no = #{paymentNo}) "cancel"
+			FROM dual
+		))
+		WHERE PAYMENT_NO = #{paymentNo}
+	</update>
+	
+	<update id="cancelAll" parameterType="int">
+		update payment set payment_status = '취소' where payment_no = #{paymentNo}
+	</update>
+	
+	<!--  
+		ResultMap과 계층형 쿼리 조회
+		- ResultMap은 임의로 컬럼을 지정할 수 있도록 만들어진 수동 매핑 도구
+		- 자동으로 매핑(ResultType)이 불가능할 경우에 사용
+		- 여러 가지 매핑을 위한 도구를 지원하므로 해당하는 형태에 맞게 사용
+		- join, 계층형 조회 등에 유용하게 사용할 수 있다.
+		
+		- type : 만들 매핑을 위한 클래스의 자료형
+		- id : select 구문에서 resultMap에 지정할 별칭(ex : resultMap = "hello")
+		- property : 클래스의 변수명
+		- javaType : 해당 데이터의 자료형
+		- result : 조회된 데이터의 매핑 설정
+			- column : ResultSet의 컬러명
+	-->
+	<resultMap type="PaymentListVO" id="paymentMap">
+		<!-- 
+			객체 :PaymentDto에 대한 매핑 설정 : association
+			- 자료형은 변수에 맞게 자동 변환되며 불가능할 경우 오류가 발생함
+			- 수동으로 자료형을 지정할 경우 javaType을 설정 
+		-->
+		<association property="paymentDto" javaType="PaymentDto">
+			<result column="payment_no" property="paymentNo"/>
+			<result column="payment_tid" property="paymentTid"/>
+			<result column="payment_total" property="paymentTotal"/>
+			<result column="payment_name" property="paymentName"/>
+			<result column="payment_time" property="paymentTime"/>
+			<result column="payment_status" property="paymentStatus"/>
+		</association>
+		<!-- 
+			컬션(List<PaymentDto>)에 대한 매핑 설정 : collection 
+			- 컬렉션은 자료형을 두 가지로 설정해야 한다.
+				- javaType : 컬렉션의 자료형
+				- ofType : 내용물의 자료형(Generic type)
+				- 내부에는 개체처럼 result를 이용하여 매핑을 수행한다.
+				- (반.드.시)해당 컬렉션을 채우기 위해 필요한 select 구문의 id를 지정해야 한다(select, column 속성)
+		-->
+		<collection property="paymentDetailList" javaType="List" ofType="PaymentDetailDto" select="treeSearchSubquery" column="payment_no">
+			<result column="payment_detail_no" property="paymentDetailNo"/>
+			<result column="payment_no" property="paymentNo"/>
+			<result column="payment_detail_name" property="paymentDetailName"/>
+			<result column="payment_detail_quantity" property="paymentDetailQuantity"/>
+			<result column="payment_detail_price" property="paymentDetailPrice"/>
+			<result column="payment_detail_status" property="paymentDetailStatus"/>
+		</collection>
+	</resultMap>
+	
+	<select id="treeSearch" resultMap="paymentMap">
+		select * from payment order by payment_no desc
+	</select>
+	
+	<select id="treeSearchSubquery" resultType="PaymentDetailDto" parameterType="int">
+		select * from payment_detail
+			where payment_no = #{paymentNo}
+			order by payment_detail_no asc
+	</select>
+	
+</mapper>
+
+
+
+
+
+
