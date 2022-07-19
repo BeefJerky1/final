@@ -1532,6 +1532,7 @@ methods: {
 			url:"${pageContext.request.contextPath}/rest/category_n_address/animal/"+mbti,
 			method:"get",
 		}).then((resp) => {
+			
 			this.memberAnimal = resp.data;
 			
 			axios({
