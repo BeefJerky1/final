@@ -122,7 +122,7 @@ $(function(){
                      
                     <!--  정렬 버튼 구간 -->
              	 <ul class=" top-osahan-nav-tab nav nav-pills justify-content-center nav-justified mb-4 shadow-sm rounded-4 overflow-hidden bg-white mt-4" id="pills-tab" role="tablist">
-                        <li class="nav-item" role="presentation">
+                    <li class="nav-item" role="presentation">
                            <a href="list"><button class="p-3 nav-link  active nav-area" id="pills-feed-tab" data-bs-toggle="pill" data-bs-target="#pills-feed" type="button" role="tab" aria-controls="pills-feed" aria-selected="true">new!</button></a>
                         </li>
                         <li class="nav-item" role="presentation">
