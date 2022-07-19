@@ -25,4 +25,6 @@ public interface MessageDao {
 
 	List<Integer> sendMessage3(MessageDto messageDto, List<Integer> asdf);
 
+	List<MessageVO> newMessage(int memberNo);
+
 }

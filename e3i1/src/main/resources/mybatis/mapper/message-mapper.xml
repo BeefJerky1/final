@@ -133,4 +133,8 @@
         on M.message_writer = S.member_no
  		where message_no = #{messageNo}
 	</select>
+	
+	<select id="newMessage" resultMap="messageVOlist">
+		select * from message where message_readcount = 0 and message_receiver = #{memberNo}
+	</select>
 </mapper>

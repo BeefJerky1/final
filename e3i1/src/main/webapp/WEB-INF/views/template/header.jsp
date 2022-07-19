@@ -100,8 +100,11 @@
 									href="${root}/member/mypage">MYPAGE</a></li>
 									
 									
-								<li class="nav-item"><a class="nav-link"
-									href="${root}/member/message"><i class="fa-solid fa-envelope fa-2x"></i></a></li>
+								<li class="nav-item" v-if="isNew">
+								<a class="nav-link" href="${root}/member/message"><img src="${root }/image/newMessage.png"></i></a></li>
+								
+								<li class="nav-item" v-if="isNotNew">
+								<a class="nav-link" href="${root}/member/message"><img src="${root }/image/message.png"></a></li>
 									
 							</ul>
 								
@@ -173,7 +176,7 @@
 			</div>
 		</nav>
 	</header>
-<%-- 	<script> 
+	<script> 
         const apps = Vue.createApp({
             data(){
                 return {
@@ -182,11 +185,21 @@
                     clubList:[],
                     click:false,
                     clubNo:"",
-                    
+                
+                    // 메시지 알림
+                    memberNo:"${login}",
+                    messageList:[],
                 };
             },
             computed:{
+                isNew() {
+					return this.messageList != "";       	
+                },
                 
+                isNotNew() {
+                	return this.messageList == "" || this.messageList == 0;
+                },
+
             },
             methods:{
                 selectKeyword(index){
@@ -195,7 +208,26 @@
                      window.location.href = 'http://localhost:8080/e3i1/club/detail?clubNo='+this.clubList[index].clubNo;
                     this.clubList = [];
                 },
+                
+                newMessage(){
+    	        	axios({
+    	        		url:"${pageContext.request.contextPath}/rest/message/new/"+this.memberNo,
+    	        		method:"get",
+    	        		data:{
+    	        			
+    	        		},
+    	        	})
+    	        	.then(resp=>{
+    					this.messageList = resp.data;
+    	        		console.log(resp);
+    	        		
+    	        	});
+                },
             },
+            created(){
+    			this.newMessage();
+    		},
+            
             watch:{
 
                 keyword:_.throttle(function(){
@@ -217,4 +249,4 @@
             },
         });
         apps.mount("#apps");
- </script>  --%>
+ </script>  
