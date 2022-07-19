@@ -20,15 +20,6 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 
 	
 	// 목록
-	@Override
-	public List<MbtiMemberListVO> list(String type, String keyword) {
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("type", type);
-		param.put("keyword", keyword);
-		
-		
-		return sqlSession.selectList("mbtiBoard.mbtiboardList", param);
-	}
 
 	@Override
 	public List<MbtiMemberListVO> list(String keyword, int page, int size) {
@@ -41,6 +32,31 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 		param.put("end", end);
 		
 		return sqlSession.selectList("mbtiBoard.mbtiboardList2", param);
+	}
+	
+	@Override
+	public List<MbtiMemberListVO> list2(String keyword, int page, int size) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("keyword", keyword);
+		
+		int end = page * size;
+		int begin = end - (size - 1);
+		param.put("begin", begin);
+		param.put("end", end);
+		
+		return sqlSession.selectList("mbtiBoard.mbtiboardList3", param);
+	}
+	@Override
+	public List<MbtiMemberListVO> list3(String keyword, int page, int size) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("keyword", keyword);
+		
+		int end = page * size;
+		int begin = end - (size - 1);
+		param.put("begin", begin);
+		param.put("end", end);
+		
+		return sqlSession.selectList("mbtiBoard.mbtiboardList4", param);
 	}
 	
 	// 정렬을 위한 목록
@@ -156,6 +172,8 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 	public List<MbtiMemberListVO> bestMbtiBoard() {
 		return sqlSession.selectList("mbtiBoard.bestMbtiBoard");
 	}
+
+
 
 
 

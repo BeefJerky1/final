@@ -25,26 +25,20 @@
     top: 1.2em !important;
     color: #9aa0a6;
 }
-
 .colorChange {
 	color : red !important;
 }
-
 a {
 	text-decoration: none;
 	color: #686666;
 	font-size: 12px;
 }
-
-
 .card  !important {
 	border-radius: 2em;
 }
-
 .button-write {
 	margin-right: 0.4rem;
 }
-
 .modal-form  {
     display: block;
     width: 100%;
@@ -63,7 +57,6 @@ a {
     border-radius: 1rem !important;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
-
 .replyEdit {
     padding: 0.2em;
     border: none;
@@ -72,21 +65,17 @@ a {
     font-size: 12px;
     font-weight: 700;
 }
-
 .reply-content {
 	 font-size: 15px;
 	 font-weight:bold;
 }
-
 .interest {
     background-color: #E9E9E9;
 }
-
 .like-btn {
 	float : right !important;
 	margin-right: 0.4rem;
 }
-
 .thumbs {
 		float: auto;
         text-align: center;
@@ -94,9 +83,7 @@ a {
 	    padding:1rem 1rem;
 	    margin: 1rem 1rem;
 	    margin-top :5rem;
-
 }
-
  .graph {  
  	height: 30px; background-color: #ccc; border-radius: 40px; width: 400px;
  	
@@ -108,13 +95,11 @@ a {
       box-sizing: border-box; color:#fff; animation:stack 3s 1;
       margin-top : 1rem;
     }
-
     @keyframes stack {
         0% { width: 0; color: rgba(255, 255, 255, 0);}
         40% { color: rgba(255, 255, 255, 1);}
         100% {width: 60%;}
     }
-
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
@@ -153,16 +138,13 @@ a {
                     <!--  정렬 버튼 구간 -->
              	 <ul class=" top-osahan-nav-tab nav nav-pills justify-content-center nav-justified mb-4 shadow-sm rounded-4 overflow-hidden bg-white mt-4" id="pills-tab" role="tablist">
                         <li class="nav-item" role="presentation">
-                           <button class="p-3 nav-link  active nav-area" id="pills-feed-tab" data-bs-toggle="pill" data-bs-target="#pills-feed" type="button" role="tab" aria-controls="pills-feed" aria-selected="true">new!</button>
+                           <a href="list"><button class="p-3 nav-link  active nav-area" id="pills-feed-tab" data-bs-toggle="pill" data-bs-target="#pills-feed" type="button" role="tab" aria-controls="pills-feed" aria-selected="true">new!</button></a>
                         </li>
                         <li class="nav-item" role="presentation">
-                           <button class="p-3 nav-link nav-area" id="pills-people-tab" data-bs-toggle="pill" data-bs-target="#pills-people" type="button" role="tab" aria-controls="pills-people" aria-selected="false">좋아요순</button>
-                        </li>
-                        <li class="nav-item" role="entation">
-                           <button class="p-3 nav-link nav-area" id="pills-trending-tab" data-bs-toggle="pill" data-bs-target="#pills-trending" type="button" role="tab" aria-controls="pills-trending" aria-selected="false">투표순</button>
+                           <a href="list3"><button class="p-3 nav-link nav-area" id="pills-people-tab" data-bs-toggle="pill" data-bs-target="#pills-people" type="button" role="tab" aria-controls="pills-people" aria-selected="false">좋아요순</button></a>
                         </li>
                         <li class="nav-item" role="presentation">
-                           <button class="p-3 nav-link nav-area" id="pills-mentions-tab" data-bs-toggle="pill" data-bs-target="#pills-mentions" type="button" role="tab" aria-controls="pills-mentions" aria-selected="false">댓글순</button>
+                          <a href="list2"> <button class="p-3 nav-link nav-area" id="pills-mentions-tab" data-bs-toggle="pill" data-bs-target="#pills-mentions" type="button" role="tab" aria-controls="pills-mentions" aria-selected="false">댓글순</button></a>
                         </li>
                      </ul>
                      
@@ -310,10 +292,17 @@ a {
 					
                                                 <div class="comments " v-for="(reply, index) in mbtiBoardReplyList" v-bind:key="index">
                                                    <div class="d-flex mb-2" v-if="!reply.edit">
-                                                   <img src="${root }/image/mbti/거북이(ISTP).png"  style="width: 2rem;">                                                      
+                                                   
+				                           <span v-if="reply.memberProfileDto.attachNo== null">
+				                        <img src="${root}/image/mbti/강아지(ENFP).png" class="img-fluid rounded-circle" style="width: 60px;">
+										</span>
+										<span v-if="reply.memberProfileDto.attachNo != null">
+				                          	<img :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+reply.memberProfileDto.attachNo"  style="width: 60px;"class="img-fluid rounded-circle" >
+				                         </span> 
+                                                   
                                                       <div class="ms-2 small">
                                                             <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
-                                                               <h7 class="fw-bold mb-0">@{{reply.memberDto.memberAnimal}}</h7><br>
+                                                               <span class="fw-bold mb-0">@{{reply.memberDto.memberAnimal}}</span><br>
                                                                <span class="text-muted">{{reply.mbtiBoardReplyDto.mbtiReplyContent}}</span><br>
                                                                <span class="text-muted">{{elapsedText(reply.mbtiBoardReplyDto.mbtiReplyTime)}}</span>
                                                          
@@ -328,7 +317,12 @@ a {
                                                    
                                                    <!-- 댓글 수정 -->
                                                    <div class="d-flex mb-2" v-else>
-                                                   		<img src="${root }/image/mbti/거북이(ISTP).png"  style="width: 2rem;">                                                      
+	                                                   	<span v-if="reply.memberProfileDto.attachNo== null">
+								                        <img src="${root}/image/mbti/강아지(ENFP).png" class="img-fluid rounded-circle" style="width: 60px;">
+														</span>
+														<span v-if="reply.memberProfileDto.attachNo != null">
+								                          	<img :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+reply.memberProfileDto.attachNo"  style="width: 60px;"class="img-fluid rounded-circle" >
+								                         </span>                                                   
                                                       <div class="ms-2 small">
                                                             <div class="bg-light px-3 py-2 rounded-4 mb-1 chat-text">
                                                                <input type="text" class="replyEdit text-muted"  v-model="mbtiBoardReplyList[index].mbtiBoardReplyDto.mbtiReplyContent">
@@ -413,7 +407,6 @@ a {
                                     <p class="fw-bold mb-0 pe-3 d-flex align-items-center">새침한 고양이 <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon" style="background-color:#514e85 !important;">done</span></p>
                                     <div class="text-muted fw-light">
                                        <p class="mb-1 mbti-rank" >INTP</p>
-                                       <span class="text-muted d-flex align-items-center small">50%</span>
                                     </div>
                                  </div>
                                  <div class="ms-auto">
@@ -429,7 +422,6 @@ a {
                                     <p class="fw-bold mb-0 pe-3 d-flex align-items-center">사교적인 돌고래 <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon" style="background-color:#514e85 !important;">done</span></p>
                                     <div class="text-muted fw-light">
                                        <p class="mb-1 mbti-rank"  >ENFJ</p>
-                                       <span class="text-muted d-flex align-items-center small">30%</span>
                                     </div>
                                  </div>
                                  <div class="ms-auto">
@@ -445,7 +437,6 @@ a {
                                     <p class="fw-bold mb-0 pe-3 d-flex align-items-center">전략가 호랑이<span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon" style="background-color:#514e85 !important;">done</span></p>
                                     <div class="text-muted fw-light">
                                        <p class="mb-1 mbti-rank" >INTJ</p>
-                                       <span class="text-muted d-flex align-items-center small">20%</span>
                                     </div>
                                  </div>
                                  <div class="ms-auto">
@@ -653,7 +644,6 @@ a {
 				// 투표 전체 개수 카운팅
 				voteTotalCount : "",
 				
-
                 
 			};
 		},
@@ -757,7 +747,6 @@ a {
 		        			          'success'
 		        			        )
 						}
-
 	        		this.loadVote();
 	        		this.loadVoteTotal();
 	        		
@@ -885,7 +874,6 @@ a {
 	        	//나머지 다 차단
 	        	return false;
 	        },
-
 			// 댓글 삭제
 			  deleteReply(index){
 	        	const choice = window.confirm("정말 삭제하시겠습니까?");
@@ -974,7 +962,6 @@ a {
 	        			          'success'
 	        			        )
             			this.cancelReport();
-
             		}else{
 	        			 Swal.fire(
 	        			          '오류가 발생했습니다. 다시 시도해 주세요.',
@@ -1007,7 +994,6 @@ a {
 		},
 	});
 	app.mount("#app");
-
 	</script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
