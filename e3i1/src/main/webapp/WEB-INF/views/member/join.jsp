@@ -20,34 +20,44 @@
 				<div class="container w500 m30 page">
 					<div class="col-md-6 offset-md-3">
 						<div class="form-floating mt-4 mb-3">
-							<input type="text" class="form-control" name="memberEmail"
+							<input type="text" class="form-control" name="memberEmail" v-bind:class="emailClassObject" v-model="member.memberEmail" v-on:blur="idValidation"
 								autocomplete="off" required> <label for="floatingInput">Email
 								Address</label>
+								<div class="valid-feedback"></div>
+               				    <div class="invalid-feedback">이메일 형식이 올바르지 않습니다.</div>
 						</div>
 
 						<div class="form-floating mb-3">
-							<input type="password" class="form-control" name="memberPw"
-								autocomplete="off" required> <label for="floatingInput">Password</label>
+							<input type="password" class="form-control" name="memberPw" v-bind:class="pwClassObject" v-model="member.memberPw" v-on:blur="pwValidation"
+								autocomplete="off" v-bind:type="passwordInputType" required> <label for="floatingInput">Password</label>
+								<div class="valid-feedback"></div>
+               				    <div class="invalid-feedback">영문 대소문자/숫자/특수문자(!@#$%)를 반드시 포함한 8~16자로 작성하세요.</div>
 						</div>
-
+						
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control" name="memberName"
+							<input type="text" class="form-control" name="memberName" v-bind:class="nameClassObject" v-model="member.memberName" v-on:blur="nameValidation"
 								autocomplete="off" required> <label for="floatingInput">Name</label>
+								<div class="valid-feedback"></div>
+               				    <div class="invalid-feedback">이름은 한글 2~7자로 작성하세요.</div>
 						</div>
 
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control" name="memberNick"
+							<input type="text" class="form-control" name="memberNick" v-bind:class="nickClassObject" v-model="member.memberNick" v-on:blur="nickValidation"
 								autocomplete="off" required> <label for="floatingInput">Nickname</label>
+								<div class="valid-feedback"></div>
+               				    <div class="invalid-feedback">닉네임은 한글/영문/숫자로 2~10자로 작성하세요.</div>
 						</div>
 
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control" name="memberPhone"
+							<input type="text" class="form-control" name="memberPhone" v-bind:class="phoneClassObject" v-model="member.memberPhone" v-on:blur="phoneValidation"
 								autocomplete="off" required> <label for="floatingInput">Phone
 								Number ( ' - ' 제외)</label>
+								<div class="valid-feedback"></div>
+               				    <div class="invalid-feedback">핸드폰번호는 ' - ' 제외 11자리 숫자로 입력하세요.</div>
 						</div>
 
 						<div class="form-floating mb-3">
-							<select name="memberGender" class="form-select"
+							<select name="memberGender" class="form-select" required
 								id="floatingSelect">
 								<option value=""></option>
 								<option>남자</option>
@@ -64,7 +74,7 @@
 							<label class="label1">관심 지역1</label>
 							<div class="row">
 								<div class="col">
-									<select class="form-control rounded" @change="addCityList1"
+									<select class="form-control rounded" @change="addCityList1" required
 										v-model="address1No">
 										<option value="">시/도</option>
 										<option v-for="(address1, index) in address1List1"
@@ -72,7 +82,7 @@
 									</select>
 								</div>
 								<div class="col">
-									<select name="memberPlace1" class="form-control rounded"
+									<select name="memberPlace1" class="form-control rounded" required
 										v-model="city1">
 										<option value="">시/군/구</option>
 										<option v-for="(address2, index) in address2List1"
@@ -450,7 +460,8 @@
 		</div>
 </form>
 </div>
-
+<script src="https://unpkg.com/vue@next"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script>
 	$(function() {
 		// 현재 페이지 
@@ -614,10 +625,104 @@ data() {
 		memberAnimal: [],
 		
 		interest:[],
+		
+		//회원가입 정보
+		member:{
+            memberEmail:"",
+            memberPw:"",
+            memberNick:"",
+           	memberName:"",
+           	memberPhone:"",
+           	memberPwAgain:"",
+           	
+            get memberEmailValid(){
+                const regex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+                return regex.test(this.memberEmail);
+            },
+            get memberPwValid(){
+                const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])[A-Za-z0-9!@#$%]{8,16}$/;
+                return regex.test(this.memberPw);
+            },
+            get memberNickValid(){
+                const regex = /^[a-zA-Z0-9가-힣]{2,10}$/;
+                return regex.test(this.memberNick);
+            },
+            get memberNameValid(){
+                const regex = /^[가-힣]{2,7}$/;
+                return regex.test(this.memberName);
+            },
+            get memberPhoneValid(){
+                const regex = /^[0-9]{11}$/;
+                return regex.test(this.memberPhone);
+            },
+        },
+        
+        emailClassObject:{
+            'is-valid':false,
+            'is-invalid':false,
+        },
+        pwClassObject:{
+            'is-valid':false,
+            'is-invalid':false,
+        },
+        nickClassObject:{
+            'is-valid':false,
+            'is-invalid':false,
+        },
+        nameClassObject:{
+            'is-valid':false,
+            'is-invalid':false,
+        },
+        phoneClassObject:{
+            'is-valid':false,
+            'is-invalid':false,
+        },
 	};
 },
-computed: {},
+computed: {
+	isMemberEmailValid(){
+		const regex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+        return regex.test(this.memberEmail);
+	},
+	isMemberPwValid(){
+		const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])[A-Za-z0-9!@#$%]{8,16}$/;
+        return regex.test(this.memberPw);
+	},
+	isMemberNickValid(){
+		  const regex = /^[a-zA-Z0-9가-힣]{2,10}$/;
+          return regex.test(this.memberNick);
+	},
+	isMemberNameValid(){
+		const regex = /^[가-힣]{2,7}$/;
+        return regex.test(this.memberName);
+	},
+	isMemberPhoneValid(){
+		const regex = /^[0-9]{11}$/;
+        return regex.test(this.memberPhone);
+	},
+},
 methods: {
+	idValidation(){
+        this.emailClassObject["is-valid"] = this.member.memberEmailValid;
+        this.emailClassObject["is-invalid"] = !this.member.memberEmailValid;
+    },
+    pwValidation(){
+        this.pwClassObject["is-valid"] = this.member.memberPwValid;
+        this.pwClassObject["is-invalid"] = !this.member.memberPwValid;
+    },
+    nickValidation(){
+        this.nickClassObject["is-valid"] = this.member.memberNickValid;
+        this.nickClassObject["is-invalid"] = !this.member.memberNickValid;
+    },
+    nameValidation(){
+        this.nameClassObject["is-valid"] = this.member.memberNameValid;
+        this.nameClassObject["is-invalid"] = !this.member.memberNameValid;
+    },
+    phoneValidation(){
+        this.phoneClassObject["is-valid"] = this.member.memberPhoneValid;
+        this.phoneClassObject["is-invalid"] = !this.member.memberPhoneValid;
+    },
+    
 	// checkbox 
 	isChecked(value){
 		// 체크박스 갯수제한
