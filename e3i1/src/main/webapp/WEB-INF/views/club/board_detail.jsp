@@ -918,6 +918,8 @@ position:relative;
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue@next"></script>
     <script src="${path}/js/time.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    
 <!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script> -->
 <script>
 
@@ -1394,17 +1396,39 @@ position:relative;
 		    	},
 		    	//댓글 삭제
 		        deleteReply(index){
-					const choice = window.confirm("정말 삭제하시겠습니까?\n삭제한 데이터는 복구되지 않습니다");
-					if(choice==false)return
-		        	const reply = this.reply[index];
-		        	axios({
-		        		url:"${pageContext.request.contextPath}/rest/clubboardreply/"+reply.clubBoardReplyDto.replyNo,
-		        		method:"delete",
-		        	})
-		        	.then(resp=>{
-		        		this.loadContent();
-		        		this.loadReply();
-		        	});
+						Swal.fire({
+		    			  title: '정말 삭제하시겠습니까???',
+		    			  text: "삭제하시면 다시 복구시킬 수 없습니다.",
+		    			  icon: 'question',
+		    			  showCancelButton: true,
+		    			  confirmButtonColor: '#3085d6',
+		    			  cancelButtonColor: '#d33',
+		    			  confirmButtonText: '삭제',
+		    			  cancelButtonText: '취소'
+		    			}).then((result) => {
+		    			  if (result.value) {
+				        	const reply = this.reply[index];
+				        	axios({
+				        		url:"${pageContext.request.contextPath}/rest/clubboardreply/"+reply.clubBoardReplyDto.replyNo,
+				        		method:"delete",
+				        	})
+				        	.then(resp=>{
+				        		if(resp.data==1){
+				        			 Swal.fire(
+		        			          '삭제가 완료되었습니다.',
+		        			          '',
+		        			          'success'
+		        			        )
+				        		}
+				        		this.loadReply();
+				        	});
+		    	              
+		    			  }
+		    			})
+		    		
+		    	
+// 					const choice = window.confirm("정말 삭제하시겠습니까?\n삭제한 데이터는 복구되지 않습니다");
+// 					if(choice==false)return
 		        },
 		        //댓글 수정모드
 		        replyEditMode(index){

@@ -15,6 +15,9 @@
 		select * from club_board_reply where club_board_no = #{clubBoardNo} 
 		order by reply_no desc
 	</select>
+	<select id="info" parameterType="int" resultType="clubboardreplyDto">
+		select * from club_board_reply where reply_no = #{replyNo}
+	</select>
 	<delete id="delete" parameterType="int">
 		delete club_board_reply where reply_no = #{replyNo}
 	</delete>

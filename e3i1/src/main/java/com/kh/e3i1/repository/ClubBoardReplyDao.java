@@ -11,7 +11,7 @@ public interface ClubBoardReplyDao {
 
 	List<ClubBoardReplyDto> list(int clubBoardNo);
 
-	void delete(int replyNo);
+	int delete(int replyNo);
 
 	ClubBoardReplyDto edit(ClubBoardReplyDto clubBoardReplyDto);
 

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.e3i1.entity.AnimalPhotoDto;
+import com.kh.e3i1.entity.ChatbotDto;
 import com.kh.e3i1.entity.ClubBoardDto;
 import com.kh.e3i1.entity.ClubBoardReplyDto;
 import com.kh.e3i1.entity.ClubDto;
@@ -215,6 +216,7 @@ public class AdminDaoImpl implements AdminDao{
 			return 1;
 		}
 	}
+	
 
 
 
