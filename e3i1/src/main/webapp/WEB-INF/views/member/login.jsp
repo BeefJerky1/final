@@ -32,10 +32,10 @@
 					<div class="row mt-2">
 						<label> <c:choose>
 								<c:when test="${saveEmailExist}">
-								&nbsp;<input type="checkbox" name="remember" checked>
+								&nbsp;<input type="checkbox" name="remember" checked style="display:inline;">
 								</c:when>
 								<c:otherwise>
-								&nbsp;<input type="checkbox" name="remember">
+								&nbsp;<input type="checkbox" name="remember" style="display:inline;">
 								</c:otherwise>
 							</c:choose> 이메일 저장
 						</label>

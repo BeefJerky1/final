@@ -3,7 +3,6 @@ package com.kh.e3i1.service;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.TinyBitSet;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +28,7 @@ public class NoticeServiceImpl implements NoticeService{
 	@Override
 	public void write(NoticeDto noticeDto, MultipartFile noticeAttach) throws IllegalStateException, IOException {
 		noticeDao.write(noticeDto);
-		int attachNo = 1;
+		int attachNo = 269;
 		if(!noticeAttach.isEmpty()) {
 			attachNo = attachmentDao.save(noticeAttach);
 		}
@@ -43,7 +42,9 @@ public class NoticeServiceImpl implements NoticeService{
 		boolean success = noticeDao.edit(noticeDto);
 		if(success) {
 			int newAttachNo = attachmentDao.save(noticeAttach);
-			attachmentDao.delete(attachNo);
+			if(attachNo != 269) {
+				attachmentDao.delete(attachNo);
+			}
 			noticeAttachDao.insert(noticeDto.getNoticeNo(), newAttachNo);
 		}
 		

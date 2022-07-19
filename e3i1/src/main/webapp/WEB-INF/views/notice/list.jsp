@@ -202,7 +202,7 @@ a {
 								<label for="floatingTextarea">내용</label>
 							</div>
 							<div>
-								<input type="file" name="noticeAttach">
+								<input type="file" name="noticeAttach" class="form-control form-control-sm" id="formFileSm">
 							</div>
 							<div class="col-md-8 offset-md-2 text-center">
 								<a href="list" class="btn btn-edit two m-3"

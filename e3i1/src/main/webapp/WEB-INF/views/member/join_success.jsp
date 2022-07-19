@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/member.css">
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 <style>
@@ -23,23 +23,20 @@
 </style>
 
 <div id="app" class="container-fluid">
-	<div class="row mt-4 p-2">
-		<div class="col-md-8 offset-md-2 mb-3 p-4 text-dark bg-light rounded">
-			<div class="row text-center">
-				<span class="point">회원 가입 완료</span>
+		<div class="col-md-8 offset-md-2 text-dark">
+			<div class="text-center">
+			<img src="${pageContext.request.contextPath}/image/welcome.png" style="width: 600px; height: 600px;">  
 			</div>
-			<div class="row"></div>
 			<div class="col-md-6 offset-md-3">
+				<div class="row text-center m-2">
+					<a href="login" class="btn btn-outline-success" role="button">로그인</a>
+				</div>
 				<div class="row text-center m-2">
 					<a href="${pageContext.request.contextPath}"
 						class="btn btn-edit">메인페이지로 이동</a>
 				</div>
-				<div class="row text-center m-2">
-					<a href="login" class="btn btn-outline-success" role="button">로그인</a>
-				</div>
 			</div>
 		</div>
-	</div>
 </div>
 
 
