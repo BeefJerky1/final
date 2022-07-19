@@ -12,7 +12,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style>
+.dd{
+background-color:transparent !important;
+color:transparent !important;
+}
+.modal-body{
+overflow: overlay;
+word-break:break-all;
+}
 .btn-primary{
 background-color:#3E4684 !important;
 border-color:#3E4684 !important;
@@ -49,6 +58,20 @@ border-color:#2f3564 !important;
 	color: #3E4684;
 	font-weight: 900;
 	font-size: 1.0em;
+}
+.title-text-cut {
+  white-space:nowrap !important;  
+  overflow:hidden !important; 
+  text-overflow:ellipsis !important;
+  display:block;
+  width:250px;
+}
+.content-text-cut {
+  white-space:nowrap !important;  
+  overflow:hidden !important; 
+  text-overflow:ellipsis !important;
+  display:block;
+  width:300px;
 }
 
 .profile {
@@ -178,6 +201,7 @@ i {
 							<table class="table text-center">
 									<thead>
 										<tr>
+											<th></th>
 											<th style="width: 10%;">보낸사람</th>
 											<th style="width: 20%;">제목</th>
 											<th style="width: 50%;">내용</th>
@@ -186,9 +210,13 @@ i {
 									</thead>
 									<tbody>
 										<tr v-for="(received , index) in messageR ">
+											<td v-if="received.messageDto.messageReadcount==0"><span class="badge bg-danger">new</span></td>
+											<td v-else style="width:50px"><span class="badge bg-danger dd">new</span></td>
 											<td>{{received.memberDto.memberNick}}</td>
-											<td>{{received.messageDto.messageTitle}}</td>
-											<td v-on:click="detail(index)" data-bs-toggle="modal" data-bs-target="#detail">{{received.messageDto.messageContent}}</td>
+											<td>
+											 <span class="title-text-cut" >{{received.messageDto.messageTitle}}</span>
+											</td>
+											<td v-on:click="detail(index)" data-bs-toggle="modal" data-bs-target="#detail"><span class="content-text-cut" >{{received.messageDto.messageContent}}</span></td>
 											<td>{{convertTime(received.messageDto.messageSendTime)}}</td>
 										</tr>
 									</tbody>
@@ -211,8 +239,8 @@ i {
 									<tbody>
 										<tr v-for="(sent , index) in messageS ">
 											<td>{{sent.memberDto.memberNick}}</td>
-											<td>{{sent.messageDto.messageTitle}}</td>
-											<td v-on:click="sentMessage(index)" data-bs-toggle="modal" data-bs-target="#sent123">{{sent.messageDto.messageContent}}</td>
+											<td><span class="title-text-cut">{{sent.messageDto.messageTitle}}</span></td>
+											<td  v-on:click="sentMessage(index)" data-bs-toggle="modal" data-bs-target="#sent123"><span class="content-text-cut">{{sent.messageDto.messageContent}}</span></td>
 											<td>{{convertTime(sent.messageDto.messageSendTime)}}</td>
 											<td v-if="sent.messageDto.messageReceiveTime==null">
 												안읽음
@@ -237,7 +265,7 @@ i {
 			</div>
 		</div>
 		
-	<!-- 받은 메세지 읽기 -->
+	<!-- 보낸 메세지 읽기 -->
 <div v-if="this.sentMessageDetail!=null">
 <div class="modal fade" id="sent123" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -247,7 +275,7 @@ i {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-   		제목:{{sentMessageDetail.messageDto.messageTitle}}
+   		<span>제목:{{sentMessageDetail.messageDto.messageTitle}}</span>
       </div>
       <div class="modal-body">
       	내용:{{sentMessageDetail.messageDto.messageContent}}
@@ -274,7 +302,7 @@ i {
    		제목:{{messageDetail.messageDto.messageTitle}}
       </div>
       <div class="modal-body">
-      	내용:{{messageDetail.messageDto.messageContent}}
+      	내용:<span style=" word-break:break-all;">{{messageDetail.messageDto.messageContent}}</span>
       </div>
       <div class="modal-body">
       받은시간:{{convertTime(messageDetail.messageDto.messageSendTime)}}
@@ -306,14 +334,14 @@ i {
                <!-- 제목 작성 -->
             <div class="modal-body p-0 mb-3">
                 <div class="form-floating">
-                   <input type="text" class="form-control rounded-5 border-0 shadow-sm" v-model="messageTitle"  id="floatingTextarea2" style="height: 50px">
+                   <input type="text" class="form-control rounded-5 border-0 shadow-sm" v-model="messageTitle"  id="floatingTextarea2" style="height: 50px" :maxLength="titleMax">
                    <label for="floatingTextarea2" class="h6 text-muted mb-0">제목을 작성하세요.</label>
                 </div>
              </div>
              	<!-- 내용 작성 -->
                <div class="modal-body p-0 mb-3">
                   <div class="form-floating">
-                     <textarea class="reviewC form-control rounded-5 border-0 shadow-sm" v-model="messageContent"placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px"></textarea>
+                     <textarea class="reviewC form-control rounded-5 border-0 shadow-sm" v-model="messageContent"placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px" :maxLength="contentMax"></textarea>
                      <label for="floatingTextarea2" class="h6 text-muted mb-0">내용을 작성하세요.</label>
                   </div>
                </div>
@@ -321,9 +349,9 @@ i {
                <div class="modal-footer justify-content-start px-1 py-1 bg-white shadow-sm rounded-5">
                   <div class="rounded-4 m-0 px-3 py-2 d-flex align-items-center justify-content-between w-75">
                      <span class="leg">
-                    	<span class="text-muted count2" >0</span> 
+                    	<span class="text-muted count2" >{{messageContent.length}}</span> 
                     	/
-                    	<span class="text-muted total">100</span> 
+                    	<span class="text-muted total">{{contentMax}}</span> 
                      </span>
                   </div>
                   <div class="ms-auto m-0">
@@ -379,6 +407,10 @@ data() {
         
         //삭제 결과
         deleteResult:"",
+        
+        //메세지 글자제한
+        contentMax:300,
+        titleMax:30,
 	};
 },
 computed: {
