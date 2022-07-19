@@ -19,7 +19,7 @@ public interface ClubBoardDao {
 
 	ClubBoardDto insert(ClubBoardDto clubBoardDto);
 
-	boolean delete(int clubBoardNo);
+	int delete(int clubBoardNo);
 
 	ClubBoardListItemVO detail(int clubBoardNo, int memberNo);
 	
@@ -45,7 +45,7 @@ public interface ClubBoardDao {
 	List<ClubBoardAttachDto> getAttachNo(int clubBoardNo);
 	
 	//게시글 사진 삭제
-	boolean deleteAttachNo(int attachNo);
+	int deleteAttachNo(int attachNo);
 	
 	//게시글 상세 페이지에서 클럽정보 조회
 	ClubDetailVO clubDetail(int clubBoardNo);

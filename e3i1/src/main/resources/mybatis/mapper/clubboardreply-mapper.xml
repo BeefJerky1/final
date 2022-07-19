@@ -172,11 +172,19 @@ and C.club_board_no = #{clubBoardNo} order by C.reply_no desc
 <select id="one" resultMap="clubBoardReplyItems" parameterType="int">
 		   select 
         R.*,
-		M.*
+		M.*,
+		P.*,
+		A.attach_no as 동물사진번호
 		from 
 		club_board_reply R
 		left outer join Member M
 		on R.club_reply_writer = M.member_no
+		left outer join member_profile P
+		on R.club_reply_writer = P.member_no
+		left outer join mbti_animal B
+ 	   	on M.member_mbti = B.mbti
+		left outer join animal_photo A
+ 		on B.animal_no = A.animal_no
 		where reply_no = #{replyNo}
 </select>
 	<select id="boardlist" resultType="clubBoardReplyDto" parameterType="int">
