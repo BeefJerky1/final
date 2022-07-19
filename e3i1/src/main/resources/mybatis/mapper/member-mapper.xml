@@ -82,15 +82,55 @@
  	<!-- 정보 변경 -->
 	<update id="changeInformation" parameterType="MemberDto">
 		update member 
-			set
-				member_name = #{memberName}, member_email = #{memberEmail},
-				member_pw = #{memberPw}, member_Nick = #{memberNick},
-				member_gender = #{memberGender}, member_phone = #{memberPhone},
-				member_sns_id = #{memberSnsId}, member_interest1 = #{memberInterest1},
-				member_interest2 = #{memberInterest2}, member_interest3 = #{memberInterest3},
-				member_place1 = #{memberPlace1}, member_place2 = #{memberPlace2}, member_place3 = #{memberPlace3}
+			<set>
+				<if test="memberName != null">
+					, member_name = #{memberName}
+				</if>
+				<if test="memberEmail != null">
+					, member_email = #{memberEmail}
+				</if>
+				<if test="memberPw != null">
+					, member_pw = #{memberPw}
+				</if>
+				<if test="memberNick != null">
+					, member_Nick = #{memberNick}
+				</if>
+				<if test="memberGender != null">
+					, member_gender = #{memberGender} 
+				</if>
+				<if test="memberPhone != null">
+					, member_phone = #{memberPhone}
+				</if>
+				<if test="memberSnsId != null">
+					, member_sns_id = #{memberSnsId}
+				</if>
+				<if test="memberInterest1 != null">
+					, member_interest1 = #{memberInterest1}
+				</if>
+				<if test="memberInterest2 != null">
+					, member_interest2 = #{memberInterest2}
+				</if>
+				<if test="memberInterest3 != null">
+					, member_interest3 = #{memberInterest3}
+				</if>
+				<if test="memberMbti != null">
+					, member_mbti = #{memberMbti}
+				</if>
+				<if test="memberAnimal != null">
+					, member_animal = #{memberAnimal}
+				</if>
+				<if test="memberPlace1 != null">
+					, member_place1 = #{memberPlace1}
+				</if>
+				<if test="memberPlace2 != null">
+					, member_place2 = #{memberPlace2}
+				</if>
+				<if test="memberPlace3 != null">
+					, member_place3 = #{memberPlace3}
+				</if>
+			</set>
 			where
-				member_email = #{memberEmail}
+				member_no = #{memberNo}
 	</update>
 	
 	<!-- 소모임 생성 여부 확인용 -->
@@ -146,7 +186,7 @@
 			<result column="club_join_question3" property="clubJoinQuestion3"/>
 			<result column="club_member_limit" property="clubMemberLimit"/>
 			
-			<result column="club_member_count" property="clubMemberCount"/>
+			<result column="club_member_count" property="clubMemberCount"/>		
 		</association>
 		
 		<association property="clubLikeDto">
@@ -165,9 +205,31 @@
 			<result column="club_member_answer2" property="clubMemberAnswer2"/>			
 			<result column="club_member_answer3" property="clubMemberAnswer3"/>			
 			<result column="club_member_permission" property="clubMemberPermission"/>			
-			<result column="club_member_refuse_msg" property="clubMemberRefuseMsg"/>			
+			<result column="club_member_refuse_msg" property="clubMemberRefuseMsg"/>	
 		</association>
 		
+		<association property="mbtiBoardDto">
+			<result column="mbti_board_no" property="mbtiBoardNo"/>
+			<result column="member_no5" property="memberNo"/>
+			<result column="mbti_board_title" property="mbtiBoardTitle"/>
+			<result column="mbti_board_time" property="mbtiBoardTime"/>
+			<result column="mbti_board_reply_count" property="mbtiBoardReplyCount"/>
+			
+			<result column="like_count2" property="likeCount"/>
+		</association>
+		
+		<association property="mbtiBoardLikeDto">
+			<result column="member_no6" property="memberNo"/>
+			<result column="mbti_board_no2" property="mbtiBoardNo"/>
+			<result column="it_like" property="itLike"/>
+		</association>
+		
+		<association property="mbtiBoardVoteDto">
+			<result column="member_no7" property="memberNo"/>
+			<result column="mbti_board_no3" property="mbtiBoardNo"/>
+			<result column="vote_choice" property="voteChoice"/>
+			<result column="vote_choice_no" property="voteChoiceNo"/>
+		</association>
  		
  	</resultMap>
 
@@ -209,6 +271,132 @@
 		insert into blocked (blocked_no, blocked_target, blocked_user)
 		values (#{blockedNo}, #{blockedTarget}, #{blockedUser})
 	</insert>
+	
+	<select id="mypageClub" resultMap="memberDetailVO">
+		SELECT 
+			m.MEMBER_NO, 
+			m.MEMBER_EMAIL, 
+			m.MEMBER_NICK,
+			m.MEMBER_GENDER,
+			m.MEMBER_PHONE,
+			m.MEMBER_BIRTH,
+			m.MEMBER_NAME,
+			m.MEMBER_MBTI,
+			m.MEMBER_ANIMAL,
+			m.MEMBER_INTEREST1,
+			m.MEMBER_INTEREST2,
+			m.MEMBER_INTEREST3,
+			m.MEMBER_PLACE1,
+			m.MEMBER_PLACE2,
+			m.MEMBER_PLACE3,
+			m.MEMBER_ADMIN,
+			m.MEMBER_REPORT_COUNT,
+			m.MEMBER_CLUB_COUNT,
+			m.MEMBER_SNS_ID,
+			m.MEMBER_LOGINDATE,
+			cm.*,
+			c.*,
+			cl.*,
+			cc.*
+		FROM MEMBER m
+		LEFT OUTER JOIN CLUB_MEMBER cm 
+			ON m.member_no = cm.MEMBER_NO
+		LEFT OUTER JOIN club c 
+			ON cm.CLUB_NO = c.CLUB_NO 
+		LEFT OUTER JOIN club_like cl 
+			ON m.MEMBER_NO = cl.MEMBER_NO AND cm.CLUB_NO = cl.CLUB_NO  
+		LEFT OUTER JOIN (SELECT cm.club_no, count(*) club_member_count FROM CLUB_MEMBER cm WHERE club_member_permission = 1 GROUP BY club_no) cc 
+			ON c.CLUB_NO = cc.club_no
+		WHERE m.MEMBER_NO = #{memberNo}
+		ORDER BY cl.CLUB_LIKE_NO DESC, cm.CLUB_MEMBER_NO DESC
+	</select>
+	
+	<select id="mypageMbti" resultMap="memberDetailVO">
+		SELECT 
+			m.MEMBER_NO, 
+			m.MEMBER_EMAIL, 
+			m.MEMBER_NICK,
+			m.MEMBER_GENDER,
+			m.MEMBER_PHONE,
+			m.MEMBER_BIRTH,
+			m.MEMBER_NAME,
+			m.MEMBER_MBTI,
+			m.MEMBER_ANIMAL,
+			m.MEMBER_INTEREST1,
+			m.MEMBER_INTEREST2,
+			m.MEMBER_INTEREST3,
+			m.MEMBER_PLACE1,
+			m.MEMBER_PLACE2,
+			m.MEMBER_PLACE3,
+			m.MEMBER_ADMIN,
+			m.MEMBER_REPORT_COUNT,
+			m.MEMBER_CLUB_COUNT,
+			m.MEMBER_SNS_ID,
+			m.MEMBER_LOGINDATE,
+			mb.MEMBER_NO member_no5,
+			mb.MBTI_BOARD_NO,
+			mb.MBTI_BOARD_TITLE,
+			mb.MBTI_BOARD_TIME,
+			mbl.MBTI_BOARD_NO mbti_board_no2,
+			mbl.MEMBER_NO member_no6,
+			mbv.MBTI_BOARD_NO mbti_board_no3,
+			mbv.MEMBER_NO member_no7,
+			mbv.VOTE_CHOICE_NO,
+			count(mbl2.MBTI_BOARD_NO) like_count2
+		FROM MEMBER m
+		LEFT OUTER JOIN MBTI_BOARD mb ON m.MEMBER_NO = mb.MEMBER_NO
+		LEFT OUTER JOIN MBTI_BOARD_LIKE mbl ON m.MEMBER_NO = mbl.MEMBER_NO AND mb.MBTI_BOARD_NO = mbl.MBTI_BOARD_NO
+		LEFT OUTER JOIN MBTI_BOARD_VOTE mbv ON m.MEMBER_NO = mbv.MEMBER_NO AND mb.MBTI_BOARD_NO = mbv.MBTI_BOARD_NO 
+		LEFT OUTER JOIN MBTI_BOARD_LIKE mbl2 ON mb.MBTI_BOARD_NO = mbl2.MBTI_BOARD_NO 
+		WHERE m.MEMBER_NO = #{memberNo}
+		GROUP BY
+			m.MEMBER_NO, 
+			m.MEMBER_EMAIL, 
+			m.MEMBER_NICK,
+			m.MEMBER_GENDER,
+			m.MEMBER_PHONE,
+			m.MEMBER_BIRTH,
+			m.MEMBER_NAME,
+			m.MEMBER_MBTI,
+			m.MEMBER_ANIMAL,
+			m.MEMBER_INTEREST1,
+			m.MEMBER_INTEREST2,
+			m.MEMBER_INTEREST3,
+			m.MEMBER_PLACE1,
+			m.MEMBER_PLACE2,
+			m.MEMBER_PLACE3,
+			m.MEMBER_ADMIN,
+			m.MEMBER_REPORT_COUNT,
+			m.MEMBER_CLUB_COUNT,
+			m.MEMBER_SNS_ID,
+			m.MEMBER_LOGINDATE,
+			mb.MEMBER_NO,
+			mb.MBTI_BOARD_NO,
+			mb.MBTI_BOARD_TITLE,
+			mb.MBTI_BOARD_TIME,
+			mbl.MBTI_BOARD_NO,
+			mbl.MEMBER_NO,
+			mbv.MBTI_BOARD_NO,
+			mbv.MEMBER_NO,
+			mbv.VOTE_CHOICE_NO
+		ORDER BY mbv.vote_choice_no DESC, mb.MBTI_BOARD_NO ASC
+	</select>
+	
+	<update id="mypageInterest" parameterType="MemberDto">
+		update 
+			member
+		set
+			member_interest1 = #{memberInterest1}
+			<if test="memberInterest2 != null">
+				, member_interest2 = #{memberInterest2}
+			</if>
+			<if test="memberInterest3 != null">
+				, member_interest3 = #{memberInterest3}
+			</if>
+		where 
+			member_no = #{memberNo}
+	</update>
+	
 	
 	<resultMap type="BlockedVO" id="blockedVOlist">
 		<association property="memberDto">

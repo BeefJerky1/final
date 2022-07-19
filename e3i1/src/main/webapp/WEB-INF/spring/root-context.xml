@@ -30,7 +30,6 @@
 		데이터베이스 연결 객체를 등록
 		[1] 일반 연결(DriverManagerDataSource) - Spring JDBC 모듈
 		[2] DBCP 연결(BasicDataSource) - Apache Commons DBCP 모듈
-		
 		id : 내부적으로 사용하는 식별자
 		class : 등록할 클래스 전체경로
 	 -->

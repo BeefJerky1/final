@@ -40,11 +40,18 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 	// 소모임회원 가입신청
 	@Override
 	public int insert(ClubMemberDto clubMemberDto) {
-		ClubMemberDto isExist = this.one(clubMemberDto.getClubNo(), clubMemberDto.getMemberNo());
-		System.out.println(isExist);
+		ClubMemberDto isExist = this.exist(clubMemberDto.getClubNo(), clubMemberDto.getMemberNo());
 		if(isExist != null) {
+			if(isExist.getClubMemberPermission() == 2) {
+				if(isExist.getClubRefuseCount() > 2) {
+					return -1;
+				}
+				sqlSession.update("clubMember.retry", isExist);
+				return 1;
+			}
 			return 0;
 		}
+		
 		
 		int clubMemberNo = sqlSession.selectOne("clubMember.sequence");
 		clubMemberDto.setClubMemberNo(clubMemberNo);
@@ -59,6 +66,15 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 		param.put("clubNo", clubNo);
 		param.put("memberNo", memberNo);
 		return sqlSession.selectOne("clubMember.one",param);
+	}
+	
+	// 소모임회원 단일 조회 - clubNo, memberNo 필요
+	@Override
+	public ClubMemberDto exist(int clubNo, int memberNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("clubNo", clubNo);
+		param.put("memberNo", memberNo);
+		return sqlSession.selectOne("clubMember.exist",param);
 	}
 	
 	// 소모임 신청 회원 조회
@@ -96,6 +112,14 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 		}else {		
 			return 1;
 		}
+	}
+
+	@Override
+	public int delete(int memberNo, int clubNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberNo", memberNo);
+		param.put("clubNo", clubNo);
+		return sqlSession.delete("clubMember.delete", param);
 	}
 	
 	

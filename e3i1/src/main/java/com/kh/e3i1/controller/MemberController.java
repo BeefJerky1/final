@@ -24,15 +24,12 @@ import com.kh.e3i1.entity.CertDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.error.UnauthorizeException;
-//import com.kh.e3i1.repository.AttachmentDao;
-//import com.kh.e3i1.repository.MemberProfileDao;
 import com.kh.e3i1.repository.CertDao;
 import com.kh.e3i1.repository.MbtiSurveyDao;
 import com.kh.e3i1.repository.MemberDao;
 import com.kh.e3i1.service.EmailService;
 import com.kh.e3i1.service.MemberService;
 import com.kh.e3i1.vo.AnimalPhotoVO;
-//import com.kh.e3i1.service.MemberService;
 
 @Controller
 @RequestMapping("/member")
@@ -76,7 +73,6 @@ public class MemberController {
 	public String join(
 			@ModelAttribute MemberDto memberDto
 			) throws Exception {
-		System.out.println(memberDto.getAttachNo());
 		memberService.MemberJoin(memberDto);
 		
 		return "redirect:/member/join_success";
@@ -275,16 +271,8 @@ public class MemberController {
 		
 		model.addAttribute("memberDto", memberDto);
 		
-		//프로필 이미지의 다운로드 주소를 추가
-		// - member_profile 에서 아이디를 이용하여 단일조회를 수행
-		// - http://localhost:8080/home/attachment/download?attachmentNo=OOO
-//		int attachmentNo = memberProfileDao.info(memberEmail);
-//		if(attachmentNo == 0) {
-//			model.addAttribute("profileUrl", "/image/user.png");
-//		}
-//		else {
-//			model.addAttribute("profileUrl", "/attachment/download?attachmentNo=" + attachmentNo);
-//		}
+		List<MbtiSurveyDto> list = mbtiSurveyDao.select();
+		model.addAttribute("list", list);
 		
 		return "member/mypage";
 	}
@@ -325,10 +313,9 @@ public class MemberController {
 	public String information(HttpSession session, @ModelAttribute MemberDto memberDto) {
 		int memberNo = (Integer) session.getAttribute("login");
 		MemberDto existMember = memberDao.info(memberNo);
+		memberDto.setMemberNo(memberNo);
 		memberDto.setMemberEmail(existMember.getMemberEmail());
-		System.out.println(memberDto.getMemberPw());
 		memberDto.setMemberPw(existMember.getMemberPw());
-		System.out.println(memberDto.getMemberPw());
 		
 		boolean success = memberDao.changeInformation(memberDto);
 		if(success) {

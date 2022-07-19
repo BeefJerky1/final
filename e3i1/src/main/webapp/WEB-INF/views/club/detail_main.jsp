@@ -191,6 +191,19 @@ a:hover {
 						</div>
 					</div>
 				</div>
+				<div class="card-body">
+					<div class="card-title">
+						<div class="text-center mb-3">
+							<span class="boldfontS">소모임 정모<i class="fa-solid fa-map"></i></span>
+						</div>
+						<div class="mt-2">
+							<input type="datetime-local" class="form-control" id="dateLocal">
+						</div>
+						<div>
+							
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -215,8 +228,19 @@ a:hover {
 
 				<div class="card-body mt-4">
 					<div class="card-title mt-4 mb-2">
-						<span class="boldfont"><i
-							class="fa-solid fa-mars-and-venus"></i>&nbsp;우리 소모임 MBTI</span>
+						<span class="boldfont"><i class="fa-solid fa-mars-and-venus"></i>&nbsp;우리 지금 만나</span>
+					</div>
+
+					<div class="row mt-4">
+					<div class="col text-center">
+						<div class="mt-2">정모</div>
+					</div>
+					</div>
+				</div>
+
+				<div class="card-body mt-4">
+					<div class="card-title mt-4 mb-2">
+						<span class="boldfont"><i class="fa-solid fa-mars-and-venus"></i>&nbsp;우리 소모임 MBTI</span>
 					</div>
 
 					<div class="row mt-4">
@@ -246,17 +270,16 @@ a:hover {
 						</span>
 					</div>
 
-					<div class="row mt-4 " v-for="(member, index) in clubMemberList"
-						:key="index" style="width: 25%; float: left;">
+					<div class="row mt-4 " v-for="(member, index) in clubMemberList" :key="index" style="width: 25%; float: left;">
 						<div class="col text-center"  >
 							<!-- memberProfile 연결되면 프로필 사진으로 찍기 -->
-							<%-- <img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="clubMemberList[index].memberProfile.attachNo == null">
-						<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubMemberList[index].memberProfile.attachNo"
-								class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="clubMemberList[index].memberProfile.attachNo != null"> --%>
-							<img src="${root }/image/mbti/강아지(ENFP).png" class="memberPhoto mbtitop"
-								style="width: 50px; height: 50px; border: 1.5px solid #3E4684; border-radius: 50%; box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;">
-							<div v-on:click="removeHidden2" class="clubMemberList">
-								<span  v-on:click="modal(index)">{{member.memberDto.memberAnimal}}</span>
+						<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="clubMemberList[index].memberProfileDto.attachNo == null">
+						<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubMemberList[index].memberProfileDto.attachNo"
+								class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="clubMemberList[index].memberProfileDto.attachNo != null">  
+				<%-- 			<img src="${root }/image/mbti/강아지(ENFP).png" class="memberPhoto mbtitop"
+								style="width: 50px; height: 50px; border: 1.5px solid #3E4684; border-radius: 50%; box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;"> --%>
+							<div v-on:click="removeHidden2()" class="clubMemberList">
+								<span v-on:click="modal(index)">{{member.memberDto.memberAnimal}}</span>
 							</div>
 							<div class="clubMemberList">
 								<span
@@ -265,21 +288,21 @@ a:hover {
 						</div>
 
 					</div>
-					<div class="modal " v-bind:class="isHidden2" class="rounded">
+					
+					<div class="modal rounded" :class="isHidden2">
 						<div class="modal-content profileModal mt-4">
-						<button type="button" class="btn-close" @click="addHidden2" data-bs-dismiss="modal" aria-label="Close"></button>
+						<button type="button" class="btn-close" @click="addHidden2()" data-bs-dismiss="modal" aria-label="Close"></button>
 							<div class="row mt-4">
 								<div class="modal-body">
 									<div class="row">
 										<div class="col-lg-4 col-md-4 col-sm-4">
-						<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"style="width: 100px; height: 100px;"
-								> 
-						<!-- ps. 사진 경로 지정이 안 되네요 ㅠㅠ  memberProfile은 이미 index값을 같이 불러온 객체입니다
+						<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"style="width: 100px; height: 100px;" v-if="memberProfile.memberProfileDto.attachNo == null"> 
+						<!-- ps. 사진 경로 지정이 안 되네요 ㅠㅠ  memberProfile은 이미 index값을 같이 불러온 객체입니다 -->
 						<img
-								:src="'${pageContext.request.contextPath}/attachment/download?attachNo='memberProfile.memberProfileDto.attachNo"
+								:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberProfile.memberProfileDto.attachNo"
 								class="mbtitop"
 								style="width: 100px; height: 100px; border: 1.5px solid #3E4684;"
-								v-if="memberProfile.memberProfileDto.attachNo != null">-->
+								v-if="memberProfile.memberProfileDto.attachNo != null">
 										</div>
 										<div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
 											<h4>
@@ -331,8 +354,7 @@ a:hover {
 
 		<!-- 오른쪽 사이드바 -->
 		<div class="col-md-3">
-			<button class="btn-create shadow" v-on:click="removeHidden">소모임
-				가입 신청</button>
+			<button class="btn-create shadow" v-on:click="removeHidden">소모임 가입 신청</button>
 			<div class="list-group mt-2" v-if="clubList.clubDto != null">
 				<a class="list-group-item list-group-item-action disabled boldfontS"
 					style="color: #3E4684;">소모임</a> <a
@@ -350,6 +372,7 @@ a:hover {
 					:href="'${pageContext.request.contextPath}/club/edit?clubNo='+clubList.clubDto.clubNo">소모임
 					관리</a>
 			</div>
+			<button class="btn-create shadow mt-4" @click="deleteClub">소모임 탈퇴</button>
 
 		</div>
 
@@ -432,12 +455,19 @@ a:hover {
 
 
 <script>
+
+let dateElement = document.getElementById('dateLocal');
+let date = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -5);
+dateElement.value = date;
+dateElement.setAttribute("min", date);
+
 const app = Vue.createApp({
 data() {
 	return {
 		isHidden:{
 			"hidden" : true,
 		},
+		
 		isHidden2:{
 			"hidden" : true,
 		},
@@ -536,8 +566,14 @@ methods: {
 				memberNo:this.memberNo,
 			},
 		}).then((resp) => {
+			console.log(resp.data);
 			if(resp.data == 0){
 				window.alert("이미 가입 신청 완료된 소모임입니다.");
+				this.addHidden();
+				return;
+			}
+			if(resp.data == -1){
+				window.alert("3회 이상 가입 거절된 상태이기 때문에, 더이상 가입 신청을 할 수 없습니다.");
 				this.addHidden();
 				return;
 			}
@@ -590,6 +626,24 @@ methods: {
 			}
 			window.alert("좋아요 완료!");
 			this.isLike = true;
+		});
+	},
+	
+	// 회원 탈퇴
+	deleteClub(){
+		
+		window.confirm("소모임을 탈퇴 하시겠습니까?");
+		
+		axios({
+			url:"${pageContext.request.contextPath}/rest/club/member/"+this.memberNo+"/"+this.clubNo,
+			method:"delete",
+		}).then((resp) => {
+			if(resp.data == 0){
+				window.alert("탈퇴 실패");
+				return;
+			}
+			window.alert("탈퇴 완료");
+			location.reload();
 		});
 	},
 	

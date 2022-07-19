@@ -774,7 +774,7 @@ methods: {
 		formData.append('clubSummary', this.clubSummary);
 		formData.append('clubMainCategory', this.clubMainCategory);
 		formData.append('clubSubCategory', this.clubSubCategory);
-		formData.append('clubPlace', this.clubPlace);
+		formData.append('clubPlace', this.city);
 		formData.append('clubJoinQuestion1', this.clubJoinQuestion1);
 		formData.append('clubJoinQuestion2', this.clubJoinQuestion2);
 		formData.append('clubJoinQuestion3', this.clubJoinQuestion3);

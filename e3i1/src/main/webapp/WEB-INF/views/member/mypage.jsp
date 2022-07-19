@@ -9,8 +9,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/modal.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/member.css">
 <style>
-
+.modal.fade {
+	opacity:0;
+	z-index:-1;
+}
 .point2 {
 	font-size: 3em;
 	font-weight: 900;
@@ -83,9 +88,8 @@
 }
 
 .tableInterest2 {
-	background-color: #E9E9E9;
 	color: #3E4684;
-	font-size: 0.85em;
+	font-size: 0.em;
 	font-weight: 600;
 	width: 30px;
 }
@@ -124,6 +128,18 @@ i {
 .smalllabel{
 	font-size: 0.8em;
 }
+.checked{
+	border-color: #3E4684;
+	border-width: 0.25em;
+}
+input[type="checkbox"]{
+	display:none;
+}
+.img{
+	position:absolute;
+	cursor: pointer;
+}
+
 </style>
 </head>
 <body>
@@ -137,10 +153,15 @@ i {
 
 				<div class="row mt-4">
 					<div class="col-md-3">
+					
 						<div class="col-md-3 profile">
 							<div class="profileimg text-center mt-3 mb-2">
 								<img src="${root }/image/mbti/거북이(ISTP).png" style="border-radius: 50%; width: 140px; height: 140px;" v-if="memberList.memberProfileDto == null" />
 								<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberList.memberProfileDto.attachNo" style="border-radius: 50%; width: 140px; height: 140px;" v-if="memberList.memberProfileDto != null"/>
+								<label for="img" class="img">
+									<i class="fa-solid fa-image"></i>
+								</label>
+								<input type="file" id="img" accept="image/*" ref="memberProfile" @change="changeProfile()" style="display:none;"> 
 							</div>
 							<div class="ml-5 text-center mb-3">
 								<span class="profileNick"><i class="fa-solid fa-user"></i>&nbsp;${memberDto.memberNick}</span>
@@ -149,25 +170,24 @@ i {
 							<div class="text-center profileInterest my-1 mx-5">${memberDto.memberInterest1}</div>
 							<div class="text-center profileInterest my-1 mx-5">${memberDto.memberInterest2}</div>
 							<div class="text-center profileInterest my-1 mx-5">${memberDto.memberInterest3}</div>
+							<div class="text-center profileInterest my-1 mx-5">\#${memberDto.memberMbti}</div>
 
 							<div class="row text-center">
 								<a href="#">
-									<button class="btn btn-outline-success m-1 mt-3" type="submit">관심분야
-										변경하기</button>
+									<button class="btn btn-outline-success m-1 mt-3" type="button" @click="removeHidden">관심분야 변경하기</button>
 								</a>
 							</div>
 							<div class="row text-center">
 								<a href="#">
-									<button class="btn btn-outline-success m-1 " type="submit">MBTI검사
-										다시하기</button>
+									<button class="btn btn-outline-success m-1 " type="button" @click="removeHidden1">MBTI검사 다시하기</button>
 								</a>
 							</div>
 						</div>
 					</div>
 					<div class="col-md-9">
 						<ul class="nav nav-tabs tabtitle">
-							<li class="nav-item"><a class="nav-link active"
-								data-toggle="tab" href="#club">내 소모임</a></li>
+							<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#club">내 소모임</a></li>
+							<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#mbti-board">MBTI 게시판</a></li>
 							<li class="nav-item"><a class="nav-link" data-toggle="tab"
 								href="#buy">회원 증가권 구매</a></li>
 							<li class="nav-item"><a class="nav-link" data-toggle="tab"
@@ -179,6 +199,7 @@ i {
 							<li class="nav-item"><a class="nav-link" data-toggle="tab"
 								href="#exit">회원탈퇴</a></li>
 						</ul>
+						
 						<div class="tab-content">
 							<div class="tab-pane fade show active" id="club">
 								<p>
@@ -194,20 +215,24 @@ i {
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="tableInterest2">서울 맛집탐방모임</td>
-											<td>
-											<span class="tableInterest mx-2">#친구해요</span>
-											<span class="tableInterest mx-2">#맛집탐방</span>
-											<span class="tableInterest mx-2">#서울시 강남구</span>
+										<tr v-for="(memberClub, index) in memberClubList" :key="index">
+											<td v-if="isClubLeader(index)">
+												<a class="tableInterest2" :href="'${pageContext.request.contextPath}/club/detail?clubNo='+memberClub.clubDto.clubNo">
+													{{memberClub.clubDto.clubName}}
+												</a>
 											</td>
-											<td>
-											<span class="tableInterest mx-2">30 / 30</span>
+											<td  v-if="isClubLeader(index)">
+												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubMainCategory}}</span>
+												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubSubCategory}}</span>
+												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubPlace}}</span>
 											</td>
-											
+										 	<td  v-if="isClubLeader(index)">
+												<span class="tableInterest mx-2">{{memberClub.clubDto.clubMemberCount}} / {{memberClub.clubDto.clubMemberLimit}}</span>
+											</td>
 										</tr>
 									</tbody>
 								</table>
+								
 								<div class="titlefont boldfont mt-5 mx-1">
 									가입한 소모임&nbsp;<i class="fa-solid fa-circle-info"></i>
 								</div>
@@ -220,42 +245,230 @@ i {
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="tableInterest2">서울 맛집탐방모임</td>
-											<td>
-											<span class="tableInterest mx-2">#친구해요</span>
-											<span class="tableInterest mx-2">#맛집탐방</span>
-											<span class="tableInterest mx-2">#서울시 강남구</span>
+										<tr v-for="(memberClub, index) in memberClubList" :key="index">
+											<td v-if="isClubMember(index)">
+												<a class="tableInterest2" :href="'${pageContext.request.contextPath}/club/detail?clubNo='+memberClub.clubDto.clubNo">
+													{{memberClub.clubDto.clubName}}
+												</a>
 											</td>
-											<td>
-											<span class="tableInterest mx-2">30 / 30</span>
+											<td  v-if="isClubMember(index)">
+												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubMainCategory}}</span>
+												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubSubCategory}}</span>
+												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubPlace}}</span>
 											</td>
-										</tr>
-										<tr>
-											<td class="tableInterest2">인천 사람 모여라</td>
-											<td>
-											<span class="tableInterest mx-2">#친구해요</span>
-											<span class="tableInterest mx-2">#술친구</span>
-											<span class="tableInterest mx-2">#인천시 계양구</span>
-											</td>
-											<td>
-											<span class="tableInterest mx-2">17 / 30</span>
-											</td>
-										</tr>
-										<tr>
-											<td class="tableInterest2">감성 카페 찾으러가요!</td>
-											<td>
-											<span class="tableInterest mx-2">#인스타그래머</span>
-											<span class="tableInterest mx-2">#사진</span>
-											<span class="tableInterest mx-2">#서울시 영등포구</span>
-											</td>
-											<td>
-											<span class="tableInterest mx-2">28 / 30</span>
+										 	<td  v-if="isClubMember(index)">
+												<span class="tableInterest mx-2">{{memberClub.clubDto.clubMemberCount}} / {{memberClub.clubDto.clubMemberLimit}}</span>
 											</td>
 										</tr>
 									</tbody>
 								</table>
+								
+								<div class="titlefont boldfont mt-5 mx-1">
+									관심있는 소모임&nbsp;<i class="fa-solid fa-circle-info"></i>
+								</div>
+								<table class="table text-center">
+									<thead>
+										<tr>
+											<th style="width: 45%;"></th>
+											<th style="width: 40%;"></th>
+											<th style="width: 15%;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr v-for="(memberClub, index) in memberClubList" :key="index">
+											<td v-if="isLikeClub(index)">
+												<a class="tableInterest2" :href="'${pageContext.request.contextPath}/club/detail?clubNo='+memberClub.clubDto.clubNo">
+													{{memberClub.clubDto.clubName}}
+												</a>
+											</td>
+											<td  v-if="isLikeClub(index)">
+												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubMainCategory}}</span>
+												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubSubCategory}}</span>
+												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubPlace}}</span>
+											</td>
+										 	<td  v-if="isLikeClub(index)">
+												<span class="tableInterest mx-2">{{memberClub.clubDto.clubMemberCount}} / {{memberClub.clubDto.clubMemberLimit}}</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								
+								<div class="titlefont boldfont mt-5 mx-1">
+									승인 대기중인 소모임&nbsp;<i class="fa-solid fa-circle-info"></i>
+								</div>
+								<table class="table text-center">
+									<thead>
+										<tr>
+											<th style="width: 45%;"></th>
+											<th style="width: 40%;"></th>
+											<th style="width: 15%;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr v-for="(memberClub, index) in memberClubList" :key="index">
+											<td v-if="waitClub(index) && memberClub.clubDto != null">
+												<a class="tableInterest2" :href="'${pageContext.request.contextPath}/club/detail?clubNo='+memberClub.clubDto.clubNo">
+													{{memberClub.clubDto.clubName}}
+												</a>
+											</td>
+											<td  v-if="waitClub(index) && memberClub.clubDto != null">
+												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubMainCategory}}</span>
+												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubSubCategory}}</span>
+												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubPlace}}</span>
+											</td>
+										 	<td  v-if="waitClub(index) && memberClub.clubDto != null">
+												<span class="tableInterest2 mx-2" v-if="memberClub.clubMemberDto != null"> {{elapsedText(memberClub.clubMemberDto.clubMemberDate)}}</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								
+								
+								<div class="titlefont boldfont mt-5 mx-1">
+									거절된 소모임&nbsp;<i class="fa-solid fa-circle-info"></i>
+								</div>
+								
+								<table class="table text-center">
+									<thead>
+										<tr>
+											<th style="width: 45%;"></th>
+											<th style="width: 40%;"></th>
+											<th style="width: 15%;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<template v-for="(memberClub, index) in memberClubList" :key="index">
+											<tr v-if="rejectClub(index)" class="show-detail">
+												<td  v-if="rejectClub(index)">
+													<a class="tableInterest2" :href="'${pageContext.request.contextPath}/club/detail?clubNo='+memberClub.clubDto.clubNo">
+														{{memberClub.clubDto.clubName}}
+													</a>
+												</td>
+												<td  v-if="rejectClub(index)">
+													<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubMainCategory}}</span>
+													<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubSubCategory}}</span>
+													<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubPlace}}</span>
+												</td>
+											 	<td v-if="rejectClub(index)">
+													<span class="tableInterest2 mx-2"> {{elapsedText(memberClub.clubMemberDto.clubMemberDate)}}</span>
+												</td>	
+												<td class="detail">
+													<tr>
+														<td colspan="3" v-if="rejectClub(index)">
+															<span>
+																거절 메세지: {{memberClub.clubMemberDto.clubMemberRefuseMsg}}
+															</span>
+														</td>
+													</tr>
+												</td>
+											</tr>
+										</template>
+									</tbody>
+								</table>
+								
 							</div>
+							
+							<!-- mbti 게시글 -->
+							<div class="tab-pane fade" id="mbti-board">
+							
+								<div class="titlefont boldfont mt-5 mx-1">
+									내가 작성한 게시글&nbsp;<i class="fa-solid fa-circle-info"></i>
+								</div>
+								<table class="table text-center">
+									<thead>
+										<tr>
+											<th style="width: 45%;"></th>
+											<th style="width: 40%;"></th>
+											<th style="width: 15%;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr v-for="(memberMbti, index) in memberMbtiList" :key="index">
+											<td v-if="memberMbti.mbtiBoardDto.mbtiBaordNo != null">
+												<a class="tableInterest2" :href="'${pageContext.request.contextPath}/mbtiBoard/detail?mbtiBoardNo='+memberMbti.mbtiBoardDto.mbtiBoardNo">
+													{{memberMbti.mbtiBoardDto.mbtiBoardTitle}}
+												</a>
+											</td>
+										 	<td v-if="memberMbti.mbtiBoardDto.mbtiBaordNo != null">
+												<span class="tableInterest2 mx-2" v-if="memberMbti.clubMemberDto != null"> {{convertTime(memberMbti.mbtiBoardDto.mbtiBoardTime)}}</span>
+											</td>
+											<td v-if="memberMbti.mbtiBoardDto.mbtiBaordNo != null">
+												<span class="mx-2">
+													<i class="fa-solid fa-heart"></i>
+													{{memberMbti.mbtiBoardDto.likeCount}}
+												</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								
+								<div class="titlefont boldfont mt-5 mx-1">
+									내가 좋아요한 게시글&nbsp;<i class="fa-solid fa-circle-info"></i>
+								</div>
+								<table class="table text-center">
+									<thead>
+										<tr>
+											<th style="width: 45%;"></th>
+											<th style="width: 40%;"></th>
+											<th style="width: 15%;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr v-for="(memberMbti, index) in memberMbtiList" :key="index">
+											<td v-if="memberMbti.mbtiBoardLikeDto != null">
+												<a class="tableInterest2" :href="'${pageContext.request.contextPath}/mbtiBoard/detail?mbtiBoardNo='+memberMbti.mbtiBoardDto.mbtiBoardNo">
+													{{memberMbti.mbtiBoardDto.mbtiBoardTitle}}
+												</a>
+											</td>
+										 	<td v-if="memberMbti.mbtiBoardLikeDto != null">
+												<span class="tableInterest2 mx-2" v-if="memberMbti.clubMemberDto != null"> {{convertTime(memberMbti.mbtiBoardDto.mbtiBoardTime)}}</span>
+											</td>
+											<td v-if="memberMbti.mbtiBoardLikeDto != null">
+												<span class="mx-2">
+													<i class="fa-solid fa-heart"></i>
+													{{memberMbti.mbtiBoardDto.likeCount}}
+												</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								
+								
+								<div class="titlefont boldfont mt-5 mx-1">
+									내가 투표한 게시글&nbsp;<i class="fa-solid fa-circle-info"></i>
+								</div>
+								<table class="table text-center">
+									<thead>
+										<tr>
+											<th style="width: 45%;"></th>
+											<th style="width: 40%;"></th>
+											<th style="width: 15%;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr v-for="(memberMbti, index) in memberMbtiList" :key="index">
+											<td v-if="memberMbti.mbtiBoardVoteDto != null">
+												<a class="tableInterest2" :href="'${pageContext.request.contextPath}/mbtiBoard/detail?mbtiBoardNo='+memberMbti.mbtiBoardDto.mbtiBoardNo">
+													{{memberMbti.mbtiBoardDto.mbtiBoardTitle}}
+												</a>
+											</td>
+										 	<td v-if="memberMbti.mbtiBoardVoteDto != null">
+												<span class="tableInterest2 mx-2" v-if="memberMbti.clubMemberDto != null"> {{convertTime(memberMbti.mbtiBoardDto.mbtiBoardTime)}}</span>
+											</td>
+											<td v-if="memberMbti.mbtiBoardVoteDto != null">
+												<span class="mx-2">
+													<i class="fa-solid fa-heart"></i>
+													{{memberMbti.mbtiBoardDto.likeCount}}
+												</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								
+								
+							</div>
+							
+							
 							<div class="tab-pane fade" id="buy">
 								<p>
 								<div class="titlefont boldfont mx-1">
@@ -263,9 +476,10 @@ i {
 								</div>
 								<div class="row row-cols-1 row-cols-md-4 g-10 my-2">
 									<div class="col">
-										<div class="card my-2"
-											style="width: 11rem; border-radius: 30px;">
+										<label for="pay1">
+										<div class="card my-2" :class="{'checked':isCheckedPlus('10')}" style="width: 11rem; border-radius: 30px;">
 											<div class="card-body m-1">
+												<input type="checkbox" name="clubPlus" id="pay1" value="10" v-model="clubPlus">
 												<h5 class="card-title text-center tagtitle">
 													<div class="text-center">
 														<img src="${root}/image/crowd.png" class="pluscount">
@@ -277,11 +491,13 @@ i {
 												</p>
 											</div>
 										</div>
+										</label>
 									</div>
 									<div class="col">
-										<div class="card my-2"
-											style="width: 11rem; border-radius: 30px;">
+										<label for="pay2">
+										<div class="card my-2" style="width: 11rem; border-radius: 30px;" :class="{'checked':isCheckedPlus('30')}">
 											<div class="card-body m-1">
+												<input type="checkbox" name="clubPlus" id="pay2" value="30" v-model="clubPlus">
 												<h5 class="card-title text-center tagtitle">
 													<div class="text-center">
 														<img src="${root}/image/crowd.png" class="pluscount">
@@ -293,11 +509,13 @@ i {
 												</p>
 											</div>
 										</div>
+										</label>
 									</div>
 									<div class="col">
-										<div class="card my-2"
-											style="width: 11rem; border-radius: 30px;">
+										<label for="pay3">
+										<div class="card my-2" style="width: 11rem; border-radius: 30px;" :class="{'checked':isCheckedPlus('50')}">
 											<div class="card-body m-1">
+												<input type="checkbox" name="clubPlus" id="pay3" value="50" v-model="clubPlus">
 												<h5 class="card-title text-center tagtitle">
 													<div class="text-center">
 														<img src="${root}/image/crowd.png" class="pluscount">
@@ -309,11 +527,13 @@ i {
 												</p>
 											</div>
 										</div>
+										</label>
 									</div>
 									<div class="col">
-										<div class="card my-2"
-											style="width: 11rem; border-radius: 30px;">
+										<label for="pay4">
+										<div class="card my-2" style="width: 11rem; border-radius: 30px;" :class="{'checked':isCheckedPlus('100')}">
 											<div class="card-body m-1">
+												<input type="checkbox" name="clubPlus" id="pay4" value="100" v-model="clubPlus">
 												<h5 class="card-title text-center tagtitle">
 													<div class="text-center">
 														<img src="${root}/image/crowd.png" class="pluscount">
@@ -325,8 +545,35 @@ i {
 												</p>
 											</div>
 										</div>
+										</label>
 									</div>
 								</div>
+									<div class="mx-1">
+										결제할 소모임 선택
+									</div>
+									<table class="table text-center">
+										<thead>
+											<tr>
+												<th style="width: 50%;"></th>
+												<th style="width: 30%;"></th>
+												<th style="width: 20%;"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="(memberClub, index) in memberClubList" :key="index">
+												<td v-if="isClubLeader(index)">
+													<a class="tableInterest2" :href="'${pageContext.request.contextPath}/club/detail?clubNo='+memberClub.clubDto.clubNo">
+														{{memberClub.clubDto.clubName}}
+													</a>
+											 	<td  v-if="isClubLeader(index)">
+													<span class="tableInterest mx-2">{{memberClub.clubDto.clubMemberCount}} / {{memberClub.clubDto.clubMemberLimit}}</span>
+												</td>
+												<td v-if="isClubLeader(index)">
+													<input type="checkbox" name="clubNo" :value="memberClub.clubDto.clubNo" style="display:inline;">
+												</td>
+											</tr>
+										</tbody>
+										</table>
 								<div class="row" style="float: right;">
 									<button type="submit" class="btn btn-outline-success">구매</button>
 								</div>
@@ -396,8 +643,7 @@ i {
 												<i class="fa-solid fa-circle-exclamation"></i>
 												MBTI와 관심태그는 프로필에서 변경 가능합니다!
 									</div>
-								<form action="information" method="post"
-									enctype="multipart/form-data">
+								<form action="information" method="post">
 									<div class="col-md-6 offset-md-3 mt-2">
 										<div class="row text-center mt-3 mb-5">
 
@@ -431,8 +677,7 @@ i {
 													Id</span> <input type="text" class="form-control"
 													aria-label="Sizing example input"
 													aria-describedby="inputGroup-sizing-sm" name="memberSnsId"
-													autocomplete="off" value="${memberDto.memberSnsId}"
-													required>
+													autocomplete="off" value="${memberDto.memberSnsId}">
 											</div>
 
 											<div class="input-group-sm">
@@ -562,10 +807,395 @@ i {
 									</div>
 								</form>
 							</div>
+							
+								<!-- 관심분야 모달창 -->
+								 <div class="modal" v-bind:class="isHidden" class="rounded">
+									<div class="modal-overlay" v-on:click="addHidden"></div>
+							
+									<div class="modal-content mt-4" style="width:1000px!important; height:700px!important; position:absolute!important;">
+									
+										<div class="container-fluid">
+											<div class="modal-header">
+												<span class="boldfontL">관심분야 변경하기</span>
+												<div class="text-center profileInterest my-1 mx-5">${memberDto.memberInterest1}</div>
+												<div class="text-center profileInterest my-1 mx-5">${memberDto.memberInterest2}</div>
+												<div class="text-center profileInterest my-1 mx-5">${memberDto.memberInterest3}</div>
+											</div>
+											
+											
+											
+											<div class="row row-cols-1 row-cols-md-3 g-10 my-2">
+												<div class="col">
+													<div class="card my-2" :class="{'checked':isChecked('\#인스타그래머')}" style="width: 15rem; border-radius: 30px;">
+														<label for="cat1">
+															<div class="card-body m-1">
+																<h5 class="card-title text-center tagtitle"><label class="maincolor"># </label> 인스타그래머 
+																<i class="fa-brands fa-instagram-square"></i>
+																</h5>
+																<input id="cat1" type="checkbox" value="\#인스타그래머" v-model="interest">
+																<p class="card-text text-center tagtext">
+																	남는 건 사진 뿐!<br>내 모든 순간을 남기자!
+																</p>
+															</div>
+														</label>
+													</div>
+												</div>
+							
+												<div class="col">
+													<div class="card my-2" :class="{'checked':isChecked('\#액티비티매니아')}" style="width: 15rem; border-radius: 30px;">
+														<label for="cat2">
+														<div class="card-body m-1">
+															<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 액티비티매니아
+															<i class="fa-solid fa-person-running" class="coloricon"></i></h5>
+															<input id="cat2" type="checkbox" value="\#액티비티매니아" v-model="interest">
+															<p class="card-text text-center tagtext">
+																나를 죽이지 못한 고통은<br>나를 더욱 강하게 만든다!
+															</p>
+														</div>
+														</label>
+													</div>
+												</div>
+							
+												<div class="col">
+													<div class="card my-2" :class="{'checked':isChecked('\#친구해요')}" style="width: 15rem; border-radius: 30px;">
+														<label for="cat3">
+														<div class="card-body m-1">
+															<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 친구해요
+															<i class="fa-solid fa-user-group"></i></h5>
+															<input id="cat3" type="checkbox" value="\#친구해요" v-model="interest">
+															<p class="card-text text-center tagtext">다들 모여!<br>사람 만나는 게 제일 좋아!</p>
+														</div>
+														</label>
+													</div>
+												</div>
+							
+												<div class="col">
+													<div class="card my-2" :class="{'checked':isChecked('\#뇌색남녀')}" style="width: 15rem; border-radius: 30px;">
+														<label for="cat4">
+														<div class="card-body m-1">
+															<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 뇌색남녀
+															<i class="fa-solid fa-book"></i></h5>
+															<input id="cat4" type="checkbox" value="\#뇌색남녀" v-model="interest">
+															<p class="card-text text-center tagtext">
+																지금 잠을 자면 꿈을 꾸지만<br>지금 공부하면 꿈을 이룰지도..?
+															</p>
+														</div>
+														</label>
+													</div>
+												</div>
+							
+												<div class="col">
+													<div class="card my-2" :class="{'checked':isChecked('\#텅장되자')}" style="width: 15rem; border-radius: 30px;">
+													<label for="cat5">
+														<div class="card-body m-1">
+															<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 텅장되자
+															<i class="fa-solid fa-cart-shopping"></i></h5>
+															<input id="cat5" type="checkbox" value="\#텅장되자" v-model="interest">
+															<p class="card-text text-center tagtext">
+																사는재미 없으면<br>사는 재미라도!
+															</p>
+														</div>
+													</label>
+													</div>
+												</div>
+							
+												<div class="col">
+													<div class="card my-2" :class="{'checked':isChecked('\#킹스맨')}" style="width: 15rem; border-radius: 30px;">
+													<label for="cat6">
+														<div class="card-body m-1">
+															<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 킹스맨
+															<i class="fa-solid fa-clapperboard"></i></h5>
+															<input id="cat6" type="checkbox" value="\#킹스맨" v-model="interest">
+															<p class="card-text text-center tagtext">
+																관람객 매너가<br>명작을 만든다!
+															</p>
+														</div>
+													</label>
+													</div>
+												</div>
+							
+												<div class="col">
+													<div class="card my-2" :class="{'checked':isChecked('\#집돌이집순이')}" style="width: 15rem; border-radius: 30px;">
+													<label for="cat7">
+														<div class="card-body m-1">
+															<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 집돌이집순이
+															<i class="fa-solid fa-house"></i></i></h5>
+															<input id="cat7" type="checkbox" value="\#집돌이집순이" v-model="interest">
+															<p class="card-text text-center tagtext">
+																집에서 할 게<br>얼마나 많은데?!
+															</p>
+														</div>
+													</label>
+													</div>
+												</div>
+							
+												<div class="col">
+													<div class="card my-2" :class="{'checked':isChecked('\#금손모임')}" style="width: 15rem; border-radius: 30px;">
+													<label for="cat8">
+														<div class="card-body m-1">
+															<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 금손모임
+															<i class="fa-solid fa-hand-sparkles"></i></i></h5>
+															<input id="cat8" type="checkbox" value="\#금손모임" v-model="interest">
+															<p class="card-text text-center tagtext">똥손도 괜찮아요~<br>함께 만들어요!</p>
+														</div>
+													</label>
+													</div>
+												</div>
+							
+												<div class="col">
+													<div class="card my-2" :class="{'checked':isChecked('\#자연인')}" style="width: 15rem; border-radius: 30px;">
+													<label for="cat9">
+														<div class="card-body m-1">
+															<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 자연인
+															<i class="fa-solid fa-mountain-sun"></i></h5>
+															<input id="cat9" type="checkbox" value="\#자연인" v-model="interest">
+															<p class="card-text text-center tagtext">
+																산은 산이요~<br>물은 물이로다~
+															</p>
+														</div>
+													</label>
+													</div>
+												</div>
+							
+												<div class="col">
+													<div class="card my-2" :class="{'checked':isChecked('\#집사님')}" style="width: 15rem; border-radius: 30px;">
+													<label for="cat10">
+														<div class="card-body m-1">
+															<h5 class="card-title text-center tagtitle"><span class="maincolor"># </span> 집사님
+															<i class="fa-solid fa-paw"></i></h5>
+															<input id="cat10" type="checkbox" value="\#집사님" v-model="interest">
+															<p class="card-text text-center tagtext">
+																저는 주인님을<br>모시고 있습니다!
+															</p>
+														</div>
+													</label>
+													</div>
+												</div>
+											</div>
+											
+													
+											<div class="row mt-4">
+											<div class="col">
+												<button type="button" class="btn-cancel" @click="addHidden">돌아가기</button>
+											</div>
+											<div class="col">
+												<button type="button" class="btn-create" @click="memberInterest">변경하기</button>
+											</div>
+											</div>
+										</div>
+									</div>
+								</div> 
+								
+								<!-- MBTI검사 모달창 -->
+								<div class="modal" v-bind:class="isHidden1" class="rounded">
+									<div class="modal-overlay" v-on:click="addHidden1"></div>
+							
+									<div class="modal-content mt-4" style="width:1000px!important; height:700px!important; position:absolute!important; padding:0px; margin:0px">
+									
+										<div class="container-fluid">
+											<div class="modal-header">
+												<span class="boldfontL">MBTI검사</span>
+												<div class="text-end" @click="addHidden1()" style="cursor:pointer">
+													<i class="fa-solid fa-x"></i>
+												</div>
+											</div>
+											
+											
+											<!-- 1번째 페이지 -->
+											<div class="container w500 m30 page">
+												<div class="col-md-12 mb-5 p-4 text-dark rounded">
+													<div class="col-md-8 offset-md-2">
+														<c:forEach var="mbtiSurveyDto" items="${list}">
+															<c:if test="${mbtiSurveyDto.surveyNo < 4}">
+																<div class="text-center">
+																	<div class="row">
+																		<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
+																	</div>
+																	<div class="row my-2">
+																		<button type="button" value="E" class="btn btn-answer1">${mbtiSurveyDto.surveyAnswer1}</button>
+																	</div>
+																	<div class="row mt-2 mb-4">
+																		<button type="button" value="I" class="btn fill btn-answer2">${mbtiSurveyDto.surveyAnswer2}</button>
+																	</div>
+																	<span class="answer" style="display: none;"></span>
+																</div>
+															</c:if>
+														</c:forEach>
+														<span class="answer-record1"></span>
+									
+									
+														<button type="button" class="btn btn-prev mt-1"
+															style="float: left;">이전</button>
+														<button type="button" class="btn btn-next mt-1 ml-2"
+															style="float: right;">다음</button>
+									
+													</div>
+												</div>
+											</div>
+									
+											<!-- 2번째 페이지 -->
+											<div class="container w500 m30 page">
+												<div class="col-md-12 mb-5 p-4 text-dark rounded">
+													<div class="col-md-8 offset-md-2">
+														<c:forEach var="mbtiSurveyDto" items="${list}">
+															<c:if
+																test="${mbtiSurveyDto.surveyNo >= 4 && mbtiSurveyDto.surveyNo < 7}">
+																<div class="text-center">
+																	<div class="row">
+																		<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
+																	</div>
+																	<div class="row my-2">
+																		<button type="button" value="N" class="btn fill btn-answer1">${mbtiSurveyDto.surveyAnswer1}</button>
+																	</div>
+																	<div class="row my-2 mb-4">
+																		<button type="button" value="S" class="btn fill btn-answer2">${mbtiSurveyDto.surveyAnswer2}</button>
+																	</div>
+																	<span class="answer" style="display: none;"></span>
+																</div>
+															</c:if>
+														</c:forEach>
+														<span class="answer-record2"></span>
+									
+														<button type="button" class="btn btn-prev mt-1"
+															style="float: left;">이전</button>
+														<button type="button" class="btn btn-next mt-1"
+															style="float: right;">다음</button>
+													</div>
+												</div>
+											</div>
+									
+											<!-- 3번째 페이지 -->
+											<div class="container w500 m30 page">
+												<div class="col-md-12 mb-5 p-4 text-dark rounded">
+													<div class="col-md-8 offset-md-2">
+														<c:forEach var="mbtiSurveyDto" items="${list}">
+															<c:if
+																test="${mbtiSurveyDto.surveyNo >= 7 && mbtiSurveyDto.surveyNo < 10}">
+																<div class="text-center">
+																	<div class="row">
+																		<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
+																	</div>
+																	<div class="row my-2">
+																		<button type="button" value="F" class="btn fill btn-answer1">${mbtiSurveyDto.surveyAnswer1}</button>
+																	</div>
+																	<div class="row my-2 mb-4">
+																		<button type="button" value="T" class="btn fill btn-answer2">${mbtiSurveyDto.surveyAnswer2}</button>
+																	</div>
+																	<span class="answer" style="display: none;"></span>
+																</div>
+															</c:if>
+														</c:forEach>
+														<span class="answer-record3"></span>
+									
+														<button type="button" class="btn btn-prev mt-1"
+															style="float: left;">이전</button>
+														<button type="button" class="btn btn-next mt-1"
+															style="float: right;">다음</button>
+													</div>
+												</div>
+											</div>
+									
+											<!-- 4번째 페이지 -->
+											<div class="container w500 m30 page">
+												<div class="col-md-12 mb-5 p-4 text-dark rounded">
+													<div class="col-md-8 offset-md-2">
+														<c:forEach var="mbtiSurveyDto" items="${list}">
+															<c:if test="${mbtiSurveyDto.surveyNo >= 10 && mbtiSurveyDto.surveyNo < 13}">
+																<div class="text-center">
+																	<div class="row">
+																		<span class="title my-3">Q${mbtiSurveyDto.surveyNo}.&nbsp;${mbtiSurveyDto.surveyQuestion}</span>
+																	</div>
+																	<div class="row my-2">
+																		<button type="button" value="J" class="btn fill btn-answer1">${mbtiSurveyDto.surveyAnswer1}</button>
+																	</div>
+																	<div class="row my-2 mb-4">
+																		<button type="button" value="P" class="btn fill btn-answer2">${mbtiSurveyDto.surveyAnswer2}</button>
+																	</div>
+																	<span class="answer" style="display: none;"></span>
+																</div>
+															</c:if>
+														</c:forEach>
+														<span class="answer-record4"></span>
+									
+														<button type="button" class="btn btn-prev mt-1"
+															style="float: left;">이전</button>
+														<button type="button" class="btn btn-next mt-1"
+															style="float: right;" @click="callAnimal">다음</button>
+													</div>
+												</div>
+											</div>
+											
+										 	<!-- 5번째 페이지 -->
+										 	<div class="container w500 m30 page">
+												<div class="col-md-12 mb-5 p-4 text-dark rounded">
+													<div class="col-md-8 offset-md-2">
+													
+														<div class="card">
+															<div class="card-title mt-4">
+																<h3 style="color:#3E4684;">잠깐 멈춰보시&nbsp;<span style="color:#F4B759;">개!!</span></h3>
+															</div>
+															<div class="card-img text-center">
+																<img src="${pageContext.request.contextPath}/image/mbti/강아지(ENFP).png" style="width:400px; height:400px">  
+															</div>
+															<div class="card-text text-start mt-4 ms-4 mb-2">
+																<span style="color:#3E4684;">*결과와 같은 프로필로 변경을 원치 않으실 경우 <span style="color:red;">'변경하기'</span> 버튼을 눌러주시개 <br> *결과와 같은 프로필로 변경을 원하실 경우 <span style="color:red;">'+프로필'</span> 버튼을 눌러주시개</span>
+															</div>
+														</div>
+														
+														<button type="button" class="btn btn-prev mt-1"
+															style="float: left;">이전</button>
+														<button type="button" class="btn btn-next mt-1"
+															style="float: right;" @click="callAnimal">다음</button>
+													</div>
+												</div>
+											</div> 
+											
+											<!-- 6번째 페이지 -->
+											<div class="container w500 m30 page">
+												<input type="hidden" name="memberMbti" ref="memberMbti">
+												<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
+													<input type="hidden" name="memberAnimal" :value="memberAnimal.mbtiAnimalDto.animal" v-if="memberAnimal.mbtiAnimalDto != null">
+													<input type="hidden" name="attachNo" :value="memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null">
+													<div class="row">
+														<div class="card" v-if="memberAnimal != null">
+															<div class="card-img text-center">
+																<img src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png" v-if="memberAnimal.attachmentDto == null" style="width:400px; height:400px">  
+																<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null" style="width:400px; height:400px">
+															</div>
+															<h3 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.animal}}</h3> 
+															<h3 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null" style="color:#F7D68A;">{{memberAnimal.mbtiAnimalDto.mbti}}</h3> 
+														</div>
+													</div>
+													<div class="row mt-4">
+														<div class="col-md-12 row text-center">
+															<div class="col-md-6">
+																<button type="submit" class="btn btn-outline-success" style="width: 50%;" @click="memberMbti">변경하기</button>
+															</div>
+															<div class="col-md-6">
+																<button type="submit" class="btn btn-outline-success" style="width: 50%;" @click="changeAnimalProfile">+프로필</button>
+															</div>
+														</div>
+													</div>
+											
+													<div class="row mt-4">
+														<button type="button" class="btn btn-prev">이전</button>
+														<button type="button" class="btn btn-next" style="display:none;">다음</button>
+													</div>
+												</div>
+											</div>
+												
+											</div>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+							
 						</div>
 					</div>
 				</div>
 			</div>
+			
 		</div>
 		                <!--  프로필 모달 -->
       <div v-if="this.blockedDetail!=null">
@@ -612,17 +1242,29 @@ i {
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-	<script src="${root}/js/time.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>	
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<script src="${root}/js/time.js"></script>
 
 <script>
+$(function(){
+	$(".show-detail").each(function(){
+	     $(this).click(function() {
+	        $(this).children("tr").find(".detail").toggle();
+	     });
+	  });
+});
+
 const app = Vue.createApp({
 data() {
 	return {
+		isHidden:{
+			"hidden" : true,
+		},
+		isHidden1:{
+			"hidden1" : true,	
+		},
 		// 지역 목록용
 		address1List1: [],
 		address2List1: [],
@@ -642,18 +1284,71 @@ data() {
 		city2: "${memberDto.memberPlace2}",		
 		city3: "${memberDto.memberPlace3}",		
 		
-		memberList:[],
 		memberNo : ${login},
+		
+		memberList:[],
+		memberClubList: [],		
+		memberMbtiList: [],
+		
+		interest:[],
+		memberAnimal:[],
+		
+		clubPlus:[],
+		
 		blockedList:null,//차단된 회원목록
 		blockedDetail:null,//프로필 정보
 		notBlocked:"",
 	};
 },
-computed: {
-	// 체크박스 갯수제한 3개를 걸 때 이부분에서 계산하면 될 듯 
-	// - 알림창을 여기서 만들면 성능저하가 되기 때문에 계산된 값을 반환해서 메소드에서 알림을 띄워야 한다. 
-},
+computed: {},
 methods: {
+	removeHidden(){
+		this.isHidden["hidden"] = false;
+	},
+	
+	addHidden(){
+		this.isHidden["hidden"] = true; 
+	},
+	
+	removeHidden1(){
+		this.isHidden1["hidden1"] = false;
+	},
+	
+	addHidden1(){
+		this.isHidden1["hidden1"] = true; 
+	},
+	
+	
+	isClubLeader(index){
+		return this.memberClubList[index].clubMemberDto.clubMemberGrade == 1;
+	},
+	isClubMember(index){
+		return this.memberClubList[index].clubMemberDto.clubMemberGrade == 0 && this.memberClubList[index].clubMemberDto.clubMemberPermission == 1;
+	},
+	isLikeClub(index){
+		return this.memberClubList[index].clubLikeDto.clubLikeNo != 0;
+	},
+	waitClub(index){
+		return this.memberClubList[index].clubMemberDto.clubMemberPermission == 0  && this.memberClubList[index].clubMemberDto != null;
+	},
+	rejectClub(index){
+		return this.memberClubList[index].clubMemberDto.clubMemberPermission == 2;
+	},
+	
+	// checkbox 
+	isChecked(value){
+		// 체크박스 갯수제한
+		if(this.interest.length > 3){
+			this.interest?.shift();
+		}
+		return this.interest?.includes(value);
+	},
+	
+	isCheckedPlus(value){
+		if(this.clubPlus.length == 0) return; 
+		return this.clubPlus?.includes(value);
+	},
+	
 	// 시/군/구 추가
 	addCityList1(){
 		if(this.address1No == ""){
@@ -702,6 +1397,127 @@ methods: {
 			this.address2List3.push(...resp.data);
 		})		
 	},
+	//시간 바꾸기
+    elapsedText(date) {
+    	return dateformat.elapsedText(new Date(date));
+    },
+    //moment js
+    convertTime(time){
+    	return moment(time).format('YYYY-MM-DD'); 
+    },
+    
+    memberInterest(){
+    	axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/member_interest",
+			method:"put",
+			data:{
+				memberNo : this.memberNo,
+				memberInterest1 : this.interest[0],
+				memberInterest2 : this.interest[1],
+				memberInterest3 : this.interest[2],
+			},
+		}).then((resp) => {
+			if(resp.data != 0){
+				location.reload();
+				window.alert("관심분야가 정상적으로 변경되었습니다!!");
+			}
+		})			
+    },
+    
+    memberMbti(){
+    	const mbti = this.$refs.memberMbti;
+    	
+    	axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/member_mbti",
+			method:"put",
+			data:{
+				memberNo : this.memberNo,
+				memberMbti : mbti.value,
+			},
+		}).then((resp) => {
+			if(resp.data != 0){
+				location.reload();
+				window.alert("MBTI가 정상적으로 변경되었습니다!!");
+			}
+		})				
+    },
+    
+    callAnimal(){
+    	const mbti = this.$refs.memberMbti;
+    	
+		axios({
+			url:"${pageContext.request.contextPath}/rest/category_n_address/animal/"+mbti.value,
+			method:"get",
+		}).then((resp) => {
+			this.memberAnimal = resp.data;
+		})
+	},
+	
+	changeAnimalProfile(){
+		const mbti = this.$refs.memberMbti;
+		
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/member_mbti_profile",
+			method:"put",
+			data:{
+				memberNo : this.memberNo,
+				memberMbti : mbti.value,
+				memberAnimal : this.memberAnimal.mbtiAnimalDto.animal,
+				attachNo : this.memberAnimal.attachmentDto.attachNo,
+			},
+		}).then((resp) => {
+			location.reload();
+			window.alert("MBTI 및 프로필이 정상적으로 변경되었습니다!");
+		})
+	},
+	
+	changeProfile(){
+		let formData = new FormData();
+		
+		const fileInput = this.$refs.memberProfile;
+		if(fileInput.files.length == 0) return;
+		
+		const fileData = fileInput.files[0];
+		formData.append('attach', fileData);
+		formData.append('memberNo', this.memberNo);
+		formData.append('attachNo', this.memberList.memberProfileDto.attachNo);
+		
+		console.log(this.memberList.memberProfileDto.attachNo);
+		
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/member_profile",
+			method:"post",
+			headers:{
+				"Content-Type" : "multipart/form-data",
+			},
+			data: formData,
+		}).then((resp) => {
+			if(resp.data == 0){
+				window.alert("프로필 변경에 실패했습니다.");
+				return;
+			}
+			window.alert("프로필 변경 완료!");
+			location.reload();
+		});
+	},
+	
+	/* clubPayment(){
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/pay",
+			method:"post",
+			data:{
+				purchase : this.clubPlus,
+			},
+		}).then((resp) => {
+			if(resp.data == 0){
+				window.alert("결제가 실패되었습니다.");
+				return;
+			}
+			window.alert("결제가 완료되었습니다.");
+			location.reload();
+		});
+	}, */
+    
 	//차단된 사용자 목록
 	blocked(){
 		axios({
@@ -737,16 +1553,137 @@ methods: {
 			this.blocked();
 		})
 	},
-	//날짜 표현1
-	elapsedText(date) {
-    	return dateformat.elapsedText(new Date(date));
-    },
-    //날짜 표현2
-    convertTime(time){
-    	return moment(time).format('llll'); // 2022년 7월 4일 월요일 오후 9:46
-
-    },
 },
+mounted(){
+	$(function() {
+		// 현재 페이지 
+		var index = 0;
+
+		// 처음 페이지를 제외하고 모두 숨김 처리
+		move(index);
+
+		// 각 mbti count 변수
+		var count1 = 0;
+		var count2 = 0;
+		var count3 = 0;
+		var count4 = 0;
+		var count5 = 0;
+
+		// mbti 결과 저장 변수
+		var mbti1 = "";
+		var mbti2 = "";
+		var mbti3 = "";
+		var mbti4 = "";
+
+		// 다음 버튼을 누르면 다음 페이지가 나오도록 구현
+		$(".btn-next").not(":last").click(function() {
+			move(++index);
+
+			if (index == 4) {
+				$(".answer").each(function() {
+					if ($(this).text() == 'E') {
+						count1++;
+					} else if ($(this).text() == 'N') {
+						count2++;
+					} else if ($(this).text() == 'F') {
+						count3++;
+					} else if ($(this).text() == 'P') {
+						count4++;
+					} else {
+						count5++;
+					}
+				});
+
+				// mbti 결과 도출
+				if (count1 >= 2) {
+					mbti1 = 'E';
+				} else {
+					mbti1 = 'I';
+				}
+
+				if (count2 >= 2) {
+					mbti2 = 'N';
+				} else {
+					mbti2 = 'S';
+				}
+
+				if (count3 >= 2) {
+					mbti3 = 'F';
+				} else {
+					mbti3 = 'T';
+				}
+
+				if (count4 >= 2) {
+					mbti4 = 'P';
+				} else {
+					mbti4 = 'J';
+				}
+				// mbti결과값 input에 저장
+				var memberMbti = $("input[name=memberMbti]").val(mbti1 + mbti2 + mbti3 + mbti4);
+				
+				// 확인용
+				console.log($("input[name=memberMbti]").val());
+			}
+
+		});
+		// 이전 버튼을 누르면 이전 페이지가 나오도록 구현
+		$(".btn-prev").not(":first").click(function() {
+			move(--index);
+		});
+
+		var mbti;
+
+		// 질문버튼 클릭시 기능
+		$(".btn-answer1").click(
+				function() {
+					// 선택된 값 저장
+					mbti = $(this).val();
+					$(this).parent("div").parent("div").find(".answer").text(
+							mbti);
+
+					// 색변경
+					$(this).css("background-color", "#3E4684");
+					$(this).css("border-color", "#3E4684");
+					$(this).css("border-width", "0.25em");
+					$(this).css("color", "white");
+					$(this).parent("div").parent("div").find(".btn-answer2")
+							.css("background-color", "#F2F2F2");
+					$(this).parent("div").parent("div").find(".btn-answer2")
+							.css("color", "#3E4684");
+					$(this).parent("div").parent("div").find(".btn-answer2")
+					.css("border-color", "#F2F2F2");
+					$(this).parent("div").parent("div").find(".btn-answer2")
+					.css("border-width", "0.25em");
+				});
+		$(".btn-answer2").click(
+				function() {
+					// 선택된 값 저장		
+					mbti = $(this).val();
+					$(this).parent("div").parent("div").find(".answer").text(
+							mbti);
+
+					// 색변경
+					$(this).css("background-color", "#3E4684");
+					$(this).css("border-color", "#3E4684");
+					$(this).css("border-width", "0.25em");
+					$(this).css("color", "white");
+					$(this).parent("div").parent("div").find(".btn-answer1")
+							.css("background-color", "#F2F2F2");
+					$(this).parent("div").parent("div").find(".btn-answer1")
+							.css("color", "#3E4684");
+					$(this).parent("div").parent("div").find(".btn-answer1")
+					.css("border-color", "#F2F2F2");
+					$(this).parent("div").parent("div").find(".btn-answer1")
+					.css("border-width", "0.25em");
+				});
+
+		function move(index) {
+			$(".page").hide();
+			$(".page").eq(index).show();
+		}
+	});
+},
+
 created() {
 		//차단 목록
 		this.blocked();
@@ -766,6 +1703,22 @@ created() {
 			method:"get",
 		}).then((resp) => {
 			this.memberList = resp.data;
+		})	
+		
+		// 회원 소모임 정보
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/club/"+this.memberNo,
+			method:"get",
+		}).then((resp) => {
+			this.memberClubList = resp.data;
+		})	
+		
+		// 회원 mbti 게시판 정보
+		axios({
+			url:"${pageContext.request.contextPath}/rest/mypage/mbti/"+this.memberNo,
+			method:"get",
+		}).then((resp) => {
+			this.memberMbtiList = resp.data;
 		})	
 	},
 });

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import com.kh.e3i1.vo.ClubComplexSearchVO;
 import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubListVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
+import com.kh.e3i1.vo.PurchaseListVO;
 import com.kh.e3i1.vo.ClubMemberProfileVO;
 
 @CrossOrigin(
@@ -98,6 +100,14 @@ public class ClubRestController {
 		return clubMemberDao.insert(clubMemberDto);
 	}
 	
+	@DeleteMapping("/member/{memberNo}/{clubNo}")
+	public int deleteClubMember(
+				@PathVariable int memberNo,
+				@PathVariable int clubNo
+			) {
+		return clubMemberDao.delete(memberNo, clubNo);
+	}
+	
 	// 소모임 좋아요
 	@PostMapping("/like")
 	public int likeClub(@RequestBody ClubLikeDto clubLikeDto) {
@@ -137,6 +147,12 @@ public class ClubRestController {
 	public int refuseClub(@RequestBody ClubMemberDto clubMemberDto) {
 		return clubMemberDao.refuseClub(clubMemberDto);
 	}
+	
+	// 소모임 결제
+//	@PostMapping("/pay")
+//	public int clubPayment(@ModelAttribute PurchaseListVO listVO) {
+//		return 
+//	}
 	
 	// 회원 목록 프로필-> 프로필 조회
 	@GetMapping("/modal/{memberNo}")

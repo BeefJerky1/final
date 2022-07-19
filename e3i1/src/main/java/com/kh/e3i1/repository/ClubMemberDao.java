@@ -16,6 +16,9 @@ public interface ClubMemberDao {
 	
 	//소모임 멤버확인용
 	int check(int clubNo, int memberNo);
+	// 중복 가입 방지
+	ClubMemberDto exist(int clubNo, int memberNo);
+	int delete(int memberNo, int clubNo);
 	// 멤버 프로필 불러오기
 	ClubMemberListVO memberProfile(int memberNo);
 }

@@ -42,6 +42,12 @@ public interface MemberDao {
 	List<MemberDto> list();
 
 	MemberDetailVO mypageMember(int memberNo);
+
+	List<MemberDetailVO> mypageClub(int memberNo);
+
+	List<MemberDetailVO> mypageMbti(int memberNo);
+
+	int mypageInterest(MemberDto memberDto);
 	
 	//회원 차단
 	int blockTarget(BlockedDto blockedDto);

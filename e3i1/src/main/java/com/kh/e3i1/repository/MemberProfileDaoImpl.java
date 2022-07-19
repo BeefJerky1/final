@@ -20,5 +20,13 @@ public class MemberProfileDaoImpl implements MemberProfileDao {
 		param.put("attachNo", attachNo);
 		return sqlSession.insert("memberProfile.insert", param);
 	}
+	
+	@Override
+	public int update(int memberNo, int attachNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberNo", memberNo);
+		param.put("attachNo", attachNo);
+		return sqlSession.insert("memberProfile.update", param);
+	}
 
 }
