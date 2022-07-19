@@ -273,9 +273,9 @@ a:hover {
 					<div class="row mt-4 " v-for="(member, index) in clubMemberList" :key="index" style="width: 25%; float: left;">
 						<div class="col text-center" >
 							<!-- memberProfile 연결되면 프로필 사진으로 찍기 -->
-						<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="clubMemberList[index].memberProfileDto.attachNo == null">
-						<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubMemberList[index].memberProfileDto.attachNo"
-								class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="clubMemberList[index].memberProfileDto.attachNo != null">  
+						<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="member.memberProfileDto == null">
+						<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+member.memberProfileDto.attachNo"
+								class="mbtitop" style="width: 50px; height: 50px; border: 1.5px solid #3E4684;" v-if="member.memberProfileDto != null">  
 				<%-- 			<img src="${root }/image/mbti/강아지(ENFP).png" class="memberPhoto mbtitop"
 								style="width: 50px; height: 50px; border: 1.5px solid #3E4684; border-radius: 50%; box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;"> --%>
 							<div v-on:click="removeHidden2()" class="clubMemberList">
@@ -296,13 +296,13 @@ a:hover {
 								<div class="modal-body">
 									<div class="row">
 										<div class="col-lg-4 col-md-4 col-sm-4">
-						<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"style="width: 100px; height: 100px;" v-if="memberProfile.memberProfileDto.attachNo == null"> 
+						<img src="${root }/image/mbti/강아지(ENFP).png" class="mbtitop"style="width: 100px; height: 100px;" v-if="memberProfile.memberProfileDto == null"> 
 						<!-- ps. 사진 경로 지정이 안 되네요 ㅠㅠ  memberProfile은 이미 index값을 같이 불러온 객체입니다 -->
 						<img
 								:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberProfile.memberProfileDto.attachNo"
 								class="mbtitop"
 								style="width: 100px; height: 100px; border: 1.5px solid #3E4684;"
-								v-if="memberProfile.memberProfileDto.attachNo != null">
+								v-if="memberProfile.memberProfileDto != null">
 										</div>
 										<div class="col-lg-8 col-md-8 col-sm-8" class="text-start">
 											<h4>
@@ -354,7 +354,8 @@ a:hover {
 
 		<!-- 오른쪽 사이드바 -->
 		<div class="col-md-3">
-			<button class="btn-create shadow" v-on:click="removeHidden">소모임 가입 신청</button>
+			<button class="btn-create shadow" v-on:click="removeHidden" v-if="isLimit">소모임 가입 신청</button>
+			<button class="btn-create shadow" v-on:click="sorry" v-if="!isLimit">소모임 가입 신청</button>
 			<div class="list-group mt-2" v-if="clubList.clubDto != null">
 				<a class="list-group-item list-group-item-action disabled boldfontS"
 					style="color: #3E4684;">소모임</a> <a
@@ -509,7 +510,13 @@ computed: {
 	},
 },
 methods: {
-	
+	// 소모임 인원제한
+	isLimit(){
+		return this.clubList.clubDto.clubMemberLimit == this.clubList.clubMbtiPercent.total; 
+	},
+	sorry(){
+		window.alert("소모임 정원이 모두 찼습니다.");
+	},
 	
 	// 모달로 프로필 조회
 	 modal(index){

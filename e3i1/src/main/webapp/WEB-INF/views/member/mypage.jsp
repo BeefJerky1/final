@@ -299,8 +299,9 @@ input[type="radio"]{
 								<table class="table text-center">
 									<thead>
 										<tr>
-											<th style="width: 45%;"></th>
 											<th style="width: 40%;"></th>
+											<th style="width: 30%;"></th>
+											<th style="width: 15%;"></th>
 											<th style="width: 15%;"></th>
 										</tr>
 									</thead>
@@ -314,6 +315,7 @@ input[type="radio"]{
 											<td  v-if="waitClub(index) && memberClub.clubDto != null">
 												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubMainCategory}}</span>
 												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubSubCategory}}</span>
+												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubPlace}}</span>
 												<span class="tableInterest mx-2">\#{{memberClub.clubDto.clubPlace}}</span>
 											</td>
 										 	<td  v-if="waitClub(index) && memberClub.clubDto != null">
