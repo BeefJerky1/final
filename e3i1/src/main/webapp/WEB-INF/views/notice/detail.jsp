@@ -115,8 +115,8 @@
 										<label for="floatingInput">제목</label>
 									</div>
 									
-									<div class="form-floating mb-3">
-										<input type="file" accept="img/*" name="attachment">
+									<div class="mb-3">
+										<input type="file" accept="img/*" name="attachment" class="form-control form-control-sm" id="formFileSm">
 									</div>
 
 									<div class="form-floating mb-3">
