@@ -68,4 +68,10 @@ public class MessageRestController {
 	public int deleteMessage(@PathVariable int messageNo) {
 		return messageDao.deleteMessage(messageNo);
 	}
+	
+	// 새메시지 조회
+	@GetMapping("/new/{memberNo}")
+	public List<MessageVO> newMessage(@PathVariable int memberNo) {
+		return messageDao.newMessage(memberNo);
+	}
 }
