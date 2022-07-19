@@ -5,6 +5,13 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 <style>
+@font-face {
+    font-family: 'GongGothicMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 a {
 		text-decoration: none;
 }
@@ -14,12 +21,19 @@ a {
 }
 
 .main-title {
-	font-weight : bold;
+    font-family: 'GongGothicMedium';
 	font-size : 2.5rem;	
 	color : #3e4684;
-
 }
 
+.mainArea {
+	font-family: 'GongGothicMedium';
+}
+
+.clubName {
+	font-family: 'GongGothicMedium';
+	color: #3e4684;
+}
 .main-content {
 	padding : 2em;
 	margin : 2em;
@@ -39,7 +53,10 @@ a {
 
 .club-category {
 	background-color : #e9e9e9;
+	padding : 0.3em 0.3em;
+	border-radius : 1em;
 	color : #454b54;
+	font-weight : 600;
 }
 </style>
     <body class="d-flex flex-column min-vh-100">
@@ -161,7 +178,7 @@ a {
     
                 <div class="main-area text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 600px;">
                 <h6 class="second-title">Persnal Club</h6>
-                <h1 class="mb-4 main-title">This Week Best Community <i class="fa-solid fa-crown" style="color:#f7d68a"></i></h1>
+                <h1 class="mb-4 main-title">지금 Hot한 소모임 &nbsp;<i class="fa-solid fa-crown" style="color:#f7d68a"></i></h1>
             </div>
     
     <!-- 소모임 보여주기 -->
@@ -172,7 +189,7 @@ a {
                             <div class="service-icon">
                                 <i class="fa-solid fa-face-smile fa-3x"></i>
                             </div>
-                            <h4 class="mb-3">{{club.clubDto.clubName}}</h4>
+                            <h4 class="mb-3 clubName">{{club.clubDto.clubName}}</h4>
                             <span class="club-category">\#{{club.clubDto.clubMainCategory}}</span>&nbsp;
                             <span class="club-category">\#{{club.clubDto.clubSubCategory}}</span><br>
                             <span><a class="small fw-medium second-title" >Read More
@@ -194,7 +211,7 @@ a {
                             <div class="service-icon">
                                 <i class="fa-solid fa-face-smile fa-3x"></i>
                             </div>
-                            <h4 class="mb-3">{{board.mbtiBoardDto.mbtiBoardTitle}}</h4>
+                            <h4 class="mb-3 clubName">{{board.mbtiBoardDto.mbtiBoardTitle}}</h4>
                             <span class="club-category">\#{{board.memberDto.memberMbti}}</span>&nbsp;
                             <span class="club-category">\#{{board.memberDto.memberAnimal}}</span><br>
                             <span><a class="small fw-medium second-title" >Read More
