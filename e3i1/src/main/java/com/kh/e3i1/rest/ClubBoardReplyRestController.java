@@ -48,8 +48,8 @@ public class ClubBoardReplyRestController {
 		return clubBoardReplyDao.listAll(clubBoardNo,likeMemberNo);
 	}
 	@DeleteMapping("/{replyNo}")
-	public void delete(@PathVariable int replyNo) {
-		clubBoardReplyDao.delete(replyNo);
+	public int delete(@PathVariable int replyNo) {
+		return clubBoardReplyDao.delete(replyNo);
 	}
 	@PutMapping("/")
 	public ClubBoardReplyDto edit(@RequestBody ClubBoardReplyDto clubBoardReplyDto) {

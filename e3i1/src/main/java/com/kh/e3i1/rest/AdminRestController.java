@@ -169,7 +169,7 @@ public class AdminRestController {
 	public int mbtiAnimalDelete(@PathVariable int animalNo) {
 		return adminDao.mbtianimalDelete(animalNo);
 	}
-
+	
 	
 	
 	

@@ -449,7 +449,7 @@ position:relative;
 							<span class="clubModal">SNS <i class="fa-brands fa-instagram"></i> {{Mprofile.memberDto.memberSnsId}}</span>
 							</a>
 						</div>
-						<div class="mt-3 mb-2">
+						<div class="mt-3 mb-2 text-start">
 							<span class="clubModal"  style="float: left;width: inherit;margin-top: 0.2em;">나의 관심분야</span><br>
 							<div class="mb-1"  style="float:left;">
 								<span class="clubModalInterest">{{Mprofile.memberDto.memberInterest1}}</span>
@@ -528,6 +528,7 @@ position:relative;
         </div>
         </div>
         <!-- 우측 사이드  -->
+    </div>
        <div class="col-lg-3 col-md-3 col-sm-3  right-side mt-5 ">
        			<div v-if="this.clubMember==1 || this.memberAdmin =='관리자'" class="mt-3">
         			<button class="btn btn-secondary form-control shadow" v-on:click="notAllowed()" v-if="cancel " style="border-radius:1em !important">cancel</button>
@@ -586,7 +587,6 @@ position:relative;
 
             </div>
         </div>
-    </div>
     </div>
 </div>
 </body>
