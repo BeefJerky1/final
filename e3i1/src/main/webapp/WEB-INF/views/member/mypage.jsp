@@ -1739,7 +1739,7 @@ mounted(){
 	// success 처리 
 	if(this.success == 2){
 		window.alert("비밀번호 변경에 성공했습니다.");
-
+	}
 	// error 처리
 	if(this.error == 3){
 		window.alert("가입 가능 회원수가 200명이 넘기 때문에 더이상 증가는 불가능합니다.");
