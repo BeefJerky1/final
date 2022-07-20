@@ -9,6 +9,9 @@
 	href="${pageContext.request.contextPath}/css/modal.css">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/club.css">
+<link rel="stylesheet" type="text/css" href="${root}/css/sidebars.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/club.css">
 	<style>
 	.memberPhoto:hover {
 	transform: scale(1.05);

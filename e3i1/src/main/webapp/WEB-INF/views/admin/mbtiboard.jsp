@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
+<c:set var="memberNo" value="${login}"></c:set>
+<c:set var="memberAdmin" value="${auth}"></c:set>
+<c:set var="isLogin" value="${memberNo != null}"></c:set>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -21,6 +24,8 @@
 	integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" type="text/css" href="${root}/css/sidebars.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/club.css">
 <style>
 .cont {
 	background-color: white;
@@ -76,7 +81,7 @@ li a:hover {
 					<a href="${root}"><img class="logo-item"
 						src="${root }/image/LOGO.png"></a>
 					<div class="row p-4 border-bottom">
-						<span class="fs-5 fw-semibold">관리자 페이지</span>
+						<span class="fs-5 fw-semibold"><a href="${root}/admin/">관리자 페이지</a></span>
 					</div>
 					 <ul class="list-unstyled ps-0 p-4">
       <li class="mb-1">
@@ -86,7 +91,6 @@ li a:hover {
         <div class="collapse" id="user-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/member" class="link-light rounded">회원 목록</a></li>
-            <li><a href="#" class="link-light rounded">회원 차트</a></li>
           </ul>
         </div>
       </li>
@@ -97,7 +101,6 @@ li a:hover {
         <div class="collapse" id="club-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/club" class="link-light rounded">소모임 목록</a></li>
-            <li><a href="#" class="link-light rounded">소모임 차트</a></li>
           </ul>
         </div>
       </li>
@@ -108,7 +111,6 @@ li a:hover {
         <div class="collapse" id="board-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/mbtiboard" class="link-light rounded">게시글 목록</a></li>
-            <li><a href="#" class="link-light rounded">게시글 차트</a></li>
           </ul>
         </div>
       </li>
@@ -138,58 +140,18 @@ li a:hover {
     </ul>
   </div>
   	</div>
-  	<div class="col-lg-9 col-md-9 col-sm-9 mb-5">
-				<div class="row">
-					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 mb-5 p-4">
-						<h1>mbti 게시판 목록 (총:{{count}}개 )</h1>
+  	<!-- 중앙 -->
+  	<div class="col-lg-6 col-md-6 col-sm-6 mb-5">
+			<div class="card">
+				<div class="card-body">
+					<div class="card-title text-center mt-2">
+						<span class="boldfontL"  style="color:#3E4684;">MBTI 게시판 관리</span>
 					</div>
-					<div class="col-lg-12 col-md-12 col-sm-12 p-4 text-start">
-						<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4 text-start">
-						<div class="row">
-							<div class="col-lg-4 col-md-4 col-sm-4">
-							<h5>검색</h5>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="memberNo" id="memberNo" placeholder="회원번호" >	
-									<label for="memberNo">회원번호</label>
-							</form>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="mbtiBoardNo" id="mbtiBoardNo" placeholder="게시글번호" >	
-									<label for="mbtiBoardNo">게시글번호</label>
-							</form>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="mbtiBoardTitle" id="mbtiBoardTitle"  placeholder="제목">	
-									<label for="mbtiBoardTitle">제목</label>
-							</form>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="mbtiBoardContent" id="mbtiBoardContent"  placeholder="내용">	
-									<label for="mbtiBoardContent">내용</label>
-							</form>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="mbtiBoardReplyCount" id="mbtiBoardReplyCount"  placeholder="조회수">	
-									<label for="mbtiBoardReplyCount">댓글수</label>
-							</form>          
-							  </div>
-						<div class="col-lg-4 col-md-4 col-sm-4">
-							<h5>정렬</h5>
-							<select class="form-control" v-model="column" v-on:change="mbtiBoardList()">
-								<option value="member_no">회원번호</option>
-								<option value="mbti_board_no">게시글번호</option>
-								<option value="mbti_board_title">제목</option>
-								<option value="mbti_board_reply_count">댓글수</option>
-							</select>
-							<select class="form-control mb-5" v-model="order" v-on:change="mbtiBoardList()">
-								<option value="asc">오름차순</option>
-								<option value="desc">내림차순</option>				
-							</select>
-							<button type="button" class="btn btn-primary form-control" v-on:click="search()">조회</button>
-							<button type="button" class="btn btn-success form-control" v-on:click="reset()">초기화</button>
-						</div>
-						 </div>
-						</div>
-						</div>	
-					<div class="col-lg-12 col-md-12 col-sm-12">
-						<table class="table text-center">
-							<thead class="tableInterest2">
+				</div>
+				<div class="card-body">
+				
+				 	 <table class="table table-hover text-center mb-4">
+						<thead class="boldfontS">
 								<tr>
 									<th>게시글 번호</th>
 									<th>회원 번호</th>
@@ -227,6 +189,55 @@ li a:hover {
 					<button type="button" v-on:click="appendBoard()" :disabled="this.dataFull == true" class="form-control btn-outline-primary " style="border-radius:1em !important">
         더보기 ({{showBoard}}/{{totalBoard}})
 				</div>
+				
+			</div><!-- 중앙 끝 -->
+			<!-- 오른쪽 사이드 -->
+			<div class="col-lg-3 col-mg-3 col-sm-3">
+			<div class="col-lg-12 col-md-12 col-sm-12 mt-5 mb-5 p-4">
+						<h5>mbti 게시판 목록 (총:{{count}}개 )</h5>
+					</div>
+						<div class="col-lg-12 col-md-12 col-sm-12 p-4 text-start">
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12">
+							<h5>검색</h5>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="memberNo" id="memberNo" placeholder="회원번호" >	
+									<label for="memberNo">회원번호</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="mbtiBoardNo" id="mbtiBoardNo" placeholder="게시글번호" >	
+									<label for="mbtiBoardNo">게시글번호</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="mbtiBoardTitle" id="mbtiBoardTitle"  placeholder="제목">	
+									<label for="mbtiBoardTitle">제목</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="mbtiBoardContent" id="mbtiBoardContent"  placeholder="내용">	
+									<label for="mbtiBoardContent">내용</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="mbtiBoardReplyCount" id="mbtiBoardReplyCount"  placeholder="조회수">	
+									<label for="mbtiBoardReplyCount">댓글수</label>
+							</form>          
+							  </div>
+						<div class="col-lg-12 col-md-12 col-sm-12">
+							<h5>정렬</h5>
+							<select class="form-control" v-model="column" v-on:change="mbtiBoardList()">
+								<option value="member_no">회원번호</option>
+								<option value="mbti_board_no">게시글번호</option>
+								<option value="mbti_board_title">제목</option>
+								<option value="mbti_board_reply_count">댓글수</option>
+							</select>
+							<select class="form-control mb-5" v-model="order" v-on:change="mbtiBoardList()">
+								<option value="asc">오름차순</option>
+								<option value="desc">내림차순</option>				
+							</select>
+							<button type="button" class="btn btn-outline-primary form-control" v-on:click="search()">조회</button>
+							<button type="button" class="btn btn-outline-success form-control" v-on:click="reset()">초기화</button>
+						</div>
+						 </div>
+						</div>	
 			</div>
   	
   </div>

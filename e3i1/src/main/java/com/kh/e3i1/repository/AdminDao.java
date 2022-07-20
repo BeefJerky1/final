@@ -13,6 +13,8 @@ import com.kh.e3i1.entity.MbtiAnimalDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.entity.PaymentDetailDto;
+import com.kh.e3i1.entity.PaymentDto;
 import com.kh.e3i1.vo.AdminClubSearchVO;
 import com.kh.e3i1.vo.AdminMbtiAnimalListVO;
 import com.kh.e3i1.vo.AdminSearchVO;
@@ -78,6 +80,12 @@ public interface AdminDao {
 	int insertMbtiAnimal(MbtiAnimalDto mbtiAnimalDto);
 	//동물 삭제
 	int mbtianimalDelete(int animalNo);
+	//결제 목록
+	List<PaymentDto> paymentList(String column, String order);
+	//결제 상세
+	PaymentDetailDto paymentDetail(int paymentNo);
+	//결제 검색
+	List<PaymentDto> paymentSearch(AdminSearchVO searchVO);
 	
 
 

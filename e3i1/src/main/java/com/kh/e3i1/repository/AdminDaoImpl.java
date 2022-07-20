@@ -20,6 +20,8 @@ import com.kh.e3i1.entity.MbtiAnimalDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.entity.PaymentDetailDto;
+import com.kh.e3i1.entity.PaymentDto;
 import com.kh.e3i1.vo.AdminClubSearchVO;
 import com.kh.e3i1.vo.AdminMbtiAnimalListVO;
 import com.kh.e3i1.vo.AdminSearchVO;
@@ -215,6 +217,22 @@ public class AdminDaoImpl implements AdminDao{
 		}else {
 			return 1;
 		}
+	}
+	//결제 목록
+	@Override
+	public List<PaymentDto> paymentList(String column, String order) {	
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("column", column);
+		param.put("order", order);
+		return sqlSession.selectList("admin.paymentlist", param);
+	}
+	@Override
+	public PaymentDetailDto paymentDetail(int paymentNo) {
+		return sqlSession.selectOne("admin.paymentdetail", paymentNo);
+	}
+	@Override
+	public List<PaymentDto> paymentSearch(AdminSearchVO searchVO) {
+		return sqlSession.selectList("admin.paymentsearch", searchVO);
 	}
 	
 
