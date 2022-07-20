@@ -34,6 +34,10 @@ public interface ClubDao {
 
 	boolean isLimit(int clubNo, int clubPlusNo);
 
-	ClubMemberDto isClubMember(int clubNo, int memberNo); 
+	ClubMemberDto isClubMember(int clubNo, int memberNo);
+
+	List<ClubDto> isClubLeader(int memberNo);
+
+	int passLeader(ClubDto clubDto); 
 
 }

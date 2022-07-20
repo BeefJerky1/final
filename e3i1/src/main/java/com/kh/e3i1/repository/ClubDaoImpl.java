@@ -16,12 +16,16 @@ import com.kh.e3i1.vo.ClubComplexSearchVO;
 import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubLikeVO;
 import com.kh.e3i1.vo.ClubListVO;
+import com.kh.e3i1.vo.ClubMemberListVO;
 
 @Repository
 public class ClubDaoImpl implements ClubDao {
 	
 	@Autowired
 	private SqlSession sqlSession;
+	
+	@Autowired
+	private ClubMemberDao clubMemberDao;
 	
 	// 소모임 전체목록
 	@Override
@@ -147,6 +151,31 @@ public class ClubDaoImpl implements ClubDao {
 		param.put("clubNo", clubNo);
 		param.put("memberNo", memberNo);
 		return sqlSession.selectOne("club.isClubMember", param);
+	}
+	
+	@Override
+	public List<ClubDto> isClubLeader(int memberNo) {
+		return sqlSession.selectList("club.isLeader",memberNo);
+	}
+
+	// 소모임 회원한테 리더 양도
+	@Override
+	public int passLeader(ClubDto clubDto) {
+		List<ClubMemberListVO> list = clubMemberDao.select(clubDto.getClubNo());
+		System.out.println("회원수 : "+list.size());
+		// 만약 소모임 회원이 나뿐이라면 양도없이 그냥 소모임 삭제
+		if(list.size() <= 1) {
+			sqlSession.delete("club.delete",clubDto.getClubNo());
+			return 0;
+		}
+		int nextLeader = list.get(0).getClubMemberDto().getMemberNo();
+		System.out.println("nextLeader:"+nextLeader);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("nextLeader", nextLeader);
+		param.put("clubNo", clubDto.getClubNo());
+		sqlSession.update("club.passLeader", param);
+		return nextLeader;
 	}
 	
 }

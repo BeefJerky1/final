@@ -39,4 +39,8 @@
 			member_no = #{memberNo}
 	</update>
 	
+	<select id="one" parameterType="int" resultType="MemberProfileDto">
+		select * from member_profile where member_no = #{memberNo}
+	</select>
+	
 </mapper>

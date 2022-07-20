@@ -15,4 +15,6 @@ public interface MemberService {
 
 	int mypageMemberProfile(MemberDto memberDto, MultipartFile attach) throws IllegalStateException, IOException;
 
+	boolean mypageMemberExit(MemberDto memberDto);
+
 }

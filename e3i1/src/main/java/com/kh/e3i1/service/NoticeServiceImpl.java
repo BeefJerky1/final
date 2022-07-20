@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.entity.NoticeDto;
 import com.kh.e3i1.repository.AttachmentDao;
 import com.kh.e3i1.repository.NoticeAttachDao;
@@ -40,7 +41,7 @@ public class NoticeServiceImpl implements NoticeService{
 	@Override
 	public boolean edit(NoticeDto noticeDto, MultipartFile noticeAttach, int attachNo) throws IllegalStateException, IOException {
 		boolean success = noticeDao.edit(noticeDto);
-		if(success) {
+		if(!noticeAttach.isEmpty()) {
 			int newAttachNo = attachmentDao.save(noticeAttach);
 			if(attachNo != 269) {
 				attachmentDao.delete(attachNo);

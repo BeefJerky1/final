@@ -348,6 +348,7 @@ a:hover {
 
 				</div>
 			</div>
+				<button class="btn-create shadow mt-4" @click="deleteClub" v-if="isClubMember">소모임 탈퇴</button>
 		</div>
 
 
@@ -374,7 +375,6 @@ a:hover {
 					:href="'${pageContext.request.contextPath}/club/edit?clubNo='+clubList.clubDto.clubNo">소모임
 					관리</a>
 			</div>
-			<button class="btn-create shadow mt-4" @click="deleteClub" v-if="isClubMember">소모임 탈퇴</button>
 
 		</div>
 

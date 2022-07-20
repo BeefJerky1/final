@@ -1,18 +1,20 @@
 package com.kh.e3i1.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.entity.MemberProfileDto;
 import com.kh.e3i1.repository.AttachmentDao;
+import com.kh.e3i1.repository.ClubDao;
 import com.kh.e3i1.repository.MemberDao;
 import com.kh.e3i1.repository.MemberProfileDao;
-import com.kh.e3i1.vo.AnimalPhotoVO;
-import com.kh.e3i1.vo.MemberDetailVO;
 
 
 @Service
@@ -23,6 +25,12 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	private MemberProfileDao memberProfileDao;
+	
+	@Autowired
+	private ClubDao clubDao;
+	
+	@Autowired
+	private ClubService clubService;
 	
 	@Autowired
 	private AttachmentDao attachmentDao;
@@ -67,5 +75,26 @@ public class MemberServiceImpl implements MemberService {
 		}
 		
 		return newAttachNo;
+	}
+	
+	// 회원 탈퇴
+	@Transactional
+	@Override
+	public boolean mypageMemberExit(MemberDto memberDto) {
+		MemberProfileDto memberProfileDto = memberProfileDao.one(memberDto.getMemberNo());
+		
+		// 해당회원이 운영하는 소모임 정보
+		List<ClubDto> list = clubDao.isClubLeader(memberDto.getMemberNo());
+		if(list.isEmpty()) {
+			return memberDao.exit(memberDto.getMemberEmail(), memberDto.getMemberPw());
+		}
+		// 운영중인 소모임 전부 양도
+		int count = 0;
+		for(ClubDto clubDto : list) {
+			clubService.passLeader(clubDto);
+			count += 1;
+		}
+		System.out.println("마지막관문"+count);
+		return memberDao.exit(memberDto.getMemberEmail(), memberDto.getMemberPw()); 
 	}
 }
