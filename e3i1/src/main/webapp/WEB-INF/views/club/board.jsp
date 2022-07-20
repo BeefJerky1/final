@@ -706,10 +706,18 @@ position:relative;
             			},
             		}).then((resp) => {
             			if(resp.data == 0){
-            				window.alert("좋아요 취소");
+            				Swal.fire({
+              			         title: '좋아요 취소!',
+              			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+          		    			  imageWidth : 100
+       	        		  	        			 })
             				return;
             			}
-            			window.alert("좋아요 완료!");
+            			Swal.fire({
+          			         title: '좋아요.!',
+          			          imageUrl : '${pageContext.request.contextPath}/image/smile.png',
+      		    			  imageWidth : 100
+   	        		  	        			 })
             		});
             	},
             	//main
@@ -845,7 +853,11 @@ position:relative;
 		        	})
 		        	.then(resp=>{
 		        		//완성 시 코드
-		        		window.confirm("게시글 등록이 완료되었습니다!");
+		        		              		Swal.fire({
+       			         title: '게시글 등록이 완료되었습니다.!',
+       			          imageUrl : '${pageContext.request.contextPath}/image/smile.png',
+   		    			  imageWidth : 100
+	        		  	        			 })
 		        		this.boardContent = "";
 		        		this.loadClubBoardList();
 		        		this.notAllowed();
@@ -857,7 +869,11 @@ position:relative;
                 		const clubBoard = this.board[index];
                     	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+clubBoard.clubBoardDto.clubBoardNo;
                 	}else{
-                		window.alert("소모임 회원만 사용할 수 있는 컨텐츠입니다.")
+                  		Swal.fire({
+          			         title: '소모임 회원만 이용할 수 있는 컨텐츠입니다.!',
+          			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+      		    			  imageWidth : 100
+   	        		  	        			 })
                 		return;
                 	}
                 	},
@@ -867,8 +883,11 @@ position:relative;
                 		const list = this.side[index];
 	                	window.location.href='http://localhost:8080/e3i1/club/board_detail?clubBoardNo='+list.clubBoardNo;            		
                 	}else{
-                		window.alert("소모임 회원만 사용할 수 있는 컨텐츠입니다.")
-                		return;
+                		Swal.fire({
+       			         title: '소모임 회원만 이용할 수 있는 컨텐츠입니다.!',
+       			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+   		    			  imageWidth : 100
+	        		  	        			 })
                 	}
                 	
                 },
