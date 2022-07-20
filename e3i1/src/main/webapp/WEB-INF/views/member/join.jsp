@@ -5,21 +5,24 @@
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/member.css">
 <style>
-	
+.grayback{
+	background-color: #E2E2E2;
+	padding: 2px;
+}
 </style>
 
 
 <div id="app" class="container-fluid">
 	<form action="join" method="post">
 		<div class="row mt-4 p-2">
-			<div class="col-md-8 offset-md-2 text-dark rounded">
+			<div class="col-md-8 offset-md-2 ">
 				<div class="row text-center">
 					<span class="point">회원가입</span>
 				</div>
 
 				<div class="container w500 m30 page">
 					<div class="col-md-6 offset-md-3">
-						<div class="form-floating mt-4 mb-3">
+						<div class="form-floating mt-5 mb-3">
 							<input type="text" class="form-control" name="memberEmail" v-bind:class="emailClassObject" v-model="member.memberEmail" v-on:blur="idValidation"
 								autocomplete="off" required> <label for="floatingInput">Email
 								Address</label>
@@ -143,8 +146,11 @@
 		</div>
 		<!-- 2번째 페이지 -->
 		<div class="container w500 m30 page">
-			<div class="col-md-8 offset-md-2 mb-2 p-4 text-dark rounded">
+			<div class="col-md-8 offset-md-2 p-4 mb-2">
 				<div class="col-md-8 offset-md-2">
+				<div class="boldfontM text-center mb-1">
+				<i class="fa-solid fa-quote-left"></i>&nbsp;MBTI 성향테스트를 진행하세요!&nbsp;<i class="fa-solid fa-quote-right"></i>
+				</div>
 					<c:forEach var="mbtiSurveyDto" items="${list}">
 						<c:if test="${mbtiSurveyDto.surveyNo < 4}">
 							<div class="text-center">
@@ -165,9 +171,9 @@
 					<span class="answer-record1"></span>
 
 
-					<button type="button" class="btn btn-prev mt-1"
+					<button type="button" class="btn btn-prev mt-3"
 						style="float: left;">이전</button>
-					<button type="button" class="btn btn-next mt-1 ml-2"
+					<button type="button" class="btn btn-next mt-3 ml-2"
 						style="float: right;">다음</button>
 
 				</div>
@@ -176,7 +182,7 @@
 
 		<!-- 3번째 페이지 -->
 		<div class="container w500 m30 page">
-			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark rounded">
+			<div class="col-md-8 offset-md-2 mb-5 p-4">
 				<div class="col-md-8 offset-md-2">
 					<c:forEach var="mbtiSurveyDto" items="${list}">
 						<c:if
@@ -198,9 +204,9 @@
 					</c:forEach>
 					<span class="answer-record2"></span>
 
-					<button type="button" class="btn btn-prev mt-1"
+					<button type="button" class="btn btn-prev mt-3"
 						style="float: left;">이전</button>
-					<button type="button" class="btn btn-next mt-1"
+					<button type="button" class="btn btn-next mt-3"
 						style="float: right;">다음</button>
 				</div>
 			</div>
@@ -208,7 +214,7 @@
 
 		<!-- 4번째 페이지 -->
 		<div class="container w500 m30 page">
-			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark rounded">
+			<div class="col-md-8 offset-md-2 mb-5 p-4">
 				<div class="col-md-8 offset-md-2">
 					<c:forEach var="mbtiSurveyDto" items="${list}">
 						<c:if
@@ -230,9 +236,9 @@
 					</c:forEach>
 					<span class="answer-record3"></span>
 
-					<button type="button" class="btn btn-prev mt-1"
+					<button type="button" class="btn btn-prev mt-3"
 						style="float: left;">이전</button>
-					<button type="button" class="btn btn-next mt-1"
+					<button type="button" class="btn btn-next mt-3"
 						style="float: right;">다음</button>
 				</div>
 			</div>
@@ -240,7 +246,7 @@
 
 		<!-- 5번째 페이지 --> 
 		<div class="container w500 m30 page">
-			<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark rounded">
+			<div class="col-md-8 offset-md-2 mb-5 p-4">
 				<div class="col-md-8 offset-md-2">
 					<c:forEach var="mbtiSurveyDto" items="${list}">
 						<c:if test="${mbtiSurveyDto.surveyNo >= 10 && mbtiSurveyDto.surveyNo < 13}">
@@ -261,19 +267,21 @@
 					</c:forEach>
 					<span class="answer-record4"></span>
 
-					<button type="button" class="btn btn-prev mt-1"
+					<button type="button" class="btn btn-prev mt-3"
 						style="float: left;">이전</button>
-					<button type="button" class="btn btn-next mt-1"
+					<button type="button" class="btn btn-next mt-3"
 						style="float: right;">다음</button>
 				</div>
 			</div>
 		</div>
 
 		<!-- 6번째 페이지 -->
-		<div class="container w500 m30 page mb-5" style="height:570px;">
-			<div class="col-md-8 offset-md-2 mb-5 text-dark rounded">
+		<div class="container w500 m30 page mb-5" style="height:600px;">
+			<div class="col-md-8 offset-md-2 mb-5 mt-3">
 				<input type="hidden" name="memberMbti" ref="memberMbti">
-
+				<div class="grayback text-center boldfont mb-3">
+					<i class="fa-solid fa-tag"></i>&nbsp;관심태그 3가지를 설정하세요!
+				</div>
 				<div class="row row-cols-1 row-cols-md-3 g-10 my-2">
 					<div class="col">
 						<div class="card my-2" :class="{'checked':isChecked('\#인스타그래머')}" style="width: 15rem; border-radius: 30px;">
@@ -438,19 +446,24 @@
 				<input type="hidden" name="memberInterest3" :value="interest[2]">
 				<input type="hidden" name="attachNo" :value="memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null">
 				<div class="row">
+				<div class="boldfontM text-center mb-4">
+				<i class="fa-solid fa-quote-left"></i>&nbsp;MBTI 성향분석 완료!&nbsp;<i class="fa-solid fa-quote-right"></i>
+				</div>
 					<div v-if="memberAnimal != null">
 						<div class="text-center">
-							<img src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png" v-if="memberAnimal.attachmentDto == null">  
+							<img src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png" v-if="memberAnimal.attachmentDto == null" style="width: 200px; height: 200px;">  
 							<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null" style="width: 200px; height: 200px;">
 						</div>
-						<div class="card-title text-center boldfontL" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.mbti}}</div> 
-						<div class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">회원님의 성향분석결과는 <span class="boldfont">{{memberAnimal.mbtiAnimalDto.animal}}</span> 입니다.</div> 
-						<h6 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.mbtiSummary}}</h6> 
+
+						<div class="card-title text-center boldfontL mt-3 " style="color: #3E4684;" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.animal}}&nbsp;({{memberAnimal.mbtiAnimalDto.mbti}})</div> 
+						<div class="card-title text-center boldfontM" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.mbtiSummary}}</div><br>
+						<div class="text-center boldfontS"><i class="fa-solid fa-circle-exclamation"></i>&nbsp;자동으로 동물 프로필이 저장됩니다. 마이페이지에서 변경하세요!</div> 
+
 					</div>
 				</div>
 				<div class="row mt-4">
-					<div class="col-md-12 text-center">
-						<button type="submit" class="btn btn-outline-success" style="width: 30%;">가입하기</button>
+					<div class="col-md-12 text-center mb-3">
+						<button type="submit" class="btn btn-outline-success" style="width: 30%;">SISO 가입하기</button>
 					</div>
 				</div>
 		
