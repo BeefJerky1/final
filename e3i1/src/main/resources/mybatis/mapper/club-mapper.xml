@@ -458,7 +458,7 @@
 	</select>
 	
 	<update id="clubPlus" parameterType="Map">
-		update club set club_member_limit = 
+		update club set club_member_limit = club_member_limit +
 		<choose>
 			<when test="clubPlusNo == 1">10</when>
 			<when test="clubPlusNo == 2">30</when>

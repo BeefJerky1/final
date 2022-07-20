@@ -48,6 +48,7 @@
 			<result column="animal_no" property="animalNo"/>
 			<result column="animal" property="animal"/>
 			<result column="mbti" property="mbti"/>
+			<result column="mbti_summary" property="mbtiSummary"/>
 		</association>
 		
 		<association property="attachmentDto">

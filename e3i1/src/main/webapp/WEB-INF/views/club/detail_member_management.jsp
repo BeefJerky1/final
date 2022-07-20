@@ -27,18 +27,6 @@
     padding: 0 !important;
 }
 </style>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script>
-$(function(){
-	$(".show-detail").each(function(){
-		 console.log("되나");
-	     $(this).click(function() {
-	   	  console.log("되나");
-	        $(this).children("tr").find(".detail").toggle();
-	     });
-	  });
-});
-</script>
 <div id="app" class="container-fluid">
 
 	<div class="row mt-4">
@@ -162,17 +150,20 @@ $(function(){
 									<td v-if="clubMember.clubMemberDto.clubMemberPermission == 0">대기중</td>
 									<td v-if="clubMember.clubMemberDto.clubMemberPermission == 1" style="color:green">승인</td>
 									<td v-if="clubMember.clubMemberDto.clubMemberPermission == 2" style="color:red">거절</td>
-									<td v-if="clubMember.clubMemberDto.clubMemberGrade != 1">
-										<tr v-if="clubMember.clubMemberDto.clubMemberGrade != 1" class="detail">
-											<td colspan="4" v-if="clubMember != null">
+									<td v-if="clubMember.clubMemberDto.clubMemberGrade != 1" class="detail">
+										<tr v-if="clubMember.clubMemberDto.clubMemberGrade != 1">
+											<td colspan="6" v-if="clubMember != null">
 												<div if="clubMember.clubMemberDto.clubMemberAnswer1 != null">
-													{{clubMember.clubMemberDto.clubMemberAnswer1}}
+													답변1 : {{clubMember.clubMemberDto.clubMemberAnswer1}}
 												</div>
 												<div if="clubMember.clubMemberDto.clubMemberAnswer2 != null">
-													{{clubMember.clubMemberDto.clubMemberAnswer2}}
+													답변2 :{{clubMember.clubMemberDto.clubMemberAnswer2}}
 												</div>
 												<div if="clubMember.clubMemberDto.clubMemberAnswer3 != null">
-													{{clubMember.clubMemberDto.clubMemberAnswer3}}
+													답변3 : {{clubMember.clubMemberDto.clubMemberAnswer3}}
+												</div>
+												<div if="clubMember.clubMemberDto.clubRefuseCount != null">
+													거절 횟수 : {{clubMember.clubMemberDto.clubRefuseCount}}
 												</div>
 												<div class="row mt-4" v-if="clubMember.clubMemberDto.clubMemberPermission == 0">
 													<div class="col-md-6">
@@ -262,18 +253,17 @@ $(function(){
 
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="http://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
-$(function(){
+	$(".show-detail").click(function(){
+	    	 console.log("되는가");
+	});
 	$(".show-detail").each(function(){
-		 console.log("되나");
 	     $(this).click(function() {
-	   	  console.log("되나");
+	    	 console.log("되는가");
 	        $(this).children("tr").find(".detail").toggle();
 	     });
 	  });
-});
-
 const app = Vue.createApp({
 data() {
 	return {
@@ -469,6 +459,9 @@ methods: {
 },
 mounted(){
 	$(function(){
+		$(".show-detail").click(function(){
+	    	 console.log("되는가");
+		});
 		$(".show-detail").each(function(){
 			 console.log("되나");
 		     $(this).click(function() {
