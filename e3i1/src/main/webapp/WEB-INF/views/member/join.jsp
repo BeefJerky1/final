@@ -445,6 +445,7 @@
 						</div>
 						<span class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">회원님의 성향분석결과는 <span class="boldfont">{{memberAnimal.mbtiAnimalDto.animal}}</span> 입니다.</span> 
 						<h3 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.mbti}}</h3> 
+						<h6 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.mbtiSummary}}</h6> 
 					</div>
 				</div>
 				<div class="row mt-4">

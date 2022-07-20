@@ -12,4 +12,5 @@ public class MbtiAnimalDto {
 	private int animalNo;
 	private String animal;
 	private String mbti;
+	private String mbtiSummary;
 }
