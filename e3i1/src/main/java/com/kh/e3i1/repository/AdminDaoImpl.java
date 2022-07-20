@@ -212,7 +212,10 @@ public class AdminDaoImpl implements AdminDao{
 	}
 	@Override
 	public int mbtianimalDelete(int animalNo) {
+		int attachNo= sqlSession.selectOne("admin.findattachno", animalNo);
 		sqlSession.delete("admin.mbtianimaldelete",animalNo);
+		sqlSession.delete("admin.attachmentdelete",attachNo);
+		sqlSession.delete("admin.animalphotodelete",attachNo);
 		Integer result = sqlSession.selectOne("admin.selectmbtianimal",animalNo);
 		if(result!=null) {
 			return 0;
