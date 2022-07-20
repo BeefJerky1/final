@@ -69,9 +69,9 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	@Override
 	public int mypageMemberProfile(MemberDto memberDto, MultipartFile attach) throws IllegalStateException, IOException {
-		int newAttachNo = attachmentDao.edit(attach, memberDto.getAttachNo());
+		int newAttachNo = attachmentDao.save(attach);
 		if(newAttachNo != 0) {
-			memberProfileDao.insert(memberDto.getMemberNo(), newAttachNo);
+			memberProfileDao.update(memberDto.getMemberNo(), newAttachNo);
 		}
 		
 		return newAttachNo;
@@ -94,7 +94,6 @@ public class MemberServiceImpl implements MemberService {
 			clubService.passLeader(clubDto);
 			count += 1;
 		}
-		System.out.println("마지막관문"+count);
 		return memberDao.exit(memberDto.getMemberEmail(), memberDto.getMemberPw()); 
 	}
 }

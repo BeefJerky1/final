@@ -187,7 +187,7 @@
 
 		<!-- 오른쪽 사이드바 -->
 		<div class="col-md-3">
-			<button class="btn-create shadow" v-on:click="removeHidden">메세지 보내기</button>
+			<button class="btn-create shadow" v-on:click="removeHidden1">메세지 보내기</button>
 			<div class="list-group mt-2" v-if="clubList.clubDto != null">
 				<a class="list-group-item list-group-item-action disabled boldfontS" style="color:#3E4684;">소모임</a>
 				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/board?clubNo='+clubList.clubDto.clubNo">게시판</a> 
@@ -202,12 +202,45 @@
 		</div>
 
 	</div>
+	
+		<!-- 거절 모달창 -->
+		<div class="modal" v-bind:class="isHidden" class="rounded">
+			<div class="modal-overlay" v-on:click="addHidden"></div>
+	
+			<div class="modal-content mt-4" style="width:600px!important; height:450px!important; position:absolute!important;">
+			
+				<div class="container-fluid">
+					<div class="modal-title">
+						<h4>승인 거절</h4>
+					</div>
+	             	<!-- 내용 작성 -->
+	               <div class="modal-body p-0 mb-3">
+	                  <div class="form-floating">
+	                     <textarea class="reviewC form-control rounded-5 border-0 shadow-sm" v-model="clubMemberRefuseMsg" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px" :maxlength="contentMax"></textarea>
+	                     <label for="floatingTextarea2" class="h6 text-muted mb-0">내용을 작성하세요.</label>
+	                  </div>
+	               </div>
+					<span class="leg">
+	                <span class="text-muted count2" >{{messageContent.length}}</span> 
+	                    	/
+	               <span class="text-muted total">{{contentMax}}</span> 
+	               </span>		
+					<div class="row mt-4">
+					<div class="col">
+						<button type="button" class="btn-cancel" @click="addHidden">취소</button>
+					</div>
+					<div class="col">
+						<button type="submit" class="btn-create" v-on:click="refuseClub">전송</button>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		
 		
-		
-	<!-- 거절 모달창 -->
-	<div class="modal" v-bind:class="isHidden" class="rounded">
-		<div class="modal-overlay" v-on:click="addHidden"></div>
+	<!-- 전체메세지 모달창 -->
+	<div class="modal" v-bind:class="isHidden1" class="rounded">
+		<div class="modal-overlay" v-on:click="addHidden1"></div>
 
 		<div class="modal-content mt-4" style="width:600px!important; height:450px!important; position:absolute!important;">
 		
@@ -239,7 +272,7 @@
                </span>		
 				<div class="row mt-4">
 				<div class="col">
-					<button type="button" class="btn-cancel" @click="addHidden(index)">취소</button>
+					<button type="button" class="btn-cancel" @click="addHidden1">취소</button>
 				</div>
 				<div class="col">
 					<button type="submit" class="btn-create" v-on:click="sendMessage()">전송</button>
@@ -274,6 +307,7 @@ data() {
 		isHidden1: {
 			"hidden1" : true,
 		},
+		
 		
 		// 소모임 상세에 필요한 정보(소모임, 소모임좋아요, mbti, 소모임프로필)
 		clubList:[],
@@ -333,6 +367,7 @@ methods: {
     },
 	
 	removeHidden(index){
+    	console.log("되나");
 		this.isHidden["hidden"] = false;
 		
 		this.index = index;
@@ -340,6 +375,16 @@ methods: {
 	
 	addHidden(){
 		this.isHidden["hidden"] = true; 
+		
+	},
+	
+	removeHidden1(){
+		this.isHidden1["hidden1"] = false;
+		
+	},
+	
+	addHidden1(){
+		this.isHidden1["hidden1"] = true; 
 		
 		this.messageContent = "";
 		this.messageTitle = "";
@@ -410,7 +455,7 @@ methods: {
 	},
 	
 	// 소모임 가입 거절
-	refuseClub(index){
+	refuseClub(){
 		axios({
 			url:"${pageContext.request.contextPath}/rest/club/refuse",
 			method:"put",
@@ -423,7 +468,7 @@ methods: {
 				window.alert("승인 실패");
 				return;
 			}
-			window.alert("승인 완료!");
+			window.alert("거절 완료");
 			window.location.href="${pageContext.request.contextPath}/club/member_management?clubNo="+this.clubNo;
 		});
 	},

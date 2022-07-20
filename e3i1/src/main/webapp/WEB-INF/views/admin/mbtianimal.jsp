@@ -220,7 +220,7 @@ li a:hover {
 							<div class="card" style="width: 18rem;">
 								<div v-if="animal.animalPhotoDto.attachNo!=0">
 									<img class="card-img-top"
-										:src="'http://localhost:8080/e3i1/attachment/download?attachNo='+animal.animalPhotoDto.attachNo"
+										:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+animal.animalPhotoDto.attachNo"
 										alt="Card image cap">
 								</div>
 								<div v-else>
