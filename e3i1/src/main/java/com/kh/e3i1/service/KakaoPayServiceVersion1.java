@@ -3,6 +3,7 @@ package com.kh.e3i1.service;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,17 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class KakaoPayServiceVersion1 implements KakaoPayService {
 	
+	@Value("${pay.autorization}")
+	private String autorization1;
+	
 	private String urlPrefix = "https://kapi.kakao.com/v1/payment";
 	
 	private RestTemplate template = new RestTemplate();
 	
 	// Admin키의 경우 노출하지 않게 하기 위해서 properties 파일로 만들어서 분리해둔다. 
 	private String authorization = "KakaoAK 41f05d9d3c76c950fdaed5d093ca804a";
+	// 다 하고 마지막에 이걸로 바꾸기
+//	private String authorization = autorization1;
 	private String contentType = "application/x-www-form-urlencoded;charset=utf-8";
 	
 	private String cid = "TC0ONETIME";

@@ -3,6 +3,8 @@ package com.kh.e3i1.rest;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,11 +22,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.e3i1.entity.BlockedDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.repository.AttachmentDao;
+import com.kh.e3i1.repository.ClubMemberDao;
 import com.kh.e3i1.repository.MemberDao;
 import com.kh.e3i1.repository.MemberProfileDao;
+import com.kh.e3i1.repository.PaymentDao;
 import com.kh.e3i1.service.MemberService;
 import com.kh.e3i1.vo.BlockedVO;
 import com.kh.e3i1.vo.MemberDetailVO;
+import com.kh.e3i1.vo.PaymentDetailVO;
 
 @CrossOrigin(
 		origins = {"http://127.0.0.1:5500"}
@@ -44,6 +49,12 @@ public class MemberRestController {
 	
 	@Autowired
 	private MemberDao memberDao;
+	
+	@Autowired
+	private PaymentDao paymentDao;
+	
+	@Autowired
+	private ClubMemberDao clubMemberDao;
 	
 	
 	@GetMapping("/member/{memberNo}")
@@ -108,5 +119,27 @@ public class MemberRestController {
 	@DeleteMapping("/block/{blockedNo}")
 	public int DeleteBlockTarget(@PathVariable int blockedNo) {
 		return memberDao.DeleteBlockTarget(blockedNo);
+	}
+	
+	// 회원 결제 정보
+	@GetMapping("/member_pay/{memberNo}")
+	public List<PaymentDetailVO> mypagePayDetail(@PathVariable int memberNo) {
+		return paymentDao.mypagePayDetail(memberNo);
+	}
+	
+	// 소모임 가입요청 취소
+	@DeleteMapping("/cancel_request/{clubNo}")
+	public int mypageCancelRequest(
+				@PathVariable int clubNo,
+				HttpSession session
+				) {
+		int memberNo = (Integer)session.getAttribute("login"); 
+		return clubMemberDao.delete(memberNo, clubNo);
+	}
+	// 회원 프로필 삭제 
+	@PutMapping("/delete_profile/{attachNo}")
+	public int deleteProfile(@PathVariable int attachNo, HttpSession session) {
+		int memberNo = (Integer)session.getAttribute("login");
+		return memberProfileDao.update(memberNo, attachNo);
 	}
 }

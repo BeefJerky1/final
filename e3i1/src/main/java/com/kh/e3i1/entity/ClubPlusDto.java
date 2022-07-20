@@ -1,13 +1,13 @@
-package com.kh.e3i1.vo;
+package com.kh.e3i1.entity;
 
-import lombok.Builder;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class PurchaseVO {
-	private int clubNo;
+public class ClubPlusDto {
 	private int clubPlusNo;
-	private int quantity = 1;
+	private String clubPlusName;
+	private int clubPlusPrice;
 }

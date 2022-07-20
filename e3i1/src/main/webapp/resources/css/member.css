@@ -148,7 +148,7 @@ i{
 .card {
 		border-width: 0.25em;
 }
-	.card:hover{
+.card:hover{
 		border-color: #3E4684;
 		border-width: 0.25em;
 }

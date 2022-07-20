@@ -3,6 +3,8 @@ package com.kh.e3i1.rest;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -160,6 +162,19 @@ public class ClubRestController {
 		return clubMemberDao.memberProfile(memberNo);
 	}
 	
+	@GetMapping("/is_club_member/{clubNo}/{memberNo}")
+	public ClubMemberDto isClubMember(
+			@PathVariable int clubNo,
+			@PathVariable int memberNo,
+			HttpSession session) {
+		System.out.println("왜");
+		System.out.println("왜");
+		System.out.println("왜");
+		System.out.println("왜");
+		System.out.println(clubNo);
+		System.out.println(memberNo);
+		return clubDao.isClubMember(clubNo, memberNo);
+	}
 }
 
 

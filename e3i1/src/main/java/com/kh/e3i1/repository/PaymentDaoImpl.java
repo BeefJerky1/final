@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.e3i1.entity.PaymentDetailDto;
 import com.kh.e3i1.entity.PaymentDto;
+import com.kh.e3i1.vo.PaymentDetailVO;
 import com.kh.e3i1.vo.PaymentListVO;
 
 @Repository
@@ -95,6 +96,10 @@ public class PaymentDaoImpl implements PaymentDao {
 	public List<PaymentListVO> treeList() {
 		return sqlSession.selectList("payment.treeSearch");
 	}
-
+	
+	@Override
+	public List<PaymentDetailVO> mypagePayDetail(int memberNo){
+		return sqlSession.selectList("payment.payDetail", memberNo);
+	}; 
 
 }
