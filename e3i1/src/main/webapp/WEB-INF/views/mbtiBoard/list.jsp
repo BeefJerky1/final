@@ -314,11 +314,11 @@ $(function(){
                               <h6 class="fw-bold text-body p-3 mb-0 border-bottom">지금 가장 활발히 활동 중!</h6>
                               <!-- Account Item -->
                               <a href="profile.html" class="p-3 border-bottom d-flex text-dark text-decoration-none account-item">
-                                 <img src="${root}/image/mbti/고양이(INTP).png" class="img-fluid rounded-circle me-3" alt="profile-img">
+                                 <img src="${root}/image/mbti/코알라(ESFJ).png" class="img-fluid rounded-circle me-3" alt="profile-img">
                                  <div>
-                                    <p class="fw-bold mb-0 pe-3 d-flex align-items-center">새침한 고양이 <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon" style="background-color:#514e85 !important;">done</span></p>
+                                    <p class="fw-bold mb-0 pe-3 d-flex align-items-center">솔선수범 코알라 <span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon" style="background-color:#514e85 !important;">done</span></p>
                                     <div class="text-muted fw-light">
-                                       <p class="mb-1 mbti-rank" >INTP</p>
+                                       <p class="mb-1 mbti-rank" >ESFJ</p>
                                     </div>
                                  </div>
                                  <div class="ms-auto">
@@ -344,11 +344,11 @@ $(function(){
                               </a>
                               <!-- Account Item -->
                               <a href="profile.html" class="p-3 d-flex text-dark text-decoration-none account-item">
-                                 <img src="${root}/image/mbti/호랑이(INTJ).png" class="img-fluid rounded-circle me-3" alt="profile-img">
+                                 <img src="${root}/image/mbti/여우(ENTP).png" class="img-fluid rounded-circle me-3" alt="profile-img">
                                  <div>
-                                    <p class="fw-bold mb-0 pe-3 d-flex align-items-center">전략가 호랑이<span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon" style="background-color:#514e85 !important;">done</span></p>
+                                    <p class="fw-bold mb-0 pe-3 d-flex align-items-center">다재다능 여우<span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon" style="background-color:#514e85 !important;">done</span></p>
                                     <div class="text-muted fw-light">
-                                       <p class="mb-1 mbti-rank" >INTJ</p>
+                                       <p class="mb-1 mbti-rank" >ENTP</p>
                                     </div>
                                  </div>
                                  <div class="ms-auto">
