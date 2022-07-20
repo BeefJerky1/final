@@ -1296,14 +1296,11 @@ computed: {
 		const url = new URL(href);
 		return url.searchParams.get("error");
 	},
-<<<<<<< HEAD
 	success(){
 		const href = window.location.href;
 		const url = new URL(href);
 		return url.searchParams.get("success");
 	},
-=======
->>>>>>> refs/remotes/origin/main
 },
 methods: {
 	removeHidden(){
