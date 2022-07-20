@@ -22,9 +22,12 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 	// 목록
 
 	@Override
-	public List<MbtiMemberListVO> list(String keyword, int page, int size) {
+	public List<MbtiMemberListVO> list(String keyword, String column, String order, int page, int size) {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("keyword", keyword);
+		
+		param.put("column", column);
+		param.put("order", order);
 		
 		int end = page * size;
 		int begin = end - (size - 1);
@@ -47,7 +50,7 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 		return sqlSession.selectList("mbtiBoard.mbtiboardList3", param);
 	}
 	@Override
-	public List<MbtiMemberListVO> list3(String keyword, int page, int size) {
+	public List<MbtiMemberListVO> orderReply(String keyword, int page, int size) {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("keyword", keyword);
 		
@@ -56,7 +59,7 @@ public class MbtiBoardDaoImpl implements MbtiBoardDao{
 		param.put("begin", begin);
 		param.put("end", end);
 		
-		return sqlSession.selectList("mbtiBoard.mbtiboardList4", param);
+		return sqlSession.selectList("mbtiBoard.orderReply", param);
 	}
 	
 	// 정렬을 위한 목록

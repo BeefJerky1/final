@@ -98,66 +98,35 @@
 		select * from (
 			select rownum rn, TMP.* from (
 				select * from mbti_board B
-      		join member M on B.member_no = M.member_no
-      		join member_profile P on M.member_no = P.member_no
-      		join animal_photo AP on AP.attach_no = P.attach_no
+      		left join member M on B.member_no = M.member_no
+      		left join member_profile P on M.member_no = P.member_no
+      		left join animal_photo AP on AP.attach_no = P.attach_no
     	<if test ="keyword !=null">
 	 		<![CDATA[
 	 		where instr(mbti_board_title, #{keyword}) > 0
 	 		or instr(mbti_board_content, #{keyword}) > 0
-	 		order by B.mbti_board_time asc
 	 		]]>
 	 		</if>
+	 		
+	 	<if test ="column !=null and order !=null">
+	 		order by ${column} ${order}
+	 	</if>
+	 	<if test ="column == null and order ==null">
+	 		order by B.mbti_board_time desc
+	 	</if>
 		) TMP
 			) where rn between  #{begin} and #{end}
 
 	</select>
 	
-			<select id="mbtiboardList3" resultMap="mbtiboardMap">
-		select * from (
-			select rownum rn, TMP.* from (
-				select * from mbti_board B
-      		join member M on B.member_no = M.member_no
-      		join member_profile P on M.member_no = P.member_no
-      		join animal_photo AP on AP.attach_no = P.attach_no
-    	<if test ="keyword !=null">
-	 		<![CDATA[
-	 		where instr(mbti_board_title, #{keyword}) > 0
-	 		or instr(mbti_board_content, #{keyword}) > 0
-	 		order by B.mbti_board_reply_count desc
-	 		]]>
-	 		</if>
-		) TMP
-			) where rn between  #{begin} and #{end}
-
-	</select>
-
-	<select id="mbtiboardList4" resultMap="mbtiboardMap">
-		select * from (
-			select rownum rn, TMP.* from (
-				select * from mbti_board B
-      		join member M on B.member_no = M.member_no
-      		join member_profile P on M.member_no = P.member_no
-      		join animal_photo AP on AP.attach_no = P.attach_no
-    	<if test ="keyword !=null">
-	 		<![CDATA[
-	 		where instr(mbti_board_title, #{keyword}) > 0
-	 		or instr(mbti_board_content, #{keyword}) > 0
-	 		order by B.mbti_board_no desc
-	 		]]>
-	 		</if>
-		) TMP
-			) where rn between  #{begin} and #{end}
-
-	</select>
-	
+		
 	<!-- 상세 조회 -->
 	
 	 <select id="one" parameterType="int" resultMap="mbtiboardMap">
  		select * from mbti_board B
- 		join member M on B.member_no = M.member_no
-		join member_profile P on M.member_no = P.member_no
-      	join animal_photo AP on AP.attach_no = P.attach_no
+ 		left join member M on B.member_no = M.member_no
+		left join member_profile P on M.member_no = P.member_no
+      	left join animal_photo AP on AP.attach_no = P.attach_no
  		where mbti_board_no = #{mbtiBoardNo}
  	</select>
  	
