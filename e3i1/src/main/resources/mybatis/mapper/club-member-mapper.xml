@@ -58,8 +58,8 @@
 			<if test="clubMemberAnswer2 != null">
 				, #{clubMemberAnswer2}
 			</if>
-			<if test="clubMemberAnswer2 != null">
-				, #{clubMemberAnswer2}
+			<if test="clubMemberAnswer3 != null">
+				, #{clubMemberAnswer3}
 			</if>
 		)	
 	</insert>
