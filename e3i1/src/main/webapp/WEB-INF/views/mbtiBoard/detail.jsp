@@ -145,7 +145,7 @@ a {
 		                     				   <img src="${root}/image/mbti/강아지(ENFP).png" class="img-fluid rounded-circle" alt="profile-img" >
 											</span>
 											<span v-if="${mbtiMemberListVO.memberProfileDto.attachNo!=null}">
-	                           					<img :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+${mbtiMemberListVO.memberProfileDto.attachNo }" class="img-fluid rounded-circle" alt="profile-img">
+	                           					<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+${mbtiMemberListVO.memberProfileDto.attachNo }" class="img-fluid rounded-circle" alt="profile-img">
 	                        			  </span> 
                                        <div class="d-flex ms-3 align-items-start w-100">
                                           <div class="w-100">
@@ -285,7 +285,7 @@ a {
 				                        <img src="${root}/image/mbti/강아지(ENFP).png" class="img-fluid rounded-circle" style="width: 60px;">
 										</span>
 										<span v-if="reply.memberProfileDto.attachNo != null">
-				                          	<img :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+reply.memberProfileDto.attachNo"  style="width: 60px;"class="img-fluid rounded-circle" >
+				                          	<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+reply.memberProfileDto.attachNo"  style="width: 60px;"class="img-fluid rounded-circle" >
 				                         </span> 
                                                    
                                                       <div class="ms-2 small">

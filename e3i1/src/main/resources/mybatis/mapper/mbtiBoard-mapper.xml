@@ -73,8 +73,8 @@
 		</association>
 	
 		<association property="animalPhotoDto" javaType="AnimalPhotoDto">
-			<result column="attach_no" property="attachNo"/>
-			<result column="animal_no" property="animalNo"/>
+			<result column="attach_no2" property="attachNo"/>
+			<result column="animal_no2" property="animalNo"/>
 		</association>
 		
 		<association property="memberProfileDto" javaType="MemberProfileDto">
@@ -123,7 +123,13 @@
 	<!-- 상세 조회 -->
 	
 	 <select id="one" parameterType="int" resultMap="mbtiboardMap">
- 		select * from mbti_board B
+ 		select 
+ 			B.*,
+ 			M.*,
+ 			P.*,
+ 			AP.ATTACH_NO attach_no2,
+ 			AP.ANIMAL_NO animal_no2
+ 		from mbti_board B
  		left join member M on B.member_no = M.member_no
 		left join member_profile P on M.member_no = P.member_no
       	left join animal_photo AP on AP.attach_no = P.attach_no
