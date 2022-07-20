@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
+<c:set var="memberNo" value="${login}"></c:set>
+<c:set var="memberAdmin" value="${auth}"></c:set>
+<c:set var="isLogin" value="${memberNo != null}"></c:set>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -21,6 +24,8 @@
 	integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" type="text/css" href="${root}/css/sidebars.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/club.css">
 <style>
 .cont {
 	background-color: white;
@@ -76,7 +81,7 @@ li a:hover {
 					<a href="${root}"><img class="logo-item"
 						src="${root }/image/LOGO.png"></a>
 					<div class="row p-4 border-bottom">
-						<span class="fs-5 fw-semibold">관리자 페이지</span>
+					<span class="fs-5 fw-semibold"><a href="${root}/admin/">관리자 페이지</a></span>
 					</div>
 					 <ul class="list-unstyled ps-0 p-4">
       <li class="mb-1">
@@ -86,7 +91,6 @@ li a:hover {
         <div class="collapse" id="user-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/member" class="link-light rounded">회원 목록</a></li>
-            <li><a href="#" class="link-light rounded">회원 차트</a></li>
           </ul>
         </div>
       </li>
@@ -97,7 +101,6 @@ li a:hover {
         <div class="collapse" id="club-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/club" class="link-light rounded">소모임 목록</a></li>
-            <li><a href="#" class="link-light rounded">소모임 차트</a></li>
           </ul>
         </div>
       </li>
@@ -108,7 +111,6 @@ li a:hover {
         <div class="collapse" id="board-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/mbtiboard" class="link-light rounded">게시글 목록</a></li>
-            <li><a href="#" class="link-light rounded">게시글 차트</a></li>
           </ul>
         </div>
       </li>
@@ -138,62 +140,18 @@ li a:hover {
 					</ul>
 				</div>
 			</div>
-			<div class="col-lg-9 col-md-9 col-sm-9">
-				<div class="row">
-					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4">
-						<h1>회원 목록 (총: {{count}}명)</h1>
+			    	<!-- 중앙 -->
+		<div class="col-md-6 mb-5">
+			<div class="card">
+				<div class="card-body">
+					<div class="card-title text-center mt-2">
+						<span class="boldfontL"  style="color:#3E4684;">회원 관리</span>
 					</div>
-					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4 text-start">
-						<div class="row">
-							<div class="col-lg-4 col-md-4 col-sm-4">
-							<h5>검색</h5>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="memberNo" id="memberNo" placeholder="번호" >	
-									<label for="memberNo">번호</label>
-							</form>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="memberEmail" id="memberEmail" placeholder="이메일" >	
-									<label for="memberEmail">이메일</label>
-							</form>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="memberNick" id="memberNick"  placeholder="닉네임">	
-									<label for="memberNick">닉네임</label>
-							</form>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="memberName" id="memberName"  placeholder="이름">	
-									<label for="memberName">이름</label>
-							</form>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="memberPhone" id="memberPhone"  placeholder="전화번호">	
-									<label for="memberPhone">전화번호</label>
-							</form>          
-							  </div>
-						<div class="col-lg-4 col-md-4 col-sm-4">
-							<h5>정렬</h5>
-							<select class="form-control" v-model="column" v-on:change="memberList()">
-								<option value="member_no">회원번호</option>
-								<option value="member_nick">닉네임</option>
-								<option value="member_name">이름</option>
-								<option value="member_email">이메일</option>							
-								<option value="member_logindate">로그인 날짜</option>
-							</select>
-							<select class="form-control mb-5" v-model="order" v-on:change="memberList()">
-								<option value="asc">오름차순</option>
-								<option value="desc">내림차순</option>				
-							</select>
-							<button type="button" class="btn btn-primary form-control" v-on:click="search()">조회</button>
-							<button type="button" class="btn btn-success form-control" v-on:click="reset()">초기화</button>
-						</div>
-						 </div>
-						</div>
-					</div>
-					<div class="col-lg-12 col-md-12 col-sm-12 text-end">
-									<button class="btn btn-outline-danger"
-											v-on:click="deleteMember()">삭제</button>
-									<button class="btn btn-outline-primary"
-											data-bs-toggle="modal" data-bs-target="#postModal">메세지 보내기</button>
-						<table class="table text-center mb-5">
-							<thead class="tableInterest2">
+				</div>
+				<div class="card-body">
+				
+				 	 <table class="table table-hover text-center mb-4">
+						<thead class="boldfontS">
 								<tr>
 									<th><input type="checkbox" id="checkbox" v-model="selectAll" ></th>
 									<th>번호</th>
@@ -278,9 +236,60 @@ li a:hover {
       </div>
     <br><br><br><br><br><br><br><br><br><br><br>
 				</div>
-			</div>
+			</div><!-- 중앙 끝 -->
+				<!-- 사이드바  -->
+				<div class="col-md-3">
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4">
+						<h5>회원 목록 (총: {{count}}명)</h5>
+					</div>
+					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4 text-start">
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12">
+							<h5>검색</h5>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="memberNo" id="memberNo" placeholder="번호" >	
+									<label for="memberNo">번호</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="memberEmail" id="memberEmail" placeholder="이메일" >	
+									<label for="memberEmail">이메일</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="memberNick" id="memberNick"  placeholder="닉네임">	
+									<label for="memberNick">닉네임</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="memberName" id="memberName"  placeholder="이름">	
+									<label for="memberName">이름</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="memberPhone" id="memberPhone"  placeholder="전화번호">	
+									<label for="memberPhone">전화번호</label>
+							</form>          
+							  </div>
+						<div class="col-lg-12 col-md-12 col-sm-12">
+							<h5>정렬</h5>
+							<select class="form-control" v-model="column" v-on:change="memberList()">
+								<option value="member_no">회원번호</option>
+								<option value="member_nick">닉네임</option>
+								<option value="member_name">이름</option>
+								<option value="member_email">이메일</option>							
+								<option value="member_logindate">로그인 날짜</option>
+							</select>
+							<select class="form-control mb-5" v-model="order" v-on:change="memberList()">
+								<option value="asc">오름차순</option>
+								<option value="desc">내림차순</option>				
+							</select>
+							<button type="button" class="btn btn-primary form-control" v-on:click="search()">조회</button>
+							<button type="button" class="btn btn-success form-control" v-on:click="reset()">초기화</button>
+						</div>
+						 </div>
+						</div>
+					</div>
+				</div>
 		</div>
-
+</div>
 	<!-- vue js도 lazy loading을 사용한다 -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

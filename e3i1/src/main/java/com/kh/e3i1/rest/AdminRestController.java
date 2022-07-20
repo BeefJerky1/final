@@ -24,6 +24,8 @@ import com.kh.e3i1.entity.MbtiAnimalDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.entity.PaymentDetailDto;
+import com.kh.e3i1.entity.PaymentDto;
 import com.kh.e3i1.repository.AdminDao;
 import com.kh.e3i1.repository.ClubMemberDao;
 import com.kh.e3i1.service.AdminService;
@@ -168,6 +170,21 @@ public class AdminRestController {
 	@DeleteMapping("/mbtianimal/{animalNo}")
 	public int mbtiAnimalDelete(@PathVariable int animalNo) {
 		return adminDao.mbtianimalDelete(animalNo);
+	}
+	//결제 리스트
+	@GetMapping("/payment/{column}/{order}")
+	public List<PaymentDto> paymentList(@PathVariable String column, @PathVariable String order){
+		return adminDao.paymentList(column, order);
+	}
+	//결제 상세
+		@GetMapping("/paymentDetail/{paymentNo}")
+		public PaymentDetailDto paymentDetail(@PathVariable int paymentNo){
+			return adminDao.paymentDetail(paymentNo);
+	}
+	//결제 리스트
+	@PostMapping("/payment")
+	public List<PaymentDto> paymentSearch(@RequestBody AdminSearchVO searchVO){
+		return adminDao.paymentSearch(searchVO);
 	}
 	
 	

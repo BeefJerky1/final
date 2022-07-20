@@ -6,7 +6,9 @@
 <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
 <c:set var="memberNo" value="${login}"></c:set>
 <c:set var="memberAdmin" value="${auth == '관리자'}"></c:set>
+<c:set var="nonAdmin" value="${auth != '관리자'}"></c:set>
 <c:set var="isLogin" value="${memberNo != null}"></c:set>
+<c:set var="auth" value="${auth}"></c:set>
 
 <!DOCTYPE html>
 <html lang="kor">
@@ -63,7 +65,12 @@
 		
 	</script>
 <body>
-
+<script>
+		if(${pwChange != null}){
+			alert("${pwChange}");
+			document.location.href="${pwChangeUrl}";
+		}
+</script>
 
 	<!-- nav bar -->
 	<header>
