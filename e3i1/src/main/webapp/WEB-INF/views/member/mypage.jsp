@@ -1755,6 +1755,10 @@ mounted(){
 	if(this.error == 3){
 		window.alert("소모임 회원 증원은 최대 200명까지만 가능합니다.");
 	}
+	// error 처리
+	if(this.error == 4){
+		window.alert("증원 시킬 소모임이 없습니다.");
+	}
 },
 created() {
 		//차단 목록

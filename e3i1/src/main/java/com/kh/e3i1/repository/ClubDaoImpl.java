@@ -68,6 +68,12 @@ public class ClubDaoImpl implements ClubDao {
 		return sqlSession.selectOne("club.clubDetail",clubNo);
 	}
 	
+	// 소모임 번호로 하나 조회
+	@Override
+	public ClubDto one(int clubNo) {
+		return sqlSession.selectOne("club.one", clubNo);
+	}
+	
 	// 소모임 좋아요 여부 
 	@Override
 	public boolean isLike(int clubNo, int memberNo) {

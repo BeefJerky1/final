@@ -40,6 +40,8 @@ public interface ClubDao {
 
 	int passLeader(ClubDto clubDto);
 
-	void deleteClub(int clubNo); 
+	void deleteClub(int clubNo);
+
+	ClubDto one(int clubNo); 
 
 }

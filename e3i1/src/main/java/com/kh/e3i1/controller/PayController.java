@@ -66,6 +66,11 @@ public class PayController {
 		if(clubPlusDto == null) {
 			return "redirect:member/mypage";
 		}
+		ClubDto clubDto = clubDao.one(listVO.getClubNo());
+		if(clubDto == null) {
+			return "redirect:member/mypage?error=4";
+		}
+		
 		
 		// 만약 인원제한수를 넘어간다면 결제불가
 		if(clubDao.isLimit(listVO.getClubNo(), listVO.getClubPlusNo())) {
