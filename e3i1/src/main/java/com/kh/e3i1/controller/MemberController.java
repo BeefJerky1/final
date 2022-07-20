@@ -293,10 +293,10 @@ public class MemberController {
 		MemberDto memberDto = memberDao.info(memberNo);
 		boolean success = memberDao.changePassword(memberDto.getMemberEmail(), currentPw, changePw);
 		if(success) {
-			return "redirect:mypage";
+			return "redirect:mypage?success=2";
 		}
 		else {
-			return "redirect:password?error";
+			return "redirect:mypage?error=2";
 		}
 	}
 	
@@ -319,10 +319,10 @@ public class MemberController {
 		
 		boolean success = memberDao.changeInformation(memberDto);
 		if(success) {
-			return "redirect:mypage";
+			return "redirect:mypage?success=1";
 		}
 		else {
-			return "redirect:information?error";
+			return "redirect:mypage?error=1";
 		}
 	}
 	@GetMapping("/message")

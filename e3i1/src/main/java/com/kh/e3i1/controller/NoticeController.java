@@ -58,7 +58,8 @@ public class NoticeController {
 				@RequestParam(required = false) String keyword,
 				@RequestParam(required = false, defaultValue = "1") int p,
 				@RequestParam(required = false, defaultValue = "5") int s,
-				Model model
+				Model model,
+				HttpSession session
 			) {
 		
 		List<NoticeListVO> list = noticeDao.list(type, keyword, p, s);
@@ -85,6 +86,8 @@ public class NoticeController {
 		model.addAttribute("endBlock", endBlock);
 		model.addAttribute("lastPage", lastPage);
 		
+		//model.addAttribute("memberNo", (int)session.getAttribute("login"));
+		//model.addAttribute("auth", session.getAttribute("auth"));
 		return "notice/list";
 	}
 

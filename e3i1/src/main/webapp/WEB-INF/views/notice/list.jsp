@@ -165,9 +165,10 @@ a {
 	</ul>
 
 	<div class="container text-center">
-		<button type="button" class="btn btn-outline-success"
-			data-bs-toggle="modal" data-bs-target="#exampleModal">글쓰기</button>
-
+		<c:if test="${auth eq '관리자'}">
+			<button type="button" class="btn btn-outline-success"
+				data-bs-toggle="modal" data-bs-target="#exampleModal">글쓰기</button>
+		</c:if>
 		<!-- Modal -->
 		<div class="modal fade" id="exampleModal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">

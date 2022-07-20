@@ -441,10 +441,10 @@
 					<div v-if="memberAnimal != null">
 						<div class="text-center">
 							<img src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png" v-if="memberAnimal.attachmentDto == null">  
-							<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null" style="width: 100px; height: 100px;">
+							<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null" style="width: 200px; height: 200px;">
 						</div>
-						<span class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">회원님의 성향분석결과는 <span class="boldfont">{{memberAnimal.mbtiAnimalDto.animal}}</span> 입니다.</span> 
-						<h3 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.mbti}}</h3> 
+						<div class="card-title text-center boldfontL" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.mbti}}</div> 
+						<div class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">회원님의 성향분석결과는 <span class="boldfont">{{memberAnimal.mbtiAnimalDto.animal}}</span> 입니다.</div> 
 					</div>
 				</div>
 				<div class="row mt-4">
@@ -681,26 +681,6 @@ data() {
 	};
 },
 computed: {
-	isMemberEmailValid(){
-		const regex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-        return regex.test(this.memberEmail);
-	},
-	isMemberPwValid(){
-		const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%])[A-Za-z0-9!@#$%]{8,16}$/;
-        return regex.test(this.memberPw);
-	},
-	isMemberNickValid(){
-		  const regex = /^[a-zA-Z0-9가-힣]{2,10}$/;
-          return regex.test(this.memberNick);
-	},
-	isMemberNameValid(){
-		const regex = /^[가-힣]{2,7}$/;
-        return regex.test(this.memberName);
-	},
-	isMemberPhoneValid(){
-		const regex = /^[0-9]{11}$/;
-        return regex.test(this.memberPhone);
-	},
 },
 methods: {
 	idValidation(){

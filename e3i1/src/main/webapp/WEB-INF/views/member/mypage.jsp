@@ -1300,7 +1300,18 @@ data() {
 		notBlocked:"",
 	};
 },
-computed: {},
+computed: {
+	error(){
+		const href = window.location.href;
+		const url = new URL(href);
+		return url.searchParams.get("error");
+	},
+	success(){
+		const href = window.location.href;
+		const url = new URL(href);
+		return url.searchParams.get("success");
+	},
+},
 methods: {
 	removeHidden(){
 		this.isHidden["hidden"] = false;
@@ -1682,6 +1693,25 @@ mounted(){
 			$(".page").eq(index).show();
 		}
 	});
+	
+	// error 처리 
+	if(this.error == 1){
+		window.alert("정보변경에 실패했습니다.");
+	}
+	
+	// success 처리 
+	if(this.success == 1){
+		window.alert("정보변경에 성공했습니다.");
+	}
+	
+	// error 처리 
+	if(this.error == 2){
+		window.alert("비밀번호 변경에 실패했습니다.");
+	}
+	// success 처리 
+	if(this.success == 2){
+		window.alert("비밀번호 변경에 성공했습니다.");
+	}
 },
 
 created() {
