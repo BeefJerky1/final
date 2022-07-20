@@ -14,7 +14,7 @@
 <style>
 .modal.fade {
 	opacity:0;
-	z-index:-1;
+	z-index:-2;
 }
 .point2 {
 	font-size: 3em;
@@ -617,16 +617,14 @@ input[type="radio"]{
 									</thead>
 									<tbody>
 										<tr v-for="( block , index ) in blockedList">
-											<td class="tableInterest2">{{block.memberDto.memberNick}}</td>
+											<td>{{block.memberDto.memberNick}}</td>
 											<td>
 											<div class="dropdown">
 											  <button class="btn btn-outline-primary dropdown-toggle"  v-on:click="detail(index)" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
 											   상세보기
 											  </button>
 											  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-											    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#profileModal"  href="#">프로필보기</a></li>
 											    <li><a class="dropdown-item" href="#" v-on:click="notAnymore()">차단해제</a></li>
-											    <li><a class="dropdown-item" href="#">메시지 보내기</a></li>
 											  </ul>
 											</div>
 											</td>
@@ -1193,8 +1191,6 @@ input[type="radio"]{
 				</div>
 			</div>
 			
-		</div>
-		
 		<!--  프로필 모달 -->
       <div v-if="this.blockedDetail!=null">
       <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

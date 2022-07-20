@@ -42,23 +42,6 @@ public class MbtiBoardController {
 	@Autowired
 	private MemberDao memberDao;
 
-//	// 목록 조회
-//	@GetMapping("/list")
-//	public String list(@RequestParam(required = false) String type, @RequestParam(required = false) String keyword,
-//			Model model) {
-//
-//		List<MbtiMemberListVO> list = mbtiBoardDao.list(type, keyword);
-//		model.addAttribute("list", list);
-//
-//		boolean search = type != null && keyword != null;
-//		model.addAttribute("search", search);
-//
-//		model.addAttribute("type", type);
-//		model.addAttribute("keyword", keyword);
-//
-//		return "mbtiBoard/list";
-//
-//	}
 
 	// 게시판 목록 구현
 	@GetMapping("/list")
@@ -90,6 +73,69 @@ public class MbtiBoardController {
 		model.addAttribute("lastPage", lastPage);
 
 		return "mbtiBoard/list";
+	}
+	
+	// 게시판 목록 구현
+	@GetMapping("/list2")
+	public String list2(@RequestParam(required = false) String keyword,
+			@RequestParam(required = false, defaultValue = "1") int p,
+			@RequestParam(required = false, defaultValue = "5") int s, Model model) {
+
+		List<MbtiMemberListVO> list = mbtiBoardDao.list2(keyword, p, s);
+		model.addAttribute("list", list);
+
+		boolean search = keyword != null;
+		model.addAttribute("search", search);
+
+		int count = mbtiBoardDao.count(keyword);
+		int lastPage = (count + s - 1) / s;
+
+		int blockSize = 5; // 블록 크기
+		int endBlock = (p + blockSize - 1) / blockSize * blockSize;
+		int startBlock = endBlock - (blockSize - 1);
+		if (endBlock > lastPage) {
+			endBlock = lastPage;
+		}
+
+		model.addAttribute("page", p);
+		model.addAttribute("s", s);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("startBlock", startBlock);
+		model.addAttribute("endBlock", endBlock);
+		model.addAttribute("lastPage", lastPage);
+
+		return "mbtiBoard/list2";
+	}
+	// 게시판 목록 구현
+	@GetMapping("/list3")
+	public String list3(@RequestParam(required = false) String keyword,
+			@RequestParam(required = false, defaultValue = "1") int p,
+			@RequestParam(required = false, defaultValue = "5") int s, Model model) {
+		
+		List<MbtiMemberListVO> list = mbtiBoardDao.list3(keyword, p, s);
+		model.addAttribute("list", list);
+		
+		boolean search = keyword != null;
+		model.addAttribute("search", search);
+		
+		int count = mbtiBoardDao.count(keyword);
+		int lastPage = (count + s - 1) / s;
+		
+		int blockSize = 5; // 블록 크기
+		int endBlock = (p + blockSize - 1) / blockSize * blockSize;
+		int startBlock = endBlock - (blockSize - 1);
+		if (endBlock > lastPage) {
+			endBlock = lastPage;
+		}
+		
+		model.addAttribute("page", p);
+		model.addAttribute("s", s);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("startBlock", startBlock);
+		model.addAttribute("endBlock", endBlock);
+		model.addAttribute("lastPage", lastPage);
+		
+		return "mbtiBoard/list3";
 	}
 
 	// 상세 보기

@@ -24,7 +24,6 @@ public interface MbtiBoardDao {
 
 	int count(String type);
 
-	List<MbtiMemberListVO> list(String type, String Keyword);
 
 	List<MbtiMemberListVO> list(String keyword, int p, int s);
 
@@ -43,5 +42,9 @@ public interface MbtiBoardDao {
 	void reportCount(int mbtiBoardNo);
 
 	List<MbtiMemberListVO> listAll(String keyword, String column, String order);
+
+	List<MbtiMemberListVO> list2(String keyword, int p, int s);
+
+	List<MbtiMemberListVO> list3(String keyword, int p, int s);
 
 }

@@ -14,6 +14,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style>
+table {
+	font-weight: 600 !Important;
+}
 .dd{
 background-color:transparent !important;
 color:transparent !important;
@@ -157,6 +160,9 @@ i {
 .smalllabel{
 	font-size: 0.8em;
 }
+thead {
+	padding : 1em 1em;
+}
 </style>
 </head>
 <body>
@@ -198,7 +204,7 @@ i {
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane fade show active" id="recieved">
-							<table class="table text-center">
+							<table class="table table-hover text-center">
 									<thead>
 										<tr>
 											<th></th>
@@ -210,7 +216,7 @@ i {
 									</thead>
 									<tbody>
 										<tr v-for="(received , index) in messageR ">
-											<td v-if="received.messageDto.messageReadcount==0"><span class="badge bg-danger">new</span></td>
+											<td v-if="received.messageDto.messageReadcount==0"><span class="badge bg-warning  rounded-pill d-inline">new</span></td>
 											<td v-else style="width:50px"><span class="badge bg-danger dd">new</span></td>
 											<td>{{received.memberDto.memberNick}}</td>
 											<td>
@@ -226,7 +232,7 @@ i {
     </button>
 							</div>
 							<div class="tab-pane fade" id="sent">		
-								<table class="table text-center">
+								<table class="table table-hover text-center">
 									<thead>
 										<tr>
 											<th style="width: 10%;">받은사람</th>

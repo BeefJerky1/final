@@ -145,6 +145,7 @@ $(function(){
 				
 				 	 <table class="table table-hover text-center mb-4">
 						<thead class="boldfontS">
+							<th><input type="checkbox" v-model="selectAll"></th>
 							<th>회원이름</th>
 							<th>회원등급</th>
 							<th>신청/승인 날짜</th>
@@ -153,6 +154,7 @@ $(function(){
 						<tbody class="fontSS">
 							<template v-for="(clubMember, index) in clubMemberList" :key="index">
 								<tr class="show-detail">
+									<th><input type="checkbox" v-model="selected" :value=clubMember.clubMemberDto.memberNo></th>
 									<td v-if="clubMember.clubMemberDto != null">{{clubMember.memberDto.memberNick}}</td>
 									<td v-if="clubMember.clubMemberDto.clubMemberGrade == 1">관리자</td>
 									<td v-if="clubMember.clubMemberDto.clubMemberGrade == 0">일반</td>
@@ -194,7 +196,7 @@ $(function(){
 
 		<!-- 오른쪽 사이드바 -->
 		<div class="col-md-3">
-			<button class="btn-create shadow" v-on:click="removeHidden">가입 거절 메세지</button>
+			<button class="btn-create shadow" v-on:click="removeHidden">메세지 보내기</button>
 			<div class="list-group mt-2" v-if="clubList.clubDto != null">
 				<a class="list-group-item list-group-item-action disabled boldfontS" style="color:#3E4684;">소모임</a>
 				<a class="list-group-item list-group-item-action boldfontSS" :href="'${pageContext.request.contextPath}/club/board?clubNo='+clubList.clubDto.clubNo">게시판</a> 
@@ -219,24 +221,37 @@ $(function(){
 		<div class="modal-content mt-4" style="width:600px!important; height:450px!important; position:absolute!important;">
 		
 			<div class="container-fluid">
-				<div class="modal-header">
-					<span class="boldfontL">가입 거절 메세지</span>
-				</div>
-				<div class="text-start mt-2">
-					<p class="boldfontSSS">
-						*거절 메세지는 최대한 자세하고 친절하게 부탁드리겠습니다.
-					</p>
-				</div>		
-				<div class="text-start mt-2">
-					<textarea class="form-control rounded fontS" v-model="clubMemberRefuseMsg"></textarea>
-				</div>
-						
+				    <!-- 닉네임 -->
+            <div class="modal-body p-0 mb-3">
+                <div class="form-floating">
+                   <div class=" rounded-5 border-0 shadow-sm readonly" id="floatingTextarea1" style="height: 50px"><b>To:{{selected}}</b></div>
+                </div>
+             </div>
+               <!-- 제목 작성 -->
+            <div class="modal-body p-0 mb-3">
+                <div class="form-floating">
+                   <input type="text" class="form-control rounded-5 border-0 shadow-sm" v-model="messageTitle"  id="floatingTextarea2" style="height: 50px" :maxlength="titleMax">
+                   <label for="floatingTextarea2" class="h6 text-muted mb-0">제목을 작성하세요.</label>
+                </div>
+             </div>
+             	<!-- 내용 작성 -->
+               <div class="modal-body p-0 mb-3">
+                  <div class="form-floating">
+                     <textarea class="reviewC form-control rounded-5 border-0 shadow-sm" v-model="messageContent"placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px" :maxlength="contentMax"></textarea>
+                     <label for="floatingTextarea2" class="h6 text-muted mb-0">내용을 작성하세요.</label>
+                  </div>
+               </div>
+				<span class="leg">
+                <span class="text-muted count2" >{{messageContent.length}}</span> 
+                    	/
+               <span class="text-muted total">{{contentMax}}</span> 
+               </span>		
 				<div class="row mt-4">
 				<div class="col">
-					<button type="button" class="btn-cancel" @click="addHidden(index)">돌아가기</button>
+					<button type="button" class="btn-cancel" @click="addHidden(index)">취소</button>
 				</div>
 				<div class="col">
-					<button type="submit" class="btn-create" @click="refuseClub(index)">거절하기</button>
+					<button type="submit" class="btn-create" v-on:click="sendMessage()">전송</button>
 				</div>
 				</div>
 			</div>
@@ -282,6 +297,15 @@ data() {
 		
 		clubMemberRefuseMsg:"",
 		index:"",
+		
+		
+        //메세지
+        messageContent:"",
+        messageTitle:"",
+        checked:"",
+        selected: [],
+        titleMax:30,
+        contentMax:300,
 	};
 },
 computed: {
@@ -295,6 +319,22 @@ computed: {
 	leaderJudge(){
 		return this.clubList.clubDto != null && this.memberNo == this.clubList.clubDto.clubLeader
 	},
+	selectAll: {
+        get: function () {
+            return this.clubMemberList ? this.selected.length == this.clubMemberList.length : false;
+        },
+        set: function (value) {
+            var selected = [];
+
+            if (value) {
+                this.clubMemberList.forEach(function (clubMember) {
+                    selected.push(clubMember.memberDto.memberNo);
+                });
+            }
+
+            this.selected = selected;
+        }
+    },
 },
 methods: {
 	//moment js
@@ -311,8 +351,8 @@ methods: {
 	addHidden(){
 		this.isHidden["hidden"] = true; 
 		
-		this.clubMemberRefuseMsg = "";
-		this.index = "";
+		this.messageContent = "";
+		this.messageTitle = "";
 	},
 	
 	existLike(){
@@ -397,6 +437,34 @@ methods: {
 			window.location.href="${pageContext.request.contextPath}/club/member_management?clubNo="+this.clubNo;
 		});
 	},
+	//회원에게 메세지 보내기
+	sendMessage(){
+			if(this.messageContent=='' ||this.messageContent==null)return
+			let formData = new FormData();
+	    for (let i = 0; i < this.selected.length; i++) { 
+	        formData.append("asdf", this.selected[i]); // 반복문을 활용하여 파일들을 formData 객체에 추가한다
+	     }
+		formData.append('messageWriter', this.memberNo);
+		formData.append('messageContent', this.messageContent);
+		formData.append('messageTitle', this.messageTitle);
+				axios({
+					url:"${pageContext.request.contextPath}/rest/message/sendAll",
+					method:"post",
+					headers:{
+    				"Content-Type" : "multipart/form-data",
+    			},
+					data:formData,
+					
+				}).then(resp=>{
+					this.selected=resp.data;
+					window.alert(this.selected.length+"명의 회원에게 메세지가 전달하였습니다.")
+					this.addHidden();
+					window.location.href="${pageContext.request.contextPath}/club/member_management?clubNo="+this.clubNo;
+				})
+    	
+    	
+			
+		},
 	
 },
 mounted(){

@@ -57,7 +57,10 @@
 	</select>
 	
 	<select id="one" parameterType="int" resultType="NoticeDetailVO">
-		select n.*, na.attach_no, m.member_nick
+		select 
+			n.*, 
+			na.attach_no, 
+			m.member_nick
         from notice n, notice_attach na, member m
         where n.notice_no = #{noticeNo}
         and

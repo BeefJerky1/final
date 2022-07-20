@@ -75,6 +75,15 @@ public class ClubBoardRestController {
 			@PathVariable String order) {
 		return clubBoardDao.listAll(clubNo,likeMemberNo, column, order);
 	}
+	//목록
+	@GetMapping("/{clubNo}/{likeMemberNo}/{column}/{order}/{memberNo}")
+	public List<ClubBoardListItemVO> list(@PathVariable int clubNo, 
+			@PathVariable int likeMemberNo,
+			@PathVariable String column,
+			@PathVariable String order,
+			@PathVariable int memberNo) {
+		return clubBoardDao.listAll2(clubNo,likeMemberNo, column, order,memberNo);
+	}
 	//등록
 	@PostMapping("/")
 	public ClubBoardDto insert(@ModelAttribute ClubBoardDto clubBoardDto, 
@@ -83,17 +92,16 @@ public class ClubBoardRestController {
 	}	
 	//삭제
 	@DeleteMapping("/{clubBoardNo}")
-	public void delete(@PathVariable int clubBoardNo) {
+	public int delete(@PathVariable int clubBoardNo) {
 		//게시글 사진 확인
 		List<ClubBoardAttachDto> list = clubBoardDao.getAttachNo(clubBoardNo);
-		if(list!=null) {
+		if(list!=null) { //사진 있으면
 			for(ClubBoardAttachDto dto:list) {
-				 boolean success = clubBoardDao.deleteAttachNo(dto.getAttachNo());
-				 if(success) {
-					 clubBoardDao.delete(clubBoardNo);
-					 
-				 }
+				int result = clubBoardDao.deleteAttachNo(dto.getAttachNo());
 			}
+			return clubBoardDao.delete(clubBoardNo);
+		}else {//사진 없으면
+			return clubBoardDao.delete(clubBoardNo);
 		}
 	}
 	//상세 보기
@@ -117,7 +125,7 @@ public class ClubBoardRestController {
 	}
 	//게시글 사진 삭제
 	@DeleteMapping("/attach/{attachNo}")
-	public boolean deleteAttachNo(@PathVariable int attachNo){
+	public int deleteAttachNo(@PathVariable int attachNo){
 		return clubBoardDao.deleteAttachNo(attachNo);
 	}
 	//좋아요 확인
