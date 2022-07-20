@@ -205,7 +205,7 @@ input[type="radio"]{
 							<div class="tab-pane fade show active" id="club">
 								<p>
 								<div class="titlefont boldfont mx-1">
-									운영중 소모임&nbsp;<i class="fa-solid fa-circle-info"></i>
+									<i class="fa-solid fa-crown"></i>&nbsp;운영중인 소모임
 								</div>
 								<table class="table text-center">
 									<thead>
@@ -235,7 +235,7 @@ input[type="radio"]{
 								</table>
 								
 								<div class="titlefont boldfont mt-5 mx-1">
-									가입한 소모임&nbsp;<i class="fa-solid fa-circle-info"></i>
+									<i class="fa-solid fa-person-circle-check"></i>&nbsp;가입한 소모임
 								</div>
 								<table class="table text-center">
 									<thead>
@@ -265,7 +265,7 @@ input[type="radio"]{
 								</table>
 								
 								<div class="titlefont boldfont mt-5 mx-1">
-									관심있는 소모임&nbsp;<i class="fa-solid fa-circle-info"></i>
+									<i class="fa-solid fa-heart"></i>&nbsp;관심있는 소모임
 								</div>
 								<table class="table text-center">
 									<thead>
@@ -295,7 +295,7 @@ input[type="radio"]{
 								</table>
 								
 								<div class="titlefont boldfont mt-5 mx-1">
-									승인 대기중인 소모임&nbsp;<i class="fa-solid fa-circle-info"></i>
+									<i class="fa-solid fa-person-circle-minus"></i>&nbsp;승인 대기중인 소모임
 								</div>
 								<table class="table text-center">
 									<thead>
@@ -330,7 +330,7 @@ input[type="radio"]{
 								
 								
 								<div class="titlefont boldfont mt-5 mx-1">
-									거절된 소모임&nbsp;<i class="fa-solid fa-circle-info"></i>
+									<i class="fa-solid fa-person-circle-xmark"></i>&nbsp;승인 거절된 소모임
 								</div>
 								
 								<table class="table text-center">
@@ -376,8 +376,8 @@ input[type="radio"]{
 							<!-- mbti 게시글 -->
 							<div class="tab-pane fade" id="mbti-board">
 							
-								<div class="titlefont boldfont mt-5 mx-1">
-									내가 작성한 게시글&nbsp;<i class="fa-solid fa-circle-info"></i>
+								<div class="titlefont boldfont mt-3 mx-1">
+									<i class="fa-solid fa-file-pen"></i>&nbsp; 작성한 게시글
 								</div>
 								<table class="table text-center">
 									<thead>
@@ -408,7 +408,7 @@ input[type="radio"]{
 								</table>
 								
 								<div class="titlefont boldfont mt-5 mx-1">
-									내가 좋아요한 게시글&nbsp;<i class="fa-solid fa-circle-info"></i>
+									<i class="fa-solid fa-heart"></i>&nbsp; 좋아요한 게시글
 								</div>
 								<table class="table text-center">
 									<thead>
@@ -440,7 +440,7 @@ input[type="radio"]{
 								
 								
 								<div class="titlefont boldfont mt-5 mx-1">
-									내가 투표한 게시글&nbsp;<i class="fa-solid fa-circle-info"></i>
+									<i class="fa-solid fa-check-to-slot"></i>&nbsp; 투표한 게시글
 								</div>
 								<table class="table text-center">
 									<thead>
@@ -477,7 +477,10 @@ input[type="radio"]{
 							<div class="tab-pane fade" id="buy">
 								<p>
 								<div class="titlefont boldfont mx-1">
-									구매하기&nbsp;<i class="fa-solid fa-circle-info"></i>
+									<i class="fa-solid fa-cart-shopping"></i>&nbsp;구매하기
+								</div>
+								<div class="boldfontSS text-center mb-3">
+									<i class="fa-solid fa-circle-info"></i>&nbsp;소모임 회원은 최대 200명까지 증원 가능합니다. 
 								</div>
 								<form action="${pageContext.request.contextPath}/pay_purchase" method="post">
 								<div class="row row-cols-1 row-cols-md-4 g-10 my-2">
@@ -554,8 +557,8 @@ input[type="radio"]{
 										</label>
 									</div>
 								</div>
-									<div class="mx-1">
-										결제할 소모임 선택
+									<div class="mx-1 mt-4 titlefont boldfont">
+										<i class="fa-solid fa-check"></i>&nbsp;결제할 소모임
 									</div>
 									<table class="table text-center">
 										<thead>
@@ -581,10 +584,12 @@ input[type="radio"]{
 										</tbody>
 										</table>
 								<div class="row" style="float: right;">
-									<button type="submit" class="btn btn-outline-success">구매</button>
+									<button type="submit" class="btn btn-outline-success mb-3">구매</button>
 								</div>
 								</form>
-								<div class="row titlefont boldfont mt-5 mx-1">구매 및 사용내역</div>
+								<div class="mx-1 titlefont boldfont mt-5">
+										<i class="fa-solid fa-receipt"></i>&nbsp;구매 및 사용내역
+									</div>
 								<table class="table text-center">
 									<thead>
 										<tr>
@@ -606,7 +611,7 @@ input[type="radio"]{
 								</div>
 							<div class="tab-pane fade" id="blocked">
 								<div class="titlefont boldfont mx-1 mt-3">
-								차단된 사용자&nbsp;<i class="fa-solid fa-circle-info"></i>
+								<i class="fa-solid fa-person-circle-xmark"></i>&nbsp;차단된 사용자
 								</div>
 								<table class="table text-center">
 									<thead>
@@ -636,7 +641,7 @@ input[type="radio"]{
 								<p>
 								<div class="boldfont2 text-center mt-4 mb-4">
 												<i class="fa-solid fa-circle-exclamation"></i>
-												MBTI와 관심태그는 프로필에서 변경 가능합니다!
+												MBTI와 관심태그는 프로필에서 변경 가능합니다.
 									</div>
 								<form action="information" method="post">
 									<div class="col-md-6 offset-md-3 mt-2">
@@ -788,7 +793,7 @@ input[type="radio"]{
 										<div class="row text-center mt-3 mb-5">
 											<p class="mt-4 boldfont2">
 												<i class="fa-solid fa-circle-exclamation"></i></i>
-												소모임을 운영하고 있는 회원은<br> 소모임을 폐쇄한 뒤 탈퇴 회원탈퇴가 가능합니다!<br><br>
+												소모임을 운영하고 있는 회원은<br> 소모임을 폐쇄한 뒤 탈퇴 회원탈퇴가 가능합니다.<br><br>
 												탈퇴를 원하시면 비밀번호를 입력하세요.
 											</p>
 											<div class="form-floating mb-3 mt-4">
@@ -1125,16 +1130,18 @@ input[type="radio"]{
 												<div class="col-md-12 mb-5 p-4 text-dark rounded">
 													<div class="col-md-8 offset-md-2">
 													
-														<div class="card">
-															<div class="card-title mt-4">
-																<h3 style="color:#3E4684;">잠깐 멈춰보시&nbsp;<span style="color:#F4B759;">개!!</span></h3>
+														<div>
+															<div class="boldfontL mt-4">
+																<i class="fa-solid fa-hand"></i>&nbsp;<span style="color:#3E4684;">잠깐 멈춰보시&nbsp;<span style="color:#F4B759;">개!!</span></span>
 															</div>
-															<div class="card-img text-center">
-																<img src="${pageContext.request.contextPath}/image/mbti/강아지(ENFP).png" style="width:350px; height:350px">  
+															<div class="text-center mt-5 mb-5">
+																<img src="${pageContext.request.contextPath}/image/mbti/강아지(ENFP).png" style="width:300px; height:300px">  
 															</div>
-															<div class="card-text text-start mt-4 mb-2">
-																<span style="color:#3E4684;">*결과와 같은 프로필로 변경을 원치 않으실 경우 <span style="color:red;">'변경하기'</span> 버튼을 눌러주시개 <br> *결과와 같은 프로필로 변경을 원하실 경우 <span style="color:red;">'+프로필'</span> 버튼을 눌러주시개</span>
+															<div class="text-center boldfontS mt-4 mb-5" style="margin-left: 5px;">
+																<span style="color:#3E4684;">* 결과와 같은 프로필로 변경을 원치 않으실 경우 <span style="color:red;">'변경하기'</span> 버튼을 눌러주시개!<br></span>
+																<span style="color:#3E4684;">* 결과와 같은 프로필로 변경을 원할 경우 <span style="color:red;">'+프로필'</span> 버튼을 눌러주시개!</span>
 															</div>
+															
 														</div>
 														
 														<button type="button" class="btn btn-prev mt-1"
@@ -1148,17 +1155,19 @@ input[type="radio"]{
 											<!-- 6번째 페이지 -->
 											<div class="container w500 m30 page">
 												<input type="hidden" name="memberMbti" ref="memberMbti">
-												<div class="col-md-8 offset-md-2 mb-5 p-4 text-dark bg-light rounded">
+												<div class="col-md-8 offset-md-2 mb-5 p-4 ">
 													<input type="hidden" name="memberAnimal" :value="memberAnimal.mbtiAnimalDto.animal" v-if="memberAnimal.mbtiAnimalDto != null">
 													<input type="hidden" name="attachNo" :value="memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null">
 													<div class="row">
-														<div class="card" v-if="memberAnimal != null">
-															<div class="card-img text-center">
-																<img src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png" v-if="memberAnimal.attachmentDto == null" style="width:400px; height:400px">  
-																<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null" style="width:400px; height:400px">
+													<div class="boldfontL text-center mb-5">
+													<i class="fa-solid fa-quote-left"></i>&nbsp;MBTI 성향분석 완료!&nbsp;<i class="fa-solid fa-quote-right"></i></div>
+														<div v-if="memberAnimal != null">
+															<div class=" text-center mb-4">
+																<img src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png" v-if="memberAnimal.attachmentDto == null" style="width:300px; height:300px">  
+																<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null" style="width:300px; height:300px">
 															</div>
-															<h3 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.animal}}</h3> 
-															<h3 class="card-title text-center" v-if="memberAnimal.mbtiAnimalDto != null" style="color:#F7D68A;">{{memberAnimal.mbtiAnimalDto.mbti}}</h3> 
+															<div class="text-center boldfontM mb-2" style="color:#F7D68A;" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.animal}}&nbsp;(<span style="color:#F7D68A;">&nbsp;{{memberAnimal.mbtiAnimalDto.mbti}}&nbsp;</span>)<br></div> 
+															<div class="text-center boldfont" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.mbtiSummary}}</div>
 														</div>
 													</div>
 													<div class="mt-4">
@@ -1167,7 +1176,7 @@ input[type="radio"]{
 																<button type="submit" class="btn btn-outline-success" style="width: 50%;" @click="memberMbti">변경하기</button>
 															</div>
 															<div class="col-md-6">
-																<button type="submit" class="btn btn-outline-success" style="width: 50%;" @click="changeAnimalProfile">+프로필</button>
+																<button type="submit" class="btn btn-outline-success" style="width: 50%;" @click="changeAnimalProfile">+ 프로필</button>
 															</div>
 														</div>
 													</div>
@@ -1430,7 +1439,7 @@ methods: {
 		}).then((resp) => {
 			if(resp.data != 0){
 				location.reload();
-				window.alert("관심분야가 정상적으로 변경되었습니다!!");
+				window.alert("관심분야가 성공적으로 변경되었습니다!");
 			}
 		})			
     },
@@ -1449,7 +1458,7 @@ methods: {
 		}).then((resp) => {
 			if(resp.data != 0){
 				location.reload();
-				window.alert("MBTI가 정상적으로 변경되었습니다!!");
+				window.alert("MBTI가 성공적으로 변경되었습니다!");
 			}
 		})				
     },
@@ -1479,7 +1488,7 @@ methods: {
 			},
 		}).then((resp) => {
 			location.reload();
-			window.alert("MBTI 및 프로필이 정상적으로 변경되었습니다!");
+			window.alert("MBTI 및 프로필이 성공적으로 변경되었습니다!");
 		})
 	},
 	
@@ -1744,7 +1753,7 @@ mounted(){
 	}
 	// error 처리
 	if(this.error == 3){
-		window.alert("가입 가능 회원수가 200명이 넘기 때문에 더이상 증가는 불가능합니다.");
+		window.alert("소모임 회원 증원은 최대 200명까지만 가능합니다.");
 	}
 },
 created() {
