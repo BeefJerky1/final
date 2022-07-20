@@ -403,5 +403,37 @@ GROUP BY
 			<result column="entj_percent" property="entjPercent"/>
 		</association>
 		</resultMap>
-		
+	<!-- 결제 목록 -->
+	<select id="paymentlist" resultType="paymentDto" parameterType="Map"> 	
+	select * from payment order by ${column} ${order}
+	</select>	
+	<!-- 결제 검색 -->
+	<select id="paymentsearch" resultType="paymentDto" parameterType="AdminSearchVO"> 
+		<bind name="paymentNoExist" value="paymentNo!=null and !paymentNo.equals('') and !paymentNo==0"/>
+		<bind name="paymentNameExist" value="paymentName!=null and !paymentName.equals('')"/>
+		<bind name="paymentTotalExist" value="paymentTotal!=null and !paymentTotal.equals('')and !paymentTotal==0" />
+		<bind name="paymentStatusExist" value="paymentStatus!=null and !paymentStatus.equals('')"/>
+		<bind name="paymentTidExist" value="paymentTid!=null and !paymentTid.equals('')"/>
+	select * from payment
+			<where>
+			<if test="paymentNoExist">
+				and instr(payment_no, #{paymentNo})>0
+			</if>	
+			<if test="paymentNameExist">
+				and instr(payment_name, #{paymentName})>0
+			</if>			
+			<if test="paymentTotalExist">
+				and instr(payment_total, #{paymentTotal})>0
+			</if>
+			<if test="paymentStatusExist">
+				and instr(payment_status, #{paymentStatus})>0
+			</if>
+			<if test="paymentTidExist">
+				and instr(payment_tid, #{paymentTid})>0
+			</if>
+			<if test="column!=null and order !=null">
+			order by ${column} ${order}
+			</if>
+		</where>
+	</select>
 </mapper>
