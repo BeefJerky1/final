@@ -491,6 +491,7 @@
 		update club set club_leader = #{nextLeader} where club_no = #{clubNo}
 	</update>
 	
+	<!-- 소모임 삭제 -->
 	<delete id="delete" parameterType="int">
 		delete club where club_no = #{clubNo}
 	</delete>

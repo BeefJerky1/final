@@ -348,7 +348,7 @@ a:hover {
 
 				</div>
 			</div>
-				<button class="btn-create shadow mt-4" @click="deleteClub" v-if="isClubMember">소모임 탈퇴</button>
+				<button class="btn-create shadow mt-4" @click="deleteClub" v-if="clubMemberJudge">소모임 탈퇴</button>
 		</div>
 
 
@@ -682,7 +682,6 @@ methods: {
 	
 	// 회원 탈퇴
 	deleteClub(){
-		
 		window.confirm("소모임을 탈퇴 하시겠습니까?");
 		
 		axios({
@@ -690,7 +689,8 @@ methods: {
 			method:"delete",
 		}).then((resp) => {
 			if(resp.data == 0){
-				window.alert("탈퇴 실패");
+				window.alert("소모임이 삭제되었습니다.");
+				window.location.href="${pageContext.request.contextPath}/club/";
 				return;
 			}
 			window.alert("탈퇴 완료");

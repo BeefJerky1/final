@@ -38,6 +38,8 @@ public interface ClubDao {
 
 	List<ClubDto> isClubLeader(int memberNo);
 
-	int passLeader(ClubDto clubDto); 
+	int passLeader(ClubDto clubDto);
+
+	void deleteClub(int clubNo); 
 
 }
