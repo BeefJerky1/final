@@ -130,6 +130,23 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 			return list1;		
 	}
 	@Override
+	public List<ClubBoardListItemVO> listAll2(int clubNo, int likeMemberNo, String column, String order, int memberNo) {
+		List<ClubBoardDto> list = sqlSession.selectList("clubboard.clubboardno", clubNo);
+		for(ClubBoardDto clubBoardDto:list) {
+			this.calculateReplyCount(clubBoardDto.getClubBoardNo());
+			this.calculateLikeCount(clubBoardDto.getClubBoardNo());
+			this.calculateReportCount(clubBoardDto.getClubBoardNo());
+		}
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("clubNo", clubNo);
+		param.put("likeMemberNo", likeMemberNo);
+		param.put("column",column);
+		param.put("order", order);
+		param.put("memberNo", memberNo);
+		List<ClubBoardListItemVO> list1=  sqlSession.selectList("clubboard.clubBoardTotalList2", param);
+		return list1;		
+	}
+	@Override
 	public List<ClubBoardListItemVO> clubBoardListItem(int clubNo) {
 		return sqlSession.selectList("clubboard.subListQuery",clubNo);
 	}
@@ -168,6 +185,7 @@ public class ClubBoardDaoImpl implements ClubBoardDao{
 	public ClubDetailVO clubDetail(int clubBoardNo) {
 		return sqlSession.selectOne("club.clubDetail2", clubBoardNo);
 	}
+
 	
 
 	

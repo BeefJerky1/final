@@ -75,6 +75,15 @@ public class ClubBoardRestController {
 			@PathVariable String order) {
 		return clubBoardDao.listAll(clubNo,likeMemberNo, column, order);
 	}
+	//목록
+	@GetMapping("/{clubNo}/{likeMemberNo}/{column}/{order}/{memberNo}")
+	public List<ClubBoardListItemVO> list(@PathVariable int clubNo, 
+			@PathVariable int likeMemberNo,
+			@PathVariable String column,
+			@PathVariable String order,
+			@PathVariable int memberNo) {
+		return clubBoardDao.listAll2(clubNo,likeMemberNo, column, order,memberNo);
+	}
 	//등록
 	@PostMapping("/")
 	public ClubBoardDto insert(@ModelAttribute ClubBoardDto clubBoardDto, 

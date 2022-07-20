@@ -141,7 +141,54 @@
 		
 
 	</resultMap>
-	
+	<!-- 해당 회원 게시글 리스트 -->
+	<select id="clubBoardTotalList2" resultMap="clubBoardListItem" parameterType="Map">
+        select
+	   C.club_board_no,
+	   C.club_board_count,
+	   C.club_board_like,
+       C.club_board_time, 
+       C.club_board_content,
+       C.club_no ,
+       C.club_board_writer,
+       C.club_board_readcount,
+       C.club_board_reportcount,
+       M.member_no ,
+       M.member_animal ,
+       M.member_birth,
+       M.member_nick ,
+       M.member_animal,
+       M.member_interest1,
+       M.member_interest2,
+       M.member_interest3,
+       M.member_mbti,
+       M.member_gender,
+       M.member_place1,
+       M.member_place2,
+       M.member_place3,
+       M.member_sns_id,
+       M.member_logindate,
+       P.attach_no  as 프로필사진번호,
+       B.animal_no as 동물번호,
+       A.attach_no as 동물사진번호,
+	 L.like_member_no
+from club_board C 
+left outer join member M 
+   on C.club_board_writer = M.member_no 
+left outer join member_profile P 
+   on C.club_board_writer = P.member_no
+left outer join (select * from club_board_like where like_member_no = #{likeMemberNo}) L
+   on C.club_board_No = L.club_board_no 
+left outer join mbti_animal  B
+    on M.member_mbti = B.mbti
+left outer join animal_photo A
+ on B.animal_no = A.animal_no
+left outer join (select * from blocked where blocked_user = #{likeMemberNo})K
+  on C.club_board_writer = K.blocked_target
+where club_board_writer not in (select blocked_target from blocked where blocked_user = #{likeMemberNo})
+ and club_board_writer not in (select blocked_user from blocked where blocked_target = #{likeMemberNo})
+ and C.club_no = #{clubNo} and club_board_writer = #{memberNo} order by ${column} ${order}
+	</select>
 	<select id="clubBoardTotalList" resultMap="clubBoardListItem" parameterType="Map">
         select
 	   C.club_board_no,
@@ -343,7 +390,7 @@ where C.club_board_No = #{clubBoardNo}
 		</association>
 		<association property="memberProfileDto">
 			<result column="member_no" property="memberNo"/>
-			<result column="attach_no" property="attachNo"/>
+			<result column="프로필사진번호" property="attachNo"/>
 		</association>
 	</resultMap>
 		<select id="memberprofile" resultMap="ClubMemberProfile">
