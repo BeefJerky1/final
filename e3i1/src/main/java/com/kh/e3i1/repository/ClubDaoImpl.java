@@ -174,7 +174,7 @@ public class ClubDaoImpl implements ClubDao {
 		Map<String, Object> param = new HashMap<>();
 		param.put("nextLeader", nextLeader);
 		param.put("clubNo", clubDto.getClubNo());
-		sqlSession.update("club.passLeader", param);
+		sqlSession.update("club.passLeader",param);
 		return nextLeader;
 	}
 	
