@@ -356,9 +356,22 @@ GROUP BY
 		values (#{animalNo},#{animal},#{mbti})
 	</insert>
 		<!-- 동물 삭제 -->
-	<insert id="mbtianimaldelete" parameterType="int">
+	<delete id="mbtianimaldelete" parameterType="int">
 		delete mbti_animal where animal_no = #{animalNo}
-	</insert>
+	</delete>
+	<select id="findattachno" resultType="int">
+		select attach_no from animal_photo where animal_no= #{animalNo}
+	</select>
+		<!-- attach에서 삭제 -->
+	<delete id="mbtianiamldelete">
+		delete mbti_animal where aniaml_no = #{animalNo}
+	</delete>
+	<delete id="attachmentdelete" parameterType="int">
+		delete attachment where attach_no = #{attachNo}
+	</delete>
+	<delete id="animalphotodelete" parameterType="int">
+		delete animal_photo where attach_no = #{attachNo}
+	</delete>
 	<!-- 동물 검색 -->
 	<select id="selectmbtianimal" resultType="int">
 		select animal_no from mbti_animal where animal_no = #{animalNo}
