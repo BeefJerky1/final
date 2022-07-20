@@ -116,8 +116,8 @@
 		</association>
 		
 		<association property="memberProfileDto">
-			<result column="member_no" property="memberNo"/>
-			<result column="attach_no" property="attachNo"/>
+			<result column="member_no2" property="memberNo"/>
+			<result column="attach_no2" property="attachNo"/>
 		</association>
 	</resultMap>
 	
@@ -161,8 +161,8 @@
 			m.MEMBER_SNS_ID,
 			m.MEMBER_NICK,
 			m.MEMBER_BIRTH, 
-			mp.MEMBER_NO,
-			mp.ATTACH_NO 
+			mp.MEMBER_NO member_no2,
+			mp.ATTACH_NO attach_no2
 		FROM 
 			club_member cm 
 		LEFT OUTER JOIN MEMBER m 
@@ -210,7 +210,7 @@
 	</delete>
 	
 	
-		<!-- 소모임 회원 프로필 정보 -->
+	<!-- 소모임 회원 프로필 정보 -->
 	<select id="memberProfile" resultMap="clubMemberListVO">
 		SELECT 
 			m.member_no,
@@ -227,8 +227,8 @@
 			m.MEMBER_NICK,
 			m.MEMBER_BIRTH, 
        		m.member_logindate,
-			mp.MEMBER_NO,
-			mp.ATTACH_NO 
+			mp.MEMBER_NO member_no2,
+			mp.ATTACH_NO attach_no2 
 		FROM 
 			MEMBER m 
 		LEFT OUTER JOIN MEMBER_PROFILE mp 

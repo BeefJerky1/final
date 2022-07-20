@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.ClubLikeDto;
+import com.kh.e3i1.entity.ClubMemberDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.vo.ClubComplexSearchVO;
 import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubLikeVO;
 import com.kh.e3i1.vo.ClubListVO;
-import com.kh.e3i1.vo.ClubMemberListVO;
 
 @Repository
 public class ClubDaoImpl implements ClubDao {
@@ -113,6 +113,40 @@ public class ClubDaoImpl implements ClubDao {
 	public List<ClubLikeVO> bestClub() {
 		return sqlSession.selectList("club.bestClubList");
 	}
+	
+	
+	// 결제시 소모임 인원제한 증가
+	@Override
+	public void clubPlus(int clubPlusNo, int clubNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("clubPlusNo", clubPlusNo);
+		param.put("clubNo", clubNo);
+		sqlSession.update("club.clubPlus",param);
+	}
 
+	@Override
+	public boolean isLimit(int clubNo, int clubPlusNo) {
+		ClubDto clubDto = sqlSession.selectOne("club.one",clubNo);
+		int plus = 0;
+		
+		if(clubPlusNo == 1) plus = 10;
+		if(clubPlusNo == 2) plus = 30;
+		if(clubPlusNo == 3) plus = 50;
+		if(clubPlusNo == 4) plus = 100;
+		
+		if(plus + clubDto.getClubMemberLimit() > 200) {
+			return true;
+		}
+		return false;
+	}
+	
+	// 소모임 회원 여부
+	@Override
+	public ClubMemberDto isClubMember(int clubNo, int memberNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("clubNo", clubNo);
+		param.put("memberNo", memberNo);
+		return sqlSession.selectOne("club.isClubMember", param);
+	}
 	
 }
