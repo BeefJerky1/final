@@ -355,17 +355,20 @@ position:relative;
 						             {{clubboard.memberDto.memberNick}}
 						            </span>
 						            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"  >
-						              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">프로필</a></li>
+						              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">{{clubboard.memberDto.memberNick}}님 프로필</a></li>
 						              <div v-if="Mprofile!=null">
 						                <div v-if="Mprofile.memberDto.memberNo ==this.memberNo">
 	               						</div>
 	               						<div v-else>
-						              		<li><a class="dropdown-item" href="#" v-on:click="blocked()">차단하기</a></li>
+						              		<li><a class="dropdown-item" href="#" v-on:click="blocked()">{{clubboard.memberDto.memberNick}}님 차단하기</a></li>
 	               						</div>
 	               						<div v-if="Mprofile.memberDto.memberNo ==this.memberNo">
 	               						</div>
 	               						<div v-else>
-						              		<li class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#postModal" >메세지 보내기</li>
+						              		<li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#postModal" >{{clubboard.memberDto.memberNick}}님 메세지 보내기</a></li>
+	               						</div>
+	               						<div>
+	               							<li><a class="dropdown-item" href="#" v-on:click="search()">{{clubboard.memberDto.memberNick}}님 게시글 보기</a></li>
 	               						</div>  
                 					 </div>
 						            </ul>
@@ -601,6 +604,7 @@ position:relative;
     <script src="${path}/js/time.js"></script>
     <script src="${path}/js/mbtiboard.js"></script>
 	<script src="${path}/js/slick.min.js"></script>
+ 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     
 <!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script> -->
     <script>
@@ -935,6 +939,42 @@ position:relative;
  					this.column ="club_board_count";
  					this.loadClubBoardList()
  				},
+ 				//차단하기
+ 				blocked(){
+ 					Swal.fire({
+		    			  title: '정말 차단하시겠습니까???',
+		    			  text: "차단한 상대의 게시물은 보이지 않습니다.",
+		    			  imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+		    			  imageWidth : 100,
+		    			  showCancelButton: true,
+		    			  confirmButtonColor: '#3085d6',
+		    			  cancelButtonColor: '#d33',
+		    			  confirmButtonText: '차단',	
+		    			  cancelButtonText: '취소'
+		    			}).then((result) => {
+		    			  if (result.value) {
+		 					const blockedTarget = this.Mprofile.memberDto.memberNo;
+		 					axios({
+		 						url:"${pageContext.request.contextPath}/rest/mypage/block",
+		 						method:"post",
+		 						data:{
+		 							blockedTarget:blockedTarget,
+		 							blockedUser:this.memberNo,
+		 						}
+		 					}).then(resp=>{
+		 						this.blockedResult=resp.data
+		 						if(this.blockedResult ==1){
+		 							Swal.fire({
+			        			         title: '차단되었습니다. 차단해제는 마이페이지에서 가능합니다!',
+			        			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+			    		    			  imageWidth : 100
+				        		  	        			 })
+		 						}
+		 						this.loadClubBoardList();
+		 					})
+		    			  }
+		    			})
+ 				},
  				sendMessage(){
  					const messageReceiver = this.Mprofile.memberDto.memberNo
  					if(this.messageContent=='' ||this.messageContent==null){
@@ -955,32 +995,22 @@ position:relative;
  						if(this.sendMessageResult==1){
  							this.messageContent=""
  							this.messageTitle=""
- 							window.alert("메세지 전송이 완료되었습니다.")
+ 								Swal.fire({
+		        			         title: '메시지 전송을 완료했어요!',
+		        			          imageUrl : '${pageContext.request.contextPath}/image/smile.png',
+		    		    			  imageWidth : 100
+			        		  	        			 })
  						}else{
- 							window.alert("오류가 발생하였습니다. 나중에 다시 시도해주십시오.")
+ 							Swal.fire(
+		        			          '오류가 발생했습니다. 다시 시도해 주세요.',
+		        			          '',
+		        			          'error'
+		        			        )
  						}
  					})
  					
  				},
- 				blocked(){
-					const choice = window.confirm("정말 차단하시겠습니까?\n차단한 상대의 게시물은 보이지 않습니다.");
-					if(choice==false)return
- 					const blockedTarget = this.Mprofile.memberDto.memberNo;
- 					axios({
- 						url:"${pageContext.request.contextPath}/rest/mypage/block",
- 						method:"post",
- 						data:{
- 							blockedTarget:blockedTarget,
- 							blockedUser:this.memberNo,
- 						}
- 					}).then(resp=>{
- 						this.blockedResult=resp.data
- 						if(this.blockedResult ==1){
- 							window.alert("차단되었습니다. 차단해제는 마이페이지에서 가능합니다");
- 						}
- 						this.loadClubBoardList();
- 					})
- 				},
+ 				//mbti 리스트
  				mbti(){
  					// mbti
  					axios({
@@ -990,7 +1020,32 @@ position:relative;
  						this.mbtiList = resp.data;
  					})
  				},
-            	
+ 				//해당 회원 게시글 보기
+ 				search(){
+					axios({
+		        		url:"${pageContext.request.contextPath}/rest/clubboard/"+this.clubNo+"/"+this.memberNo+"/"+this.column+"/"+this.order+"/"+this.Mprofile.memberDto.memberNo,
+						method:"get"
+					}).then(resp=>{
+						let data = []
+						for(var i = 0; i<this.showBoard;i++){
+							data.push(resp.data[i])
+						}
+						this.boardAll = resp.data,
+						this.board = data,
+						this.totalBoard = this.boardAll.length
+						
+						//총 게시글 수가 보이는 게시글 수(5)보다 작으면
+						if(this.totalBoard < this.showBoard){
+// 							this.showReply = this.totalReply; //보이는 수를 전체 게시글수로 변경
+							this.board = this.boardAll;	//게시글에 게시글 전체를 넣는다.
+	                		this.dataFull=true;	//버튼은 disable
+						}else if(this.totalBoard>this.showBoard){ 
+	                		this.dataFull=false; //버튼은 disable
+						}else if(this.totalBoard==this.showBoard){//전체 게시글 수와 보이는 게시글 수가 동일하면
+							this.dataFull=true;	//버튼은 disable
+						}
+					})						
+ 				},
             },
             created(){
             	this.loadClubBoardList();

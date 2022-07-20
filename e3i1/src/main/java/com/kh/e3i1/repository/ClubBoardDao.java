@@ -49,6 +49,8 @@ public interface ClubBoardDao {
 	
 	//게시글 상세 페이지에서 클럽정보 조회
 	ClubDetailVO clubDetail(int clubBoardNo);
+	//해당 회원의 게시글만 보기
+	List<ClubBoardListItemVO> listAll2(int clubNo, int likeMemberNo, String column, String order, int memberNo);
 
 
 
