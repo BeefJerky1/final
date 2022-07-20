@@ -134,19 +134,7 @@ a {
                            <input type="text" class="form-control border-0 fw-light ps-1"  :disabled="isAnonymous" :placeholder="textareaPlaceholder">
                            <a href="#" class="text-decoration-none input-group-text bg-white border-0 material-icons text-primary" style="color: #514e85 !important;">add_circle</a>
                         </div>
-                     
-                    <!--  정렬 버튼 구간 -->
-             	 <ul class=" top-osahan-nav-tab nav nav-pills justify-content-center nav-justified mb-4 shadow-sm rounded-4 overflow-hidden bg-white mt-4" id="pills-tab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                           <a href="list"><button class="p-3 nav-link  active nav-area" id="pills-feed-tab" data-bs-toggle="pill" data-bs-target="#pills-feed" type="button" role="tab" aria-controls="pills-feed" aria-selected="true">new!</button></a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                           <a href="list3"><button class="p-3 nav-link nav-area" id="pills-people-tab" data-bs-toggle="pill" data-bs-target="#pills-people" type="button" role="tab" aria-controls="pills-people" aria-selected="false">좋아요순</button></a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                          <a href="list2"> <button class="p-3 nav-link nav-area" id="pills-mentions-tab" data-bs-toggle="pill" data-bs-target="#pills-mentions" type="button" role="tab" aria-controls="pills-mentions" aria-selected="false">댓글순</button></a>
-                        </li>
-                     </ul>
+
                      
    					<!-- 게시글 영역 -->
    					<div class="bg-white rounded-4 shadow-sm profile mb-2"  id="mbti-board">
