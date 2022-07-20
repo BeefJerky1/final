@@ -69,6 +69,7 @@ public class ClubServiceImpl implements ClubService {
 		int nextLeader = clubDao.passLeader(clubDto);
 		System.out.println(nextLeader);
 		if(nextLeader == 0) {
+			clubDao.deleteClub(clubDto.getClubNo());
 			return 0;
 		}
 		return clubMemberDao.beLeader(nextLeader, clubDto.getClubNo());

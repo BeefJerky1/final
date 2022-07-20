@@ -21,7 +21,7 @@
 					<div class="form-floating mb-2 mx-1">
 						<input type="text" class="form-control" name="memberEmail"
 							placeholder="email@example.com" value="${cookie.saveEmail.value}"> <label
-							for="floatingInput">Email address</label>
+							for="floatingInput" autocomplete="off">Email address</label>
 					</div>
 
 					<div class="form-floating mb-2 mx-1">

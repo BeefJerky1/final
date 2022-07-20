@@ -177,5 +177,10 @@ public class ClubDaoImpl implements ClubDao {
 		sqlSession.update("club.passLeader",param);
 		return nextLeader;
 	}
-	
+
+	// 소모임 삭제
+	@Override
+	public void deleteClub(int clubNo) {
+		sqlSession.delete("club.delete",clubNo);
+	}
 }
