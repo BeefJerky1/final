@@ -104,10 +104,10 @@
 	
 		<select id="list" resultMap="mbtiReplyMap">
 				select * from mbti_board_reply R
-           			 join member M on R.member_no = M.member_no
-            		 join mbti_board B on R.mbti_board_no = B.mbti_board_no
-            		 join member_profile P on M.member_no = P.member_no
-      				 join animal_photo AP on AP.attach_no = P.attach_no
+           		left outer join member M on R.member_no = M.member_no
+            	left outer join mbti_board B on R.mbti_board_no = B.mbti_board_no
+            	left outer join member_profile P on M.member_no = P.member_no
+      			left outer join animal_photo AP on AP.attach_no = P.attach_no
            		where R.mbti_board_no = #{mbtiBoardNo}
 		</select>
 		
