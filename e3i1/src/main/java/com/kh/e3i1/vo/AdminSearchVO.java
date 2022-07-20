@@ -1,5 +1,6 @@
 package com.kh.e3i1.vo;
 
+import java.sql.Date;
 import java.util.List;
 
 
@@ -29,4 +30,10 @@ public class AdminSearchVO {
 	private String mbtiBoardTitle;
 	private String mbtiBoardContent;
 	private int mbtiBoardReplyCount;
+	private int paymentNo;
+	private String paymentTid;
+	private int paymentTotal;
+	private String paymentName;
+	private Date paymentTime;
+	private String paymentStatus;
 }

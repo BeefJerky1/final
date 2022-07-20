@@ -20,11 +20,15 @@ import com.kh.e3i1.entity.MbtiAnimalDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.entity.NoticeDto;
+import com.kh.e3i1.entity.PaymentDetailDto;
+import com.kh.e3i1.entity.PaymentDto;
 import com.kh.e3i1.vo.AdminClubSearchVO;
 import com.kh.e3i1.vo.AdminMbtiAnimalListVO;
 import com.kh.e3i1.vo.AdminSearchVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
 import com.kh.e3i1.vo.ClubStatisticVO;
+import com.kh.e3i1.vo.PaymentDetailVO;
 
 @Repository
 public class AdminDaoImpl implements AdminDao{
@@ -216,7 +220,39 @@ public class AdminDaoImpl implements AdminDao{
 			return 1;
 		}
 	}
-	
+	//결제 목록
+	@Override
+	public List<PaymentDto> paymentList(String column, String order) {	
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("column", column);
+		param.put("order", order);
+		return sqlSession.selectList("admin.paymentlist", param);
+	}
+	@Override
+	public PaymentDetailVO paymentDetail(int paymentNo) {
+		return sqlSession.selectOne("admin.detailforpayment", paymentNo);
+	}
+	@Override
+	public List<PaymentDto> paymentSearch(AdminSearchVO searchVO) {
+		return sqlSession.selectList("admin.paymentsearch", searchVO);
+	}
+	@Override
+	public List<NoticeDto> noticeList(String column, String order) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("column", column);
+		param.put("order", order);
+		return sqlSession.selectList("admin.noticelist", param);
+	}
+	//공지삭제
+	@Override
+	public List<Integer> deleteNotice(List<Integer> noticeNo) {
+		List<Integer> result = new ArrayList<Integer>();
+		for(Integer noticeNo1 : noticeNo) {
+			sqlSession.delete("admin.deletenotice", noticeNo1);
+			result.add(noticeNo1);
+		}
+		return result;
+	}
 
 
 

@@ -184,7 +184,8 @@ a {
     <!-- 소모임 보여주기 -->
    		 <div class="col-md-3 col-lg-3 wow fadeInUp main-area club-list" data-wow-delay="0.3s" v-for="(club,index) in clubList" v-bind:key="index" @click="toDetailPage(index)">
                     <div class="service-item rounded overflow-hidden">
-                        <img class="img-fluid" src="https://via.placeholder.com/250/69f/fff.png" alt="">
+                    <img class="img-fluid" :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+club.clubProfileDto.attachNo" v-if="club.clubProfileDto.attachNo != null">
+                    <img class="img-fluid" src="${pageContext.request.contextPath}/image/clubMainPhoto.jpg" v-if="club.clubProfileDto.attachNo == null">
                         <div class="position-relative p-4 pt-0">
                             <div class="service-icon">
                                 <i class="fa-solid fa-face-smile fa-3x"></i>
@@ -206,7 +207,7 @@ a {
              
         		 <div class="col-md-3 col-lg-3 wow fadeInUp main-area club-list" style="position:relative;" data-wow-delay="0.3s" v-for="(board,index) in mbtiBoardList" v-bind:key="index" @click="toMbtiDetailPage(index)">
                     <div class="service-item rounded overflow-hidden">
-                        <img class="img-fluid" src="https://via.placeholder.com/250/69f/fff.png" alt="">
+                        <img class="img-fluid" src="${pageContext.request.contextPath}/image/mbtiPhoto.png" alt="">
                         <div class="position-relative p-4 pt-0">
                             <div class="service-icon">
                                 <i class="fa-solid fa-face-smile fa-3x"></i>

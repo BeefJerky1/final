@@ -126,10 +126,17 @@ $(function(){
                            <a href="list"><button class="p-3 nav-link  active nav-area" id="pills-feed-tab" data-bs-toggle="pill" data-bs-target="#pills-feed" type="button" role="tab" aria-controls="pills-feed" aria-selected="true">new!</button></a>
                         </li>
                         <li class="nav-item" role="presentation">
-                           <a href="list3"><button class="p-3 nav-link nav-area" id="pills-people-tab" data-bs-toggle="pill" data-bs-target="#pills-people" type="button" role="tab" aria-controls="pills-people" aria-selected="false">좋아요순</button></a>
-                        </li>
+                        <form action="list" method="get">
+                        	<input type="submit" class="p-3 nav-link nav-area" id="pills-mentions-tab" data-bs-toggle="pill" data-bs-target="#pills-mentions" type="button" role="tab" aria-controls="pills-mentions" aria-selected="false"  value="댓글순">
+                       		<input type="hidden" name="column" value="B.mbti_board_reply_count">
+                       		<input type="hidden" name="order" value="desc">
+                       </form>
                         <li class="nav-item" role="presentation">
-                          <a href="list2"> <button class="p-3 nav-link nav-area" id="pills-mentions-tab" data-bs-toggle="pill" data-bs-target="#pills-mentions" type="button" role="tab" aria-controls="pills-mentions" aria-selected="false">댓글순</button></a>
+                          <form action="list" method="get">
+                        	<input type="submit" class="p-3 nav-link nav-area" id="pills-mentions-tab" data-bs-toggle="pill" data-bs-target="#pills-mentions" type="button" role="tab" aria-controls="pills-mentions" aria-selected="false"  value="좋아요순">
+                       		<input type="hidden" name="column" value="B.mbti_board_no">
+                       		<input type="hidden" name="order" value="desc">
+                       </form>
                         </li>
                      </ul>
                      
@@ -492,6 +499,7 @@ $(function(){
 		
 		},
 		methods:{
+
 		
 		},
 		    

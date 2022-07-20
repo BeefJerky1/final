@@ -1235,13 +1235,21 @@ input[type="radio"]{
 	</div>
 	</div>
 
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="http://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	<script src="${root}/js/time.js"></script>
 
 <script>
+$(".show-detail").click(function(){
+	console.log("되는가");
+});
+$(".show-detail").each(function(index, element){
+    $(this).click(function() {
+       $(this).children("tr").find(".detail").toggle();
+    });
+ });
 const app = Vue.createApp({
 data() {
 	return {
@@ -1713,12 +1721,6 @@ mounted(){
 			$(".page").hide();
 			$(".page").eq(index).show();
 		}
-		
-		$(".show-detail").each(function(index, element){
-		     $(this).click(function() {
-		        $(this).children("tr").find(".detail").toggle();
-		     });
-		  });
 	});
 	
 

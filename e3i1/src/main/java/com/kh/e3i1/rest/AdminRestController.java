@@ -24,6 +24,9 @@ import com.kh.e3i1.entity.MbtiAnimalDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.entity.NoticeDto;
+import com.kh.e3i1.entity.PaymentDetailDto;
+import com.kh.e3i1.entity.PaymentDto;
 import com.kh.e3i1.repository.AdminDao;
 import com.kh.e3i1.repository.ClubMemberDao;
 import com.kh.e3i1.service.AdminService;
@@ -33,6 +36,7 @@ import com.kh.e3i1.vo.AdminSearchVO;
 import com.kh.e3i1.vo.ClubMbtiPercentVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
 import com.kh.e3i1.vo.ClubStatisticVO;
+import com.kh.e3i1.vo.PaymentDetailVO;
 
 @CrossOrigin(
 		origins = {"http://127.0.0.1:5500"}
@@ -168,6 +172,31 @@ public class AdminRestController {
 	@DeleteMapping("/mbtianimal/{animalNo}")
 	public int mbtiAnimalDelete(@PathVariable int animalNo) {
 		return adminDao.mbtianimalDelete(animalNo);
+	}
+	//결제 리스트
+	@GetMapping("/payment/{column}/{order}")
+	public List<PaymentDto> paymentList(@PathVariable String column, @PathVariable String order){
+		return adminDao.paymentList(column, order);
+	}
+	//결제 상세
+	@GetMapping("/paymentDetail/{paymentNo}")
+	public PaymentDetailVO paymentDetail(@PathVariable int paymentNo){
+			return adminDao.paymentDetail(paymentNo);
+	}
+	//결제 리스트
+	@PostMapping("/payment")
+	public List<PaymentDto> paymentSearch(@RequestBody AdminSearchVO searchVO){
+		return adminDao.paymentSearch(searchVO);
+	}
+	//공지 리스트
+	@GetMapping("/notice/{column}/{order}")
+	public List<NoticeDto> noticeList(@PathVariable String column, @PathVariable String order){
+		return adminDao.noticeList(column, order);
+	}
+	//공지 삭제
+	@DeleteMapping("/notice/")
+	public List<Integer> deleteNotice(@RequestParam List<Integer> noticeNo){
+		return adminDao.deleteNotice(noticeNo);
 	}
 	
 	

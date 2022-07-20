@@ -178,16 +178,20 @@ thead {
 				<div class="col-md-3">
 						<div class="col-md-3 profile" v-if="memberData!=null">
 							<div class="profileimg text-center mt-3 mb-2">
-								<img src="${root }/image/mbti/거북이(ISTP).png"
-									style="border-radius: 50%; width: 140px; height: 140px;" />
+								<div v-if="memberData.memberProfileDto.attachNo==0">
+                         		<img  style="border-radius: 50%; width: 140px; height: 140px;" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+memberData.animalPhotoDto.attachNo"> 
+                            </div>
+                            <div v-else>
+                         		<img  style="border-radius: 50%; width: 140px; height: 140px;" :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+memberData.memberProfileDto.attachNo">                             
+                    		</div>
 							</div>
 							<div class="ml-5 text-center mb-3">
-								<span class="profileNick"><i class="fa-solid fa-user"></i>&nbsp;{{memberData.memberNick}}</span> 
-								<span class="profileMbti" style="margin-left: 0.5em;">{{memberData.memberAnimal}}</span> 
+								<span class="profileNick"><i class="fa-solid fa-user"></i>&nbsp;{{memberData.memberDto.memberNick}}</span> 
+								<span class="profileMbti" style="margin-left: 0.5em;">{{memberData.memberDto.memberAnimal}}</span> 
 							</div>
-							<div class="text-center profileInterest my-1 mx-5">{{memberData.memberInterest1}}</div> 
-							<div class="text-center profileInterest my-1 mx-5">{{memberData.memberInterest2}}</div> 
-							<div class="text-center profileInterest my-1 mx-5">{{memberData.memberInterest3}}</div> 
+							<div class="text-center profileInterest my-1 mx-5">{{memberData.memberDto.memberInterest1}}</div> 
+							<div class="text-center profileInterest my-1 mx-5">{{memberData.memberDto.memberInterest2}}</div> 
+							<div class="text-center profileInterest my-1 mx-5">{{memberData.memberDto.memberInterest3}}</div> 
 
 							<div class="row text-center">
 							</div>
@@ -426,7 +430,7 @@ computed: {
 methods: {
 	member(){
 		axios({
-			url:"${pageContext.request.contextPath}/rest/message/member/"+this.memberNo,
+			url:"${pageContext.request.contextPath}/rest/clubboard/modal/"+this.memberNo,
 			method:"get",
 		}).then(resp=>{
 			this.memberData = resp.data

@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
+<c:set var="memberNo" value="${login}"></c:set>
+<c:set var="memberAdmin" value="${auth}"></c:set>
+<c:set var="isLogin" value="${memberNo != null}"></c:set>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -21,6 +24,9 @@
 	integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" type="text/css" href="${root}/css/sidebars.css">
+<link rel="stylesheet" type="text/css" href="${root}/css/sidebars.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/club.css">
 <style>
 .cont {
 	background-color: white;
@@ -83,7 +89,7 @@ li a:hover {
 					<a href="${root}"><img class="logo-item"
 						src="${root }/image/LOGO.png"></a>
 					<div class="row p-4 border-bottom">
-						<span class="fs-5 fw-semibold">관리자 페이지</span>
+					<span class="fs-5 fw-semibold"><a href="${root}/admin/">관리자 페이지</a></span>
 					</div>
 					 <ul class="list-unstyled ps-0 p-4">
       <li class="mb-1">
@@ -93,10 +99,21 @@ li a:hover {
         <div class="collapse" id="user-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/member" class="link-light rounded">회원 목록</a></li>
-            <li><a href="#" class="link-light rounded">회원 차트</a></li>
           </ul>
         </div>
       </li>
+      <li class="mb-1">
+							<button
+								class="btn btn-toggle align-items-center rounded collapsed"
+								data-bs-toggle="collapse" data-bs-target="#payment-collapse"
+								aria-expanded="false">결제</button>
+							<div class="collapse" id="payment-collapse">
+								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+									<li><a href="${root}/admin/payment"
+										class="link-light rounded">결제 목록</a></li>
+								</ul>
+							</div>
+						</li>
       <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#club-collapse" aria-expanded="false">
           소모임
@@ -104,7 +121,6 @@ li a:hover {
         <div class="collapse" id="club-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/club" class="link-light rounded">소모임 목록</a></li>
-            <li><a href="#" class="link-light rounded">소모임 차트</a></li>
           </ul>
         </div>
       </li>
@@ -115,7 +131,6 @@ li a:hover {
         <div class="collapse" id="board-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="${root}/admin/mbtiboard" class="link-light rounded">게시글 목록</a></li>
-            <li><a href="#" class="link-light rounded">게시글 차트</a></li>
           </ul>
         </div>
       </li>
@@ -131,77 +146,20 @@ li a:hover {
         </div>
       </li>
       <li class="border-top my-3"></li>
-      <li class="mb-1">
-        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-          설정
-        </button>
-        <div class="collapse" id="account-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-light rounded">설정</a></li>
-            <li><a href="#" class="link-light rounded">로그아웃</a></li>
-          </ul>
-        </div>
-      </li>
     </ul>
   </div>
   	</div>
-  	<div class="col-lg-9 col-md-9 col-sm-9">
-				<div class="row">
-					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4">
-						<h1>소모임 목록 (총: {{count}}개)</h1>
+  	<div class="col-md-6 mb-5">
+			<div class="card">
+				<div class="card-body">
+					<div class="card-title text-center mt-2">
+						<span class="boldfontL"  style="color:#3E4684;">소모임 관리</span>
 					</div>
-					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4 text-start">
-						<div class="row">
-							<div class="col-lg-4 col-md-4 col-sm-4">
-							<h5>검색</h5>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="clubNo" id="clubNo" placeholder="번호" >	
-									<label for="clubNo">번호</label>
-							</form>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="clubName" id="clubName" placeholder="이름" >	
-									<label for="clubName">이름</label>
-							</form>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="clubLeader" id="clubLeader"  placeholder="리더">	
-									<label for="clubLeader">리더</label>
-							</form>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="clubMainCategory" id="clubMainCategory"  placeholder="대분류">	
-									<label for="clubMainCategory">대분류</label>
-							</form>
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="clubSubCategory" id="clubSubCategory"  placeholder="소분류">	
-									<label for="clubSubCategory">소분류</label>
-							</form>   
-							<form class="form-floating">
-							        <input type="text" class="form-control"  v-model="clubPlace" id="clubPlace"  placeholder="지역">	
-									<label for="clubPlace">지역</label>
-							</form>          
-							  </div>
-						<div class="col-lg-4 col-md-4 col-sm-4">
-							<h5>정렬</h5>
-							<select class="form-control" v-model="column" v-on:change="clubList()">
-								<option value="club_no">소모임 번호</option>
-								<option value="club_name">이름</option>
-								<option value="club_leader">리더</option>
-								<option value="club_main_category">대분류</option>							
-								<option value="club_sub_category">소분류</option>
-								<option value="club_place">지역</option>
-							</select>
-							<select class="form-control" v-model="order" v-on:change="clubList()">
-								<option value="asc">오름차순</option>
-								<option value="desc">내림차순</option>				
-							</select>
-							<button type="button" class="btn btn-primary form-control" v-on:click="search()">조회</button>
-							<button type="button" class="btn btn-success form-control" v-on:click="reset()">초기화</button>
-						</div>
-						 </div>
-							</div>
-						</div>	
-					<div class="col-lg-12 col-md-12 col-sm-12">
-						<table class="table text-center">
-							<thead class="tableInterest2">
+				</div>
+				<div class="card-body">
+				
+						<table class="table table-hover text-center mb-4">
+							<thead class="boldfontS">
 								<tr>
 									<th>번호</th>
 									<th>이름</th>
@@ -245,6 +203,61 @@ li a:hover {
         </button>
 				</div>
 			</div>
+        <div class="col-md-3">
+        	<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4">
+						<h5>소모임 목록 (총: {{count}}개)</h5>
+					</div>
+					<div class="col-lg-12 col-md-12 col-sm-12 mt-5 p-4 text-start">
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12">
+							<h5>검색</h5>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="clubNo" id="clubNo" placeholder="번호" >	
+									<label for="clubNo">번호</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="clubName" id="clubName" placeholder="이름" >	
+									<label for="clubName">이름</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="clubLeader" id="clubLeader"  placeholder="리더">	
+									<label for="clubLeader">리더</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="clubMainCategory" id="clubMainCategory"  placeholder="대분류">	
+									<label for="clubMainCategory">대분류</label>
+							</form>
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="clubSubCategory" id="clubSubCategory"  placeholder="소분류">	
+									<label for="clubSubCategory">소분류</label>
+							</form>   
+							<form class="form-floating">
+							        <input type="text" class="form-control"  v-model="clubPlace" id="clubPlace"  placeholder="지역">	
+									<label for="clubPlace">지역</label>
+							</form>          
+							  </div>
+						<div class="col-lg-12 col-md-12 col-sm-12">
+							<h5>정렬</h5>
+							<select class="form-control" v-model="column" v-on:change="clubList()">
+								<option value="club_no">소모임 번호</option>
+								<option value="club_name">이름</option>
+								<option value="club_leader">리더</option>
+								<option value="club_main_category">대분류</option>							
+								<option value="club_sub_category">소분류</option>
+								<option value="club_place">지역</option>
+							</select>
+							<select class="form-control" v-model="order" v-on:change="clubList()">
+								<option value="asc">오름차순</option>
+								<option value="desc">내림차순</option>				
+							</select>
+							<button type="button" class="btn btn-outline-primary form-control" v-on:click="search()">조회</button>
+							<button type="button" class="btn btn-outline-success form-control" v-on:click="reset()">초기화</button>
+						</div>
+						 </div>
+							</div>
+						</div>	
+        </div>
   	<br><br><br><br><br><br><br><br><br><br><br>
   </div>
 

@@ -105,7 +105,8 @@
 							
 								<li class="nav-item"><a class="nav-link"
 									href="${root}/member/mypage">MYPAGE</a></li>
-									
+								<li class="nav-item" v-if="${memberAdmin}"><a class="nav-link"
+									href="${root}/admin/">관리자 페이지</a></li>	
 									
 								<li class="nav-item" v-if="isNew">
 								<a class="nav-link" href="${root}/member/message"><img src="${root }/image/newMessage.png"></i></a></li>

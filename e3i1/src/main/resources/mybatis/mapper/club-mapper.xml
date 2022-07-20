@@ -437,9 +437,14 @@
 		</association>
 		
 		<association property="clubLikeDto" javaType="ClubLikeDto">
-			<result column="club_like_no" property="clubLikeNo"/>
 			<result column="club_no" property="clubNo"/>
+			<result column="club_like_no" property="clubLikeNo"/>
 			<result column="member_no" property="memberNo"/>
+		</association>
+		
+		<association property="clubProfileDto" javaType="ClubProfileDto">
+			<result column="club_no" property="clubNo"/>
+			<result column="attach_no" property="attachNo"/>
 		</association>
 	</resultMap>
 	
@@ -447,18 +452,19 @@
 
 	 	 select * from (
    			 select rownum RN, TMP.* from (
-	            select count(L.club_no) LIKECOUNT, c.club_name, c.club_sub_category, c.club_no, c.club_main_category 
+	            select count(L.club_no) LIKECOUNT, c.club_name, c.club_sub_category, c.club_no, c.club_main_category, P.attach_no
 	           		 from club_like L
 	            		inner join club C on C.club_no = l.club_no 
-	            		group by L.club_no, c.club_name, c.club_sub_category, c.club_no, c.club_main_category 
+                        inner join club_profile P on C.club_no = p.club_no
+	            		group by L.club_no, c.club_name, c.club_sub_category, c.club_no, c.club_main_category, p.attach_no
 	            		order by LIKECOUNT desc           
     	    ) TMP
 		) where RN between 1 and 3
-	
+		
 	</select>
 	
 	<update id="clubPlus" parameterType="Map">
-		update club set club_member_limit = 
+		update club set club_member_limit = club_member_limit +
 		<choose>
 			<when test="clubPlusNo == 1">10</when>
 			<when test="clubPlusNo == 2">30</when>

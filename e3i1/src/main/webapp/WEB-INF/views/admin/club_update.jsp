@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <c:set var="root" value="${pageContext.request.contextPath}"></c:set>
+<c:set var="memberNo" value="${login}"></c:set>
+<c:set var="memberAdmin" value="${auth}"></c:set>
+<c:set var="isLogin" value="${memberNo != null}"></c:set>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -21,6 +24,9 @@
 	integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" type="text/css" href="${root}/css/sidebars.css">
+<link rel="stylesheet" type="text/css" href="${root}/css/sidebars.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/club.css">
 <style>
 .cont {
 	background-color: white;
@@ -76,7 +82,7 @@ li a:hover {
 					<a href="${root}"><img class="logo-item"
 						src="${root }/image/LOGO.png"></a>
 					<div class="row p-4 border-bottom">
-						<span class="fs-5 fw-semibold">관리자 페이지</span>
+					<span class="fs-5 fw-semibold"><a href="${root}/admin/">관리자 페이지</a></span>
 					</div>
 					<ul class="list-unstyled ps-0 p-4">
 						<li class="mb-1">
@@ -88,7 +94,18 @@ li a:hover {
 								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 									<li><a href="${root}/admin/member"
 										class="link-light rounded">회원 목록</a></li>
-									<li><a href="#" class="link-light rounded">회원 차트</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="mb-1">
+							<button
+								class="btn btn-toggle align-items-center rounded collapsed"
+								data-bs-toggle="collapse" data-bs-target="#payment-collapse"
+								aria-expanded="false">결제</button>
+							<div class="collapse" id="payment-collapse">
+								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+									<li><a href="${root}/admin/payment"
+										class="link-light rounded">결제 목록</a></li>
 								</ul>
 							</div>
 						</li>
@@ -101,7 +118,6 @@ li a:hover {
 								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 									<li><a href="${root}/admin/club"
 										class="link-light rounded">소모임 목록</a></li>
-									<li><a href="#" class="link-light rounded">소모임 차트</a></li>
 								</ul>
 							</div>
 						</li>
@@ -114,7 +130,6 @@ li a:hover {
 								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 									<li><a href="${root}/admin/mbtiboard"
 										class="link-light rounded">게시글 목록</a></li>
-									<li><a href="#" class="link-light rounded">게시글 차트</a></li>
 								</ul>
 							</div>
 						</li>
@@ -132,18 +147,6 @@ li a:hover {
 							</div>
 						</li>
 						<li class="border-top my-3"></li>
-						<li class="mb-1">
-							<button
-								class="btn btn-toggle align-items-center rounded collapsed"
-								data-bs-toggle="collapse" data-bs-target="#account-collapse"
-								aria-expanded="false">설정</button>
-							<div class="collapse" id="account-collapse">
-								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-									<li><a href="#" class="link-light rounded">설정</a></li>
-									<li><a href="#" class="link-light rounded">로그아웃</a></li>
-								</ul>
-							</div>
-						</li>
 					</ul>
 				</div>
 			</div>

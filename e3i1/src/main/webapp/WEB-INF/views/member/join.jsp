@@ -148,7 +148,7 @@
 		<div class="container w500 m30 page">
 			<div class="col-md-8 offset-md-2 p-4 mb-2">
 				<div class="col-md-8 offset-md-2">
-				<div class="boldfontM text-center mb-4">
+				<div class="boldfontM text-center mb-1">
 				<i class="fa-solid fa-quote-left"></i>&nbsp;MBTI 성향테스트를 진행하세요!&nbsp;<i class="fa-solid fa-quote-right"></i>
 				</div>
 					<c:forEach var="mbtiSurveyDto" items="${list}">
@@ -446,18 +446,23 @@
 				<input type="hidden" name="memberInterest3" :value="interest[2]">
 				<input type="hidden" name="attachNo" :value="memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null">
 				<div class="row">
+				<div class="boldfontM text-center mb-4">
+				<i class="fa-solid fa-quote-left"></i>&nbsp;MBTI 성향분석 완료!&nbsp;<i class="fa-solid fa-quote-right"></i>
+				</div>
 					<div v-if="memberAnimal != null">
 						<div class="text-center">
-							<img src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png" v-if="memberAnimal.attachmentDto == null">  
+							<img src="${pageContext.request.contextPath}/image/mbti/코끼리(INFP).png" v-if="memberAnimal.attachmentDto == null" style="width: 200px; height: 200px;">  
 							<img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+memberAnimal.attachmentDto.attachNo" v-if="memberAnimal.attachmentDto != null" style="width: 200px; height: 200px;">
 						</div>
-						<div class="card-title text-center boldfontL" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.animal}}&nbsp;({{memberAnimal.mbtiAnimalDto.mbti}})</div> 
-						<div class="card-title text-center boldfont" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.mbtiSummary}}</div><br>
+
+						<div class="card-title text-center boldfontL mt-3 " style="color: #3E4684;" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.animal}}&nbsp;({{memberAnimal.mbtiAnimalDto.mbti}})</div> 
+						<div class="card-title text-center boldfontM" v-if="memberAnimal.mbtiAnimalDto != null">{{memberAnimal.mbtiAnimalDto.mbtiSummary}}</div><br>
 						<div class="text-center boldfontS"><i class="fa-solid fa-circle-exclamation"></i>&nbsp;자동으로 동물 프로필이 저장됩니다. 마이페이지에서 변경하세요!</div> 
+
 					</div>
 				</div>
 				<div class="row mt-4">
-					<div class="col-md-12 text-center">
+					<div class="col-md-12 text-center mb-3">
 						<button type="submit" class="btn btn-outline-success" style="width: 30%;">SISO 가입하기</button>
 					</div>
 				</div>
