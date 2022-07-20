@@ -121,7 +121,7 @@
 									type="search" placeholder="소모임 검색하기" aria-label="Search"  v-model="keyword"  v-on:input="keyword = $event.target.value" autocomplete="off">
 							</form>
 							
-			<%-- 	<div class="row innerBox">
+			 	<div class="row innerBox">
 		                    <li class="list-group-item" v-for="(club, index) in clubList" v-bind:key="index">
 		                        <div v-on:click="selectKeyword(index);">
 		                           {{club.clubName}} 
@@ -129,7 +129,7 @@
 		                           <span class="interest"> \#{{club.clubSubCategory}}</span>
 		                        </div>
 		                    </li>
-		        </div> --%>
+		        </div> 
 		        
 						</c:when>
 						<c:otherwise>
@@ -155,13 +155,13 @@
 							</form>
 							
 				<div class="row innerBox">
-		                   <%--  <li class="list-group-item" v-for="(club, index) in clubList" v-bind:key="index">
+		                    <li class="list-group-item" v-for="(club, index) in clubList" v-bind:key="index">
 		                        <div v-on:click="selectKeyword(index);">
 		                           {{club.clubName}} 
 		                           <span class="interest">\#{{club.clubMainCategory}}</span> 
 		                           <span class="interest"> \#{{club.clubSubCategory}}</span>
 		                        </div>
-		                    </li> --%>
+		                    </li> 
 		        </div>
 
 						</c:otherwise>
