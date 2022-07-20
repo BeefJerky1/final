@@ -235,4 +235,13 @@
 		ON m.MEMBER_NO = mp.MEMBER_NO 
 		WHERE m.member_no = #{memberNo}
 	</select>
+	
+	<update id="beLeader" parameterType="Map">
+		update 
+			club_member 
+		set 
+			club_member_grade = 1
+		where 
+			club_no = #{clubNo} and member_no = #{memberNo}
+	</update>
 </mapper>

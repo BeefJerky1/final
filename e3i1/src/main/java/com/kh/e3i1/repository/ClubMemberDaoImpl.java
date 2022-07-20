@@ -128,4 +128,12 @@ public class ClubMemberDaoImpl implements ClubMemberDao {
 	public ClubMemberListVO memberProfile(int memberNo) {
 		return sqlSession.selectOne("clubMember.memberProfile", memberNo);
 	}
+	
+	@Override
+	public int beLeader(int memberNo, int clubNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberNo", memberNo);
+		param.put("clubNo", clubNo);
+		return sqlSession.update("clubMember.beLeader", param);
+	}
 }

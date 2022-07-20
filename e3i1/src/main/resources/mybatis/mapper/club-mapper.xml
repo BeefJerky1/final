@@ -481,4 +481,18 @@
 	</select>
 	
 	
+	<!-- 해당 회원이 운영하는 소모임 목록 -->
+	<select id="isLeader" parameterType="int" resultType="ClubDto">
+		SELECT * FROM club WHERE CLUB_LEADER = #{memberNo}
+	</select>
+	
+	<!-- 소모임 주인 바뀜 -->
+	<update id="passLeader" parameterType="Map">
+		update club set club_leader = #{nextLeader} where club_no = #{clubNo}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete club where club_no = #{clubNo}
+	</delete>
+	
 </mapper>

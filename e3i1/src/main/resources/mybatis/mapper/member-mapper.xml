@@ -459,4 +459,5 @@
 	<select id="info" resultType="blockedDto" parameterType="int">
 		select * from blocked where blocked_no = #{blockedNo}
 	</select>
+	
 </mapper> 

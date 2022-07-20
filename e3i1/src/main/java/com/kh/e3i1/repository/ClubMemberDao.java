@@ -21,4 +21,7 @@ public interface ClubMemberDao {
 	int delete(int memberNo, int clubNo);
 	// 멤버 프로필 불러오기
 	ClubMemberListVO memberProfile(int memberNo);
+	
+	// 소모임장 양도
+	int beLeader(int memberNo, int clubNo);
 }

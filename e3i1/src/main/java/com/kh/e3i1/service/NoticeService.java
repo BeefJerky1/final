@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.entity.NoticeDto;
 
 public interface NoticeService {

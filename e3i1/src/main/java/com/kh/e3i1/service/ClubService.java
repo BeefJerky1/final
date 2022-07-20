@@ -11,4 +11,6 @@ public interface ClubService {
 	public int createClub(ClubDto clubDto, MultipartFile memberProfile) throws IllegalStateException, IOException;
 
 	public int editClub(ClubDto clubDto, MultipartFile clubProfile, int attachNo)  throws IllegalStateException, IOException;
+	
+	int passLeader(ClubDto clubDto);
 }

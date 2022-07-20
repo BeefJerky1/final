@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.entity.NoticeDto;
 import com.kh.e3i1.repository.AttachmentDao;
 import com.kh.e3i1.repository.NoticeAttachDao;

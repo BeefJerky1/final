@@ -246,7 +246,7 @@ public class MemberController {
 		
 		System.out.println("확인");
 		
-		boolean success = memberDao.exit(memberDto.getMemberEmail(), memberPw);
+		boolean success = memberService.mypageMemberExit(memberDto);
 		if(success) {			
 			session.removeAttribute("login");
 			session.removeAttribute("auth");
