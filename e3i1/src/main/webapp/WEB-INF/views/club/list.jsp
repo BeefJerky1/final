@@ -513,6 +513,7 @@ select{
 							style="white-space: nowrap; overflow: hidden">{{club.clubDto.clubName}}</div>
 						<span class="categoryArea2" class="card-subtitle">\#{{club.clubDto.clubMainCategory}} </span>
 						<span class="categoryArea2">\#{{club.clubDto.clubSubCategory}}</span>
+						<span class="categoryArea2">\#{{club.clubDto.clubPlace}}</span>
 					</div>
 				</div>
 				<div class="card-body row"
