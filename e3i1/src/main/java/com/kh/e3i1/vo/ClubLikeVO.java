@@ -2,6 +2,7 @@ package com.kh.e3i1.vo;
 
 import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.ClubLikeDto;
+import com.kh.e3i1.entity.ClubProfileDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MemberDto;
 
@@ -14,5 +15,5 @@ import lombok.NoArgsConstructor;
 public class ClubLikeVO {
 	private ClubDto clubDto;
 	private ClubLikeDto clubLikeDto;
-
+	private ClubProfileDto clubProfileDto;
 }

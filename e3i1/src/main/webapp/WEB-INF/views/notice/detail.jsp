@@ -70,7 +70,7 @@
 					<td valign="top" class="left noticecontent"><div>
 							<br>${detailVO.noticeContent}</div>
 							<img src="${root}/attachment/download?attachNo=${detailVO.attachNo}"
-						style="width: 800px; height: 600px;"/>
+						style="width: 800px; height: 600px; margin-top: 2em;"/>
 					</td>
 				</tr>
 				<tr>

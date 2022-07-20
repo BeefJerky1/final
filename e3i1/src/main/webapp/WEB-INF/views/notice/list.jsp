@@ -231,12 +231,11 @@ a {
 			<tbody align="center">
 				<c:forEach var="noticede" items="${list}">
 					<tr>
-						<td><div class="noticehead my-5">[${noticede.noticeHead}]</div></td>
-						<td><a href="detail?noticeNo=${noticede.noticeNo}"><div
-									class="noticetitle text-center my-5">${noticede.noticeTitle}</div></a></td>
-						<td><a href="detail?noticeNo=${noticede.noticeNo}">
+						<td class="align-middle"><div class="noticehead">[${noticede.noticeHead}]</div></td>
+						<td class="align-middle"><a href="detail?noticeNo=${noticede.noticeNo}"><div class="noticetitle">${noticede.noticeTitle}</div></a></td>
+						<td class="align-middle text-center"><a href="detail?noticeNo=${noticede.noticeNo}">
 						<img src="${root}/attachment/download?attachNo=${noticede.attachNo}"
-								style="width: 250px; height: 130px; float: right; padding: 10px; margin-right: 2.5em;" /></a></td>
+								style="width: 243px; height: 183px; float: right; padding: 4px;" /></a></td>
 					</tr>
 				</c:forEach>
 			</tbody>

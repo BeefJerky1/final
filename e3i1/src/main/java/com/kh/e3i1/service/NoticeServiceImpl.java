@@ -29,11 +29,12 @@ public class NoticeServiceImpl implements NoticeService{
 	@Override
 	public void write(NoticeDto noticeDto, MultipartFile noticeAttach) throws IllegalStateException, IOException {
 		noticeDao.write(noticeDto);
-		int attachNo = 269;
+		int attachNo = 331;
 		if(!noticeAttach.isEmpty()) {
+			System.out.println(noticeDto.getNoticeNo()+"aaaaaa");
 			attachNo = attachmentDao.save(noticeAttach);
 		}
-		
+		System.out.println(noticeDto.getNoticeNo()+"aaaaaa22");
 		noticeAttachDao.insert(noticeDto.getNoticeNo(), attachNo);
 	}
 	
@@ -43,7 +44,7 @@ public class NoticeServiceImpl implements NoticeService{
 		boolean success = noticeDao.edit(noticeDto);
 		if(!noticeAttach.isEmpty()) {
 			int newAttachNo = attachmentDao.save(noticeAttach);
-			if(attachNo != 269) {
+			if(attachNo != 331) {
 				attachmentDao.delete(attachNo);
 			}
 			noticeAttachDao.insert(noticeDto.getNoticeNo(), newAttachNo);

@@ -235,7 +235,7 @@
 			ON cp.payment_no = p.payment_no 
 		WHERE MEMBER_NO = #{memberNo}	
 	</select>	
-	
+		
 </mapper>
 
 

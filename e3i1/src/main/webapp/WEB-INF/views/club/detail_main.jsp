@@ -215,7 +215,7 @@ a:hover {
 					class="card-img-top" style="width: 100%; height: 300px;"
 					v-if="clubList.clubProfileDto == null"> <img
 					:src="'${pageContext.request.contextPath}/attachment/download?attachNo='+clubList.clubProfileDto.attachNo"
-					style="width: 100%; height: 300px;" class="card-img-top"
+					style="width: 100%; height: 400px;" class="card-img-top"
 					v-if="clubList.clubProfileDto != null">
 				<div class="card-body">
 					<div class="card-title">

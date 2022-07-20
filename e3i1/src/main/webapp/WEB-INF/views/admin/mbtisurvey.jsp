@@ -25,9 +25,10 @@
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" type="text/css" href="${root}/css/sidebars.css">
 <style>
-.question{
-	color:red;
+.question {
+	color: red;
 }
+
 .cont {
 	background-color: white;
 	color: black;
@@ -63,6 +64,7 @@ li a:hover {
 .logo-item {
 	width: 100% !important;
 }
+
 .tableInterest2 {
 	background-color: #E9E9E9;
 	color: #3E4684;
@@ -82,168 +84,193 @@ li a:hover {
 					<a href="${root}"><img class="logo-item"
 						src="${root }/image/LOGO.png"></a>
 					<div class="row p-4 border-bottom">
-					<span class="fs-5 fw-semibold"><a href="${root}/admin/">관리자 페이지</a></span>
+						<span class="fs-5 fw-semibold"><a href="${root}/admin/">관리자
+								페이지</a></span>
 					</div>
-					 <ul class="list-unstyled ps-0 p-4">
-      <li class="mb-1">
-        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#user-collapse" aria-expanded="flase">
-          회원
-        </button>
-        <div class="collapse" id="user-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="${root}/admin/member" class="link-light rounded">회원 목록</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="mb-1">
-        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#club-collapse" aria-expanded="false">
-          소모임
-        </button>
-        <div class="collapse" id="club-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="${root}/admin/club" class="link-light rounded">소모임 목록</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="mb-1">
-        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#board-collapse" aria-expanded="false">
-         MBTI 게시판
-        </button>
-        <div class="collapse" id="board-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="${root}/admin/mbtiboard" class="link-light rounded">게시글 목록</a></li>
-          </ul>
-        </div>
-      </li>
-           <li class="mb-1">
-        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#mbti-collapse" aria-expanded="false">
-        MBTI 설문
-        </button>
-        <div class="collapse" id="mbti-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="${root}/admin/mbtisurvey" class="link-light rounded">MBTI 설문</a></li>
-            <li><a href="${root}/admin/mbtianimal" class="link-light rounded">MBTI 동물</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="border-top my-3"></li>
-      <li class="mb-1">
-        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-          설정
-        </button>
-        <div class="collapse" id="account-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-light rounded">설정</a></li>
-            <li><a href="#" class="link-light rounded">로그아웃</a></li>
-          </ul>
-        </div>
-      </li>
-    </ul>
-  </div>
-    </div>
-    <div class="col-lg-8 col-md-8 col-sm-8">
-    	<div class="row mt-5">
-    		<div class="col-lg-9 col-md-9 col-sm-9 text-center mt-5">
-    		<h1>Mbti 설문</h1>
-    		</div>
-    	</div>
-    	<div class="row">
-    	<div class="col-lg-12 col-md-12 col-sm-12  mt-5">
-            <div v-if="this.survey" class="col-lg-12 col-md-12 col-sm-12  text-end mt-5">
-            <div class="mt-5">
-    			<button class="btn btn-success" v-on:click="insertMode() ">설문 추가</button>
-            </div>
-    		</div>
-    		<div v-else class="mt-5">
-    			<div class=" bottom border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 rounded mt-3" v-if="this.insert==true" style="border-radius:1em !important">
-              <h1>설문 추가</h1>
-                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-            <label>번호</label>
-            <input type="number" class="form-control" v-model="this.no">
-             </div>
-                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-    		 <label>문제</label>
-             <textarea class="form-control update-reply" v-model="this.question" ></textarea>
-             </div>
-                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-             <label>답변1</label>
-             <textarea class="form-control update-reply" v-model="this.answer1" ></textarea>
-             </div>
-             <div class="row">
-                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-             <label>답변2</label>
-             <textarea class="form-control update-reply" v-model="this.answer2" ></textarea>
-    		 </div>
-    		 <div class="col-lg-2 col-md-2 col-sm-2 mt-1">
-    		 <button class="btn btn-primary " v-on:click="insertSurvey()">등록</button>
-    		 <button class="btn btn-secondary " v-on:click="displayMode()">취소</button>    		 
-    		 </div>
-    		 </div>
-    		<div v-else>
-    		</div>
-            </div>
-    		</div>
-    	</div>
-    	</div>
-                <div v-for="(mbti, index ) in allMbtiSurvey" v-bind:key="index" >
-                    <div class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12  rounded mt-3 "style="border-radius:1em !important">
-                        <div v-if="!mbti.edit">
-                        <div class="row" >
-                            	<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-                                <span class="question">{{mbti.surveyNo}}.{{mbti.surveyQuestion}}</span>
-                                </div>
-                              	<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
-                                 <button class="btn btn-primary" v-on:click="changeEditMode(index)">수정</button>
-                                 <button class="btn btn-danger" v-on:click="deleteSurvey(index)">삭제</button>
-                                 </div>
-                        </div>
-                        <div class="row" >
-                        	    <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-                                <span>답안:{{mbti.surveyAnswer1}}</span>
-                                </div>
-                              	<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
-                                 </div>
-                        		<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-                                <span>답안:{{mbti.surveyAnswer2}}</span>
-                                </div>
-                              	<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
-                                 </div>
-                        	</div>
-                        </div>
-                        <div class="row" v-else>
-                        <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-                        <label>문제</label>
-                     	<textarea class="form-control " v-model="mbti.surveyQuestion" style="border-radius:1em !important"></textarea>
-                    	</div>
-                    	<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-                    	<label>답변1</label>
-                     	<textarea class="form-control " v-model="mbti.surveyAnswer1" style="border-radius:1em !important"></textarea>
-                    	</div>
-                    	 <div class="col-lg-9 col-md-9 col-sm-9 mt-1">
-                    	<label>답변2</label>
-                     	<textarea class="form-control " v-model="mbti.surveyAnswer2" style="border-radius:1em !important"></textarea>
-                    	</div>
-                    	<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
-                    	<button class="btn btn-primary "  v-on:click="editSurvey(index)">수정</button>
-                    	<button class="btn btn-secondary "  v-on:click="changeDisplayMode(index)">취소</button>
-                        </div>
-                    	 
-                        </div>
-                        
-                        </div>
-                    </div> 
-                 </div>
-            </div>
-    </div>
+					<ul class="list-unstyled ps-0 p-4">
+						<li class="mb-1">
+							<button
+								class="btn btn-toggle align-items-center rounded collapsed"
+								data-bs-toggle="collapse" data-bs-target="#user-collapse"
+								aria-expanded="flase">회원</button>
+							<div class="collapse" id="user-collapse">
+								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+									<li><a href="${root}/admin/member"
+										class="link-light rounded">회원 목록</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="mb-1">
+							<button
+								class="btn btn-toggle align-items-center rounded collapsed"
+								data-bs-toggle="collapse" data-bs-target="#payment-collapse"
+								aria-expanded="false">결제</button>
+							<div class="collapse" id="payment-collapse">
+								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+									<li><a href="${root}/admin/payment"
+										class="link-light rounded">결제 목록</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="mb-1">
+							<button
+								class="btn btn-toggle align-items-center rounded collapsed"
+								data-bs-toggle="collapse" data-bs-target="#club-collapse"
+								aria-expanded="false">소모임</button>
+							<div class="collapse" id="club-collapse">
+								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+									<li><a href="${root}/admin/club"
+										class="link-light rounded">소모임 목록</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="mb-1">
+							<button
+								class="btn btn-toggle align-items-center rounded collapsed"
+								data-bs-toggle="collapse" data-bs-target="#board-collapse"
+								aria-expanded="false">MBTI 게시판</button>
+							<div class="collapse" id="board-collapse">
+								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+									<li><a href="${root}/admin/mbtiboard"
+										class="link-light rounded">게시글 목록</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="mb-1">
+							<button
+								class="btn btn-toggle align-items-center rounded collapsed"
+								data-bs-toggle="collapse" data-bs-target="#mbti-collapse"
+								aria-expanded="false">MBTI 설문</button>
+							<div class="collapse" id="mbti-collapse">
+								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+									<li><a href="${root}/admin/mbtisurvey"
+										class="link-light rounded">MBTI 설문</a></li>
+									<li><a href="${root}/admin/mbtianimal"
+										class="link-light rounded">MBTI 동물</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="border-top my-3"></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-lg-8 col-md-8 col-sm-8">
+				<div class="row mt-5">
+					<div class="col-lg-9 col-md-9 col-sm-9 text-center mt-5">
+						<h1>Mbti 설문</h1>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12  mt-5">
+						<div v-if="this.survey"
+							class="col-lg-12 col-md-12 col-sm-12  text-end mt-5">
+							<div class="mt-5">
+								<button class="btn btn-success" v-on:click="insertMode() ">설문
+									추가</button>
+							</div>
+						</div>
+						<div v-else class="mt-5">
+							<div
+								class=" bottom border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12 rounded mt-3"
+								v-if="this.insert==true" style="border-radius: 1em !important">
+								<h1>설문 추가</h1>
+								<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+									<label>번호</label> <input type="number" class="form-control"
+										v-model="this.no">
+								</div>
+								<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+									<label>문제</label>
+									<textarea class="form-control update-reply"
+										v-model="this.question"></textarea>
+								</div>
+								<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+									<label>답변1</label>
+									<textarea class="form-control update-reply"
+										v-model="this.answer1"></textarea>
+								</div>
+								<div class="row">
+									<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+										<label>답변2</label>
+										<textarea class="form-control update-reply"
+											v-model="this.answer2"></textarea>
+									</div>
+									<div class="col-lg-2 col-md-2 col-sm-2 mt-1">
+										<button class="btn btn-primary " v-on:click="insertSurvey()">등록</button>
+										<button class="btn btn-secondary " v-on:click="displayMode()">취소</button>
+									</div>
+								</div>
+								<div v-else></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div v-for="(mbti, index ) in allMbtiSurvey" v-bind:key="index">
+					<div
+						class="border border-opacity-10 p-4 col-lg-12 col-md-12 col-sm-12  rounded mt-3 "
+						style="border-radius: 1em !important">
+						<div v-if="!mbti.edit">
+							<div class="row">
+								<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+									<span class="question">{{mbti.surveyNo}}.{{mbti.surveyQuestion}}</span>
+								</div>
+								<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
+									<button class="btn btn-primary"
+										v-on:click="changeEditMode(index)">수정</button>
+									<button class="btn btn-danger" v-on:click="deleteSurvey(index)">삭제</button>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+									<span>답안:{{mbti.surveyAnswer1}}</span>
+								</div>
+								<div class="col-lg-3 col-md-3 col-sm-3 mt-1"></div>
+								<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+									<span>답안:{{mbti.surveyAnswer2}}</span>
+								</div>
+								<div class="col-lg-3 col-md-3 col-sm-3 mt-1"></div>
+							</div>
+						</div>
+						<div class="row" v-else>
+							<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+								<label>문제</label>
+								<textarea class="form-control " v-model="mbti.surveyQuestion"
+									style="border-radius: 1em !important"></textarea>
+							</div>
+							<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+								<label>답변1</label>
+								<textarea class="form-control " v-model="mbti.surveyAnswer1"
+									style="border-radius: 1em !important"></textarea>
+							</div>
+							<div class="col-lg-9 col-md-9 col-sm-9 mt-1">
+								<label>답변2</label>
+								<textarea class="form-control " v-model="mbti.surveyAnswer2"
+									style="border-radius: 1em !important"></textarea>
+							</div>
+							<div class="col-lg-3 col-md-3 col-sm-3 mt-1">
+								<button class="btn btn-primary " v-on:click="editSurvey(index)">수정</button>
+								<button class="btn btn-secondary "
+									v-on:click="changeDisplayMode(index)">취소</button>
+							</div>
 
-    </div>
+						</div>
 
-    <!-- vue js도 lazy loading을 사용한다 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://unpkg.com/vue@next"></script>
-    <script src="${root}/js/sidebars.js"></script>
-    <script>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	</div>
+
+	<!-- vue js도 lazy loading을 사용한다 -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://unpkg.com/vue@next"></script>
+	<script src="${root}/js/sidebars.js"></script>
+	<script>
         const app = Vue.createApp({
             data(){
                 return {

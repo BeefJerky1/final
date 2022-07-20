@@ -13,6 +13,7 @@ import com.kh.e3i1.entity.MbtiAnimalDto;
 import com.kh.e3i1.entity.MbtiBoardDto;
 import com.kh.e3i1.entity.MbtiSurveyDto;
 import com.kh.e3i1.entity.MemberDto;
+import com.kh.e3i1.entity.NoticeDto;
 import com.kh.e3i1.entity.PaymentDetailDto;
 import com.kh.e3i1.entity.PaymentDto;
 import com.kh.e3i1.vo.AdminClubSearchVO;
@@ -20,6 +21,7 @@ import com.kh.e3i1.vo.AdminMbtiAnimalListVO;
 import com.kh.e3i1.vo.AdminSearchVO;
 import com.kh.e3i1.vo.ClubMemberListVO;
 import com.kh.e3i1.vo.ClubStatisticVO;
+import com.kh.e3i1.vo.PaymentDetailVO;
 
 public interface AdminDao {
 	//멤버 목록
@@ -83,9 +85,13 @@ public interface AdminDao {
 	//결제 목록
 	List<PaymentDto> paymentList(String column, String order);
 	//결제 상세
-	PaymentDetailDto paymentDetail(int paymentNo);
+	PaymentDetailVO paymentDetail(int paymentNo);
 	//결제 검색
 	List<PaymentDto> paymentSearch(AdminSearchVO searchVO);
+	//공지 리스트
+	List<NoticeDto> noticeList(String column, String order);
+	//공지 삭제
+	List<Integer> deleteNotice(List<Integer> noticeNo);
 	
 
 

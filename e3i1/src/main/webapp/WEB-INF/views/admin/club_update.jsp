@@ -100,6 +100,18 @@ li a:hover {
 						<li class="mb-1">
 							<button
 								class="btn btn-toggle align-items-center rounded collapsed"
+								data-bs-toggle="collapse" data-bs-target="#payment-collapse"
+								aria-expanded="false">결제</button>
+							<div class="collapse" id="payment-collapse">
+								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+									<li><a href="${root}/admin/payment"
+										class="link-light rounded">결제 목록</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="mb-1">
+							<button
+								class="btn btn-toggle align-items-center rounded collapsed"
 								data-bs-toggle="collapse" data-bs-target="#club-collapse"
 								aria-expanded="false">소모임</button>
 							<div class="collapse" id="club-collapse">
@@ -135,18 +147,6 @@ li a:hover {
 							</div>
 						</li>
 						<li class="border-top my-3"></li>
-						<li class="mb-1">
-							<button
-								class="btn btn-toggle align-items-center rounded collapsed"
-								data-bs-toggle="collapse" data-bs-target="#account-collapse"
-								aria-expanded="false">설정</button>
-							<div class="collapse" id="account-collapse">
-								<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-									<li><a href="#" class="link-light rounded">설정</a></li>
-									<li><a href="#" class="link-light rounded">로그아웃</a></li>
-								</ul>
-							</div>
-						</li>
 					</ul>
 				</div>
 			</div>

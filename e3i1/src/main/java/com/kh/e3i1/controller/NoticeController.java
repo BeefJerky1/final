@@ -159,6 +159,7 @@ public class NoticeController {
 		
 		int memberNo = (Integer) session.getAttribute("login");
 		noticeDto.setMemberNo(memberNo);
+		System.out.println(noticeDto.getNoticeTitle());
 		noticeService.write(noticeDto, noticeAttach);	
 		attr.addAttribute("noticeNo", noticeDto.getNoticeNo());
 		

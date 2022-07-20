@@ -46,10 +46,12 @@ public class MbtiBoardController {
 	// 게시판 목록 구현
 	@GetMapping("/list")
 	public String list(@RequestParam(required = false) String keyword,
+			@RequestParam(required = false) String column, 
+			@RequestParam(required = false) String order,
 			@RequestParam(required = false, defaultValue = "1") int p,
 			@RequestParam(required = false, defaultValue = "5") int s, Model model) {
 
-		List<MbtiMemberListVO> list = mbtiBoardDao.list(keyword, p, s);
+		List<MbtiMemberListVO> list = mbtiBoardDao.list(keyword, column, order, p, s);
 		model.addAttribute("list", list);
 
 		boolean search = keyword != null;
@@ -71,72 +73,13 @@ public class MbtiBoardController {
 		model.addAttribute("startBlock", startBlock);
 		model.addAttribute("endBlock", endBlock);
 		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("column", column);
+		model.addAttribute("order", order);
 
 		return "mbtiBoard/list";
 	}
-	
-	// 게시판 목록 구현
-	@GetMapping("/list2")
-	public String list2(@RequestParam(required = false) String keyword,
-			@RequestParam(required = false, defaultValue = "1") int p,
-			@RequestParam(required = false, defaultValue = "5") int s, Model model) {
 
-		List<MbtiMemberListVO> list = mbtiBoardDao.list2(keyword, p, s);
-		model.addAttribute("list", list);
 
-		boolean search = keyword != null;
-		model.addAttribute("search", search);
-
-		int count = mbtiBoardDao.count(keyword);
-		int lastPage = (count + s - 1) / s;
-
-		int blockSize = 5; // 블록 크기
-		int endBlock = (p + blockSize - 1) / blockSize * blockSize;
-		int startBlock = endBlock - (blockSize - 1);
-		if (endBlock > lastPage) {
-			endBlock = lastPage;
-		}
-
-		model.addAttribute("page", p);
-		model.addAttribute("s", s);
-		model.addAttribute("keyword", keyword);
-		model.addAttribute("startBlock", startBlock);
-		model.addAttribute("endBlock", endBlock);
-		model.addAttribute("lastPage", lastPage);
-
-		return "mbtiBoard/list2";
-	}
-	// 게시판 목록 구현
-	@GetMapping("/list3")
-	public String list3(@RequestParam(required = false) String keyword,
-			@RequestParam(required = false, defaultValue = "1") int p,
-			@RequestParam(required = false, defaultValue = "5") int s, Model model) {
-		
-		List<MbtiMemberListVO> list = mbtiBoardDao.list3(keyword, p, s);
-		model.addAttribute("list", list);
-		
-		boolean search = keyword != null;
-		model.addAttribute("search", search);
-		
-		int count = mbtiBoardDao.count(keyword);
-		int lastPage = (count + s - 1) / s;
-		
-		int blockSize = 5; // 블록 크기
-		int endBlock = (p + blockSize - 1) / blockSize * blockSize;
-		int startBlock = endBlock - (blockSize - 1);
-		if (endBlock > lastPage) {
-			endBlock = lastPage;
-		}
-		
-		model.addAttribute("page", p);
-		model.addAttribute("s", s);
-		model.addAttribute("keyword", keyword);
-		model.addAttribute("startBlock", startBlock);
-		model.addAttribute("endBlock", endBlock);
-		model.addAttribute("lastPage", lastPage);
-		
-		return "mbtiBoard/list3";
-	}
 
 	// 상세 보기
 	@GetMapping("/detail")
@@ -149,6 +92,7 @@ public class MbtiBoardController {
 		Integer memberNo = (Integer) session.getAttribute("login");
 		boolean isLogin = memberNo != null;
 		boolean isOwner = isLogin && memberNo.equals(mbtiMemberListVO.getMbtiBoardDto().getMemberNo());
+		System.out.println("isOwner"+ isOwner);
 		model.addAttribute("isLogin", isLogin);
 		model.addAttribute("isOwner", isOwner);
 		

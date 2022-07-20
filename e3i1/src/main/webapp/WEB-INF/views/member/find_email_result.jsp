@@ -17,6 +17,7 @@
 .email2{
 	font-size: 1.3em;
 	font-weight: 900;
+	color: #3E4684;
 }
 
 </style>

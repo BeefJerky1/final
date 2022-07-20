@@ -100,4 +100,8 @@ public class AdminController {
 	public String MbtiAnimal() {
 		return "admin/mbtianimal";
 	}
+	@GetMapping("/payment")
+	public String payment() {
+		return "admin/payment";
+	}
 }
