@@ -469,5 +469,10 @@
 			club_no = #{clubNo}
 	</update>
 	
+	<!-- 소모임 회원 여부 확인 -->
+	<select id="isClubMember" parameterType="Map" resultType="ClubMemberDto">
+		select * from club_member where club_no = #{clubNo} and member_no = #{memberNo} and club_member_permission = 1
+	</select>
+	
 	
 </mapper>

@@ -4,12 +4,11 @@ import java.util.List;
 
 import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.ClubLikeDto;
+import com.kh.e3i1.entity.ClubMemberDto;
 import com.kh.e3i1.vo.ClubComplexSearchVO;
 import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubLikeVO;
 import com.kh.e3i1.vo.ClubListVO;
-import com.kh.e3i1.vo.ClubMemberListVO;
-import com.kh.e3i1.vo.ClubMemberProfileVO;
 
 public interface ClubDao {
 
@@ -33,6 +32,8 @@ public interface ClubDao {
 	
 	void clubPlus(int clubPlusNo, int clubNo);
 
-	boolean isLimit(int clubNo, int clubPlusNo); 
+	boolean isLimit(int clubNo, int clubPlusNo);
+
+	ClubMemberDto isClubMember(int clubNo, int memberNo); 
 
 }

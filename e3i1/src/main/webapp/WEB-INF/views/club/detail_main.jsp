@@ -356,13 +356,14 @@ a:hover {
 		<div class="col-md-3">
 			<button class="btn-create shadow" v-on:click="removeHidden" v-if="isLimit">소모임 가입 신청</button>
 			<button class="btn-create shadow" v-on:click="sorry" v-if="!isLimit">소모임 가입 신청</button>
+			
 			<div class="list-group mt-2" v-if="clubList.clubDto != null">
 				<a class="list-group-item list-group-item-action disabled boldfontS"
 					style="color: #3E4684;">소모임</a> <a
 					class="list-group-item list-group-item-action boldfontSS"
 					:href="'${pageContext.request.contextPath}/club/board?clubNo='+clubList.clubDto.clubNo">게시판</a>
 				<a class="list-group-item list-group-item-action boldfontSS"
-					:href="'${pageContext.request.contextPath}/club/chat?clubNo='+clubList.clubDto.clubNo">채팅</a>
+					:href="'${pageContext.request.contextPath}/club/chat?clubNo='+clubList.clubDto.clubNo" v-if="clubMemberJudge">채팅</a>
 			</div>
 			<div class="list-group mt-2" v-if="leaderJudge">
 				<a class="list-group-item list-group-item-action disabled boldfontS"
@@ -373,7 +374,7 @@ a:hover {
 					:href="'${pageContext.request.contextPath}/club/edit?clubNo='+clubList.clubDto.clubNo">소모임
 					관리</a>
 			</div>
-			<button class="btn-create shadow mt-4" @click="deleteClub">소모임 탈퇴</button>
+			<button class="btn-create shadow mt-4" @click="deleteClub" v-if="isClubMember">소모임 탈퇴</button>
 
 		</div>
 
@@ -485,6 +486,8 @@ data() {
 		
 		isLike:false,
 		
+		clubMemberDto:[], 
+		
 		memberProfile:{
 			memberDto : {},
 			memberProfileDto : {},
@@ -508,6 +511,13 @@ computed: {
 		}
 		return false;
 	},
+	
+	clubMemberJudge(){
+		if(this.clubMemberDto.clubMemberNo != null){
+			return true;
+		}
+		return false;
+	},
 },
 methods: {
 	// 소모임 인원제한
@@ -516,6 +526,21 @@ methods: {
 	},
 	sorry(){
 		window.alert("소모임 정원이 모두 찼습니다.");
+	},
+	
+	// 해당 소모임 회원여부 확인
+	isClubMember(){
+		if(this.memberNo == null || this.memberNo == "") {
+			return;
+		}
+		
+		axios({
+     		url:"${pageContext.request.contextPath}/rest/club/is_club_member/"+this.clubNo+"/"+this.memberNo,
+    		method:"get",
+    	})
+    	.then(resp=>{
+    		this.clubMemberDto = resp.data;
+    	});		
 	},
 	
 	// 모달로 프로필 조회
@@ -705,6 +730,9 @@ created() {
 	}).then((resp) => {
 		this.mbtiList = resp.data;
 	})
+	
+	// 소모임 회원 여부 판단
+	this.isClubMember();
 },
 mounted(){},
 });

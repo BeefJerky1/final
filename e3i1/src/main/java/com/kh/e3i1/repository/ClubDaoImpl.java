@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.e3i1.entity.ClubDto;
 import com.kh.e3i1.entity.ClubLikeDto;
+import com.kh.e3i1.entity.ClubMemberDto;
 import com.kh.e3i1.entity.MemberDto;
 import com.kh.e3i1.vo.ClubComplexSearchVO;
 import com.kh.e3i1.vo.ClubDetailVO;
 import com.kh.e3i1.vo.ClubLikeVO;
 import com.kh.e3i1.vo.ClubListVO;
-import com.kh.e3i1.vo.ClubMemberListVO;
 
 @Repository
 public class ClubDaoImpl implements ClubDao {
@@ -114,10 +114,9 @@ public class ClubDaoImpl implements ClubDao {
 		return sqlSession.selectList("club.bestClubList");
 	}
 	
-	// 인원제한 확인
-	
 	
 	// 결제시 소모임 인원제한 증가
+	@Override
 	public void clubPlus(int clubPlusNo, int clubNo) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("clubPlusNo", clubPlusNo);
@@ -139,6 +138,15 @@ public class ClubDaoImpl implements ClubDao {
 			return true;
 		}
 		return false;
+	}
+	
+	// 소모임 회원 여부
+	@Override
+	public ClubMemberDto isClubMember(int clubNo, int memberNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("clubNo", clubNo);
+		param.put("memberNo", memberNo);
+		return sqlSession.selectOne("club.isClubMember", param);
 	}
 	
 }
