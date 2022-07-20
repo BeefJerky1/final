@@ -1115,11 +1115,6 @@ position:relative;
 		                		method:"delete",
 		                	})
 		                	.then(resp=>{
-		                  		Swal.fire(
-			        			          '삭제가 완료되었습니다.',
-			        			          '',
-			        			          'success'
-			        			        )
 		                    	window.location.href='http://localhost:8080/e3i1/club/board?clubNo='+this.board.clubBoardDto.clubNo;
 		                	});
 		    			  }
@@ -1309,7 +1304,11 @@ position:relative;
     		        			memberNo:this.memberNo,
                 			}
                 		}).then(resp=>{
-                			
+                			Swal.fire({
+             			         title: '좋아요.!',
+             			          imageUrl : '${pageContext.request.contextPath}/image/smile.png',
+         		    			  imageWidth : 100
+      	        		  	        			 })
 							this.loadContent(); //게시글 다시 불러오기
                 			this.boardLike=true; //좋아요가 트루
                 			this.boardNotLike=false; 
@@ -1330,6 +1329,12 @@ position:relative;
     		        			memberNo:this.memberNo,
                 			}
                 		}).then(resp=>{
+                			Swal.fire({
+             			         title: '좋아요 취소!',
+             			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+         		    			  imageWidth : 100
+      	        		  	        			 })
+                		
                 			this.loadContent();
                 			this.boardNotLike=true;
                 			this.boardLike=false;
@@ -1558,6 +1563,12 @@ position:relative;
                 				likeMemberNo:this.memberNo,
                 			}
                 		}).then(resp=>{
+                			Swal.fire({
+             			         title: '좋아요.!',
+             			          imageUrl : '${pageContext.request.contextPath}/image/smile.png',
+         		    			  imageWidth : 100
+      	        		  	        			 })
+                		
                 			this.replylike = resp.data;
                 			this.loadReply();
                 			
@@ -1571,6 +1582,12 @@ position:relative;
                 				likeMemberNo:this.memberNo,
                 			}
                 		}).then(resp=>{
+                			Swal.fire({
+	        			         title: '좋아요 취소!',
+	        			          imageUrl : '${pageContext.request.contextPath}/image/sad.png',
+	    		    			  imageWidth : 100
+		        		  	        			 })
+                		
                 			this.loadReply();
                 		})
                 	}
