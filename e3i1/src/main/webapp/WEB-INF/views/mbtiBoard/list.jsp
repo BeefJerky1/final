@@ -153,7 +153,7 @@ $(function(){
 	                        <img src="${root}/image/mbti/강아지(ENFP).png" class="img-fluid rounded-circle" alt="profile-img" >
 						</span>
 						<span v-if="${mbtiMemberListVO.memberProfileDto.attachNo} != null">
-                           <img :src="'http://localhost:8080/e3i1/attachment/download?attachNo='+${mbtiMemberListVO.memberProfileDto.attachNo }" class="img-fluid rounded-circle" alt="profile-img">
+                           <img :src="'${pageContext.request.contextPath}/attachment/download?attachNo='+${mbtiMemberListVO.memberProfileDto.attachNo }" class="img-fluid rounded-circle" alt="profile-img">
                           </span> 
                            <div class="ms-3">
                               <h6 class="mb-0 d-flex align-items-start text-body fs-6 fw-bold">${mbtiMemberListVO.mbtiBoardDto.mbtiBoardTitle }<span class="ms-2 material-icons bg-primary p-0 md-16 fw-bold text-white rounded-circle ov-icon"  style="background-color:#514e85 !important;">done</span></h6>
