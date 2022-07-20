@@ -102,11 +102,18 @@ public class ClubRestController {
 		return clubMemberDao.insert(clubMemberDto);
 	}
 	
+	// 소모임 탈퇴
 	@DeleteMapping("/member/{memberNo}/{clubNo}")
 	public int deleteClubMember(
 				@PathVariable int memberNo,
 				@PathVariable int clubNo
 			) {
+		ClubDetailVO detail = clubDao.detail(clubNo);
+		if(memberNo == detail.getClubDto().getClubLeader()) {
+			ClubDto clubDto = new ClubDto();
+			clubDto.setClubNo(clubNo);
+			clubService.passLeader(clubDto);
+		}
 		return clubMemberDao.delete(memberNo, clubNo);
 	}
 	

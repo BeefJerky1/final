@@ -67,6 +67,7 @@ public class ClubServiceImpl implements ClubService {
 	@Override
 	public int passLeader(ClubDto clubDto) {
 		int nextLeader = clubDao.passLeader(clubDto);
+		System.out.println(nextLeader);
 		if(nextLeader == 0) {
 			return 0;
 		}

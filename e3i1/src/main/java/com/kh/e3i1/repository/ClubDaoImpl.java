@@ -168,7 +168,7 @@ public class ClubDaoImpl implements ClubDao {
 			sqlSession.delete("club.delete",clubDto.getClubNo());
 			return 0;
 		}
-		int nextLeader = list.get(0).getClubMemberDto().getMemberNo();
+		int nextLeader = list.get(1).getClubMemberDto().getMemberNo();
 		System.out.println("nextLeader:"+nextLeader);
 		
 		Map<String, Object> param = new HashMap<>();
