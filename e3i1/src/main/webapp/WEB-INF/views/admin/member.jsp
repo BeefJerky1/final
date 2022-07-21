@@ -200,6 +200,7 @@ li a:hover {
 								</tr>
 							</tbody>
 						</table>
+						<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#postModal">메세지 보내기</button>
 					</div>
 					<button type="button" v-on:click="append()"
 						:disabled="this.dataFull == true"
