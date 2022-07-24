@@ -44,8 +44,8 @@ MBTI 소모임 커뮤니티 <br>
 
 
 
-🎫 서비스 주소
-서비스 주소 : https://www.sysout.co.kr/siso
+🎫 서비스 주소<br>
+주소 : https://www.sysout.co.kr/siso
 
 📆 개발 기간
 2022년 06월 27일 ~ 2022년 07월 20일
